@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 class MistAlertBubble extends Component {
 	render() {
 		return (
-	      <div class="show-alert alert-bubble {{bubbleViewState}}">
+	      <div className="show-alert alert-bubble {{bubbleViewState}}">
 	        <button>
-	          <span class="icon-bell"></span>
+	          <span className="icon-bell"></span>
 	        </button>
 	      </div>
 		)

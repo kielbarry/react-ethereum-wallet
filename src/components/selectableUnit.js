@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import keyIndex from 'react-key-index'
+
 import '../stylesheets/mergedstyles.css'
 
 class SelectableUnit extends Component {
@@ -9,7 +11,8 @@ class SelectableUnit extends Component {
 
 		@property selectableUnits
 		*/
-		var selectableUnits = [{
+		var s = [
+			{
 			    text: 'ETHER',
 			    value: 'ether'
 			},
@@ -36,20 +39,22 @@ class SelectableUnit extends Component {
 			{
 			    text: 'BRL',
 			    value: 'brl'
-			}];
+			}
+		];
+
+		var selectableUnits = keyIndex(s, 1)
 
 		return (
 			<div className="simple-modal">
 				<ul>
 					 { 
 					 	Object.keys(selectableUnits).map((item, i) => {
-					 		const t =  selectableUnits[item].text
-					 		const v =  selectableUnits[item].value
-					 		var k = t + i
-					 		console.log(k)
+					 		const s = selectableUnits[item]
+					 		const t =  s.text
+					 		const v =  s.value
 							return (
-								<li data-key="{ k }">
-									<button data-value={ v }> 
+								<li key={ s._textId }>
+									<button key={ s._valueId } data-value={ v }> 
 										{ t } 
 									</button> 
 								</li>)
