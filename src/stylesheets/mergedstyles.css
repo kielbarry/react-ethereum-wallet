@@ -1433,8 +1433,8 @@ input[type="range"]:focus::-moz-range-thumb {
 
 @font-face {
   font-family: 'Simple-Line-Icons';
-  src: url('/packages/ethereum_dapp-styles/icons/Simple-Line-Icons.eot');
-  src: url('/packages/ethereum_dapp-styles/icons/Simple-Line-Icons.eot?') format('embedded-opentype'), url('/packages/ethereum_dapp-styles/icons/Simple-Line-Icons.woff') format('woff'), url('/packages/ethereum_dapp-styles/icons/Simple-Line-Icons.ttf') format('truetype'), url('/packages/ethereum_dapp-styles/icons/Simple-Line-Icons.svg') format('svg');
+  src: url('../packages/ethereum_dapp-styles/icons/Simple-Line-Icons.eot');
+  src: url('../packages/ethereum_dapp-styles/icons/Simple-Line-Icons.eot?') format('embedded-opentype'), url('../packages/ethereum_dapp-styles/icons/Simple-Line-Icons.woff') format('woff'), url('../packages/ethereum_dapp-styles/icons/Simple-Line-Icons.ttf') format('truetype'), url('../packages/ethereum_dapp-styles/icons/Simple-Line-Icons.svg') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -3752,49 +3752,49 @@ html {
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/packages/ethereum_dapp-styles/fonts/SourceSansPro-ExtraLight.otf');
+  src: url('../packages/ethereum_dapp-styles/fonts/SourceSansPro-ExtraLight.otf');
   font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/packages/ethereum_dapp-styles/fonts/SourceSansPro-ExtraLightIt.otf');
+  /*src: url('../packages/ethereum_dapp-styles/fonts/SourceSansPro-ExtraLightIt.otf');*/
   font-weight: 100;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/packages/ethereum_dapp-styles/fonts/SourceSansPro-Light.otf');
+  src: url('../packages/ethereum_dapp-styles/fonts/SourceSansPro-Light.otf');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/packages/ethereum_dapp-styles/fonts/SourceSansPro-Regular.otf');
+  src: url('../packages/ethereum_dapp-styles/fonts/SourceSansPro-Regular.otf');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/packages/ethereum_dapp-styles/fonts/SourceSansPro-Semibold.otf');
+  src: url('../packages/ethereum_dapp-styles/fonts/SourceSansPro-Semibold.otf');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/packages/ethereum_dapp-styles/fonts/SourceSansPro-Bold.otf');
+  src: url('../packages/ethereum_dapp-styles/fonts/SourceSansPro-Bold.otf');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('/packages/ethereum_dapp-styles/fonts/Montserrat-Regular.otf');
+  src: url('../packages/ethereum_dapp-styles/fonts/Montserrat-Regular.otf');
   font-weight: 400;
   font-style: normal;
 }
