@@ -42,11 +42,13 @@ class SelectableUnit extends Component {
 			<div className="simple-modal">
 				<ul>
 					 { 
-					 	Object.keys(selectableUnits).map((item) => {
+					 	Object.keys(selectableUnits).map((item, i) => {
 					 		const t =  selectableUnits[item].text
 					 		const v =  selectableUnits[item].value
+					 		var k = t + i
+					 		console.log(k)
 							return (
-								<li>
+								<li data-key="{ k }">
 									<button data-value={ v }> 
 										{ t } 
 									</button> 
