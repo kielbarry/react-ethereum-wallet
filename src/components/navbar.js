@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../stylesheets/navbar.css'
-import '../stylesheets/mergedstyles.css'
+
+import SU from './selectableUnit.js'
+
 
 class NavBar extends Component {
   render() {
@@ -38,6 +40,7 @@ class NavBar extends Component {
 						<span className="account-balance">
 							<span className="inline-form" name="unit">
 								<button type="button" data-name="unit" data-value="ether">ETHER</button>
+								<SU />
 							</span>
 						</span>
 					</li>
