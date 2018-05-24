@@ -4,6 +4,7 @@ import './App.css';
 import AccountView from './components/views/account.js'
 import MistAlert from './components/mistAlert.js'
 import MistAlertBubble from './components/mistAlertBubble.js'
+import Contracts from './components/views/contracts.js'
 
 import './stylesheets/mergedstyles.css'
 
@@ -37,35 +38,20 @@ class App extends Component {
 
 
   render() {
-
-
-
-
     return (
-      
-
-
-    <div>
-     
-
-      <div className="App">
-
-        <NavBar />    
-
-        <div className="dapp-flex-content">
-          <main className="dapp-content">
-
-            <MistAlert />
-            <MistAlertBubble />
-            <AccountView />
-
-          
-          </main>
-
+      <div>
+        <div className="App">
+          <NavBar />    
+          <div className="dapp-flex-content">
+            <main className="dapp-content">
+              <Contracts />
+             {/* <MistAlert /> */}
+              <MistAlertBubble />
+              <AccountView />
+            </main>
+          </div>
         </div>
       </div>
-    
-    </div>
       
     );
   }
