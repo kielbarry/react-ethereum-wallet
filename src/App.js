@@ -32,7 +32,6 @@ class App extends Component {
   }
 
   toggleAlertMessage(e){
-    console.log(this.state)
     this.state['displayAlertMessage'] ? this.setState({ displayAlertMessage: false }) : this.setState({ displayAlertMessage: true })
   }
 
@@ -46,7 +45,7 @@ class App extends Component {
             <main className="dapp-content">
               <Contracts />
              {/* <MistAlert /> */}
-              <MistAlertBubble />
+              <MistAlertBubble onClick={ ()=> this.toggleAlertMessage() } />
               <AccountView />
             </main>
           </div>

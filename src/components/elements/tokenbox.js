@@ -6,9 +6,9 @@ class TokenBox extends Component {
 			<div>
 				<h2>{ "wallet.tokens.title" }</h2>
 		        <p> { "wallet.tokens.description" } </p>
-		        <div class="dapp-clear-fix"></div>
+		        <div className="dapp-clear-fix"></div>
 
-				<div class="wallet-box-list">
+				<div className="wallet-box-list">
 				here in wallet box
 				{/*
 		        {{#each tokens}}

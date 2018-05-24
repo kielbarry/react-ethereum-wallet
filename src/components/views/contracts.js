@@ -9,8 +9,8 @@ class Contracts extends Component {
 
 				<h1>{ "wallet.contracts.contractTitle" }</h1>
 
-		        <a href="{pathFor route='deployContract'}" class="wallet-box create">
-		            <div class="account-pattern">
+		        <a href="{pathFor route='deployContract'}" className="wallet-box create">
+		            <div className="account-pattern">
 		                +
 		            </div>
 		            <h3>{ "wallet.contracts.deployNewContract" }</h3>
@@ -20,9 +20,9 @@ class Contracts extends Component {
 		        <h2>{ "wallet.contracts.customContracts" }</h2>
 
 		        <p>{ "wallet.contracts.description" }</p>
-		        <div class="dapp-clear-fix"></div>
+		        <div className="dapp-clear-fix"></div>
 
-		        <div class="wallet-box-list">
+		        <div className="wallet-box-list">
 		        {
 		        /*
 		        {{#each customContracts}}
@@ -31,13 +31,13 @@ class Contracts extends Component {
 		    */}
 		        </div>
 
-		        <button class="wallet-box create add-contract">
-		            <div class="account-pattern">
+		        <button className="wallet-box create add-contract">
+		            <div className="account-pattern">
 		                +
 		            </div>
 		            <h3>{ "wallet.contracts.addCustomContract" }</h3>
 		        </button>  
-		        <div class="dapp-clear-fix"></div>
+		        <div className="dapp-clear-fix"></div>
 
 
 		        <br></br>
@@ -45,8 +45,8 @@ class Contracts extends Component {
 
 				<TokenBox />
 
-				<button class="wallet-box create add-token">
-		            <div class="account-pattern">
+				<button className="wallet-box create add-token">
+		            <div className="account-pattern">
 		                +
 		            </div>
 		            <h3>{ "wallet.app.buttons.addToken" }</h3>
