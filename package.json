@@ -10,7 +10,8 @@
     "react-key-index": "^0.1.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
-    "react-style": "^0.5.5"
+    "react-style": "^0.5.5",
+    "react-web3": "^0.4.5"
   },
   "scripts": {
     "start": "react-scripts start",

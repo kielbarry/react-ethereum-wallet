@@ -2,23 +2,29 @@ import React, { Component } from 'react';
 import './App.css';
 
 import AccountView from './components/views/account.js'
+import ContractsView from './components/views/contracts.js'
+import SendContractForm from './components/views/send.js'
+
 import MistAlert from './components/mistAlert.js'
 import MistAlertBubble from './components/mistAlertBubble.js'
-import Contracts from './components/views/contracts.js'
 
 import './stylesheets/mergedstyles.css'
 
-import { 
-	Router, 
-	Route, 
-	Link, 
-	IndexRoute, 
-	hashHistory, 
-	browserHistory 
-} from 'react-router'
+// import { 
+// 	Router, 
+// 	Route, 
+// 	Link, 
+// 	IndexRoute, 
+// 	hashHistory, 
+// 	browserHistory,
+//   BrowserRouter,
+//   Switch
+// } from 'react-router'
 
 import NavBar from './components/navbar';
 
+
+import { BrowserRouter, Link, Route } from 'react-router-dom'
 
 
 class App extends Component {
@@ -28,11 +34,10 @@ class App extends Component {
 
     var cn = require( 'classnames' );
 
-    var alertKey = 'alert_20171104-hidden';
-
     this.state = {
       'displayAlertMessage': false,
       'alertKey':  'alert_20171104-hidden',
+      'peerCountIntervalId': null,
     }
 
   }
@@ -44,14 +49,30 @@ class App extends Component {
   render() {
     return (
       <div>
+
+
         <div className="App">
           <NavBar />    
           <div className="dapp-flex-content">
             <main className="dapp-content">
-              <Contracts />
-              <MistAlert validStyles={this.state.displayAlertMessage} onClick={ ()=> this.toggleAlertMessage() }  />
-              <MistAlertBubble validStyles={this.state.displayAlertMessage}  onClick={ ()=> this.toggleAlertMessage() } />
-              <AccountView />
+
+            <BrowserRouter>
+              <div>
+                <Route exact path="/" component={AccountView}/>
+                <Route exact path="/send-from" component={ContractsView}/>
+                <Route exact path="/contracts" component={SendContractForm}/>
+              </div>
+            </BrowserRouter>
+
+
+              <MistAlert 
+              validStyles={this.state.displayAlertMessage}
+              onClick={ ()=> this.toggleAlertMessage() }  />
+              <MistAlertBubble 
+              validStyles={this.state.displayAlertMessage}
+              onClick={ ()=> this.toggleAlertMessage() } />
+
+
             </main>
           </div>
         </div>

@@ -4,6 +4,8 @@ class AccountView extends Component	 {
 	render() {
 		return (
 			<div className="dapp-container accounts-page">
+
+			"Here in account view"
 				 {/* <div class="dapp-sticky-bar dapp-container">
                     <h1 class="{{ensClass}}">
                         <span>{{displayName}}</span>

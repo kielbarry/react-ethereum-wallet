@@ -8,19 +8,15 @@ class NavBar extends Component {
 
 	constructor(props) {
 	    super(props);
-
 	    var cn = require( 'classnames' );
-
 	    this.state = {
 	      totalBalance: 0.00
 	    }
-
 	 }
-
-
 
   render() {
     return (
+    	
 		<header className="dapp-header dapp-full-header">
 			<nav>
 				<ul>

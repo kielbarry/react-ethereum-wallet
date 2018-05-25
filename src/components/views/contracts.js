@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import TokenBox from '../elements/tokenbox.js'
 
-class Contracts extends Component {
+class ContractsView extends Component {
 	render() {
 		return (
 			<div className="dapp-container">
 
+				"Here in ContractsView"
 
 				<h1>{ "wallet.contracts.contractTitle" }</h1>
 
@@ -58,4 +59,4 @@ class Contracts extends Component {
 	}
 }
 
-export default Contracts
+export default ContractsView
