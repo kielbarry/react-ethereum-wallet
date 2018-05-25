@@ -32,23 +32,14 @@ class App extends Component {
 
     this.state = {
       'displayAlertMessage': false,
-      // {
-      //   value: false,
-      //   bubbleStyle: "",
-      //   warningStyle : "is-hidden",
-      // }, 
       'alertKey':  'alert_20171104-hidden',
     }
 
-    // this.toggleAlertMessage = this.toggleAlertMessage.bind(this);
   }
 
   toggleAlertMessage(e){
-    this.state['displayAlertMessage'] 
-    ? this.setState({ displayAlertMessage: false}) 
-    : this.setState({ displayAlertMessage: true})
+    this.state['displayAlertMessage'] ? this.setState({ displayAlertMessage: false}) : this.setState({ displayAlertMessage: true})
   }
-
 
   render() {
     return (

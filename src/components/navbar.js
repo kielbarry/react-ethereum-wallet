@@ -5,6 +5,20 @@ import SU from './selectableUnit.js'
 
 
 class NavBar extends Component {
+
+	constructor(props) {
+	    super(props);
+
+	    var cn = require( 'classnames' );
+
+	    this.state = {
+	      totalBalance: 0.00
+	    }
+
+	 }
+
+
+
   render() {
     return (
 		<header className="dapp-header dapp-full-header">
@@ -26,7 +40,6 @@ class NavBar extends Component {
 							<i className="icon-feed"></i>
 							<span>peers</span>
 							<i className="icon-layers"></i>
-
 							<span className="hide-on-small">since last block</span>
 					</li>
 					<li>
