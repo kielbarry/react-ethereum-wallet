@@ -44,7 +44,7 @@ class App extends Component {
   }
 
   toggleAlertMessage(e){
-    this.state['displayAlertMessage'].value 
+    this.state['displayAlertMessage'] 
     ? this.setState({ displayAlertMessage: false}) 
     : this.setState({ displayAlertMessage: true})
   }
@@ -58,7 +58,7 @@ class App extends Component {
           <div className="dapp-flex-content">
             <main className="dapp-content">
               <Contracts />
-              <MistAlert validStyles={this.state.displayAlertMessage}  />
+              <MistAlert validStyles={this.state.displayAlertMessage} onClick={ ()=> this.toggleAlertMessage() }  />
               <MistAlertBubble validStyles={this.state.displayAlertMessage}  onClick={ ()=> this.toggleAlertMessage() } />
               <AccountView />
             </main>
