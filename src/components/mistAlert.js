@@ -5,8 +5,13 @@ import '../stylesheets/mergedstyles.css'
 
 class MistAlert extends Component {
   render() {
+
+    var cn = require( 'classnames' );
+    var newStyles = cn({ "alert-banner": true,"is-hidden": !this.props.validStyles })
+
+
     return (
-      <div className="alert-banner hidden:{{alertViewState}}">
+      <div className={newStyles}>
         <section>
           <h1> ⚠︎ Warning</h1>
           <button type="button" className="hide-alert close-button">&times;</button>
