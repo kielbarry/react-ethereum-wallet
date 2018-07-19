@@ -19,7 +19,6 @@ const navFields = [
   		secondText: "since last block",
   		secondClass: "hide-on-small"
   	},
-  	{type: "link", href:"", liClass:"block-info dapp-flex-item", icon: "icon-wallet", displayText: "peers"},
   	{type: "link", href:"/contracts", liClass:"contracts-nav-li", icon: "icon-docs", displayText: "Contracts"},
   	{	type: "balanceInfo",
   		liClass: "balance-nav-li", 
@@ -31,9 +30,7 @@ const navFields = [
 
 const SwitchHeader = ({ field, i }) => {
 	if(field.type === "peerInfo") {
-		return (
-			<NetworkHeader field={field} key={ `navfield-${i}` } />
-		)
+		return (<NetworkHeader field={field} key={ `navfield-${i}` } />)
 	}  else {
 		return (<BalanceHeader field={field} key={ `navfield-${i}` } />)
 	}
