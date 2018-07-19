@@ -10,16 +10,6 @@ import MistAlertBubble from './components/mistAlertBubble.js'
 
 import './stylesheets/mergedstyles.css'
 
-// import { 
-// 	Router, 
-// 	Route, 
-// 	Link, 
-// 	IndexRoute, 
-// 	hashHistory, 
-// 	browserHistory,
-//   BrowserRouter,
-//   Switch
-// } from 'react-router'
 
 import NavBar from './components/navbar';
 
@@ -64,14 +54,12 @@ class App extends Component {
               </div>
             </BrowserRouter>
 
-
               <MistAlert 
               validStyles={this.state.displayAlertMessage}
               onClick={ ()=> this.toggleAlertMessage() }  />
               <MistAlertBubble 
               validStyles={this.state.displayAlertMessage}
               onClick={ ()=> this.toggleAlertMessage() } />
-
 
             </main>
           </div>

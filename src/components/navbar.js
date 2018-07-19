@@ -1,8 +1,43 @@
 import React, { Component } from 'react';
 import '../stylesheets/navbar.css'
+import {
+	HeaderField, 
+	NetworkHeader,
+	BalanceHeader
+} from './navbarFields'
 
-import SU from './selectableUnit.js'
+const navFields = [
+  	{type: "link", href:"/", liClass:"wallet-nav-li", icon: "icon-wallet", displayText: "Wallets"},
+  	{type: "link", href:"/send-from", liClass:"send-nav-li", icon: "icon-arrow-up", displayText: "Send"},
+  	{
+  		type: "peerInfo",
+  		liClass: "block-info dapp-flex-item", 
+  		firstIcon: "icon-feed", 
+  		firstText: "peers",
+  		firstClass: "",
+  		secondIcon: "icon-layers", 
+  		secondText: "since last block",
+  		secondClass: "hide-on-small"
+  	},
+  	{type: "link", href:"", liClass:"block-info dapp-flex-item", icon: "icon-wallet", displayText: "peers"},
+  	{type: "link", href:"/contracts", liClass:"contracts-nav-li", icon: "icon-docs", displayText: "Contracts"},
+  	{	type: "balanceInfo",
+  		liClass: "balance-nav-li", 
+  		firstText: "Balance",
+  		firstClass: "account-balance",
+  		secondText: "ETHER",
+  	},
+]
 
+const SwitchHeader = ({ field, i }) => {
+	if(field.type === "peerInfo") {
+		return (
+			<NetworkHeader field={field} key={ `navfield-${i}` } />
+		)
+	}  else {
+		return (<BalanceHeader field={field} key={ `navfield-${i}` } />)
+	}
+}
 
 class NavBar extends Component {
 
@@ -16,48 +51,26 @@ class NavBar extends Component {
 
   render() {
     return (
-    	
 		<header className="dapp-header dapp-full-header">
 			<nav>
 				<ul>
-					<li>
-						<a href="/">
-							<i className="icon-wallet"></i>
-							<span>Wallets</span>
-						</a>
-					</li>
-					<li>
-						<a href="/send-from">
-							<i className="icon-arrow-up"></i>
-							<span>Send</span>
-						</a>
-					</li>
-					<li className="block-info dapp-flex-item">
-							<i className="icon-feed"></i>
-							<span>peers</span>
-							<i className="icon-layers"></i>
-							<span className="hide-on-small">since last block</span>
-					</li>
-					<li>
-						<a href="/contracts">
-							<i className="icon-docs"></i>
-							<span>Wallets</span>
-						</a>
-					</li>
-					<li className="wallet-balance">
-						<h3>Balance</h3>
-						<span className="account-balance">
-							<span className="inline-form" name="unit">
-								<button type="button" data-name="unit" data-value="ether">ETHER</button>
-								<SU />
-							</span>
-						</span>
-					</li>
+					{ 
+						navFields.map((f, i) => (
+							f.type === "link" ?  (
+								<HeaderField field={f} key={ `navfield-${i}` } />
+							)  : 
+							(
+								<SwitchHeader field={f} i={i} />
+							)
+						))
+					}
 				</ul>
 			</nav>
 		</header>
     );
   }
 }
+
+
 
 export default NavBar;
