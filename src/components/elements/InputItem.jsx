@@ -1,23 +1,47 @@
 import React, { Component } from 'react';
 
-class InputItem extends Component {
-
-    render() {
-        return (
-            
-            <h3>Contract address</h3>
-            <div class="dapp-address-input">
-                <input type="text" name="address" placeholder="0x000000.." class="contract-address">
+const InputType = ({ f }) => {
+    return (
+        <React.Fragment>
+            <h3>{ f.title }</h3>
+            <div class={ f.divClass }>
+                <input 
+                type={ f.type } 
+                name={ f.name } 
+                placeholder={ f.placeholder} 
+                className={ f.className} />
             </div>
-
-            <h3>Contract name</h3>
-            <input type="string" value="" name="name" placeholder="Name this contract" class="name">
-
-            <h3>JSON Interface</h3>
-            <textarea name="jsonInterface" class="jsonInterface" placeholder="[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{&quot;name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]" cols="30" rows="10"></textarea>
-
-        );
-    }
+        </React.Fragment>
+    );
 }
 
-export default InputItem
+const TextAreaType = ({ f }) => {
+    if(!f.cols) f.cols = 30;
+    if(!f.rows) f.rows = 30;
+    return (
+        <React.Fragment>
+            <h3>{ f.title }</h3>
+            <div class={ f.divClass }>
+                <textarea 
+                name={ f.name} 
+                className={ f.className }
+                placeholder={ f.placeholder }
+                cols={ f.cols }
+                rows={ f.cols }
+                ></textarea>
+            </div>
+        </React.Fragment>
+    );
+}
+
+
+export const InputItem = ({ field }) => {
+    return (
+        <React.Fragment>
+            { field.editor === "textarea" ? (<TextAreaType f={field} />) :  (<InputType f={field} />) } 
+        </React.Fragment>
+    );
+}
+
+export default InputItem;
+

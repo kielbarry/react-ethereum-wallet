@@ -3,6 +3,8 @@ import TokenBox from '../elements/tokenbox.js';
 
 import AddForm from '../AddForm.jsx';
 
+import Modal from './modals/WatchItem.jsx';
+
 const listItems = [
 	{
 		title: "",
@@ -38,6 +40,8 @@ class ContractsView extends Component {
 				<h1>
 					<strong>Contracts</strong>
 				</h1>
+
+				<Modal />
 
 				{ listItems.map(field => <AddForm field={field} />) }
 
