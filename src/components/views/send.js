@@ -1,27 +1,24 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class SendContractForm extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-
-            <form action="about:blank" target="dapp-form-helper-iframe" autocomplete="on">
-
-            "Here in SendContractForm"
-
-                
-
-            </form>
-        )
-    }
+  render() {
+    return (
+      <form
+        action="about:blank"
+        target="dapp-form-helper-iframe"
+        autocomplete="on"
+      >
+        "Here in SendContractForm"
+      </form>
+    );
+  }
 }
 
-export default SendContractForm
-
+export default SendContractForm;
 
 // {{#if deployContract}}
 //                     <h1>{ 'wallet.contracts.deployContract'}</h1>
@@ -137,14 +134,12 @@ export default SendContractForm
 //                         {{/if}}
 //                     </div>
 
-
 //                     <div class="dapp-clear-fix"></div>
 //                 </div>
 
 //                 {{#if $eq (TemplateVar.get "selectedToken") "ether"}}
 //                     {{> elements_compileContract onlyByteCode=showOnlyByteTextarea codeNotExecutable=(TemplateVar.get "codeNotExecutable")}}
 //                 {{/if}}
-
 
 //                 {/* fee */}
 //                 <div class="row clear">

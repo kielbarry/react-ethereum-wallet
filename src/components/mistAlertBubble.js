@@ -1,19 +1,22 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class MistAlertBubble extends Component {
-	render() {
+  render() {
+    var cn = require('classnames');
+    var newStyles = cn({
+      'show-alert': true,
+      'alert-bubble': true,
+      'is-hidden': this.props.validStyles
+    });
 
-		var cn = require( 'classnames' );
-		var newStyles = cn({ "show-alert": true, "alert-bubble": true, "is-hidden": this.props.validStyles })
-
-		return (
-	      <div className={newStyles}>
-	        <button onClick={ () => this.props.onClick() } >
-	          <span className="icon-bell"></span>
-	        </button>
-	      </div>
-		)
-	}
+    return (
+      <div className={newStyles}>
+        <button onClick={() => this.props.onClick()}>
+          <span className="icon-bell" />
+        </button>
+      </div>
+    );
+  }
 }
 
-export default MistAlertBubble
+export default MistAlertBubble;
