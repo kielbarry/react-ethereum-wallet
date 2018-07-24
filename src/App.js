@@ -49,8 +49,8 @@ class App extends Component {
             <BrowserRouter>
               <div>
                 <Route exact path="/" component={AccountView}/>
-                <Route exact path="/send-from" component={ContractsView}/>
-                <Route exact path="/contracts" component={SendContractForm}/>
+                <Route exact path="/send-from" component={SendContractForm}/>
+                <Route exact path="/contracts" component={ContractsView}/>
               </div>
             </BrowserRouter>
 

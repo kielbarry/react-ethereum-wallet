@@ -1,58 +1,45 @@
-import React, { Component } from 'react'
-import TokenBox from '../elements/tokenbox.js'
+import React, { Component } from 'react';
+import TokenBox from '../elements/tokenbox.js';
+
+import AddForm from '../AddForm.jsx';
+
+const listItems = [
+	{
+		title: "",
+		redirect: true,
+		link: "deploy-contract",
+		buttonClass: "wallet-box create add-contract",
+		buttonDescription: "DEPLOY NEW CONTRACT",
+		contractDescription: ""
+	},
+	{
+		title: "Custom Contracts",
+		redirect: false,
+		link: "deploy-contract",
+		buttonClass: "wallet-box create add-contract",
+		buttonDescription: "WATCH CONTRACT",
+		contractDescription: "To watch and interact with a contract already deployed on the blockchain, you need to know its address and the description of its interface in JSON format."
+	},
+	{
+		title: "Custom Tokens",
+		redirect: false,
+		link: "deploy-contract",
+		buttonClass: "wallet-box create add-token",
+		buttonDescription: "DEPLOY NEW CONTRACT",
+		contractDescription: "Tokens are currencies and other fungibles built on the Ethereum platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifying this example of a custom token contract or learning more about Ethereum Tokens."
+	},
+]
 
 class ContractsView extends Component {
 	render() {
 		return (
 			<div className="dapp-container">
 
-				"Here in ContractsView"
+				<h1>
+					<strong>Contracts</strong>
+				</h1>
 
-				<h1>{ "wallet.contracts.contractTitle" }</h1>
-
-		        <a href="{pathFor route='deployContract'}" className="wallet-box create">
-		            <div className="account-pattern">
-		                +
-		            </div>
-		            <h3>{ "wallet.contracts.deployNewContract" }</h3>
-		        </a> 
-
-
-		        <h2>{ "wallet.contracts.customContracts" }</h2>
-
-		        <p>{ "wallet.contracts.description" }</p>
-		        <div className="dapp-clear-fix"></div>
-
-		        <div className="wallet-box-list">
-		        {
-		        /*
-		        {{#each customContracts}}
-		            {{> elements_account account=_id isContract=true}}
-		        {{/each}}
-		    */}
-		        </div>
-
-		        <button className="wallet-box create add-contract">
-		            <div className="account-pattern">
-		                +
-		            </div>
-		            <h3>{ "wallet.contracts.addCustomContract" }</h3>
-		        </button>  
-		        <div className="dapp-clear-fix"></div>
-
-
-		        <br></br>
-
-
-				<TokenBox />
-
-				<button className="wallet-box create add-token">
-		            <div className="account-pattern">
-		                +
-		            </div>
-		            <h3>{ "wallet.app.buttons.addToken" }</h3>
-		        </button>   
-
+				{ listItems.map(field => <AddForm field={field} />) }
 
 			</div>
 		);
