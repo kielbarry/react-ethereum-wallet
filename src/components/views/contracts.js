@@ -5,6 +5,10 @@ import AddForm from '../AddForm.jsx';
 
 import Modal from './modals/WatchItem.jsx';
 
+import PageHeader from '../elements/PageHeaders.jsx';
+import { ContractPageHeader } from '../../constants/FieldConstants.jsx';
+
+
 const listItems = [
   {
     title: '',
@@ -34,15 +38,14 @@ const listItems = [
   }
 ];
 
+
 class ContractsView extends Component {
   render() {
     return (
       <div className="dapp-container">
-        <h1>
-          <strong>Contracts</strong>
-        </h1>
+        
+        <PageHeader title={ContractPageHeader} />
 
-        <Modal />
 
         {listItems.map((field, i) => <AddForm key={`contracts-view-${i}`} field={field} />)}
       </div>

@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+import PageHeader from '../elements/PageHeaders.jsx';
+
+import { SendPageHeader } from '../../constants/FieldConstants.jsx';
+
+
 class SendContractForm extends Component {
   // constructor(props) {
   //   super(props);
@@ -7,13 +12,17 @@ class SendContractForm extends Component {
 
   render() {
     return (
-      <form
-        action="about:blank"
-        target="dapp-form-helper-iframe"
-        autocomplete="on"
-      >
-        "Here in SendContractForm"
-      </form>
+      <React.Fragment>
+        <PageHeader title={SendPageHeader} />
+        <form
+          action="about:blank"
+          target="dapp-form-helper-iframe"
+          autocomplete="on"
+        >
+          "Here in SendContractForm"
+        </form>
+      </React.Fragment>
+
     );
   }
 }
