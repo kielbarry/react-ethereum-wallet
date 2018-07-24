@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TokenBox from '../elements/tokenbox.js';
+// import TokenBox from '../elements/tokenbox.js';
 
 import AddForm from '../AddForm.jsx';
 
@@ -44,7 +44,7 @@ class ContractsView extends Component {
 
         <Modal />
 
-        {listItems.map(field => <AddForm field={field} />)}
+        {listItems.map((field, i) => <AddForm key={`contracts-view-${i}`} field={field} />)}
       </div>
     );
   }

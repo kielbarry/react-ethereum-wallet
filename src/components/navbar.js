@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../stylesheets/navbar.css';
-import { HeaderField, NetworkHeader, BalanceHeader } from './navbarFields';
+import { HeaderField, NetworkHeader, BalanceHeader } from './elements/navbarFields';
 
 const navFields = [
   {
@@ -54,7 +54,7 @@ const SwitchHeader = ({ field, i }) => {
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    var cn = require('classnames');
+    // var cn = require('classnames');
     this.state = {
       totalBalance: 0.0
     };
@@ -70,7 +70,7 @@ class NavBar extends Component {
                 f.type === 'link' ? (
                   <HeaderField field={f} key={`navfield-${i}`} />
                 ) : (
-                  <SwitchHeader field={f} i={i} />
+                  <SwitchHeader field={f} i={i} key={`navfield-${i}`} />
                 )
             )}
           </ul>

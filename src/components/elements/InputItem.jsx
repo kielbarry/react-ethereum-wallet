@@ -4,7 +4,7 @@ const InputType = ({ f }) => {
   return (
     <React.Fragment>
       <h3>{f.title}</h3>
-      <div class={f.divClass}>
+      <div className={f.divClass}>
         <input
           type={f.type}
           name={f.name}
@@ -22,13 +22,13 @@ const TextAreaType = ({ f }) => {
   return (
     <React.Fragment>
       <h3>{f.title}</h3>
-      <div class={f.divClass}>
+      <div className={f.divClass}>
         <textarea
           name={f.name}
           className={f.className}
           placeholder={f.placeholder}
           cols={f.cols}
-          rows={f.cols}
+          rows={f.rows}
         />
       </div>
     </React.Fragment>

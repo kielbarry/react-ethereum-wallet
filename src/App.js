@@ -12,13 +12,13 @@ import './stylesheets/mergedstyles.css';
 
 import NavBar from './components/navbar';
 
-import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    var cn = require('classnames');
+    // var cn = require('classnames');
 
     this.state = {
       displayAlertMessage: false,

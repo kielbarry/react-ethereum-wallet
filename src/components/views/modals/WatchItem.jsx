@@ -27,8 +27,7 @@ const listInputs = [
     editor: 'textarea',
     type: 'text',
     name: 'jsonInterface',
-    placeholder: `[\n
-        \t{\n\t\ttype: \"constructor\", \n\t\tname: \"MyContract\", \n\t\t\"inputs\":[\n{\n\t"name\":\"_param1\", \n\t\"type\":\"address\"}]}, {...}]`,
+    placeholder: `[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{"name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]`,
     className: 'jsonInterface',
     cols: '30',
     rows: '10'
@@ -38,15 +37,15 @@ const listInputs = [
 class WatchItem extends Component {
   render() {
     return (
-      <div class="dapp-modal-overlay">
-        <section class="dapp-modal-container modals-add-custom-contract">
+      <div className="dapp-modal-overlay">
+        <section className="dapp-modal-container modals-add-custom-contract">
           <h1>Watch contract</h1>
 
-          {listInputs.map(field => <InputItem field={field} />)}
+          {listInputs.map((field, i) => (<InputItem key={`contract-field-${i}`} field={field} />))}
 
-          <div class="dapp-modal-buttons">
-            <button class="cancel">Cancel</button>
-            <button class="ok dapp-primary-button">OK</button>
+          <div className="dapp-modal-buttons">
+            <button className="cancel">Cancel</button>
+            <button className="ok dapp-primary-button">OK</button>
           </div>
         </section>
       </div>
