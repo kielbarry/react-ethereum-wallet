@@ -17,7 +17,7 @@ const InputType = ({ f }) => {
 
 const TextAreaType = ({ f }) => {
     if(!f.cols) f.cols = 30;
-    if(!f.rows) f.rows = 30;
+    if(!f.rows) f.rows = 10;
     return (
         <React.Fragment>
             <h3>{ f.title }</h3>
