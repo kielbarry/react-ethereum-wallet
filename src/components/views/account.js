@@ -10,7 +10,7 @@ import AccountItem from '../elements/AccountItem.jsx';
 const listItems = [
  {
     title: 'Accounts',
-    redirect: false,
+    redirect: true,
     link: '',
     buttonClass: 'wallet-box create',
     buttonDescription: 'ADD ACCOUNT',
@@ -18,7 +18,7 @@ const listItems = [
   },
   {
     title: 'Wallet Contracts',
-    redirect: true,
+    redirect: false,
     link: 'account/new',
     buttonClass: 'wallet-box create add-contract',
     buttonDescription: 'ADD WALLET CONTRACT',
