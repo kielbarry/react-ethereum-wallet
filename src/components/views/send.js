@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 import PageHeader from '../elements/PageHeaders.jsx';
+import Slider from '../elements/Slider.jsx';
+import TotalGas from '../elements/TotalGas.jsx';
+
 
 import { SendPageHeader } from '../../constants/FieldConstants.jsx';
 
@@ -12,16 +15,17 @@ class SendContractForm extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <PageHeader title={SendPageHeader} />
         <form
+          className="account-send-form"
           action="about:blank"
           target="dapp-form-helper-iframe"
-          autocomplete="on"
-        >
-          "Here in SendContractForm"
+          autocomplete="on">
+          <PageHeader title={SendPageHeader} />
+          <Slider />
+          <TotalGas />
+
+          <button type="submit" class="dapp-block-button">Send</button>
         </form>
-      </React.Fragment>
 
     );
   }

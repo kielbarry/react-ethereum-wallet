@@ -1,5 +1,24 @@
 import React, { Component } from 'react';
 
+const tokenSummary = {
+	tokenName: "",
+	tokenBalance: "10.01",
+	ethEquivalent: "2",
+	currency: "GBP"
+}
+
+const EtherColumn = (tokenSummary) => {
+	return (
+
+		<div class="token-ether">
+            <span class="ether-symbol">Ξ</span>
+            <span class="token-name">ETHER</span>
+            <span class="balance">
+            	{ !tokenSummary === "ETH" ? }
+            </span>
+        </div>
+	);
+}
 
 class FormInput extends Component {
   render() {
