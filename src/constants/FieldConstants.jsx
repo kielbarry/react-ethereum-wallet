@@ -1,3 +1,45 @@
+export const DefaultNavFields = [
+  {
+    type: 'link',
+    href: '/',
+    liClass: 'wallet-nav-li',
+    icon: 'icon-wallet',
+    displayText: 'Wallets'
+  },
+  {
+    type: 'link',
+    href: '/send-from',
+    liClass: 'send-nav-li',
+    icon: 'icon-arrow-up',
+    displayText: 'Send'
+  },
+  {
+    type: 'peerInfo',
+    liClass: 'block-info dapp-flex-item',
+    firstIcon: 'icon-feed',
+    firstText: 'peers',
+    firstClass: '',
+    secondIcon: 'icon-layers',
+    secondText: 'since last block',
+    secondClass: 'hide-on-small'
+  },
+  {
+    type: 'link',
+    href: '/contracts',
+    liClass: 'contracts-nav-li',
+    icon: 'icon-docs',
+    displayText: 'Contracts'
+  },
+  {
+    type: 'balanceInfo',
+    liClass: 'balance-nav-li wallet-balance',
+    firstText: 'Balance',
+    firstClass: 'account-balance',
+    secondText: 'ETHER'
+  }
+];
+
+
 export const AccountPageHeader = [
   {text: "Accounts", strong: true},
   {text: " ", strong: false},
@@ -27,7 +69,7 @@ export const DefaultAccountList = [
     title: 'Wallet Contracts',
     redirect: true,
     link: 'account/new',
-    buttonClass: 'wallet-box create ',
+    buttonClass: 'wallet-box create',
     buttonDescription: 'ADD WALLET CONTRACt',
     contractDescription:
       'These contracts are stored on the blockchain and can hold and secure Ether. They can have multiple accounts as owners and keep a full log of all transactions.'
