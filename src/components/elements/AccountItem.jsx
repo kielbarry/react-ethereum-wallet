@@ -10,7 +10,7 @@ export const AccountItem = ({ field }) => {
         <span className="dapp-identicon dapp-small"
         title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
         />
-        <img className="identicon-pixel" src={ AccountURL } />
+        <img className="identicon-pixel" src={ AccountURL } alt="" />
 
         <ul className="token-list">
                     

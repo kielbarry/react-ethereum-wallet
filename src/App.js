@@ -2,9 +2,13 @@
 // modules
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Provider } from  'react-redux';
+import { Provider, connect } from  'react-redux';
+import Web3 from 'web3';
 
 import store from './store/store.js';
+
+// actions
+import Actions  from './actions/actions.js';
 
 // views
 import AccountView from './components/views/account.js';
@@ -27,12 +31,53 @@ class App extends Component {
 
     // var cn = require('classnames');
 
+
+    // wallet.app.texts.testnetExplain
+
+    // Set provider
+    /*global web3*/
+    /*eslint no-undef: "error"*/
+  if (typeof web3 === undefined) {
+    web3 = new Web3('ws://localhost:8546');
+   // web3 = new Web3(web3.currentProvider);
+  } else {
+    // web3 = new Web3('ws://localhost:8546');
+    web3 = new Web3(web3.currentProvider);
+  }
+
+  // web3.eth.isSyncing().then(resp => console.log(resp))
+
+  console.log(web3)
+  console.log(this.state)
+
+  // web3.eth.net.getNetworkType()
+  // .then(console.log);
+  // let blockheader = web3.eth.subscribe('newBlockHeaders')
+  // console.log(blockheader)
+
+
     this.state = {
       displayAlertMessage: false,
       alertKey: 'alert_20171104-hidden',
       peerCountIntervalId: null
     };
   }
+
+
+
+
+
+  componentDidMount(){
+    // this.props.dispatch(updateConnectedNetwork())
+  }
+
+
+  componentWillReceiveProps(props) {
+    console.log("here are the new props?", props)
+    console.log("here are the new props?", this.props)
+  }
+
+
 
   toggleAlertMessage(e) {
     this.state['displayAlertMessage']
@@ -71,6 +116,10 @@ class App extends Component {
       </Provider>
     );
   }
+}
+
+const mapStateToProps = state => {
+  
 }
 
 export default App;

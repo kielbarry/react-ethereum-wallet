@@ -1,9 +1,30 @@
 import React, { Component } from 'react';
 import keyIndex from 'react-key-index';
+import { connect } from 'react-redux';
+
+import { updateCurrency } from '../../actions/actions.js';
 
 import '../../stylesheets/mergedstyles.css';
 
 class SelectableUnit extends Component {
+
+
+  constructor(props) {
+    super(props);
+    this.state = { CurrencyUnit : 'ETHER' };
+    this.unitSelected = this.unitSelected.bind(this);
+  }
+
+  unitSelected(e) {
+    // this.setState({
+    //   CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()
+    // });
+    const newUnit = {CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()}
+    this.props.updateCurrency(newUnit)
+    // this.props.updateCurrency(this.state)
+  }
+
+
   render() {
     /**
 		The available units
@@ -52,7 +73,7 @@ class SelectableUnit extends Component {
             const v = s.value;
             return (
               <li key={s._textId}>
-                <button key={s._valueId} data-value={v}>
+                <button key={s._valueId} data-value={v} onClick={ this.unitSelected }>
                   {t}
                 </button>
               </li>
@@ -64,4 +85,4 @@ class SelectableUnit extends Component {
   }
 }
 
-export default SelectableUnit;
+export default connect(null, { updateCurrency })(SelectableUnit);
