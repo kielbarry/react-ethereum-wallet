@@ -63,20 +63,9 @@ class App extends Component {
     };
   }
 
-
-
-
-
   componentDidMount(){
     // this.props.dispatch(updateConnectedNetwork())
   }
-
-
-  componentWillReceiveProps(props) {
-    console.log("here are the new props?", props)
-    console.log("here are the new props?", this.props)
-  }
-
 
 
   toggleAlertMessage(e) {
@@ -116,10 +105,6 @@ class App extends Component {
       </Provider>
     );
   }
-}
-
-const mapStateToProps = state => {
-  
 }
 
 export default App;
