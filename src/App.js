@@ -2,13 +2,13 @@
 // modules
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Provider, connect } from  'react-redux';
+// import { Provider, connect } from  'react-redux';
 import Web3 from 'web3';
 
-import store from './store/store.js';
+// import store from './store/store.js';
 
-// actions
-import Actions  from './actions/actions.js';
+// // actions
+// import Actions  from './actions/actions.js';
 
 // views
 import AccountView from './components/views/account.js';
@@ -37,18 +37,16 @@ class App extends Component {
     // Set provider
     /*global web3*/
     /*eslint no-undef: "error"*/
-  if (typeof web3 === undefined) {
-    web3 = new Web3('ws://localhost:8546');
-   // web3 = new Web3(web3.currentProvider);
-  } else {
-    // web3 = new Web3('ws://localhost:8546');
-    web3 = new Web3(web3.currentProvider);
-  }
+  // if (typeof web3 === undefined) {
+  //   web3 = new Web3('ws://localhost:8546');
+  //  // web3 = new Web3(web3.currentProvider);
+  // } else {
+  //   // web3 = new Web3('ws://localhost:8546');
+  //   web3 = new Web3(web3.currentProvider);
+  // }
 
   // web3.eth.isSyncing().then(resp => console.log(resp))
 
-  console.log(web3)
-  console.log(this.state)
 
   // web3.eth.net.getNetworkType()
   // .then(console.log);
@@ -61,6 +59,11 @@ class App extends Component {
       alertKey: 'alert_20171104-hidden',
       peerCountIntervalId: null
     };
+
+
+      console.log("web3 main app.js", web3)
+      console.log("this.state main app.js", this.state)
+    
   }
 
   componentDidMount(){
@@ -76,33 +79,31 @@ class App extends Component {
 
   render() {
     return (
-      <Provider store={store}>
-        <div>
-          <div className="App">
-            <NavBar />
-            <div className="dapp-flex-content">
-              <main className="dapp-content">
-                <BrowserRouter>
-                  <div>
-                    <Route exact path="/" component={AccountView} />
-                    <Route exact path="/send-from" component={SendContractForm} />
-                    <Route exact path="/contracts" component={ContractsView} />
-                  </div>
-                </BrowserRouter>
+      <div>
+        <div className="App">
+          <NavBar />
+          <div className="dapp-flex-content">
+            <main className="dapp-content">
+              <BrowserRouter>
+                <div>
+                  <Route exact path="/" component={AccountView} />
+                  <Route exact path="/send-from" component={SendContractForm} />
+                  <Route exact path="/contracts" component={ContractsView} />
+                </div>
+              </BrowserRouter>
 
-                <MistAlert
-                  validStyles={this.state.displayAlertMessage}
-                  onClick={() => this.toggleAlertMessage()}
-                />
-                <MistAlertBubble
-                  validStyles={this.state.displayAlertMessage}
-                  onClick={() => this.toggleAlertMessage()}
-                />
-              </main>
-            </div>
+              <MistAlert
+                validStyles={this.state.displayAlertMessage}
+                onClick={() => this.toggleAlertMessage()}
+              />
+              <MistAlertBubble
+                validStyles={this.state.displayAlertMessage}
+                onClick={() => this.toggleAlertMessage()}
+              />
+            </main>
           </div>
         </div>
-      </Provider>
+      </div>
     );
   }
 }

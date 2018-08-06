@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import AddForm from '../AddForm.jsx';
 
-import Modal from './modals/WatchItem.jsx';
+// import Modal from './modals/WatchItem.jsx';
 
 import PageHeader from '../elements/PageHeaders.jsx';
 import { ContractPageHeader, DefaultContractList } from '../../constants/FieldConstants.jsx';

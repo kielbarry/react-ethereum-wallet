@@ -2,7 +2,12 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers/reducers';
 
-const initialState = {};
+const initialState = {
+      displayAlertMessage: false,
+      alertKey: 'alert_20171104-hidden',
+      peerCountIntervalId: null,
+      currency: 'ETHER',
+    };
 
 const middlewares = [thunk];
 

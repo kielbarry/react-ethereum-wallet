@@ -14,26 +14,30 @@ const SwitchHeader = ({ field, i }) => {
 };
 
 class NavBar extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   // var cn = require('classnames');
-  //   this.state = {
-  //     totalBalance: 0.0
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = this.props;
+    // var cn = require('classnames');
+    // this.state = {
+    //   totalBalance: 0.0
+    // };
+  }
 
   componentWillReceiveProps(nextProps) {
-    console.log("before", this.props)
-
-    console.log("after", this.state)
+    console.log("before props", this.props)
+    console.log("before state", this.state)
 
     if(nextProps.CurrencyUnit) {
       console.log(nextProps.CurrencyUnit)
       this.props.currency = nextProps.CurrencyUnit
     }
-    console.log("before", this.props)
 
-    console.log("after", this.state)
+      if(nextProps.currency) {
+        console.log(nextProps.currency)
+        // this.state['currency'] = nextProps.currency
+      }
+    console.log("after props", this.props)
+    console.log("after state", this.state)
 
   }
 
