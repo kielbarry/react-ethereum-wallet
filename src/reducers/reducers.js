@@ -1,10 +1,4 @@
-// import actions from '../actions/actions.js';
-
-// const initialState = {};
-
 export default function(state, action) {
-	console.log("state in reducer", state)
-	console.log("action in reducer", action)
 	switch(action.type) {
 		case 'UPDATE_CURRENCY_UNIT': 
 			return {
