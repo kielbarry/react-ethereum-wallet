@@ -7,19 +7,17 @@ import { DefaultNavFields } from '../constants/FieldConstants.jsx';
 
 const SwitchHeader = ({ field, i, properties }) => {
   if (field.type === 'peerInfo') {
-    return <NetworkHeader props={properties} field={field} key={`navfield-${i}`} />;
+    return <NetworkHeader properties={properties} field={field} key={`navfield-${i}`} />;
   } else {
-    return <BalanceHeader props={properties} field={field} key={`navfield-${i}`}/>;
+    return <BalanceHeader properties={properties} field={field} key={`navfield-${i}`}/>;
   }
 };
 
 class NavBar extends Component {
-//   constructor(props) {
-//     super(props);
-// }
+
 
   render() {
-    console.log(this.props)
+
     return (
       <header className="dapp-header dapp-full-header">
         <nav>

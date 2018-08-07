@@ -8,22 +8,16 @@ import '../../stylesheets/mergedstyles.css';
 
 class SelectableUnit extends Component {
 
-
   constructor(props) {
     super(props);
-    this.state = { CurrencyUnit : 'ETHER' };
     this.unitSelected = this.unitSelected.bind(this);
   }
 
   unitSelected(e) {
-    // this.setState({
-    //   CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()
-    // });
     const newUnit = {CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()}
     this.props.updateCurrency(newUnit)
-    // this.props.updateCurrency(this.state)
-  }
 
+  }
 
   render() {
     /**
@@ -65,7 +59,7 @@ class SelectableUnit extends Component {
     var selectableUnits = keyIndex(s, 1);
 
     return (
-      <div className="simple-modal">
+      
         <ul>
           {Object.keys(selectableUnits).map((item, i) => {
             const s = selectableUnits[item];
@@ -80,7 +74,6 @@ class SelectableUnit extends Component {
             );
           })}
         </ul>
-      </div>
     );
   }
 }

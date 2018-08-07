@@ -59,11 +59,6 @@ class App extends Component {
       alertKey: 'alert_20171104-hidden',
       peerCountIntervalId: null
     };
-
-
-      console.log("web3 main app.js", web3)
-      console.log("this.state main app.js", this.state)
-    
   }
 
   componentDidMount(){

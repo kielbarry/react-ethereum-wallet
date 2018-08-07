@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import SU from './selectableUnit.js';
 
 export const HeaderField = ({ field }) => {
@@ -25,19 +25,26 @@ export const NetworkHeader = ({ field }) => {
   );
 };
 
-export const BalanceHeader = ({ field, props }) => {
-  return (
-    <li className={field.liClass}>
-      <h3>{field.firstText}</h3>
-      <span className={field.firstClass}>
-        "0.00"
-        <span className="inline-form" name="unit">
-          <button type="button" data-name="unit" data-value="ether">
-            { props.currency }
-          </button>
-          <SU />
+export class BalanceHeader extends Component {
+  render() {
+    const field = this.props.field
+    let currency = this.props.properties.currency
+
+    return (
+      <li className={field.liClass}>
+        <h3>{field.firstText}</h3>
+        <span className={field.firstClass}>
+          "0.00"
+          <span className="inline-form" name="unit">
+            <button type="button" data-name="unit" data-value="ether">
+              { currency }
+            </button>
+            <div className="simple-modal">
+              <SU />
+            </div>
+          </span>
         </span>
-      </span>
-    </li>
-  );
-};
+      </li>
+    );
+  } 
+}
