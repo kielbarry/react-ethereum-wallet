@@ -19,12 +19,12 @@ class SendContractForm extends Component {
           className="account-send-form"
           action="about:blank"
           target="dapp-form-helper-iframe"
-          autocomplete="on">
+          autoComplete="on">
           <PageHeader title={SendPageHeader} />
           <Slider />
           <TotalGas />
 
-          <button type="submit" class="dapp-block-button">Send</button>
+          <button type="submit" className="dapp-block-button">Send</button>
         </form>
 
     );
@@ -154,28 +154,7 @@ export default SendContractForm;
 //                     {{> elements_compileContract onlyByteCode=showOnlyByteTextarea codeNotExecutable=(TemplateVar.get "codeNotExecutable")}}
 //                 {{/if}}
 
-//                 {/* fee */}
-//                 <div class="row clear">
-//                     <div class="col col-7 mobile-full">
-//                         <h3>{{i18n 'wallet.send.fee'}}</h3>
-
-//                         {{> dapp_selectGasPrice gas=(TemplateVar.get "estimatedGas") gasPrice=latestBlock.gasPrice}}
-//                     </div>
-
-//                     <div class="col col-5 mobile-full send-info">
-//                         <br><br>
-//                         {{{i18n 'wallet.send.texts.sendFee' timetext=timeText}}}
-
-//                         {{#if $eq (TemplateVar.get "estimatedGas") 0}}
-//                             <p class="orange">
-//                                 <i class="icon-info"></i> {{i18n 'wallet.send.texts.cantEstimateGas'}}
-//                             </p>
-//                         {{/if}}
-//                     </div>
-
-//                     <div class="dapp-clear-fix"></div>
-//                 </div>
-
+18
 //                 <!-- Total -->
 //                 <div class="row clear total">
 //                     <div class="col col-12 mobile-full">
