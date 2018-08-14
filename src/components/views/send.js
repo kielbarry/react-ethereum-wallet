@@ -152,9 +152,7 @@ export default SendContractForm;
 
 //                 {{#if $eq (TemplateVar.get "selectedToken") "ether"}}
 //                     {{> elements_compileContract onlyByteCode=showOnlyByteTextarea codeNotExecutable=(TemplateVar.get "codeNotExecutable")}}
-//                 {{/if}}
-
-18
+//                 {{/if}}18
 //                 <!-- Total -->
 //                 <div class="row clear total">
 //                     <div class="col col-12 mobile-full">

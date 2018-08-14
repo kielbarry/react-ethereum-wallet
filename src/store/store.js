@@ -3,12 +3,18 @@ import thunk from 'redux-thunk';
 import rootReducer from '../reducers/reducers';
 
 const initialState = {
-      displayAlertMessage: false,
-      alertKey: 'alert_20171104-hidden',
-      peerCountIntervalId: null,
-      currency: 'ETHER',
-      totalBalance: '0.00',
-    };
+  displayAlertMessage: false,
+  alertKey: 'alert_20171104-hidden',
+  peerCountIntervalId: null,
+  currency: 'ETHER',
+  totalBalance: '0.00',
+  Wallets: {},
+  CustomContracts: {},
+  Transactions: {},
+  PendingConfirmations: {},
+  Events: {},
+  Tokens: {},
+};
 
 const middlewares = [thunk];
 

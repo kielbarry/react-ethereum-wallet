@@ -20,6 +20,9 @@ import NavBar from './components/navbar';
 import MistAlert from './components/mistAlert.js';
 import MistAlertBubble from './components/mistAlertBubble.js';
 
+// Modals
+import NoConnection from './components/views/modals/NoConnection.jsx';
+
 // stylesheets
 import './stylesheets/mergedstyles.css';
 import './App.css';
@@ -28,41 +31,48 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {}
 
-    // var cn = require('classnames');
-
-
-    // wallet.app.texts.testnetExplain
-
-    // Set provider
-    /*global web3*/
-    /*eslint no-undef: "error"*/
-  // if (typeof web3 === undefined) {
-  //   web3 = new Web3('ws://localhost:8546');
-  //  // web3 = new Web3(web3.currentProvider);
-  // } else {
-  //   // web3 = new Web3('ws://localhost:8546');
-  //   web3 = new Web3(web3.currentProvider);
-  // }
-
-  // web3.eth.isSyncing().then(resp => console.log(resp))
-
-
-  // web3.eth.net.getNetworkType()
-  // .then(console.log);
-  // let blockheader = web3.eth.subscribe('newBlockHeaders')
-  // console.log(blockheader)
-
-
-    this.state = {
-      displayAlertMessage: false,
-      alertKey: 'alert_20171104-hidden',
-      peerCountIntervalId: null
-    };
+    console.log(window)
+    console.log(localStorage)
+    console.log(window.location.origin)
+    console.log(this.state)
+    console.log(this.props)
   }
 
   componentDidMount(){
     // this.props.dispatch(updateConnectedNetwork())
+
+    console.log(window.web3)
+    console.log(typeof web3)
+    // console.log(web3)
+    if (window.web3 === undefined || typeof web3 === 'undefined') {
+      console.log("there isn't web3")
+     this.setState({
+        noConnection: true,
+      })
+
+     let web3 = new Web3('ws://localhost:8546');
+     web3.eth.isSyncing().then(resp => console.log(resp))
+
+     let blockheader = web3.eth.subscribe('newBlockHeaders')
+     console.log(blockheader)
+
+
+
+    } else {
+      console.log("there is web3")
+      this.setState({
+        noConnection: false,
+      })
+    }
+
+    this.setState({
+      displayAlertMessage: false,
+      alertKey: 'alert_20171104-hidden',
+      peerCountIntervalId: null
+    });
+
   }
 
 
@@ -70,6 +80,15 @@ class App extends Component {
     this.state['displayAlertMessage']
       ? this.setState({ displayAlertMessage: false })
       : this.setState({ displayAlertMessage: true });
+  }
+
+  toggleNoConnection(e) {
+     console.log(window.web3)
+    
+    console.log("in noConnection", window)
+    this.state['noConnection']
+      ? this.setState({ noConnection: false })
+      : this.setState({ noConnection: true });
   }
 
   render() {
@@ -86,6 +105,12 @@ class App extends Component {
                   <Route exact path="/contracts" component={ContractsView} />
                 </div>
               </BrowserRouter>
+
+
+              <NoConnection 
+              validStyles={this.state.noConnection}
+              onClick={() => this.toggleNoConnection()}
+              />
 
               <MistAlert
                 validStyles={this.state.displayAlertMessage}

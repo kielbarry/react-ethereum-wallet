@@ -10,7 +10,7 @@ import { Provider } from  'react-redux';
 import store from './store/store.js';
 
 // actions
-import Actions  from './actions/actions.js';
+// import Actions  from './actions/actions.js';
 
 console.log(store.getState())
 
