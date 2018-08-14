@@ -1,4 +1,4 @@
-export default function(state, action) {
+const reducers = (state = null, action) => {
 	switch(action.type) {
 		case 'UPDATE_CURRENCY_UNIT': 
 			return {
@@ -14,3 +14,5 @@ export default function(state, action) {
 			return state;
 	}
 }
+
+export default reducers

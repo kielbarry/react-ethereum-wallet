@@ -9,10 +9,18 @@ import { Provider } from  'react-redux';
 
 import store from './store/store.js';
 
+// web3Init
+import getWeb3 from './web3/getWeb3.js';
+
 // actions
 // import Actions  from './actions/actions.js';
 
-console.log(store.getState())
+getWeb3.then(results => {
+  console.log('Web3 initialized!', results)
+}).catch(() => {
+  console.log('Error in web3 initialization.')
+})
+
 
 ReactDOM.render(
 	<Provider store={store}>

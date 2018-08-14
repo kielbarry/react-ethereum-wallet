@@ -43,29 +43,29 @@ class App extends Component {
   componentDidMount(){
     // this.props.dispatch(updateConnectedNetwork())
 
-    console.log(window.web3)
-    console.log(typeof web3)
-    // console.log(web3)
-    if (window.web3 === undefined || typeof web3 === 'undefined') {
-      console.log("there isn't web3")
-     this.setState({
-        noConnection: true,
-      })
+    // console.log(window.web3)
+    // console.log(typeof web3)
+    // // console.log(web3)
+    // if (window.web3 === undefined || typeof web3 === 'undefined') {
+    //   console.log("there isn't web3")
+    //  this.setState({
+    //     noConnection: true,
+    //   })
 
-     let web3 = new Web3('ws://localhost:8546');
-     web3.eth.isSyncing().then(resp => console.log(resp))
+    //  let web3 = new Web3('ws://localhost:8546');
+    //  web3.eth.isSyncing().then(resp => console.log(resp))
 
-     let blockheader = web3.eth.subscribe('newBlockHeaders')
-     console.log(blockheader)
+    //  let blockheader = web3.eth.subscribe('newBlockHeaders')
+    //  console.log(blockheader)
 
 
 
-    } else {
-      console.log("there is web3")
-      this.setState({
-        noConnection: false,
-      })
-    }
+    // } else {
+    //   console.log("there is web3")
+    //   this.setState({
+    //     noConnection: false,
+    //   })
+    // }
 
     this.setState({
       displayAlertMessage: false,
