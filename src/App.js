@@ -2,6 +2,7 @@
 // modules
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 // import { Provider, connect } from  'react-redux';
 import Web3 from 'web3';
 
@@ -31,13 +32,11 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    // this.state = {}
 
-    console.log(window)
-    console.log(localStorage)
-    console.log(window.location.origin)
     console.log(this.state)
     console.log(this.props)
+    console.log(props)
   }
 
   componentDidMount(){
@@ -67,29 +66,38 @@ class App extends Component {
     //   })
     // }
 
-    this.setState({
-      displayAlertMessage: false,
-      alertKey: 'alert_20171104-hidden',
-      peerCountIntervalId: null
-    });
+    // this.setState({
+    //   displayAlertMessage: false,
+    //   alertKey: 'alert_20171104-hidden',
+    //   peerCountIntervalId: null
+    // });
 
   }
 
-
-  toggleAlertMessage(e) {
-    this.state['displayAlertMessage']
-      ? this.setState({ displayAlertMessage: false })
-      : this.setState({ displayAlertMessage: true });
+  componentDidUpdate(prevProps, prevState, snapShot){
+    console.log(prevProps)
+    console.log(prevState)
+    console.log(snapShot)
+    console.log(this.prevProps)
+    console.log(this.prevState)
+    console.log(this.snapShot)
   }
 
-  toggleNoConnection(e) {
-     console.log(window.web3)
+
+  // toggleAlertMessage(e) {
+  //   this.state['displayAlertMessage']
+  //     ? this.setState({ displayAlertMessage: false })
+  //     : this.setState({ displayAlertMessage: true });
+  // }
+
+  // toggleNoConnection(e) {
+  //    console.log(window.web3)
     
-    console.log("in noConnection", window)
-    this.state['noConnection']
-      ? this.setState({ noConnection: false })
-      : this.setState({ noConnection: true });
-  }
+  //   console.log("in noConnection", window)
+  //   this.state['noConnection']
+  //     ? this.setState({ noConnection: false })
+  //     : this.setState({ noConnection: true });
+  // }
 
   render() {
     return (
@@ -108,16 +116,16 @@ class App extends Component {
 
 
               <NoConnection 
-              validStyles={this.state.noConnection}
+              validStyles={this.props.noConnection}
               onClick={() => this.toggleNoConnection()}
               />
 
               <MistAlert
-                validStyles={this.state.displayAlertMessage}
+                validStyles={this.props.displayAlertMessage}
                 onClick={() => this.toggleAlertMessage()}
               />
               <MistAlertBubble
-                validStyles={this.state.displayAlertMessage}
+                validStyles={this.props.displayAlertMessage}
                 onClick={() => this.toggleAlertMessage()}
               />
             </main>
@@ -128,4 +136,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect()(App);

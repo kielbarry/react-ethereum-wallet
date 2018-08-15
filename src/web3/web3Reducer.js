@@ -1,6 +1,21 @@
+// const initialState = {
+//   web3Instance: null
+// }
+
 const initialState = {
-  web3Instance: null
-}
+  displayAlertMessage: false,
+  alertKey: 'alert_20171104-hidden',
+  peerCountIntervalId: null,
+  currency: 'ETHER',
+  totalBalance: 0.00,
+  Wallets: {},
+  CustomContracts: {},
+  Transactions: {},
+  PendingConfirmations: {},
+  Events: {},
+  Tokens: {},
+  web3Instance: null,
+};
 
 const web3Reducer = (state = initialState, action) => {
   if (action.type === 'WEB3_INITIALIZED') {

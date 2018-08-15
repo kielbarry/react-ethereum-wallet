@@ -15,9 +15,7 @@ const SwitchHeader = ({ field, i, properties }) => {
 
 class NavBar extends Component {
 
-
   render() {
-
     return (
       <header className="dapp-header dapp-full-header">
         <nav>
