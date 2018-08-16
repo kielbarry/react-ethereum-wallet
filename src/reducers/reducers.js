@@ -1,5 +1,26 @@
-const reducers = (state = null, action) => {
+const initialState = {
+  displayAlertMessage: false,
+  alertKey: 'alert_20171104-hidden',
+  peerCountIntervalId: null,
+  currency: 'ETHER',
+  totalBalance: 0.00,
+  Wallets: {},
+  CustomContracts: {},
+  Transactions: {},
+  PendingConfirmations: {},
+  Events: {},
+  Tokens: {},
+  // web3Instance: null,
+};
+
+
+const reducers = (state = initialState, action) => {
 	switch(action.type) {
+		case 'UPDATE_PEERCOUNT_UNIT': 
+			return {
+				...state,
+				peerCount: action.payload
+			}
 		case 'UPDATE_CURRENCY_UNIT': 
 			return {
 				...state,
