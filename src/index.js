@@ -17,10 +17,6 @@ import getWeb3 from './web3/getWeb3.js';
 
 getWeb3.then(results => {
   console.log('Web3 initialized!', results)
-  // console.log('Web3 initialized!', state)
-  // console.log('Web3 initialized!', props)
-  console.log('Web3 initialized!', this.state)
-  console.log('Web3 initialized!', this.props)
 }).catch(() => {
   console.log('Error in web3 initialization.')
 })

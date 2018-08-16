@@ -10,13 +10,20 @@ const initialState = {
   PendingConfirmations: {},
   Events: {},
   Tokens: {},
-  // web3Instance: null,
+  peerCount: 0,
+  blockHeader: 0,
+  timeSinceLastBlock: 0
 };
 
 
 const reducers = (state = initialState, action) => {
 	switch(action.type) {
-		case 'UPDATE_PEERCOUNT_UNIT': 
+		case 'UPDATE_BLOCKHEADER': 
+			return {
+				...state,
+				peerCount: action.payload
+			}
+		case 'UPDATE_PEERCOUNT': 
 			return {
 				...state,
 				peerCount: action.payload

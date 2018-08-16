@@ -8,8 +8,8 @@ import Web3 from 'web3';
 
 // import store from './store/store.js';
 
-// // actions
-// import Actions  from './actions/actions.js';
+// actions
+import * as Actions  from './actions/actions.js';
 
 // views
 import AccountView from './components/views/account.js';
@@ -37,9 +37,23 @@ class App extends Component {
     console.log(this.state)
     console.log(this.props)
     console.log(props)
+
+    // let hasCurrentBlock = setInterval(() => {
+    //   console.log("inside has currentblock", this.state)
+    //   console.log("inside has currentblock", this.props)
+    //   console.log("inside has currentblock", props)
+    //   // if(currentBlock != undefined) {
+    //   //   clearInterval(hasCurrentBlock);
+    //   //   setConsole();
+    //   // }
+    // }, 1000);
+
+    this.observeLatestBlocks = this.observeLatestBlocks.bind(this);
   }
 
   componentDidMount(){
+
+
     // this.props.dispatch(updateConnectedNetwork())
 
     // console.log(window.web3)
@@ -90,16 +104,35 @@ class App extends Component {
   //     : this.setState({ displayAlertMessage: true });
   // }
 
-  // toggleNoConnection(e) {
-  //    console.log(window.web3)
-    
-  //   console.log("in noConnection", window)
-  //   this.state['noConnection']
-  //     ? this.setState({ noConnection: false })
-  //     : this.setState({ noConnection: true });
-  // }
+   toggleAlertMessage(e) {
+    this.props.reducers.displayAlertMessage
+      ? this.props.reducers.displayAlertMessage = false
+      : this.props.reducers.displayAlertMessage = true
+  }
 
+
+  toggleNoConnection(e) {
+     console.log(window.web3)
+    
+    console.log("in noConnection", window)
+    this.state['noConnection']
+      ? this.setState({ noConnection: false })
+      : this.setState({ noConnection: true });
+  }
+
+  observeLatestBlocks() {
+
+    setInterval(function() {
+      console.log(this.props)
+      console.log(this.state)
+      // console.log(props)
+      // console.log(state)
+
+    }, 1000);
+
+  }
   render() {
+    // this.observeLatestBlocks();
     return (
       <div>
         <div className="App">
@@ -116,16 +149,16 @@ class App extends Component {
 
 
               <NoConnection 
-              validStyles={this.props.noConnection}
+              validStyles={this.props.reducers.noConnection}
               onClick={() => this.toggleNoConnection()}
               />
 
               <MistAlert
-                validStyles={this.props.displayAlertMessage}
+                validStyles={this.props.reducers.displayAlertMessage}
                 onClick={() => this.toggleAlertMessage()}
               />
               <MistAlertBubble
-                validStyles={this.props.displayAlertMessage}
+                validStyles={this.props.reducers.displayAlertMessage}
                 onClick={() => this.toggleAlertMessage()}
               />
             </main>
@@ -136,4 +169,8 @@ class App extends Component {
   }
 }
 
-export default connect()(App);
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps, {...Actions})(App);

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import SU from './selectableUnit.js';
+import { connect } from 'react-redux';
 
 export const HeaderField = ({ field }) => {
-
-
   return (
     <li className={field.liClass}>
       <a href={field.href}>
@@ -29,7 +28,7 @@ export class BalanceHeader extends Component {
   render() {
     const field = this.props.field
     let currency = this.props.properties.currency
-
+    
     return (
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
@@ -48,3 +47,4 @@ export class BalanceHeader extends Component {
     );
   } 
 }
+
