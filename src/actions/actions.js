@@ -1,17 +1,23 @@
 import { actionTypes } from './actionTypes.js';
 
-
-export const updatePeerCount = ({ PeerCount }) => dispatch => {
+export const setWallets = ( Wallets ) => dispatch => {
 	dispatch({
-		type: actionTypes.UPDATE_PEERCOUNT,
-		payload: PeerCount,
+		type: actionTypes.SET_WALLETS,
+		payload: Wallets,
 	})
 }
 
-export const updateBlockHeader = ({ blockHeader }) => dispatch => {
+export const updateBlockHeader = ( blockHeader ) => dispatch => {
 	dispatch({
 		type: actionTypes.UPDATE_BLOCKHEADER,
 		payload: blockHeader,
+	})
+}
+
+export const updatePeerCount = ( PeerCount ) => dispatch => {
+	dispatch({
+		type: actionTypes.UPDATE_PEERCOUNT,
+		payload: PeerCount,
 	})
 }
 

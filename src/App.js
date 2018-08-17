@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import { Provider, connect } from  'react-redux';
-import Web3 from 'web3';
+// import Web3 from 'web3';
 
 // import store from './store/store.js';
 
 // actions
 import * as Actions  from './actions/actions.js';
+
+import * as Utils from './utils/utils.js';
 
 // views
 import AccountView from './components/views/account.js';
@@ -32,21 +34,42 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    // this.state = {}
 
-    console.log(this.state)
-    console.log(this.props)
-    console.log(props)
+    let web3Returned = setInterval(()=>{ 
+      
+      if(this.props.web3 != null) {
 
-    // let hasCurrentBlock = setInterval(() => {
-    //   console.log("inside has currentblock", this.state)
-    //   console.log("inside has currentblock", this.props)
-    //   console.log("inside has currentblock", props)
-    //   // if(currentBlock != undefined) {
-    //   //   clearInterval(hasCurrentBlock);
-    //   //   setConsole();
-    //   // }
-    // }, 1000);
+        clearInterval(web3Returned)
+
+        let w3 = this.props.web3.web3Instance
+        console.log(this.props.web3.web3Instance)
+
+        w3.eth.getAccounts().then(accounts => {
+          accounts.map(acc => {
+            let account = acc;
+            w3.eth.getBalance(acc, (err, balance) => {
+              this.props.setWallets({account, balance})
+            })
+          })
+        })
+
+        w3.eth.subscribe('newBlockHeaders', (err, b) => {
+          if(!err) {
+            this.props.updateBlockHeader({
+              gasLimit: b.gasLimit,
+              gasUsed: b.gasUsed,
+              number: b.number,
+              size: b.size,
+              timestamp: b.timestamp
+            })
+
+            w3.eth.net.getPeerCount().then((peerCount) => this.props.updatePeerCount(peerCount));
+            console.log(this.props)
+
+          }
+        });
+      }
+    }, 1000);
 
     this.observeLatestBlocks = this.observeLatestBlocks.bind(this);
   }
@@ -88,33 +111,15 @@ class App extends Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState, snapShot){
-    console.log(prevProps)
-    console.log(prevState)
-    console.log(snapShot)
-    console.log(this.prevProps)
-    console.log(this.prevState)
-    console.log(this.snapShot)
-  }
 
-
-  // toggleAlertMessage(e) {
-  //   this.state['displayAlertMessage']
-  //     ? this.setState({ displayAlertMessage: false })
-  //     : this.setState({ displayAlertMessage: true });
-  // }
-
-   toggleAlertMessage(e) {
-    this.props.reducers.displayAlertMessage
-      ? this.props.reducers.displayAlertMessage = false
-      : this.props.reducers.displayAlertMessage = true
+  toggleAlertMessage(e) {
+    this.state['displayAlertMessage']
+      ? this.setState({ displayAlertMessage: false })
+      : this.setState({ displayAlertMessage: true });
   }
 
 
   toggleNoConnection(e) {
-     console.log(window.web3)
-    
-    console.log("in noConnection", window)
     this.state['noConnection']
       ? this.setState({ noConnection: false })
       : this.setState({ noConnection: true });
@@ -122,17 +127,8 @@ class App extends Component {
 
   observeLatestBlocks() {
 
-    setInterval(function() {
-      console.log(this.props)
-      console.log(this.state)
-      // console.log(props)
-      // console.log(state)
-
-    }, 1000);
-
   }
   render() {
-    // this.observeLatestBlocks();
     return (
       <div>
         <div className="App">
