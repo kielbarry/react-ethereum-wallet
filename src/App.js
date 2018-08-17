@@ -41,19 +41,24 @@ class App extends Component {
 
         clearInterval(web3Returned)
 
-        let w3 = this.props.web3.web3Instance
+        let web3 = this.props.web3.web3Instance
         console.log(this.props.web3.web3Instance)
 
-        w3.eth.getAccounts().then(accounts => {
+
+        Utils.checkNetwork(web3, this.props.updateConnectedNetwork)
+        this.props.updateProvider(Utils.nameProvider(web3.currentProvider))
+
+
+        web3.eth.getAccounts().then(accounts => {
           accounts.map(acc => {
             let account = acc;
-            w3.eth.getBalance(acc, (err, balance) => {
+            web3.eth.getBalance(acc, (err, balance) => {
               this.props.setWallets({account, balance})
             })
           })
         })
 
-        w3.eth.subscribe('newBlockHeaders', (err, b) => {
+        web3.eth.subscribe('newBlockHeaders', (err, b) => {
           if(!err) {
             this.props.updateBlockHeader({
               gasLimit: b.gasLimit,
@@ -63,9 +68,7 @@ class App extends Component {
               timestamp: b.timestamp
             })
 
-            w3.eth.net.getPeerCount().then((peerCount) => this.props.updatePeerCount(peerCount));
-            console.log(this.props)
-
+            web3.eth.net.getPeerCount().then((peerCount) => this.props.updatePeerCount(peerCount));
           }
         });
       }

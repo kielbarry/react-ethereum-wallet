@@ -7,6 +7,13 @@ export const setWallets = ( Wallets ) => dispatch => {
 	})
 }
 
+export const updateProvider = ( provider ) => dispatch => {
+	dispatch({
+		type: actionTypes.UPDATE_PROVIDER,
+		payload: provider,
+	})
+}
+
 export const updateBlockHeader = ( blockHeader ) => dispatch => {
 	dispatch({
 		type: actionTypes.UPDATE_BLOCKHEADER,
@@ -28,16 +35,10 @@ export const updateCurrency = ({ CurrencyUnit }) => dispatch => {
 	})
 }
 
-export function updateConnectedNetwork() {
-
-	return window.web3.eth.net.getNetworkType().then(network => {
-		return {
-			type: 'UPDATE_CONNECTED_NETWORK',
-			payload: network
-		}
-	});
-
-  // return {
-  //   type: actionTypes.UPDATE_CONNECTED_NETWORK;
-  // };
+export const updateConnectedNetwork = ( network ) => dispatch => {
+	dispatch({
+		type: 'UPDATE_CONNECTED_NETWORK',
+		payload: network
+	})
 }
+

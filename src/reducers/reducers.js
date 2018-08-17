@@ -12,18 +12,23 @@ const initialState = {
   Tokens: {},
   peerCount: 0,
   blockHeader: 0,
-  timeSinceLastBlock: 0
+  timeSinceLastBlock: 0,
+  network: '',
+  provider: '',
 };
 
 const reducers = (state = initialState, action) => {
 	switch(action.type) {
 		case 'SET_WALLETS': 
-			console.log(state.Wallets)
-			console.log(...state.Wallets)
 			return {
 				...state,
 				Wallets: Object.assign({}, ...state.Wallets, {[action.payload.account]: action.payload.balance})
 			}
+		case 'UPDATE_PROVIDER':
+		return {
+			...state,
+			provider: action.payload
+		}
 		case 'UPDATE_BLOCKHEADER': 
 			return {
 				...state,
