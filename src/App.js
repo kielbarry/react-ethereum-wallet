@@ -48,29 +48,9 @@ class App extends Component {
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork)
         this.props.updateProvider(Utils.nameProvider(web3.currentProvider))
 
+        Utils.getAccounts(web3, this.props.setWallets)
+        Utils.getNewBlocks(web3, this.props.updateBlockHeader, this.props.updatePeerCount())
 
-        web3.eth.getAccounts().then(accounts => {
-          accounts.map(acc => {
-            let account = acc;
-            web3.eth.getBalance(acc, (err, balance) => {
-              this.props.setWallets({account, balance})
-            })
-          })
-        })
-
-        web3.eth.subscribe('newBlockHeaders', (err, b) => {
-          if(!err) {
-            this.props.updateBlockHeader({
-              gasLimit: b.gasLimit,
-              gasUsed: b.gasUsed,
-              number: b.number,
-              size: b.size,
-              timestamp: b.timestamp
-            })
-
-            web3.eth.net.getPeerCount().then((peerCount) => this.props.updatePeerCount(peerCount));
-          }
-        });
       }
     }, 1000);
 

@@ -38,3 +38,29 @@ export function nameProvider(prov) {
 			return 'unknown';
 	}
 }
+
+export function getAccounts(web3, cb) {
+	web3.eth.getAccounts().then(accounts => {
+    accounts.map(acc => {
+      let account = acc;
+      web3.eth.getBalance(acc, (err, balance) => {
+        cb({account, balance})
+      })
+    })
+  })
+}
+
+export function getNewBlocks(web3, cb1, cb2) {
+	web3.eth.subscribe('newBlockHeaders', (err, b) => {
+    if(!err) {
+      cb1({
+        gasLimit: b.gasLimit,
+        gasUsed: b.gasUsed,
+        number: b.number,
+        size: b.size,
+        timestamp: b.timestamp
+      })
+      web3.eth.net.getPeerCount().then((peerCount) => cb2(peerCount));
+    }
+  });
+}
