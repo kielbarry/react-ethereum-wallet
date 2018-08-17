@@ -44,12 +44,11 @@ class App extends Component {
         let web3 = this.props.web3.web3Instance
         console.log(this.props.web3.web3Instance)
 
+        Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
+        this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
 
-        Utils.checkNetwork(web3, this.props.updateConnectedNetwork)
-        this.props.updateProvider(Utils.nameProvider(web3.currentProvider))
-
-        Utils.getAccounts(web3, this.props.setWallets)
-        Utils.getNewBlocks(web3, this.props.updateBlockHeader, this.props.updatePeerCount())
+        Utils.getAccounts(web3, this.props.setWallets);
+        Utils.getNewBlocks(web3, this.props.updateBlockHeader, this.props.updatePeerCount);
 
       }
     }, 1000);
