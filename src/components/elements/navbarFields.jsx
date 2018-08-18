@@ -13,7 +13,21 @@ export const HeaderField = ({ field }) => {
   );
 };
 
-export const NetworkHeader = ({ field }) => {
+export const NetworkHeader = ({ properties, field }) => {
+
+  // console.log(properties.reducers.blockHeader)
+
+  // // "Connecting..."
+
+  // // ""
+
+  // let peerCount = properties.peerCount;
+  // let timeSinceLastBlock = properties.timeSinceLastBlock
+  // let blockHeader = properties.reducers.blockHeader
+
+  // console.log(peerCount, timeSinceLastBlock, blockHeader)
+
+
   return (
     <li className={field.liClass}>
       <i className={field.firstIcon} />
@@ -26,14 +40,14 @@ export const NetworkHeader = ({ field }) => {
 
 export class BalanceHeader extends Component {
   render() {
-    const field = this.props.field
-    let currency = this.props.properties.currency
-    
+    const field = this.props.field;
+    let currency = this.props.properties.currency;
+    let totalBalance = this.props.properties.totalBalance;
     return (
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
         <span className={field.firstClass}>
-          "0.00"
+          { totalBalance }
           <span className="inline-form" name="unit">
             <button type="button" data-name="unit" data-value="ether">
               { currency }

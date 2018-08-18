@@ -14,7 +14,6 @@ const SwitchHeader = ({ field, i, properties }) => {
 };
 
 class NavBar extends Component {
-
   render() {
     return (
       <header className="dapp-header dapp-full-header">
@@ -36,7 +35,12 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  currency: state.currency
+  // timeSinceLastBlock: state.reducers.timeSinceLastBlock,
+  // peerCount: state.reducers.peerCount,
+  // peerCountIntervalId: state.reducers.peerCountIntervalId,
+  // totalBalance: state.reducers.totalBalance,
+  ...state,
+  currency: state.reducers.currency,
 });
 
 export default connect(mapStateToProps)(NavBar);
