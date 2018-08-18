@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import AddForm from '../AddForm.jsx';
-
 import PageHeader from '../elements/PageHeaders.jsx';
-
-// import { AccountPageHeader, DefaultAccountList } from '../../constants/FieldConstants.jsx';
 import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
-
 import AccountItem from '../elements/AccountItem.jsx';
 
 const listItems = [
@@ -28,25 +26,59 @@ const listItems = [
 ]
 
 class AccountView extends Component {
+
+
+  constructor(props){
+    super(props)
+  }
+
+  renderAccounts() {
+    if(this.props.reducers.Wallets != undefined) {
+
+      const wallets = this.props.reducers.Wallets
+
+      // Object.keys(wallets).map(address => {
+      //   console.log(wallets[address])
+      // });
+
+      return (
+        <React.Fragment>
+          { 
+            Object.keys(wallets).map((address, i) => 
+              (
+                <AccountItem 
+                key={address} 
+                number={i+1} 
+                address={address} 
+                wallet={wallets[address]}
+                />
+              ) 
+            )
+          }
+        </React.Fragment>
+      )
+    }
+  }
+
+
   render() {
     return (
       <div className="dapp-container account-page">
 
         <PageHeader title={AccountPageHeader} />
 
-        <AccountItem />
+        { this.renderAccounts() }
+
 
         {listItems.map((field, i) => <AddForm key={`account-view-${i}`} field={field} />)}
-        {/* <div class="dapp-sticky-bar dapp-container">
-                    <h1 class="{{ensClass}}">
-                        <span>{{displayName}}</span>
-                            <button class="dapp-icon-button delete icon-trash"></button>
-                    </h1>
-	            </div>
-		        */}
+
       </div>
     );
   }
 }
 
-export default AccountView;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(AccountView);

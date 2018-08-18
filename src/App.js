@@ -38,61 +38,18 @@ class App extends Component {
     let web3Returned = setInterval(()=>{ 
       
       if(this.props.web3 != null) {
-
         clearInterval(web3Returned)
-
         let web3 = this.props.web3.web3Instance
-        console.log(this.props.web3.web3Instance)
 
+        console.log(web3)
+        
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
         this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
-
         Utils.getAccounts(web3, this.props.setWallets);
-        Utils.getNewBlocks(web3, this.props.updateBlockHeader, this.props.updatePeerCount);
-
+        Utils.getNewBlockHeaders(web3, this.props.updateBlockHeader, this.props.updatePeerCount);
       }
     }, 1000);
-
-    this.observeLatestBlocks = this.observeLatestBlocks.bind(this);
   }
-
-  componentDidMount(){
-
-
-    // this.props.dispatch(updateConnectedNetwork())
-
-    // console.log(window.web3)
-    // console.log(typeof web3)
-    // // console.log(web3)
-    // if (window.web3 === undefined || typeof web3 === 'undefined') {
-    //   console.log("there isn't web3")
-    //  this.setState({
-    //     noConnection: true,
-    //   })
-
-    //  let web3 = new Web3('ws://localhost:8546');
-    //  web3.eth.isSyncing().then(resp => console.log(resp))
-
-    //  let blockheader = web3.eth.subscribe('newBlockHeaders')
-    //  console.log(blockheader)
-
-
-
-    // } else {
-    //   console.log("there is web3")
-    //   this.setState({
-    //     noConnection: false,
-    //   })
-    // }
-
-    // this.setState({
-    //   displayAlertMessage: false,
-    //   alertKey: 'alert_20171104-hidden',
-    //   peerCountIntervalId: null
-    // });
-
-  }
-
 
   toggleAlertMessage(e) {
     this.state['displayAlertMessage']
@@ -107,9 +64,6 @@ class App extends Component {
       : this.setState({ noConnection: true });
   }
 
-  observeLatestBlocks() {
-
-  }
   render() {
     return (
       <div>
@@ -124,7 +78,6 @@ class App extends Component {
                   <Route exact path="/contracts" component={ContractsView} />
                 </div>
               </BrowserRouter>
-
 
               <NoConnection 
               validStyles={this.props.reducers.noConnection}

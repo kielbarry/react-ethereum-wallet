@@ -22,7 +22,7 @@ const reducers = (state = initialState, action) => {
 		case 'SET_WALLETS': 
 			return {
 				...state,
-				Wallets: Object.assign({}, ...state.Wallets, {[action.payload.account]: action.payload.balance})
+				Wallets: Object.assign({}, state.Wallets, {[action.payload.account]: action.payload.balance})
 			}
 		case 'UPDATE_PROVIDER':
 		return {

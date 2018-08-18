@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const AccountItem = ({ field }) => {
+
+export const AccountItem = ({ number, address, wallet }) => {
   
   const AccountURL= "TODO"
-
   return (
     <React.Fragment>
       <a className="wallet-box" href={ AccountURL }>
@@ -17,16 +17,14 @@ export const AccountItem = ({ field }) => {
         </ul>
         <h3 className="not-ens-name">
           <i className="icon-key" title="Account"></i>
-          Account 1
+          Account { number }
         </h3>
 
         <span className="account-balance">
-        0.00
-            <span>
-                ether
-            </span>
+            { wallet }
+            <span> ether </span>
         </span>
-        <span className="account-id">0x4decf83B51EC35775619F3aa446959eCB9236c62</span>
+        <span className="account-id">{ address }</span>
         </a>
     </React.Fragment>
   );

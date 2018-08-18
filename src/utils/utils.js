@@ -1,10 +1,3 @@
-export function getPeerCount(w3) {
-	console.log("inside", w3)
-  w3.eth.net.getPeerCount().then((peerCount) => {
-    console.log(peerCount)
-  });
-};
-
 export async function checkNetwork(web3, cb) {
   return web3.eth.getBlock(0).then((block) => {
     switch (block.hash) {
@@ -43,24 +36,14 @@ export function getAccounts(web3, cb) {
 	web3.eth.getAccounts().then(accounts => {
     accounts.map(acc => {
       let account = acc;
-      web3.eth.getBalance(acc, (err, balance) => {
-        cb({account, balance})
-      })
+      web3.eth.getBalance(acc, (err, balance) => cb({account, balance}))
     })
   })
 }
 
-export function getNewBlocks(web3, cb1, cb2) {
+export function getNewBlockHeaders(web3, cb1, cb2) {
 	web3.eth.subscribe('newBlockHeaders', (err, b) => {
-    if(!err) {
-      cb1({
-        gasLimit: b.gasLimit,
-        gasUsed: b.gasUsed,
-        number: b.number,
-        size: b.size,
-        timestamp: b.timestamp
-      })
-      web3.eth.net.getPeerCount().then((peerCount) => cb2(peerCount));
-    }
+    if(!err) cb1({ gasLimit: b.gasLimit, gasUsed: b.gasUsed, number: b.number, size: b.size,timestamp: b.timestamp })
+    web3.eth.net.getPeerCount().then((peerCount) => cb2(peerCount));
   });
 }

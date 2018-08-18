@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SU from './selectableUnit.js';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 export const HeaderField = ({ field }) => {
   return (
