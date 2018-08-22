@@ -1,5 +1,12 @@
 import { actionTypes } from './actionTypes.js';
 
+export const selectedWallet = ( wallet ) => dispatch => {
+	dispatch({
+		type: actionTypes.SET_SELECTED_WALLET,
+		payload: wallet,
+	})
+}
+
 export const setWallets = ( Wallets ) => dispatch => {
 	dispatch({
 		type: actionTypes.SET_WALLETS,

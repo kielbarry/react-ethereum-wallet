@@ -35,11 +35,12 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  // timeSinceLastBlock: state.reducers.timeSinceLastBlock,
-  // peerCount: state.reducers.peerCount,
-  // peerCountIntervalId: state.reducers.peerCountIntervalId,
-  // totalBalance: state.reducers.totalBalance,
-  ...state,
+  timeSinceLastBlock: state.reducers.timeSinceLastBlock,
+  peerCount: state.reducers.peerCount,
+  peerCountIntervalId: state.reducers.peerCountIntervalId,
+  totalBalance: state.reducers.totalBalance,
+  blockHeader: state.reducers.blockHeader,
+  // ...state,
   currency: state.reducers.currency,
 });
 

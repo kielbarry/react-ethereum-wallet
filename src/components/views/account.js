@@ -26,18 +26,20 @@ const listItems = [
 ]
 
 class AccountView extends Component {
-  constructor(props){
-    super(props)
-  }
 
   renderAccounts() {
-    if(this.props.reducers.Wallets != undefined) {
+    if(this.props.reducers.Wallets !== undefined) {
       const wallets = this.props.reducers.Wallets
       return (
         <React.Fragment>
           { 
             Object.keys(wallets).map((address, i) => 
-              (<AccountItem key={address} number={i+1} address={address} wallet={wallets[address]}/>) 
+              (<AccountItem 
+                key={address} 
+                number={i+1} 
+                address={address} 
+                wallet={wallets[address]}
+                props={this.props}/>) 
             )
           }
         </React.Fragment>
@@ -49,9 +51,7 @@ class AccountView extends Component {
     return (
       <div className="dapp-container account-page">
         <PageHeader title={AccountPageHeader} />
-        { 
-          this.renderAccounts() 
-        }
+        {  this.renderAccounts()  }
         {
           listItems.map((field, i) => <AddForm key={`account-view-${i}`} field={field} />)
         }

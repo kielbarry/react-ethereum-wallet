@@ -1,40 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const RedirectButton = ({ f }) => {
+import * as Utils from '../utils/utils.js';
+
+const RedirectButton = ({ field }) => {
   return (
-    <a href={f.link} className={f.buttonClass}>
+    <a href={field.link} className={field.buttonClass}>
       <div className="account-pattern">+</div>
-      <h3>{f.buttonDescription}</h3>
+      <h3>{field.buttonDescription}</h3>
     </a>
   );
 };
 
-const ActionButton = ({ f }) => {
-  return (
-    <React.Fragment>
-      <h2>{f.title}</h2>
-      <p>{f.contractDescription}</p>
-      <div className="dapp-clear-fix" />
-      <div className="wallet-box-list" />
-      <button className={f.buttonClass}>
-        <div className="account-pattern">+</div>
-        <h3>{f.buttonDescription}</h3>
-      </button>
-      <div className="dapp-clear-fix" />
-    </React.Fragment>
-  );
+export class ActionButton extends Component {
+  render() {
+    let field = this.props.field
+    return (
+      <React.Fragment>
+        <h2>{field.title}</h2>
+        <p>{field.contractDescription}</p>
+        <div className="dapp-clear-fix" />
+        <div className="wallet-box-list" />
+        <button className={field.buttonClass}>
+          <div className="account-pattern">+</div>
+          <h3>{field.buttonDescription}</h3>
+        </button>
+        <div className="dapp-clear-fix" />
+      </React.Fragment>
+    );
+  }
 };
 
-const AddForm = ({ field }) => {
+export class AddForm extends Component {
+
+render() {
+  let field = this.props.field
+
+  // console.log(Utils.createNewAccount)
+  // console.log(this.props.field)
+
   return (
     <React.Fragment>
       {field.redirect ? (
-        <RedirectButton f={field} />
+        <RedirectButton field={field} />
       ) : (
-        <ActionButton f={field} />
+        <ActionButton field={field} />
       )}
     </React.Fragment>
   );
+}
 };
 
-export default AddForm;
+
+const mapStateToProps = state => ({
+  ...state
+});
+
+export default connect(mapStateToProps)(AddForm);

@@ -1,33 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
 
+import { selectedWallet } from '../../actions/actions.js';
 
-export const AccountItem = ({ number, address, wallet }) => {
+class AccountItem extends Component {
   
-  const AccountURL= "TODO"
-  return (
-    <React.Fragment>
-      <a className="wallet-box" href={ AccountURL }>
-        <span className="dapp-identicon dapp-small"
-        title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
-        />
-        <img className="identicon-pixel" src={ AccountURL } alt="" />
+  constructor(props) {
+    super(props);
+    this.openAccountPage = this.openAccountPage.bind(this);
+  }
 
-        <ul className="token-list">
-                    
-        </ul>
-        <h3 className="not-ens-name">
-          <i className="icon-key" title="Account"></i>
-          Account { number }
-        </h3>
+  openAccountPage(w){
+      this.props.selectedWallet({
+        address: this.props.address,
+        number: this.props.number,
+        wallet: this.props.wallet,
+        currency: this.props.props.reducers.currency,
+      })
+    }
 
-        <span className="account-balance">
-            { wallet }
-            <span> ether </span>
-        </span>
-        <span className="account-id">{ address }</span>
-        </a>
-    </React.Fragment>
-  );
+
+  render() {
+    let address = this.props.address;
+    let number = this.props.number;
+    let wallet = this.props.wallet;
+    let currency = this.props.props.reducers.currency
+    const AccountURL = "/account/" + address;
+
+    return (
+      <React.Fragment>
+        <Link to={{ pathname: AccountURL}} 
+        onClick={this.openAccountPage} className="wallet-box">
+            <span className="dapp-identicon dapp-small"
+            title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
+            />
+            <img className="identicon-pixel" src={ AccountURL } alt="" />
+
+            <ul className="token-list">
+                        
+            </ul>
+            <h3 className="not-ens-name">
+              <i className="icon-key" title="Account"></i>
+              Account { number }
+            </h3>
+
+            <span className="account-balance">
+                { wallet }
+                <span> ether </span>
+            </span>
+            <span className="account-id">{ address }</span>
+        </Link>
+      </React.Fragment>
+    );
+  }
 };
 
-export default AccountItem;
+export default connect(null, { selectedWallet })(AccountItem);

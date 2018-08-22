@@ -3,18 +3,15 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { Provider, connect } from  'react-redux';
-// import Web3 from 'web3';
 
-// import store from './store/store.js';
 
 // actions
 import * as Actions  from './actions/actions.js';
-
 import * as Utils from './utils/utils.js';
 
 // views
 import AccountView from './components/views/account.js';
+import SingleAccountView from './components/views/SingleAccountView.jsx';
 import ContractsView from './components/views/contracts.js';
 import SendContractForm from './components/views/send.js';
 import NavBar from './components/navbar';
@@ -29,7 +26,6 @@ import NoConnection from './components/views/modals/NoConnection.jsx';
 // stylesheets
 import './stylesheets/mergedstyles.css';
 import './App.css';
-
 
 class App extends Component {
   constructor(props) {
@@ -73,6 +69,7 @@ class App extends Component {
             <main className="dapp-content">
               <BrowserRouter>
                 <div>
+                  <Route path="/account/*" component={SingleAccountView} />
                   <Route exact path="/" component={AccountView} />
                   <Route exact path="/send-from" component={SendContractForm} />
                   <Route exact path="/contracts" component={ContractsView} />

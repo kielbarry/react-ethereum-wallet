@@ -13,29 +13,34 @@ export const HeaderField = ({ field }) => {
   );
 };
 
-export const NetworkHeader = ({ properties, field }) => {
+export class NetworkHeader extends Component {
 
-  // console.log(properties.reducers.blockHeader)
+  render() {
+    // console.log(this.props)
+    // let properties = this.props.properties
+    let field = this.props.field
+    // let peerCount, blockHeader, timeSinceLastBlock
 
-  // // "Connecting..."
+    // properties.peerCount === undefined ? peerCount = 'Connecting...' : peerCount =  properties.peerCount
 
-  // // ""
+    // // // let timeSinceLastBlock = properties.timeSinceLastBlock
+    // // // 'Waitin for blocks...'
+    // // // let blockHeader = properties.reducers.blockHeader
 
-  // let peerCount = properties.peerCount;
-  // let timeSinceLastBlock = properties.timeSinceLastBlock
-  // let blockHeader = properties.reducers.blockHeader
+    // properties.blockHeader === undefined ? blockHeader = '--' : blockHeader =  properties.blockHeader
 
-  // console.log(peerCount, timeSinceLastBlock, blockHeader)
+    // console.log(peerCount, timeSinceLastBlock, blockHeader)
 
 
-  return (
-    <li className={field.liClass}>
-      <i className={field.firstIcon} />
-      <span> {field.firstText} </span>
-      <i className={field.secondIcon} />
-      <span className={field.secondClass}>{field.secondText}</span>
-    </li>
-  );
+    return (
+      <li className={field.liClass}>
+        <i className={field.firstIcon} />
+        <span> {field.firstText} </span>
+        <i className={field.secondIcon} />
+        <span className={field.secondClass}>{field.secondText}</span>
+      </li>    
+    );
+  }
 };
 
 export class BalanceHeader extends Component {

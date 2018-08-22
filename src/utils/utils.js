@@ -32,6 +32,12 @@ export function nameProvider(prov) {
 	}
 }
 
+export function createNewAccount(web3, cb) {
+
+  web3.personal.newAccount()
+}
+
+
 export function getAccounts(web3, cb) {
 	web3.eth.getAccounts().then(accounts => {
     accounts.map(acc => {

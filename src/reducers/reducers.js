@@ -19,6 +19,12 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
 	switch(action.type) {
+		case  'SET_SELECTED_WALLET': {
+			return {
+				...state,
+				selectedWallet: action.payload
+			}
+		}
 		case 'SET_WALLETS': 
 			return {
 				...state,
