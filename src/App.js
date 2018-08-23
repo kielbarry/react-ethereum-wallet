@@ -18,7 +18,7 @@ import SendContractForm from './components/views/send.js';
 import NavBar from './components/navbar';
 
 // components
-import MistAlert from './components/mistAlert.js';
+// import MistAlert from './components/mistAlert.js';
 import MistAlertBubble from './components/mistAlertBubble.js';
 
 // Modals
@@ -50,13 +50,6 @@ class App extends Component {
     window.addEventListener('focus',(e) => document.body.classList.remove('app-blur'));
   }
 
-  toggleAlertMessage(e) {
-    this.state['displayAlertMessage']
-      ? this.setState({ displayAlertMessage: false })
-      : this.setState({ displayAlertMessage: true });
-  }
-
-
   toggleNoConnection(e) {
     this.state['noConnection']
       ? this.setState({ noConnection: false })
@@ -83,14 +76,8 @@ class App extends Component {
                 onClick={() => this.toggleNoConnection()}
                 />
 
-                <MistAlert
-                  validStyles={this.props.reducers.displayAlertMessage}
-                  onClick={() => this.toggleAlertMessage()}
-                />
-                <MistAlertBubble
-                  validStyles={this.props.reducers.displayAlertMessage}
-                  onClick={() => this.toggleAlertMessage()}
-                />
+                <MistAlertBubble />
+                
               </main>
             </div>
           </div>

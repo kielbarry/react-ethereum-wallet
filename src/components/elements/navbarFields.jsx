@@ -19,7 +19,7 @@ export class NetworkHeader extends Component {
 
   render() {
 
-    console.log("in NetworkHeader",this.props)
+    // console.log("in NetworkHeader",this.props)
     let properties = this.props.properties
     let field = this.props.field
     let peerCount, blockHeader, timeSinceLastBlock
@@ -32,7 +32,7 @@ export class NetworkHeader extends Component {
 
     properties.blockHeader === undefined ? blockHeader = '--' : blockHeader =  properties.blockHeader
 
-    console.log(peerCount, timeSinceLastBlock, blockHeader)
+    // console.log(peerCount, timeSinceLastBlock, blockHeader)
 
 
     return (
