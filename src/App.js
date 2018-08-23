@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import cn from 'classnames';
+// import cn from 'classnames';
 
 
 // actions
@@ -45,6 +45,10 @@ class App extends Component {
     }, 1000);
   }
 
+  componentDidMount(){
+    window.addEventListener('blur', (e) => document.body.classList.add('app-blur'));
+    window.addEventListener('focus',(e) => document.body.classList.remove('app-blur'));
+  }
 
   toggleAlertMessage(e) {
     this.state['displayAlertMessage']
@@ -64,7 +68,7 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <div className="App">
-            <NavBar ref={this.nav} />
+            <NavBar />
             <div className="dapp-flex-content">
               <main className="dapp-content">
                 <div>
