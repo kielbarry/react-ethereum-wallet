@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SU from './selectableUnit.js';
 import { Link } from 'react-router-dom';
 
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 export const HeaderField = ({ field }) => {
   return (
@@ -18,27 +18,30 @@ export const HeaderField = ({ field }) => {
 export class NetworkHeader extends Component {
 
   render() {
-    // console.log(this.props)
-    // let properties = this.props.properties
+
+    console.log("in NetworkHeader",this.props)
+    let properties = this.props.properties
     let field = this.props.field
-    // let peerCount, blockHeader, timeSinceLastBlock
+    let peerCount, blockHeader, timeSinceLastBlock
 
-    // properties.peerCount === undefined ? peerCount = 'Connecting...' : peerCount =  properties.peerCount
+    properties.peerCount === undefined ? peerCount = 'Connecting...' : peerCount =  properties.peerCount
 
-    // // // let timeSinceLastBlock = properties.timeSinceLastBlock
-    // // // 'Waitin for blocks...'
-    // // // let blockHeader = properties.reducers.blockHeader
+    // // let timeSinceLastBlock = properties.timeSinceLastBlock
+    // // 'Waitin for blocks...'
+    // // let blockHeader = properties.reducers.blockHeader
 
-    // properties.blockHeader === undefined ? blockHeader = '--' : blockHeader =  properties.blockHeader
+    properties.blockHeader === undefined ? blockHeader = '--' : blockHeader =  properties.blockHeader
 
-    // console.log(peerCount, timeSinceLastBlock, blockHeader)
+    console.log(peerCount, timeSinceLastBlock, blockHeader)
 
 
     return (
       <li className={field.liClass}>
         <i className={field.firstIcon} />
+         {/*{ peerCount } */}
         <span> {field.firstText} </span>
         <i className={field.secondIcon} />
+        {/* { blockHeader } */}
         <span className={field.secondClass}>{field.secondText}</span>
       </li>    
     );
@@ -68,4 +71,10 @@ export class BalanceHeader extends Component {
     );
   } 
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(NetworkHeader);
 

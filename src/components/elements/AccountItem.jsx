@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { selectedWallet } from '../../actions/actions.js';
 
@@ -19,7 +19,6 @@ class AccountItem extends Component {
         currency: this.props.props.reducers.currency,
       })
     }
-
 
   render() {
     let address = this.props.address;

@@ -65,32 +65,31 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <div className="App">
-              <NavBar />
-              <div className="dapp-flex-content">
-                <main className="dapp-content">
-                  <div>
-                    <Route path="/account/*" component={SingleAccountView} />
-                    <Route exact path="/" component={AccountView} />
-                    <Route exact path="/send-from" component={SendContractForm} />
-                    <Route exact path="/contracts" component={ContractsView} />
-                  </div>
-                  
+            <NavBar />
+            <div className="dapp-flex-content">
+              <main className="dapp-content">
+                <div>
+                  <Route path="/account/*" component={SingleAccountView} />
+                  <Route exact path="/" component={AccountView} />
+                  <Route exact path="/send-from" component={SendContractForm} />
+                  <Route exact path="/contracts" component={ContractsView} />
+                </div>
+                
+                <NoConnection 
+                validStyles={this.props.reducers.noConnection}
+                onClick={() => this.toggleNoConnection()}
+                />
 
-                  <NoConnection 
-                  validStyles={this.props.reducers.noConnection}
-                  onClick={() => this.toggleNoConnection()}
-                  />
-
-                  <MistAlert
-                    validStyles={this.props.reducers.displayAlertMessage}
-                    onClick={() => this.toggleAlertMessage()}
-                  />
-                  <MistAlertBubble
-                    validStyles={this.props.reducers.displayAlertMessage}
-                    onClick={() => this.toggleAlertMessage()}
-                  />
-                </main>
-              </div>
+                <MistAlert
+                  validStyles={this.props.reducers.displayAlertMessage}
+                  onClick={() => this.toggleAlertMessage()}
+                />
+                <MistAlertBubble
+                  validStyles={this.props.reducers.displayAlertMessage}
+                  onClick={() => this.toggleAlertMessage()}
+                />
+              </main>
+            </div>
           </div>
         </div>
       </BrowserRouter>

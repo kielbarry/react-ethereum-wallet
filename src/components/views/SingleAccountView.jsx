@@ -7,23 +7,35 @@ export class SingleAccountView extends Component {
 
 	render(){
 		let sw
-		if(!this.props.reducers.selectedWallet === undefined) {
-			sw = this.props.reducers.selectedWallet
-		} else {
+		if(this.props.reducers.selectedWallet === undefined) {
+			console.log(this.props.reducers.selectedWallet)
 			sw = {
 				address: "0x6a6964034c192ccaA8594a179dB7a98ad581E4F2",
 				number: 4,
 				wallet: "1000000000000000",
 				currency: "ETHER",
 			}
+		} else {
+			sw = this.props.reducers.selectedWallet
+			this.state = {
+				address: this.props.reducers.selectedWallet
+			}
 		}
+
+		console.log(this.props.reducers.selectedWallet )
+		console.log(sw)
+		if(!this.state.address == undefined) {
+				
+			console.log(this.state.address)
+		}
+
 		return(
 			<div className="dapp-container accounts-page">
 				<div className="dapp-sticky-bar dapp-container"></div>
 				<div className="accounts-page-summary">
 					<span className="dapp-identicon"
-	        title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
-	        />
+     			title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
+      		/>
 	        <header>
 		        <h1>
 		            <span>Account { sw.number }</span>

@@ -8,7 +8,6 @@ export class RedirectButton extends Component {
   render() {
     let field = this.props.field
     let web3 = this.props.web3
-    console.log(this.props)
     function createAccount(e){
       console.log("XXXXXXXXXXXXXXXXXXXXXX", e)
       // e.preventDefault();
@@ -16,7 +15,7 @@ export class RedirectButton extends Component {
         e.preventDefault(),
         // console.log(Utils.createNewAccount)
         console.log(web3)
-        Utils.createNewAccount(web3)
+        // Utils.createNewAccount(web3)
       }
     }
     return (
@@ -54,11 +53,8 @@ export class AddForm extends Component {
   render() {
     let field = this.props.field
     let web3
-    if(this.props.web3 != null) {
-      web3 = this.props.web3.web3Instance
-    }
 
-    console.log(web3)
+    if(this.props.web3 != null) web3 = this.props.web3.web3Instance
 
     return (
       <React.Fragment>
