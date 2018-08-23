@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// import cn from 'classnames';
 
 import '../stylesheets/navbar.css';
 import { HeaderField, NetworkHeader, BalanceHeader } from './elements/navbarFields';
@@ -13,10 +14,46 @@ const SwitchHeader = ({ field, i, properties }) => {
   }
 };
 
+
+
 class NavBar extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {small: false, sticky: false}
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    let scrollPosition = window.scrollY
+    if (scrollPosition > 150) {
+      this.setState({small: true, sticky: true})
+    } else if (scrollPosition > 48) {
+      this.setState({small: true, sticky: false})
+    } else {
+      this.setState({small: false, sticky: false})
+    }
+  };
+
   render() {
+    var cn = require('classnames');
+    var newStyles = cn({
+      'dapp-header': true,
+      'dapp-full-header': true,
+      'dapp-sticky-bar': true,
+      'dapp-small': this.state.small,
+      'sticky': this.state.sticky
+    });
+
     return (
-      <header className="dapp-header dapp-full-header">
+      <header className={newStyles}>
         <nav>
           <ul>
             {DefaultNavFields.map(

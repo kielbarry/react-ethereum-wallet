@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cn from 'classnames';
 
 
 // actions
@@ -27,18 +28,15 @@ import NoConnection from './components/views/modals/NoConnection.jsx';
 import './stylesheets/mergedstyles.css';
 import './App.css';
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
-
     let web3Returned = setInterval(()=>{ 
-      
       if(this.props.web3 != null) {
         clearInterval(web3Returned)
         let web3 = this.props.web3.web3Instance
-
-        console.log(web3)
-        
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
         this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
         Utils.getAccounts(web3, this.props.setWallets);
@@ -46,6 +44,7 @@ class App extends Component {
       }
     }, 1000);
   }
+
 
   toggleAlertMessage(e) {
     this.state['displayAlertMessage']
@@ -65,7 +64,7 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <div className="App">
-            <NavBar />
+            <NavBar ref={this.nav} />
             <div className="dapp-flex-content">
               <main className="dapp-content">
                 <div>

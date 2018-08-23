@@ -18,7 +18,7 @@ export class AccountActionBar extends Component {
 			  <nav>
 			    <ul>
 			      <li>
-			        <a href={ transferEtherAddress }title={ address }>
+			        <a href={ transferEtherAddress } title={ address }>
 			          <i className="icon-arrow-down"></i>
 			          Transfer Ether &amp; Tokens
 			        </a>
@@ -36,7 +36,7 @@ export class AccountActionBar extends Component {
 			          View on Etherscan
 			        </a>
 			      </li>
-			      <CopyToClipboard text={address} onCopy={console.log}>
+			      <CopyToClipboard text={address}>
 				      <li>
 				        <button className="copy-to-clipboard-button">
 				          <i className="icon-docs"></i>

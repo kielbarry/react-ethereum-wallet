@@ -8,7 +8,6 @@ export class SingleAccountView extends Component {
 	render(){
 		let sw
 		if(this.props.reducers.selectedWallet === undefined) {
-			console.log(this.props.reducers.selectedWallet)
 			sw = {
 				address: "0x6a6964034c192ccaA8594a179dB7a98ad581E4F2",
 				number: 4,
@@ -20,13 +19,6 @@ export class SingleAccountView extends Component {
 			this.state = {
 				address: this.props.reducers.selectedWallet
 			}
-		}
-
-		console.log(this.props.reducers.selectedWallet )
-		console.log(sw)
-		if(!this.state.address == undefined) {
-				
-			console.log(this.state.address)
 		}
 
 		return(
