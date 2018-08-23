@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import SU from './selectableUnit.js';
+import { Link } from 'react-router-dom';
+
 // import { connect } from 'react-redux';
 
 export const HeaderField = ({ field }) => {
   return (
     <li className={field.liClass}>
-      <a href={field.href}>
+      <Link to={field.href}>
         <i className={field.icon} />
         <span>{field.displayText}</span>
-      </a>
+      </Link>
     </li>
   );
 };

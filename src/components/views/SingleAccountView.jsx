@@ -6,8 +6,17 @@ import AccountActionBar from '../elements/AccountActionBar.js';
 export class SingleAccountView extends Component {
 
 	render(){
-		let sw = this.props.reducers.selectedWallet
-		console.log(sw)
+		let sw
+		if(!this.props.reducers.selectedWallet === undefined) {
+			sw = this.props.reducers.selectedWallet
+		} else {
+			sw = {
+				address: "0x6a6964034c192ccaA8594a179dB7a98ad581E4F2",
+				number: 4,
+				wallet: "1000000000000000",
+				currency: "ETHER",
+			}
+		}
 		return(
 			<div className="dapp-container accounts-page">
 				<div className="dapp-sticky-bar dapp-container"></div>

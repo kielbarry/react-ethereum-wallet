@@ -3,13 +3,31 @@ import { connect } from 'react-redux';
 
 import * as Utils from '../utils/utils.js';
 
-const RedirectButton = ({ field }) => {
-  return (
-    <a href={field.link} className={field.buttonClass}>
-      <div className="account-pattern">+</div>
-      <h3>{field.buttonDescription}</h3>
-    </a>
-  );
+export class RedirectButton extends Component {
+
+  render() {
+    let field = this.props.field
+    let web3 = this.props.web3
+    console.log(this.props)
+    function createAccount(e){
+      console.log("XXXXXXXXXXXXXXXXXXXXXX", e)
+      // e.preventDefault();
+      if(field.buttonDescription === 'ADD ACCOUNT') {
+        e.preventDefault(),
+        // console.log(Utils.createNewAccount)
+        console.log(web3)
+        Utils.createNewAccount(web3)
+      }
+    }
+    return (
+      <a href={field.link} 
+      className={field.buttonClass}
+      onClick={createAccount}>
+        <div className="account-pattern">+</div>
+        <h3>{field.buttonDescription}</h3>
+      </a>
+    );
+  }
 };
 
 export class ActionButton extends Component {
@@ -33,22 +51,25 @@ export class ActionButton extends Component {
 
 export class AddForm extends Component {
 
-render() {
-  let field = this.props.field
+  render() {
+    let field = this.props.field
+    let web3
+    if(this.props.web3 != null) {
+      web3 = this.props.web3.web3Instance
+    }
 
-  // console.log(Utils.createNewAccount)
-  // console.log(this.props.field)
+    console.log(web3)
 
-  return (
-    <React.Fragment>
-      {field.redirect ? (
-        <RedirectButton field={field} />
-      ) : (
-        <ActionButton field={field} />
-      )}
-    </React.Fragment>
-  );
-}
+    return (
+      <React.Fragment>
+        {field.redirect ? (
+          <RedirectButton field={field} web3={web3}/>
+        ) : (
+          <ActionButton field={field} />
+        )}
+      </React.Fragment>
+    );
+  }
 };
 
 

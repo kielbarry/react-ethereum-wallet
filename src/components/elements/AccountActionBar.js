@@ -40,7 +40,7 @@ export class AccountActionBar extends Component {
 			  <nav>
 			    <ul>
 			      <li>
-			        <a href="/send/0xa7785988ADDb4457D5417691b88d2D99Dc067284" title={ this.props.address }>
+			        <a href="/send/0x6a6964034c192ccaA8594a179dB7a98ad581E4F2" title={ this.props.address }>
 			          <i className="icon-arrow-down"></i>
 			          Transfer Ether &amp; Tokens
 			        </a>
@@ -53,7 +53,7 @@ export class AccountActionBar extends Component {
 			          </a>
 			        </li>
 			      <li>
-			        <a href="https://etherscan.io/address/0xa7785988addb4457d5417691b88d2d99dc067284" target="_blank">
+			        <a href="https://etherscan.io/address/0x6a6964034c192ccaA8594a179dB7a98ad581E4F2" target="_blank">
 			          <i className="icon-info"></i>
 			          View on Etherscan
 			        </a>

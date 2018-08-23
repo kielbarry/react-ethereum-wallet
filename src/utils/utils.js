@@ -34,7 +34,13 @@ export function nameProvider(prov) {
 
 export function createNewAccount(web3, cb) {
 
-  web3.personal.newAccount()
+  alert("https://github.com/ethereum/web3.js/issues/494")
+  alert("https://github.com/ethereum/go-ethereum/issues/2723")
+  // web3.eth.personal.newAccount(function(err, resp){
+  //   console.log(err)
+  //   console.log(resp)
+  // })
+  // web3.personal.newAccount()
 }
 
 
