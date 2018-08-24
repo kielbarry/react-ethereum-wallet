@@ -5,7 +5,8 @@ Helper functions
 /**
 The Helpers class containing helper functions
 **/
-Helpers = {};
+// TODO
+// Helpers = {};
 
 /**
 Get the default contract example
@@ -106,7 +107,7 @@ Make a ID out of a given hash and prefix.
 @param {String} hash
 */
 export function makeId(prefix, hash) {
-  return typeof (hash) === 'string'
+  return (typeof hash === 'string' || value instanceof String)
     ? prefix + '_' + hash.replace('0x', '').substr(0, 10)
     : null;
 };

@@ -24,6 +24,46 @@ export const vulnerableWallets = {
   ]
 };
 
+export const NavFields = {
+  'Wallet': {
+    type: 'link',
+    href: '/',
+    liClass: 'wallet-nav-li',
+    icon: 'icon-wallet',
+    displayText: 'Wallets'
+  },
+  'Send': {
+    type: 'link',
+    href: '/send-from',
+    liClass: 'send-nav-li',
+    icon: 'icon-arrow-up',
+    displayText: 'Send'
+  },
+  'PeerInfo': {
+    type: 'peerInfo',
+    liClass: 'block-info dapp-flex-item',
+    firstIcon: 'icon-feed',
+    firstText: 'peers',
+    firstClass: '',
+    secondIcon: 'icon-layers',
+    secondText: 'since last block',
+    secondClass: 'hide-on-small'
+  },
+  'Contracts': {
+    type: 'link',
+    href: '/contracts',
+    liClass: 'contracts-nav-li',
+    icon: 'icon-docs',
+    displayText: 'Contracts'
+  },
+  'BalanceInfo': {
+    type: 'balanceInfo',
+    liClass: 'balance-nav-li wallet-balance',
+    firstText: 'Balance',
+    firstClass: 'account-balance',
+    secondText: 'ETHER'
+  }
+};
 
 
 export const DefaultNavFields = [

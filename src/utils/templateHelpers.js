@@ -232,7 +232,8 @@ Formats address to a CaseChecksum
 @return {String} checksumAddress    The returned, checksummed address
 **/
 export function toChecksumAddress(web3, address) {
-  return typeof address === 'string' ? web3.utils.toChecksumAddress(address) : '';
+  return (typeof address === 'string' || value instanceof String)
+     ? web3.utils.toChecksumAddress(address) : '';
 });
 
 /**
