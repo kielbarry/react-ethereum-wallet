@@ -24,7 +24,6 @@ class AccountItem extends Component {
     let address = this.props.address;
     let number = this.props.number;
     let wallet = this.props.wallet;
-    let currency = this.props.props.reducers.currency
     const AccountURL = "/account/" + address;
 
     return (

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import SU from './elements/selectableUnit.js';
 import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
-import { DefaultNavFields } from '../constants/FieldConstants.jsx';
 import { NavFields } from '../constants/FieldConstants.jsx';
 
 class NavBar extends Component {
@@ -11,7 +10,6 @@ class NavBar extends Component {
   constructor(props) {
     super(props)
     this.state = this.props
-    console.log('NavFields', NavFields)
   }
 
   componentDidMount() {
@@ -21,7 +19,7 @@ class NavBar extends Component {
 
   componentDidUpdate(prevProps, prevState){
     if(typeof prevProps.blockHeader.number === undefined) return
-    if(prevProps.blockHeader.number != this.props.blockHeader.number) {
+    if(prevProps.blockHeader.number !== this.props.blockHeader.number) {
       clearInterval(this.interval)
       let time = 0
       this.interval = setInterval(() => {
@@ -34,7 +32,6 @@ class NavBar extends Component {
           time = Math.floor(time / 3600)
           text = " hours since last block"
         }
-        console.log(time+text)
         this.setState({time: (time + text)})
       }, 1000); 
     }

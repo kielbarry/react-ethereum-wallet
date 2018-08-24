@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import * as Utils from '../utils/utils.js';
+// import * as Utils from '../utils/utils.js';
 
 export class RedirectButton extends Component {
 
@@ -12,9 +12,9 @@ export class RedirectButton extends Component {
       console.log("XXXXXXXXXXXXXXXXXXXXXX", e)
       // e.preventDefault();
       if(field.buttonDescription === 'ADD ACCOUNT') {
-        e.preventDefault(),
+        e.preventDefault()
         // console.log(Utils.createNewAccount)
-        console.log(web3)
+        // console.log(web3)
         // Utils.createNewAccount(web3)
       }
     }

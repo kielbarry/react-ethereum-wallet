@@ -29,7 +29,6 @@ import './stylesheets/mergedstyles.css';
 import './App.css';
 
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -46,14 +45,9 @@ class App extends Component {
   }
 
   componentDidMount(){
+    this.props.updateEtherPrices()
     window.addEventListener('blur', (e) => document.body.classList.add('app-blur'));
     window.addEventListener('focus',(e) => document.body.classList.remove('app-blur'));
-  }
-
-  toggleNoConnection(e) {
-    this.state['noConnection']
-      ? this.setState({ noConnection: false })
-      : this.setState({ noConnection: true });
   }
 
   render() {
@@ -71,7 +65,7 @@ class App extends Component {
                   <Route exact path="/contracts" component={ContractsView} />
                 </div>
                 
-                <NoConnection />
+                <NoConnection connection={this.props.web3}/>
 
                 <MistAlertBubble />
 

@@ -1,4 +1,46 @@
 import { actionTypes } from './actionTypes.js';
+import io from 'socket.io-client';
+
+let socket = io('wss://streamer.cryptocompare.com')
+
+
+export const cryptocompareConnected = (connection) => dispatch => { 
+	console.log(connection)
+	dispatch({
+		type: actionTypes.CRYPTO_COMPARE_CONNECTED,
+		payload: connection,
+	})
+}
+
+// socket
+// 	.on('connect', cryptocompareConnected('connect'))
+// 	.on('disconnect', cryptocompareConnected('disconnect'))
+// 	.on('connecting', cryptocompareConnected('connecting'))
+// 	.on('disconnecting', cryptocompareConnected('disconnecting'))
+// 	.on('error', cryptocompareConnected('error'))
+
+// export const cryptocompareConnected = (connection) => dispatch => { 
+// 	console.log(connection)
+// 	dispatch({
+// 		type: actionTypes.CRYPTO_COMPARE_CONNECTED,
+// 		payload: connection,
+// 	})
+// }
+
+export const updateEtherPrices = () => dispatch => {
+	console.log(socket)
+// io.on('connect', (res) => console.log);
+
+
+	// return (...args) => {
+	// 	const result = actionCreator.apply(this, args)
+	// 	console.log(...args, result)
+	// 	socket.emit(result.key, {
+	// 		...result.payload,
+	// 	})
+	// 	return result;
+	// }
+}
 
 export const selectedWallet = ( wallet ) => dispatch => {
 	dispatch({

@@ -4,8 +4,16 @@ class NoConnection extends Component {
 
   constructor(props) {
     super(props)
-    console.log("here in NoConnection", this.props)
-    this.state = { 'noConnection': true }
+    this.state = { 'noConnection': false }
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.connection === null && this.props.connection !== null){
+      this.setState({ noConnection: false })
+    } 
+    else if(prevProps.connection !== null && this.props.connection === null) {
+      this.setState({ noConnection: true });   
+    }
   }
 
   toggleNoConnection(e) {
@@ -15,12 +23,10 @@ class NoConnection extends Component {
   }
   
   render() {
-
     var cn = require('classnames');
     var newStyles = cn({
       "dapp-modal-overlay": this.state.noConnection,
     });
-
     return (
       <div className={ newStyles }>
         <section className="dapp-modal-container">
