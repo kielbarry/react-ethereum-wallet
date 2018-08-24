@@ -71,13 +71,10 @@ class App extends Component {
                   <Route exact path="/contracts" component={ContractsView} />
                 </div>
                 
-                <NoConnection 
-                validStyles={this.props.reducers.noConnection}
-                onClick={() => this.toggleNoConnection()}
-                />
+                <NoConnection />
 
                 <MistAlertBubble />
-                
+
               </main>
             </div>
           </div>
