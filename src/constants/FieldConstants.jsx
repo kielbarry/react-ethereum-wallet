@@ -144,7 +144,34 @@ export const DefaultAccountList = [
   }
 ];
 
-
+export const ContractSectionList = {
+  DeployContract: {
+    title: '',
+    redirect: true,
+    link: 'deploy-contract',
+    buttonClass: 'wallet-box create add-contract',
+    buttonDescription: 'DEPLOY NEW CONTRACT',
+    contractDescription: ''
+  },
+  CustomContracts: {
+    title: 'Custom Contracts',
+    redirect: false,
+    link: 'deploy-contract',
+    buttonClass: 'wallet-box create add-contract',
+    buttonDescription: 'WATCH CONTRACT',
+    contractDescription:
+      'To watch and interact with a contract already deployed on the blockchain, you need to know its address and the description of its interface in JSON format.'
+  },
+  CustomTokens: {
+    title: 'Custom Tokens',
+    redirect: false,
+    link: 'deploy-contract',
+    buttonClass: 'wallet-box create add-token',
+    buttonDescription: 'WATCH CUSTOM TOKEN',
+    contractDescription:
+      'Tokens are currencies and other fungibles built on the Ethereum platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifying this example of a custom token contract or learning more about Ethereum Tokens.'
+  }
+}
 export const DefaultContractList = [
   {
     title: '',
@@ -168,8 +195,9 @@ export const DefaultContractList = [
     redirect: false,
     link: 'deploy-contract',
     buttonClass: 'wallet-box create add-token',
-    buttonDescription: 'DEPLOY NEW CONTRACT',
+    buttonDescription: 'WATCH CUSTOM TOKEN',
     contractDescription:
       'Tokens are currencies and other fungibles built on the Ethereum platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifying this example of a custom token contract or learning more about Ethereum Tokens.'
   }
 ];
+

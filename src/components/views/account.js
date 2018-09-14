@@ -33,8 +33,8 @@ class AccountView extends Component {
       return (
         <React.Fragment>
           { 
-            Object.keys(wallets).map((address, i) => 
-              (<AccountItem 
+            Object.keys(wallets).map((address, i) => (
+              <AccountItem 
                 key={address} 
                 number={i+1} 
                 address={address} 

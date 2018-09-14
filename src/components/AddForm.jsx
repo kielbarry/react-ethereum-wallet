@@ -3,42 +3,59 @@ import { connect } from 'react-redux';
 
 // import * as Utils from '../utils/utils.js';
 
-export class RedirectButton extends Component {
+export class AddForm extends Component {
 
-  render() {
+  componentWillMount(){
+    // document.body.addEventListener()
+  }
+
+  componentWillUnmount(){
+    // document.body.removeEventListener()
+  }
+
+
+  renderRedirectButton() {
     let field = this.props.field
-    let web3 = this.props.web3
-    function createAccount(e){
-      console.log("XXXXXXXXXXXXXXXXXXXXXX", e)
-      // e.preventDefault();
-      if(field.buttonDescription === 'ADD ACCOUNT') {
-        e.preventDefault()
-        // console.log(Utils.createNewAccount)
-        // console.log(web3)
-        // Utils.createNewAccount(web3)
-      }
-    }
+    // let web3 = this.props.web3
     return (
       <a href={field.link} 
-      className={field.buttonClass}
-      onClick={createAccount}>
+      className={field.buttonClass}>
         <div className="account-pattern">+</div>
         <h3>{field.buttonDescription}</h3>
       </a>
     );
   }
-};
 
-export class ActionButton extends Component {
-  render() {
+  renderActionButton() {
     let field = this.props.field
+    let onClickFunction
+    switch (field.buttonDescription) {
+      case 'ADD ACCOUNT':
+        onClickFunction = function(e) {
+          if(field.buttonDescription === 'ADD ACCOUNT') {
+            e.preventDefault()
+          }
+        }
+        break;
+      case 'WATCH CONTRACT':
+        onClickFunction = function(e) {
+          console.log("here in onclick")
+        }
+        break;
+      default:
+        onClickFunction = function(e){
+          console.log("asdfasdfa")
+        }
+        break;
+    }
     return (
       <React.Fragment>
         <h2>{field.title}</h2>
         <p>{field.contractDescription}</p>
         <div className="dapp-clear-fix" />
         <div className="wallet-box-list" />
-        <button className={field.buttonClass}>
+        <button className={field.buttonClass}
+        onClick={onClickFunction}>
           <div className="account-pattern">+</div>
           <h3>{field.buttonDescription}</h3>
         </button>
@@ -46,23 +63,17 @@ export class ActionButton extends Component {
       </React.Fragment>
     );
   }
-};
-
-export class AddForm extends Component {
 
   render() {
     let field = this.props.field
-    let web3
-
-    if(this.props.web3 != null) web3 = this.props.web3.web3Instance
-
+    // let web3
+    // if(this.props.web3 != null) web3 = this.props.web3.web3Instance
     return (
       <React.Fragment>
-        {field.redirect ? (
-          <RedirectButton field={field} web3={web3}/>
-        ) : (
-          <ActionButton field={field} />
-        )}
+        { field.redirect 
+          ? this.renderRedirectButton()
+          : this.renderActionButton()
+        }
       </React.Fragment>
     );
   }

@@ -1,26 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import SU from '../elements/selectableUnit.js'
 import AccountActionBar from '../elements/AccountActionBar.js';
+import NotFound from './NotFound.jsx';
 
 export class SingleAccountView extends Component {
 
-	render(){
-		let sw
-		if(this.props.reducers.selectedWallet === undefined) {
-			sw = {
-				address: "0x6a6964034c192ccaA8594a179dB7a98ad581E4F2",
-				number: 4,
-				wallet: "1000000000000000",
-				currency: "ETHER",
-			}
-		} else {
-			sw = this.props.reducers.selectedWallet
-			this.state = {
-				address: this.props.reducers.selectedWallet
-			}
-		}
+	constructor(props) {
+		super(props)
+		this.state = this.props
+		console.log(this.state)
+		console.log(this.props)
+	}
 
+	componentDidMount(){
+		this.setState({ displaySU: false })
+	}
+
+  toggleSU() {
+  	if(this.state.displaySU === undefined) this.setState({ displaySU: false }) 
+		else{
+			this.state.displaySU
+      ? this.setState({ displaySU: false })
+      : this.setState({ displaySU: true });
+		}
+  }
+
+  renderSingleAccount(){
+  	let sw = this.props.reducers.selectedWallet
 		return(
 			<div className="dapp-container accounts-page">
 				<div className="dapp-sticky-bar dapp-container"></div>
@@ -42,9 +50,11 @@ export class SingleAccountView extends Component {
 		        <span className="account-balance">
 		        	{ sw.wallet }
 			        <span className="inline-form" name="unit">
-                <button type="button" data-name="unit" data-value={ sw.currency }>
-                    { sw.currency }
-                </button>
+		                <button type="button" data-name="unit" data-value={ this.props.reducers.currency}
+		                onClick={ () => this.toggleSU() } >
+		                    { this.props.reducers.currency }
+		                </button>
+			        	<SU displaySU={this.state.displaySU}/>
 					    </span>
 					  </span>
 		        {/* Account infos */}
@@ -58,6 +68,14 @@ export class SingleAccountView extends Component {
 		    <AccountActionBar props={ sw }/>
 			</div>
 		);
+  }
+
+	render(){
+		return(
+			this.props.reducers.selectedWallet === undefined
+				? <NotFound />
+				: ( this.renderSingleAccount() )
+		);
 	}
 }
 
@@ -67,11 +85,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(SingleAccountView);
 
-// <h2 class="copyable-address">{{walletIcon}}
-//             <!-- <input type="text" value="{{toChecksumAddress address}}" readonly class=""> -->
-//             <span>{{toChecksumAddress address}}</span>
-//         </h2>
-//         <div class="clear"></div>
-//         {{> elements_balance balance=balance changeUnit=true showAllDecimals=true}}
 
 

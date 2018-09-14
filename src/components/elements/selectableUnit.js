@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import keyIndex from 'react-key-index';
 import { connect } from 'react-redux';
+import onClickOutside from "react-onclickoutside";
 
 import { updateCurrency } from '../../actions/actions.js';
 
@@ -10,13 +11,26 @@ class SelectableUnit extends Component {
 
   constructor(props) {
     super(props);
+    const node = this.mainDivRef = React.createRef();
     this.unitSelected = this.unitSelected.bind(this);
   }
 
-  unitSelected(e) {
-    const newUnit = {CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()}
-    this.props.updateCurrency(newUnit)
+  componentWillMount(){
+    document.addEventListener('mousedown', this.unitSelected, false)
+  }
 
+  componentWillUnmount(){
+    document.removeEventListener('mousedown', this.unitSelected, false)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+  }
+
+  unitSelected(e) {
+     if(this.node.contains(e.target)) {
+       const newUnit = {CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()}
+       this.props.updateCurrency(newUnit)
+    }
   }
 
   render() {
@@ -26,40 +40,26 @@ class SelectableUnit extends Component {
 		@property selectableUnits
 		*/
     var s = [
-      {
-        text: 'ETHER',
-        value: 'ether'
-      },
-      {
-        text: 'FINNEY', //(µΞ)
-        value: 'finney'
-      },
-      {
-        text: 'BTC',
-        value: 'btc'
-      },
-      {
-        text: 'USD',
-        value: 'usd'
-      },
-      {
-        text: 'EUR',
-        value: 'eur'
-      },
-      {
-        text: 'GBP',
-        value: 'gbp'
-      },
-      {
-        text: 'BRL',
-        value: 'brl'
-      }
+      {text: 'ETHER', value: 'ether'},
+      {text: 'FINNEY', //(µΞ)
+      value: 'finney'},
+      {text: 'BTC', value: 'btc'},
+      {text: 'USD', value: 'usd'},
+      {text: 'EUR', value: 'eur'},
+      {text: 'GBP', value: 'gbp'},
+      {text: 'BRL', value: 'brl'}
     ];
 
     var selectableUnits = keyIndex(s, 1);
 
+    var cn = require('classnames');
+    var newClasses = cn({
+      'simple-modal': true,
+      'animate': this.props.displaySU,
+    });
+
     return (
-      
+      <div id="selectableUnitDrawer" className={ newClasses } ref={ node=> this.node = node }>
         <ul>
           {Object.keys(selectableUnits).map((item, i) => {
             const s = selectableUnits[item];
@@ -74,6 +74,7 @@ class SelectableUnit extends Component {
             );
           })}
         </ul>
+      </div>
     );
   }
 }

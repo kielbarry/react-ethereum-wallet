@@ -14,6 +14,7 @@ class NavBar extends Component {
 
   componentDidMount() {
     this.setState({small: false, sticky: false, time: 'Waiting for blocks...'})
+    this.setState({ displaySU: false })
     window.addEventListener('scroll', this.handleScroll);
   }
 
@@ -28,7 +29,8 @@ class NavBar extends Component {
         if(3600 > time > 59){
           time = Math.floor(time / 60)
           text = " minutes since last block" 
-        } else if(time > 3600) {
+        }
+        if(time > 3599) {
           time = Math.floor(time / 3600)
           text = " hours since last block"
         }
@@ -64,19 +66,28 @@ class NavBar extends Component {
     );
   };
 
+  toggleSU() {
+    this.state.displaySU
+      ? this.setState({ displaySU: false })
+      : this.setState({ displaySU: true });
+  }
+
   renderBalanceHeader(field) {
+    var cn = require('classnames');
+    var newClasses = cn({
+      'animate': this.state.displaySU
+    });
     return (
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
         <span className={field.firstClass}>
           { this.props.totalBalance }
           <span className="inline-form" name="unit">
-            <button type="button" data-name="unit" data-value="ether">
+            <button type="button" data-name="unit" data-value="ether" 
+            onClick={ () => this.toggleSU() } >
               { this.props.currency }
             </button>
-            <div className="simple-modal">
-              <SU />
-            </div>
+            <SU displaySU={this.state.displaySU}/>
           </span>
         </span>
       </li>
@@ -92,7 +103,7 @@ class NavBar extends Component {
         <span className={field.secondClass}> {field.firstText} </span>
         |
         <i className={field.secondIcon} style={inlineStyle}/>
-        {this.props.blockHeader.number}
+        { this.props.blockHeader.number }
         <span className={field.secondClass}>
          { this.state.time }
         </span>

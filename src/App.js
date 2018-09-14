@@ -1,10 +1,8 @@
-
 // modules
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import cn from 'classnames';
-
 
 // actions
 import * as Actions  from './actions/actions.js';
@@ -18,7 +16,6 @@ import SendContractForm from './components/views/send.js';
 import NavBar from './components/navbar';
 
 // components
-// import MistAlert from './components/mistAlert.js';
 import MistAlertBubble from './components/mistAlertBubble.js';
 
 // Modals
@@ -27,7 +24,6 @@ import NoConnection from './components/views/modals/NoConnection.jsx';
 // stylesheets
 import './stylesheets/mergedstyles.css';
 import './App.css';
-
 
 class App extends Component {
   constructor(props) {
@@ -42,10 +38,11 @@ class App extends Component {
         Utils.getNewBlockHeaders(web3, this.props.updateBlockHeader, this.props.updatePeerCount);
       }
     }, 1000);
+    this.props.createCryptoCompareSocket()
   }
 
   componentDidMount(){
-    this.props.updateEtherPrices()
+    // this.props.updateEtherPrices()
     window.addEventListener('blur', (e) => document.body.classList.add('app-blur'));
     window.addEventListener('focus',(e) => document.body.classList.remove('app-blur'));
   }
@@ -64,13 +61,10 @@ class App extends Component {
                   <Route exact path="/send-from" component={SendContractForm} />
                   <Route exact path="/contracts" component={ContractsView} />
                 </div>
-                
-                <NoConnection connection={this.props.web3}/>
-
                 <MistAlertBubble />
-
               </main>
             </div>
+            <NoConnection connection={this.props.web3}/>
           </div>
         </div>
       </BrowserRouter>

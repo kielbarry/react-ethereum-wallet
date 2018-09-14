@@ -3,21 +3,28 @@ import React, { Component } from 'react';
 
 import AddForm from '../AddForm.jsx';
 
-// import Modal from './modals/WatchItem.jsx';
+// import WatchContract from './modals/WatchContract.jsx';
 
 import PageHeader from '../elements/PageHeaders.jsx';
 import { ContractPageHeader, DefaultContractList } from '../../constants/FieldConstants.jsx';
+import { ContractSectionList }  from '../../constants/FieldConstants.jsx';
 
 
 class ContractsView extends Component {
   render() {
+
+  	let CSL = ContractSectionList;
     return (
       <div className="dapp-container">
         
         <PageHeader title={ContractPageHeader} />
 
+        {/*<WatchContract /> */}
+        <AddForm key={`contracts-view-deply-contract}`} field={CSL.DeployContract}/>
+        <AddForm key={`contracts-view-custom-contracts`} field={CSL.CustomContracts}/>
+        <AddForm key={`contracts-view-custom-tokens`} field={CSL.CustomTokens}/>
 
-        {DefaultContractList.map((field, i) => <AddForm key={`contracts-view-${i}`} field={field} />)}
+        {/*{DefaultContractList.map((field, i) => <AddForm key={`contracts-view-${i}`} field={field} />)} */}
       </div>
     );
   }
