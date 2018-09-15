@@ -6,7 +6,7 @@ class GlobalNotification extends PureComponent {
 	    super(props)
 	}
 	render() {
-		var cn = require('classnames');
+			var cn = require('classnames');
 	    var newClasses = cn({
 	    	'global-notification': true,
 	    // 	'error': this.props.warningType == 'error',
