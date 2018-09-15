@@ -17,6 +17,7 @@ import NavBar from './components/navbar';
 
 // components
 import MistAlertBubble from './components/mistAlertBubble.js';
+import GlobalNotifications from './components/elements/GlobalNotifications.jsx';
 
 // Modals
 import NoConnection from './components/views/modals/NoConnection.jsx';
@@ -75,6 +76,7 @@ class App extends Component {
                 <MistAlertBubble />
               </main>
             </div>
+            <GlobalNotifications />
             <NoConnection connection={this.props.web3} />
           </div>
         </div>
