@@ -6,7 +6,6 @@ export async function getCryptoComparePrices() {
   // TODO : extraParams field in url
   let url = 'https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=BTC,USD,EUR,GBP,BRL&ts=';
   url += moment().unix();
-  console.log(url)
   return fetch(url)
   .then(resp => {
     if (resp && resp.status === 200) return resp.json()

@@ -25,12 +25,6 @@ const reducers = (state = initialState, action) => {
 				exchangeRates: action.payload
 			}
 		}
-		case  'CRYPTO_COMPARE_CONNECTED': {
-			return {
-				...state,
-				cryptocompare: action.payload
-			}
-		}
 		case  'UPDATE_ETHER_PRICES': {
 			return {
 				...state,
