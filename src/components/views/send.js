@@ -9,9 +9,7 @@ import FormInput from '../elements/FormInput.jsx';
 import LatestTransactions from '../elements/LatestTransactions.jsx';
 import ShowMoreOptions from '../elements/ShowMoreOptions.jsx';
 
-
 import { SendPageHeader } from '../../constants/FieldConstants.jsx';
-
 
 class SendContractForm extends Component {
   // constructor(props) {
@@ -24,18 +22,20 @@ class SendContractForm extends Component {
         className="account-send-form"
         action="about:blank"
         target="dapp-form-helper-iframe"
-        autoComplete="on">
+        autoComplete="on"
+      >
         <PageHeader title={SendPageHeader} />
 
         <FormInput />
         <LatestTransactions />
         <ShowMoreOptions />
 
-
         <Slider />
         <TotalGas />
 
-        <button type="submit" className="dapp-block-button">Send</button>
+        <button type="submit" className="dapp-block-button">
+          Send
+        </button>
       </form>
     );
   }

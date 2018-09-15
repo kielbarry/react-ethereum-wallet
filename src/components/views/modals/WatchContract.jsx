@@ -10,7 +10,7 @@ const listInputs = [
     type: 'text',
     name: 'address',
     placeholder: '0x000000',
-    className: 'contract-address'
+    className: 'contract-address',
   },
   {
     title: 'Contract name',
@@ -19,7 +19,7 @@ const listInputs = [
     type: 'string',
     name: 'contract-name',
     placeholder: 'Name this contract',
-    className: 'name'
+    className: 'name',
   },
   {
     title: 'JSON Interface',
@@ -30,8 +30,8 @@ const listInputs = [
     placeholder: `[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{"name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]`,
     className: 'jsonInterface',
     cols: '30',
-    rows: '10'
-  }
+    rows: '10',
+  },
 ];
 
 class WatchItem extends Component {
@@ -41,7 +41,9 @@ class WatchItem extends Component {
         <section className="dapp-modal-container modals-add-custom-contract">
           <h1>Watch contract</h1>
 
-          {listInputs.map((field, i) => (<InputItem key={`contract-field-${i}`} field={field} />))}
+          {listInputs.map((field, i) => (
+            <InputItem key={`contract-field-${i}`} field={field} />
+          ))}
 
           <div className="dapp-modal-buttons">
             <button className="cancel">Cancel</button>

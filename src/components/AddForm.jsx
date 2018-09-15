@@ -4,22 +4,19 @@ import { connect } from 'react-redux';
 // import * as Utils from '../utils/utils.js';
 
 export class AddForm extends Component {
-
-  componentWillMount(){
+  componentWillMount() {
     // document.body.addEventListener()
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     // document.body.removeEventListener()
   }
 
-
   renderRedirectButton() {
-    let field = this.props.field
+    let field = this.props.field;
     // let web3 = this.props.web3
     return (
-      <a href={field.link} 
-      className={field.buttonClass}>
+      <a href={field.link} className={field.buttonClass}>
         <div className="account-pattern">+</div>
         <h3>{field.buttonDescription}</h3>
       </a>
@@ -27,25 +24,25 @@ export class AddForm extends Component {
   }
 
   renderActionButton() {
-    let field = this.props.field
-    let onClickFunction
+    let field = this.props.field;
+    let onClickFunction;
     switch (field.buttonDescription) {
       case 'ADD ACCOUNT':
         onClickFunction = function(e) {
-          if(field.buttonDescription === 'ADD ACCOUNT') {
-            e.preventDefault()
+          if (field.buttonDescription === 'ADD ACCOUNT') {
+            e.preventDefault();
           }
-        }
+        };
         break;
       case 'WATCH CONTRACT':
         onClickFunction = function(e) {
-          console.log("here in onclick")
-        }
+          console.log('here in onclick');
+        };
         break;
       default:
-        onClickFunction = function(e){
-          console.log("asdfasdfa")
-        }
+        onClickFunction = function(e) {
+          console.log('asdfasdfa');
+        };
         break;
     }
     return (
@@ -54,8 +51,7 @@ export class AddForm extends Component {
         <p>{field.contractDescription}</p>
         <div className="dapp-clear-fix" />
         <div className="wallet-box-list" />
-        <button className={field.buttonClass}
-        onClick={onClickFunction}>
+        <button className={field.buttonClass} onClick={onClickFunction}>
           <div className="account-pattern">+</div>
           <h3>{field.buttonDescription}</h3>
         </button>
@@ -65,23 +61,21 @@ export class AddForm extends Component {
   }
 
   render() {
-    let field = this.props.field
+    let field = this.props.field;
     // let web3
     // if(this.props.web3 != null) web3 = this.props.web3.web3Instance
     return (
       <React.Fragment>
-        { field.redirect 
+        {field.redirect
           ? this.renderRedirectButton()
-          : this.renderActionButton()
-        }
+          : this.renderActionButton()}
       </React.Fragment>
     );
   }
-};
-
+}
 
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 export default connect(mapStateToProps)(AddForm);

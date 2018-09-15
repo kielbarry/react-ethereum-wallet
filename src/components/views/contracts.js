@@ -9,22 +9,28 @@ import PageHeader from '../elements/PageHeaders.jsx';
 import { ContractPageHeader } from '../../constants/FieldConstants.jsx';
 // import { DefaultContractList } from '../../constants/FieldConstants.jsx';
 
-import { ContractSectionList }  from '../../constants/FieldConstants.jsx';
-
+import { ContractSectionList } from '../../constants/FieldConstants.jsx';
 
 class ContractsView extends Component {
   render() {
-
-  	let CSL = ContractSectionList;
+    let CSL = ContractSectionList;
     return (
       <div className="dapp-container">
-        
         <PageHeader title={ContractPageHeader} />
 
         {/*<WatchContract /> */}
-        <AddForm key={`contracts-view-deply-contract}`} field={CSL.DeployContract}/>
-        <AddForm key={`contracts-view-custom-contracts`} field={CSL.CustomContracts}/>
-        <AddForm key={`contracts-view-custom-tokens`} field={CSL.CustomTokens}/>
+        <AddForm
+          key={`contracts-view-deply-contract}`}
+          field={CSL.DeployContract}
+        />
+        <AddForm
+          key={`contracts-view-custom-contracts`}
+          field={CSL.CustomContracts}
+        />
+        <AddForm
+          key={`contracts-view-custom-tokens`}
+          field={CSL.CustomTokens}
+        />
 
         {/*{DefaultContractList.map((field, i) => <AddForm key={`contracts-view-${i}`} field={field} />)} */}
       </div>

@@ -5,14 +5,14 @@ import web3Reducer from '../web3/web3Reducer';
 const appReducer = combineReducers({
 	reducers: reducers,
 	web3: web3Reducer,
-})
+});
 
 const rootReducer = (state, action) => {
-  if (action.type === 'USER_LOGOUT') {
-    state = undefined
-  }
+	if (action.type === 'USER_LOGOUT') {
+		state = undefined;
+	}
 
-  return appReducer(state, action)
-}
+	return appReducer(state, action);
+};
 
 export default rootReducer;

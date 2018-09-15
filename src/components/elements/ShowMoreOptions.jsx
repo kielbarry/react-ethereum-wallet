@@ -1,11 +1,9 @@
-import { Component } from 'react' 
-
+import { Component } from 'react';
 
 export class ShowMoreOptions extends Component {
-
   render() {
-    return (
-      {/*
+    return {
+      /*
       <div className="row clear compile-contract">
          <div className="col col-8 mobile-full replay-protection-div">
             <button className="hide-data dapp-block-button dapp-small">Show fewer options</button>
@@ -61,8 +59,8 @@ export class ShowMoreOptions extends Component {
          </div>
          <div className="dapp-clear-fix"></div>
       </div>
-    */}
-    );
+    */
+    };
   }
 }
-export default ShowMoreOptions
+export default ShowMoreOptions;

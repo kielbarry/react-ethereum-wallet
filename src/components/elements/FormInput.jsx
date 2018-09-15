@@ -20,10 +20,10 @@ import React, { Component } from 'react';
 // }
 
 class FormInput extends Component {
-  render() {
-    return (
-      <div className="col col-6 mobile-full from">
-      {/*
+	render() {
+		return (
+			<div className="col col-6 mobile-full from">
+				{/*
 	    <h3>From</h3>
 	    <div className="dapp-select-account send-from">
 		    <select name="dapp-select-account" className="send-from">
@@ -35,9 +35,9 @@ class FormInput extends Component {
 		    </span>
 	    </div>
 	*/}
-	</div>
-    );
-  }
+			</div>
+		);
+	}
 }
 
 export default FormInput;

@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 
 class NoConnection extends Component {
-
   constructor(props) {
-    super(props)
-    this.state = { 'noConnection': this.props.connection === null }
+    super(props);
+    this.state = { noConnection: this.props.connection === null };
   }
 
-  componentDidUpdate(prevProps, prevState){
-    if(prevProps.connection === null && this.props.connection !== null){
-      this.setState({ noConnection: false })
-      document.body.classList.remove('disable-scroll')
-      document.body.classList.remove('blur')
-      document.body.classList.remove('app-blur')  
-    } 
-    else if(prevProps.connection !== null && this.props.connection === null) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.connection === null && this.props.connection !== null) {
+      this.setState({ noConnection: false });
+      document.body.classList.remove('disable-scroll');
+      document.body.classList.remove('blur');
+      document.body.classList.remove('app-blur');
+    } else if (
+      prevProps.connection !== null &&
+      this.props.connection === null
+    ) {
       this.setState({ noConnection: true });
-      document.body.classList.add('disable-scroll')
-      document.body.classList.add('blur')
-      document.body.classList.add('app-blur') 
+      document.body.classList.add('disable-scroll');
+      document.body.classList.add('blur');
+      document.body.classList.add('app-blur');
     }
   }
 
@@ -27,29 +28,36 @@ class NoConnection extends Component {
       ? this.setState({ noConnection: false })
       : this.setState({ noConnection: true });
   }
-  
+
   render() {
     var cn = require('classnames');
     var newClasses = cn({
-      "dapp-modal-overlay": this.state.noConnection,
+      'dapp-modal-overlay': this.state.noConnection,
     });
     let newStyle = {
-      display: !this.state.noConnection ? 'none': 'block'
-    }
+      display: !this.state.noConnection ? 'none' : 'block',
+    };
     return (
-      <div className={ newClasses } style={ newStyle }>
+      <div className={newClasses} style={newStyle}>
         <section className="dapp-modal-container">
-          <p>Unable to connect. Please start geth with the following options:
+          <p>
+            Unable to connect. Please start geth with the following options:
             <br />
             <br />
             <small>
-              <code>geth --rpc --ws --wsorigins "{ window.location.origin }" --light</code>
+              <code>
+                geth --rpc --ws --wsorigins "{window.location.origin}" --light
+              </code>
               <br />
-              <br />Optional add: 
+              <br />
+              Optional add:
               <code>--unlock &lt;yourAccount&gt;</code>
             </small>
           </p>
-          <div className="dapp-modal-buttons" onClick={( ) => this.toggleNoConnection() }>  
+          <div
+            className="dapp-modal-buttons"
+            onClick={() => this.toggleNoConnection()}
+          >
             <button className="ok dapp-primary-button">OK</button>
           </div>
         </section>

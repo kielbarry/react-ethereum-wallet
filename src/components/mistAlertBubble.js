@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
 class MistAlertBubble extends Component {
-
   constructor(props) {
-    super(props)
-    this.state = { displayAlertMessage: false, }
+    super(props);
+    this.state = { displayAlertMessage: false };
   }
 
   toggleAlertMessage(e) {
@@ -44,7 +43,7 @@ class MistAlertBubble extends Component {
           <button
             type="button"
             className="hide-alert close-button"
-            onClick={ () => this.toggleAlertMessage() }
+            onClick={() => this.toggleAlertMessage()}
           >
             &times;
           </button>
@@ -57,7 +56,7 @@ class MistAlertBubble extends Component {
           <p>
             <a
               className="hide-alert button"
-              onClick={ () => this.toggleAlertMessage() }
+              onClick={() => this.toggleAlertMessage()}
             >
               Close this message
             </a>
@@ -73,10 +72,11 @@ class MistAlertBubble extends Component {
     );
   }
 
-  render(){
-    return  !this.state.displayAlertMessage ? this.renderMistAlertBubble()  :  this.renderMistAlert()
+  render() {
+    return !this.state.displayAlertMessage
+      ? this.renderMistAlertBubble()
+      : this.renderMistAlert();
   }
-
 }
 
 export default MistAlertBubble;
