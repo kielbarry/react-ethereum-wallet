@@ -1,3 +1,48 @@
+import moment from 'moment'
+import isFinite from 'lodash/isFinite'
+
+export async function getCryptoComparePrices() {
+  // TODO :  used to update transactions as well
+  // TODO : extraParams field in url
+  let url = 'https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=BTC,USD,EUR,GBP,BRL&ts=';
+  url += moment().unix();
+  console.log(url)
+  return fetch(url)
+  .then(resp => {
+    if (resp && resp.status === 200) return resp.json()
+  })
+  .then(respJSON => {
+    if(respJSON['ETH']) {
+      let body = respJSON['ETH']
+      let exchangeRates = {}
+      Object.keys(body).map(key => {
+        if(body[key] && isFinite(body[key])) exchangeRates[key.toLowerCase()] = body[key]
+      })
+      return exchangeRates
+    }
+  })
+  .catch(err => {
+    console.warn(
+      'Cannot connect to https://min-api.cryptocompare.com/ to get price ticker data, please check your internet connection.' + err
+    )
+    return err
+  })
+}
+/**
+Created random 32 byte string
+
+@method random32Bytes
+*/
+export function random32Bytes() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  }
+  let randomBytes
+  for (var i = 0; i < 16; i++) randomBytes += s4()
+  return randomBytes
+};
+
+
 export async function checkNetwork(web3, cb) {
   return web3.eth.getBlock(0).then((block) => {
     switch (block.hash) {

@@ -19,6 +19,12 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
 	switch(action.type) {
+		case 'UPDATE_EXCHANGE_RATES': {
+			return {
+				...state,
+				exchangeRates: action.payload
+			}
+		}
 		case  'CRYPTO_COMPARE_CONNECTED': {
 			return {
 				...state,

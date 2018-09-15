@@ -38,11 +38,16 @@ class App extends Component {
         Utils.getNewBlockHeaders(web3, this.props.updateBlockHeader, this.props.updatePeerCount);
       }
     }, 1000);
-    this.props.createCryptoCompareSocket()
+    // this.props.createCryptoCompareSocket()
+    // Utils.getCryptoComparePrices()
   }
 
   componentDidMount(){
-    // this.props.updateEtherPrices()
+    setInterval(() => {
+      Utils.getCryptoComparePrices().then(exchangeRates => {
+        this.props.updateEtherPrices(exchangeRates)
+      })
+    }, 15000) 
     window.addEventListener('blur', (e) => document.body.classList.add('app-blur'));
     window.addEventListener('focus',(e) => document.body.classList.remove('app-blur'));
   }
