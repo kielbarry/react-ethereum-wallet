@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import keyIndex from 'react-key-index';
 import { connect } from 'react-redux';
-import onClickOutside from "react-onclickoutside";
+// import onClickOutside from "react-onclickoutside";
 
 import { updateCurrency } from '../../actions/actions.js';
 

@@ -6,7 +6,9 @@ import AddForm from '../AddForm.jsx';
 // import WatchContract from './modals/WatchContract.jsx';
 
 import PageHeader from '../elements/PageHeaders.jsx';
-import { ContractPageHeader, DefaultContractList } from '../../constants/FieldConstants.jsx';
+import { ContractPageHeader } from '../../constants/FieldConstants.jsx';
+// import { DefaultContractList } from '../../constants/FieldConstants.jsx';
+
 import { ContractSectionList }  from '../../constants/FieldConstants.jsx';
 
 

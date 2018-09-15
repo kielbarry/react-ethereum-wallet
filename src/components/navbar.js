@@ -73,10 +73,6 @@ class NavBar extends Component {
   }
 
   renderBalanceHeader(field) {
-    var cn = require('classnames');
-    var newClasses = cn({
-      'animate': this.state.displaySU
-    });
     return (
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>

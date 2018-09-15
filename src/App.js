@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 // import cn from 'classnames';
 
 // actions
-import * as Actions  from './actions/actions.js';
+import * as Actions from './actions/actions.js';
 import * as Utils from './utils/utils.js';
 
 // views
@@ -28,28 +28,34 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    let web3Returned = setInterval(()=>{ 
-      if(this.props.web3 != null) {
-        clearInterval(web3Returned)
-        let web3 = this.props.web3.web3Instance
+    let web3Returned = setInterval(() => {
+      if (this.props.web3 != null) {
+        clearInterval(web3Returned);
+        let web3 = this.props.web3.web3Instance;
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
         this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
         Utils.getAccounts(web3, this.props.setWallets);
-        Utils.getNewBlockHeaders(web3, this.props.updateBlockHeader, this.props.updatePeerCount);
+        Utils.getNewBlockHeaders(
+          web3,
+          this.props.updateBlockHeader,
+          this.props.updatePeerCount
+        );
       }
     }, 1000);
-    // this.props.createCryptoCompareSocket()
-    // Utils.getCryptoComparePrices()
   }
 
-  componentDidMount(){
+  componentDidMount() {
     setInterval(() => {
       Utils.getCryptoComparePrices().then(exchangeRates => {
-        this.props.updateEtherPrices(exchangeRates)
-      })
-    }, 15000) 
-    window.addEventListener('blur', (e) => document.body.classList.add('app-blur'));
-    window.addEventListener('focus',(e) => document.body.classList.remove('app-blur'));
+        this.props.updateEtherPrices(exchangeRates);
+      });
+    }, 15000);
+    window.addEventListener('blur', e =>
+      document.body.classList.add('app-blur')
+    );
+    window.addEventListener('focus', e =>
+      document.body.classList.remove('app-blur')
+    );
   }
 
   render() {
@@ -69,7 +75,7 @@ class App extends Component {
                 <MistAlertBubble />
               </main>
             </div>
-            <NoConnection connection={this.props.web3}/>
+            <NoConnection connection={this.props.web3} />
           </div>
         </div>
       </BrowserRouter>
@@ -77,8 +83,11 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state;
 };
 
-export default connect(mapStateToProps, {...Actions})(App);
+export default connect(
+  mapStateToProps,
+  { ...Actions }
+)(App);

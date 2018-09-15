@@ -5,7 +5,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 // import { Provider, connect } from  'react-redux';
-import { Provider } from  'react-redux';
+import { Provider } from 'react-redux';
 
 import store from './store/store.js';
 
@@ -13,14 +13,14 @@ import store from './store/store.js';
 import getWeb3 from './web3/getWeb3.js';
 
 getWeb3
-	.then(results => console.log('Web3 initialized!', results))
-	.catch(err => console.log('Error in web3 initialization.', err))
+  .then(results => console.log('Web3 initialized!', results))
+  .catch(err => console.log('Error in web3 initialization.', err));
 
 ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
 
- registerServiceWorker();
+registerServiceWorker();
