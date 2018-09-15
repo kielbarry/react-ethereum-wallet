@@ -115,7 +115,6 @@ class NavBar extends Component {
     var cn = require('classnames');
     var newStyles = cn({
       'dapp-header': true,
-      'dapp-full-header': true,
       'dapp-sticky-bar': true,
       'dapp-small': this.state.small,
       sticky: this.state.sticky,
