@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AddForm from '../AddForm.jsx';
-import PageHeader from '../elements/PageHeaders.jsx';
-import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
+// import PageHeader from '../elements/PageHeaders.jsx';
+// import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
 import AccountItem from '../elements/AccountItem.jsx';
 
 const listItems = [
@@ -50,7 +50,7 @@ class AccountView extends Component {
   render() {
     return (
       <div className="dapp-container account-page">
-        <PageHeader title={AccountPageHeader} />
+        <h1><strong>Accounts</strong> Overview</h1>
         {this.renderAccounts()}
         {listItems.map((field, i) => (
           <AddForm key={`account-view-${i}`} field={field} />

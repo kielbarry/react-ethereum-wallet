@@ -11,7 +11,7 @@ Replaces the address in the stub code "walletStubABI" variable.
 */
 export function replaceStubAddress(address) {
 	// set this address as used address
-	let originalContractAddress = address;
+	// let originalContractAddress = address;
 	return WalletInterfaceItems.walletStubABI.replace(
 	    'cafecafecafecafecafecafecafecafecafecafe',
 	    address.replace('0x', '')
@@ -25,7 +25,7 @@ Deploys testnet wallet, when on other orig wallet was found
 */
 // TODO
 export function deployTestnetWallet(web3) {
-	let account = web3.eth.accounts[0];
+	// let account = web3.eth.accounts[0];
 }
 
 /**
@@ -72,18 +72,18 @@ Check wallet owners
 */
 // TODO
 export function checkWalletOwners(address, web3, contract) {
-	let owners = new Promise((resolve, reject) => {
-		let returnValue = { owners: false, info: '' };
-		if(web3.utils.isAddress(address)) {
-			contract.options.address = address.toLowerCase();
-			contract.m_numOwners()
-				.then(numberOfOwners => {
-					let num = numberOfOwners.toNumber();
-					if(!(num > 0)) resolve(returnValue);
-				})
-				.catch(err => reject(err))
-		}
-	})
+	// let owners = new Promise((resolve, reject) => {
+	// 	let returnValue = { owners: false, info: '' };
+	// 	if(web3.utils.isAddress(address)) {
+	// 		contract.options.address = address.toLowerCase();
+	// 		contract.m_numOwners()
+	// 			.then(numberOfOwners => {
+	// 				let num = numberOfOwners.toNumber();
+	// 				if(!(num > 0)) resolve(returnValue);
+	// 			})
+	// 			.catch(err => reject(err))
+	// 	}
+	// })
 }
 
 

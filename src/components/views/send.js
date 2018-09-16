@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
 
-import PageHeader from '../elements/PageHeaders.jsx';
 import Slider from '../elements/Slider.jsx';
 import TotalGas from '../elements/TotalGas.jsx';
 
 //exp
 import FormInput from '../elements/FormInput.jsx';
 import LatestTransactions from '../elements/LatestTransactions.jsx';
-import ShowMoreOptions from '../elements/ShowMoreOptions.jsx';
+// import ShowMoreOptions from '../elements/ShowMoreOptions.jsx';
 
-import { SendPageHeader } from '../../constants/FieldConstants.jsx';
+// import PageHeader from '../elements/PageHeaders.jsx';
+// import { SendPageHeader } from '../../constants/FieldConstants.jsx';
 
 class SendContractForm extends Component {
-  constructor(props) {
-    super(props);
-
-    console.log(props)
-  }
-
   render() {
     return (
       <form
@@ -26,7 +20,7 @@ class SendContractForm extends Component {
         target="dapp-form-helper-iframe"
         autoComplete="on"
       >
-        <PageHeader title={SendPageHeader} />
+        <h1><strong>Send</strong> Funds</h1>
 
         <FormInput />
         <LatestTransactions />

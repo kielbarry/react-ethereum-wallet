@@ -10,7 +10,6 @@ import '../../stylesheets/mergedstyles.css';
 class SelectableUnit extends Component {
   constructor(props) {
     super(props);
-    const node = (this.mainDivRef = React.createRef());
     this.unitSelected = this.unitSelected.bind(this);
   }
 

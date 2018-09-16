@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import InputItem from '../../elements/InputItem.jsx';
 
@@ -35,15 +36,43 @@ const listInputs = [
 ];
 
 class WatchItem extends Component {
+  constructor(props){
+    super(props)
+    this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
+  }
+
+
+  handleOnKeyUp(e) {
+    console.log(e)
+    console.log("advfadsvf")
+  }
+
   render() {
+    // var cn = require('classnames');
+    // var newClasses = cn({
+    // });
     return (
       <div className="dapp-modal-overlay">
         <section className="dapp-modal-container modals-add-custom-contract">
           <h1>Watch contract</h1>
 
-          {listInputs.map((field, i) => (
-            <InputItem key={`contract-field-${i}`} field={field} />
-          ))}
+           <InputItem 
+              key={`contract-field-100`} 
+              field={listInputs[0]} 
+              onKeyPress={ this.handleOnKeyUp }
+              onClick={this.unitSelected}
+              onKeyUp={ this.handleOnKeyUp }
+              />
+          {
+            listInputs.map((field, i) => (
+
+              <InputItem 
+              key={`contract-field-${i}`} 
+              field={field} 
+              onKeyPress={ this.handleOnKeyUp }
+              />
+            ))
+          }
 
           <div className="dapp-modal-buttons">
             <button className="cancel">Cancel</button>
@@ -54,5 +83,8 @@ class WatchItem extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return state;
+};
 
-export default WatchItem;
+export default connect(mapStateToProps)(WatchItem);

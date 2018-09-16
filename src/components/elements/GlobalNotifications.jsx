@@ -1,12 +1,8 @@
 import React, { PureComponent } from 'react';
-import cn from 'classnames';
 
 class GlobalNotification extends PureComponent {
-	constructor(props) {
-	    super(props)
-	}
 	render() {
-			var cn = require('classnames');
+		var cn = require('classnames');
 	    var newClasses = cn({
 	    	'global-notification': true,
 	    // 	'error': this.props.warningType == 'error',
