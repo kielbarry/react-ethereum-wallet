@@ -25,70 +25,44 @@ class SelectableUnit extends Component {
 
   unitSelected(e) {
     if (this.node.contains(e.target)) {
-      const newUnit = {
-        CurrencyUnit: e.target.getAttribute('data-value').toUpperCase(),
-      };
+      const newUnit = { CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()};
       this.props.updateCurrency(newUnit);
     }
   }
 
   render() {
-    /**
-    The available units
-
-    @property selectableUnits
-    */
-    var s = [
-      { text: 'ETHER', value: 'ether' },
-      {
-        text: 'FINNEY', //(µΞ)
-        value: 'finney',
-      },
-      { text: 'BTC', value: 'btc' },
-      { text: 'USD', value: 'usd' },
-      { text: 'EUR', value: 'eur' },
-      { text: 'GBP', value: 'gbp' },
-      { text: 'BRL', value: 'brl' },
-    ];
-
-    var selectableUnits = keyIndex(s, 1);
-
-    var cn = require('classnames');
-    var newClasses = cn({
+    let selectableUnits = keyIndex(['ether','finney','btc','usd','eur','gbp','brl'], 1)
+    let cn = require('classnames');
+    let newClasses = cn({
       'simple-modal': true,
       animate: this.props.displaySU,
     });
 
     return (
       <div
-        id="selectableUnitDrawer"
-        className={newClasses}
-        ref={node => (this.node = node)}
+      id="selectableUnitDrawer"
+      className={newClasses}
+      ref={node => (this.node = node)}
       >
         <ul>
-          {Object.keys(selectableUnits).map((item, i) => {
-            const s = selectableUnits[item];
-            const t = s.text;
-            const v = s.value;
-            return (
-              <li key={s._textId}>
+        {
+          selectableUnits.map(item => {
+            return(
+              <li key={item.id}>
                 <button
-                  key={s._valueId}
-                  data-value={v}
-                  onClick={this.unitSelected}
-                >
-                  {t}
+                data-value={item.value}
+                onClick={this.unitSelected}
+                > 
+                { item.value.toUpperCase()}
                 </button>
               </li>
-            );
-          })}
+            )
+          })
+        }
         </ul>
       </div>
     );
   }
 }
 
-export default connect(
-  null,
-  { updateCurrency },
-)(SelectableUnit);
+export default connect(null, { updateCurrency })(SelectableUnit);

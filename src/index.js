@@ -12,9 +12,7 @@ import store from './store/store.js';
 // web3Init
 import getWeb3 from './web3/getWeb3.js';
 
-getWeb3
-  .then(results => console.log('Web3 initialized!', results))
-  .catch(err => console.warn('Error in web3 initialization.', err));
+getWeb3.catch(err => console.warn('Error in web3 initialization.', err));
 
 ReactDOM.render(
   <Provider store={store}>
