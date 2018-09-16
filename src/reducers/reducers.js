@@ -19,6 +19,12 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
 	switch (action.type) {
+		case 'CREATE_INIT_WALLET_CONTRACT':
+			console.log(action.payload)
+			return {
+				...state,
+				Wallet: action.payload,
+			}
 		case 'UPDATE_EXCHANGE_RATES': {
 			return {
 				...state,

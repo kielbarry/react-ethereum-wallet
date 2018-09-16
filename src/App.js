@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 // actions
 import * as Actions from './actions/actions.js';
 import * as Utils from './utils/utils.js';
+import * as WalletUtils from './utils/WalletUtils.js';
 
 // views
 import AccountView from './components/views/account.js';
@@ -41,6 +42,9 @@ class App extends Component {
           this.props.updateBlockHeader,
           this.props.updatePeerCount
         );
+
+        this.props.createInitWalletContract(WalletUtils.initWalletContact(web3));
+
       }
     }, 1000);
   }

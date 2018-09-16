@@ -12,9 +12,11 @@ import ShowMoreOptions from '../elements/ShowMoreOptions.jsx';
 import { SendPageHeader } from '../../constants/FieldConstants.jsx';
 
 class SendContractForm extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+
+    console.log(props)
+  }
 
   render() {
     return (
@@ -28,8 +30,9 @@ class SendContractForm extends Component {
 
         <FormInput />
         <LatestTransactions />
+        {/*
         <ShowMoreOptions />
-
+        */}
         <Slider />
         <TotalGas />
 

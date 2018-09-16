@@ -2,6 +2,13 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const createInitWalletContract = (wc) => dispatch => {
+	dispatch({
+		type: actionTypes.CREATE_INIT_WALLET_CONTRACT,
+		payload: wc
+	})
+}
+
 export const createCryptoCompareSocket = () => dispatch => {
 	// 	let socket = io('wss://streamer.cryptocompare.com')
 	// 	socket.on('connect', () => {
