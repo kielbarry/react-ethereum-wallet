@@ -30,21 +30,24 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = this.props;
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
         let web3 = this.props.web3.web3Instance;
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
         this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
-        Utils.getAccounts(web3, this.props.setWallets);
+        Utils.getAccounts(
+          web3, 
+          this.props.setWallets,
+          this.props.updateTotalBalance
+        );
         Utils.getNewBlockHeaders(
           web3,
           this.props.updateBlockHeader,
           this.props.updatePeerCount
         );
-
         this.props.createInitWalletContract(WalletUtils.initWalletContact(web3));
-
       }
     }, 1000);
   }
@@ -61,6 +64,37 @@ class App extends Component {
     window.addEventListener('focus', e =>
       document.body.classList.remove('app-blur')
     );
+  }
+
+  displayPriceFormatter(){
+    let web3 = this.props.web3.web3Instance;
+    let currency = this.props.reducers.currency;
+    let totalBalance = this.props.reducers.totalBalance.toString()
+    let exchangeRates = this.props.reducers.exchangeRates
+    if(exchangeRates === undefined || exchangeRates === null) return;
+    let displayPrice;
+
+    if(currency === 'FINNEY') {
+      displayPrice = web3.utils.fromWei(totalBalance, 'finney')
+    } else {
+      displayPrice = web3.utils.fromWei(totalBalance, 'ether')
+      if(currency !== 'ETHER') {
+        displayPrice = Number(
+          Math.round(displayPrice*exchangeRates[currency.toLowerCase()]+'e2')+'e-2'
+        )
+      }
+    }
+    this.props.updateDisplayValue(displayPrice)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    if( 
+      (this.props.reducers.totalBalance !== prevProps.reducers.totalBalance) 
+      || (this.props.reducers.currency !== prevProps.reducers.currency)
+      || !Object.is(this.props.reducers.exchangeRates, prevProps.reducers.exchangeRates)
+    ) {
+      this.displayPriceFormatter();
+    }
   }
 
   render() {

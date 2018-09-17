@@ -24,24 +24,31 @@ const reducers = (state = initialState, action) => {
 				...state,
 				Wallet: action.payload,
 			}
-		case 'UPDATE_EXCHANGE_RATES': {
+		case 'UPDATE_EXCHANGE_RATES':
 			return {
 				...state,
 				exchangeRates: action.payload,
 			};
-		}
-		case 'UPDATE_ETHER_PRICES': {
+		case 'UPDATE_ETHER_PRICES':
 			return {
 				...state,
 				prices: action.payload,
 			};
-		}
-		case 'SET_SELECTED_WALLET': {
+		case 'SET_SELECTED_WALLET':
 			return {
 				...state,
 				selectedWallet: action.payload,
 			};
-		}
+		case 'UPDATE_DISPLAY_VALUE':
+			return {
+				...state,
+				displayValue: action.payload
+			}
+		case 'UPDATE_TOTAL_BALANCE':
+			return {
+				...state,
+				totalBalance: action.payload,
+			}
 		case 'SET_WALLETS':
 			return {
 				...state,

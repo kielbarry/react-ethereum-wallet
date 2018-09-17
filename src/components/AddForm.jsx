@@ -14,7 +14,6 @@ export class AddForm extends Component {
 
   renderRedirectButton() {
     let field = this.props.field;
-    // let web3 = this.props.web3
     return (
       <a href={field.link} className={field.buttonClass}>
         <div className="account-pattern">+</div>
@@ -62,13 +61,11 @@ export class AddForm extends Component {
 
   render() {
     let field = this.props.field;
-    // let web3
-    // if(this.props.web3 != null) web3 = this.props.web3.web3Instance
     return (
       <React.Fragment>
-        {field.redirect
-          ? this.renderRedirectButton()
-          : this.renderActionButton()}
+        {
+          field.redirect ? this.renderRedirectButton() : this.renderActionButton()
+        }
       </React.Fragment>
     );
   }

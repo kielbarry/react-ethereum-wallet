@@ -53,6 +53,20 @@ export const selectedWallet = wallet => dispatch => {
 	});
 };
 
+export const updateDisplayValue = value => dispatch => {
+	dispatch({
+		type: actionTypes.UPDATE_DISPLAY_VALUE,
+		payload: value
+	});
+}
+
+export const updateTotalBalance = totalBalance => dispatch => {
+	dispatch({
+		type: actionTypes.UPDATE_TOTAL_BALANCE,
+		payload: totalBalance,
+	});
+};
+
 export const setWallets = Wallets => dispatch => {
 	dispatch({
 		type: actionTypes.SET_WALLETS,

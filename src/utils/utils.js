@@ -89,13 +89,20 @@ export function createNewAccount(web3, cb) {
   // web3.personal.newAccount()
 }
 
-export function getAccounts(web3, cb) {
+export function getAccounts(web3, cb1, cb2) {
   web3.eth.getAccounts().then(accounts => {
+
+    
+    let totalBalance = 0
     // eslint-disable-next-line
     accounts.map(acc => {
       let account = acc;
-      web3.eth.getBalance(acc, (err, balance) => cb({ account, balance }));
-    });
+      web3.eth.getBalance(acc, (err, balance) => {
+        cb1({ account, balance })
+        totalBalance += Number(balance)
+        cb2(totalBalance)
+      });
+    })
   });
 }
 

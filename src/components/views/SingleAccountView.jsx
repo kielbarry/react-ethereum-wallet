@@ -9,8 +9,6 @@ export class SingleAccountView extends Component {
 	constructor(props) {
 		super(props);
 		this.state = this.props;
-		console.log(this.state);
-		console.log(this.props);
 	}
 
 	componentDidMount() {
@@ -21,9 +19,7 @@ export class SingleAccountView extends Component {
 		if (this.state.displaySU === undefined)
 			this.setState({ displaySU: false });
 		else {
-			this.state.displaySU
-				? this.setState({ displaySU: false })
-				: this.setState({ displaySU: true });
+			this.state.displaySU ? this.setState({ displaySU: false }) : this.setState({ displaySU: true });
 		}
 	}
 
