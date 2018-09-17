@@ -36,15 +36,14 @@ const listInputs = [
 ];
 
 class WatchItem extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
   }
 
-
   handleOnKeyUp(e) {
-    console.log(e)
-    console.log("advfadsvf")
+    console.log(e);
+    console.log('advfadsvf');
   }
 
   render() {
@@ -55,7 +54,7 @@ class WatchItem extends Component {
       <div className="dapp-modal-overlay">
         <section className="dapp-modal-container modals-add-custom-contract">
           <h1>Watch contract</h1>
-
+          {/*
            <InputItem 
               key={`contract-field-100`} 
               field={listInputs[0]} 
@@ -63,16 +62,14 @@ class WatchItem extends Component {
               onClick={this.unitSelected}
               onKeyUp={ this.handleOnKeyUp }
               />
-          {
-            listInputs.map((field, i) => (
-
-              <InputItem 
-              key={`contract-field-${i}`} 
-              field={field} 
-              onKeyPress={ this.handleOnKeyUp }
-              />
-            ))
-          }
+          */}
+          {listInputs.map((field, i) => (
+            <InputItem
+              key={`contract-field-${i}`}
+              field={field}
+              onKeyPress={this.handleOnKeyUp}
+            />
+          ))}
 
           <div className="dapp-modal-buttons">
             <button className="cancel">Cancel</button>

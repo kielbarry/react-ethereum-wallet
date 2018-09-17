@@ -57,5 +57,5 @@ class AccountItem extends Component {
 
 export default connect(
   null,
-  { selectedWallet },
+  { selectedWallet }
 )(AccountItem);

@@ -21,17 +21,20 @@ class SelectableUnit extends Component {
     document.removeEventListener('mousedown', this.unitSelected, false);
   }
 
-  componentDidUpdate(prevProps, prevState) {}
-
   unitSelected(e) {
     if (this.node.contains(e.target)) {
-      const newUnit = { CurrencyUnit: e.target.getAttribute('data-value').toUpperCase()};
+      const newUnit = {
+        CurrencyUnit: e.target.getAttribute('data-value').toUpperCase(),
+      };
       this.props.updateCurrency(newUnit);
     }
   }
 
   render() {
-    let selectableUnits = keyIndex(['ether','finney','btc','usd','eur','gbp','brl'], 1)
+    let selectableUnits = keyIndex(
+      ['ether', 'finney', 'btc', 'usd', 'eur', 'gbp', 'brl'],
+      1
+    );
     let cn = require('classnames');
     let newClasses = cn({
       'simple-modal': true,
@@ -40,29 +43,27 @@ class SelectableUnit extends Component {
 
     return (
       <div
-      id="selectableUnitDrawer"
-      className={newClasses}
-      ref={node => (this.node = node)}
+        id="selectableUnitDrawer"
+        className={newClasses}
+        ref={node => (this.node = node)}
       >
         <ul>
-        {
-          selectableUnits.map(item => {
-            return(
+          {selectableUnits.map(item => {
+            return (
               <li key={item.id}>
-                <button
-                data-value={item.value}
-                onClick={this.unitSelected}
-                > 
-                { item.value.toUpperCase()}
+                <button data-value={item.value} onClick={this.unitSelected}>
+                  {item.value.toUpperCase()}
                 </button>
               </li>
-            )
-          })
-        }
+            );
+          })}
         </ul>
       </div>
     );
   }
 }
 
-export default connect(null, { updateCurrency })(SelectableUnit);
+export default connect(
+  null,
+  { updateCurrency }
+)(SelectableUnit);
