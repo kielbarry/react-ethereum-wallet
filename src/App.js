@@ -38,16 +38,18 @@ class App extends Component {
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
         this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
         Utils.getAccounts(
-          web3, 
+          web3,
           this.props.setWallets,
-          this.props.updateTotalBalance
+          this.props.updateTotalBalance,
         );
         Utils.getNewBlockHeaders(
           web3,
           this.props.updateBlockHeader,
-          this.props.updatePeerCount
+          this.props.updatePeerCount,
         );
-        this.props.createInitWalletContract(WalletUtils.initWalletContact(web3));
+        this.props.createInitWalletContract(
+          WalletUtils.initWalletContact(web3),
+        );
       }
     }, 1000);
   }
@@ -59,39 +61,44 @@ class App extends Component {
       });
     }, 15000);
     window.addEventListener('blur', e =>
-      document.body.classList.add('app-blur')
+      document.body.classList.add('app-blur'),
     );
     window.addEventListener('focus', e =>
-      document.body.classList.remove('app-blur')
+      document.body.classList.remove('app-blur'),
     );
   }
 
-  displayPriceFormatter(){
+  displayPriceFormatter() {
     let web3 = this.props.web3.web3Instance;
     let currency = this.props.reducers.currency;
-    let totalBalance = this.props.reducers.totalBalance.toString()
-    let exchangeRates = this.props.reducers.exchangeRates
-    if(exchangeRates === undefined || exchangeRates === null) return;
+    let totalBalance = this.props.reducers.totalBalance.toString();
+    let exchangeRates = this.props.reducers.exchangeRates;
+    if (exchangeRates === undefined || exchangeRates === null) return;
     let displayPrice;
 
-    if(currency === 'FINNEY') {
-      displayPrice = web3.utils.fromWei(totalBalance, 'finney')
+    if (currency === 'FINNEY') {
+      displayPrice = web3.utils.fromWei(totalBalance, 'finney');
     } else {
-      displayPrice = web3.utils.fromWei(totalBalance, 'ether')
-      if(currency !== 'ETHER') {
+      displayPrice = web3.utils.fromWei(totalBalance, 'ether');
+      if (currency !== 'ETHER') {
         displayPrice = Number(
-          Math.round(displayPrice*exchangeRates[currency.toLowerCase()]+'e2')+'e-2'
-        )
+          Math.round(
+            displayPrice * exchangeRates[currency.toLowerCase()] + 'e2',
+          ) + 'e-2',
+        );
       }
     }
-    this.props.updateDisplayValue(displayPrice)
+    this.props.updateDisplayValue(displayPrice);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot){
-    if( 
-      (this.props.reducers.totalBalance !== prevProps.reducers.totalBalance) 
-      || (this.props.reducers.currency !== prevProps.reducers.currency)
-      || !Object.is(this.props.reducers.exchangeRates, prevProps.reducers.exchangeRates)
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (
+      this.props.reducers.totalBalance !== prevProps.reducers.totalBalance ||
+      this.props.reducers.currency !== prevProps.reducers.currency ||
+      !Object.is(
+        this.props.reducers.exchangeRates,
+        prevProps.reducers.exchangeRates,
+      )
     ) {
       this.displayPriceFormatter();
     }
@@ -129,5 +136,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  { ...Actions },
 )(App);
