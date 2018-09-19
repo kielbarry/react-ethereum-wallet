@@ -71,26 +71,25 @@ class App extends Component {
   }
 
   displayPriceFormatter() {
-    let web3 = this.props.web3.web3Instance;
-    let currency = this.props.reducers.currency;
-    let totalBalance = this.props.reducers.totalBalance.toString();
-    let exchangeRates = this.props.reducers.exchangeRates;
-    if (exchangeRates === undefined || exchangeRates === null) return;
-    let displayPrice;
-
-    if (currency === 'FINNEY') {
-      displayPrice = web3.utils.fromWei(totalBalance, 'finney');
-    } else {
-      displayPrice = web3.utils.fromWei(totalBalance, 'ether');
-      if (currency !== 'ETHER') {
-        displayPrice = Number(
-          Math.round(
-            displayPrice * exchangeRates[currency.toLowerCase()] + 'e2'
-          ) + 'e-2'
-        );
-      }
-    }
-    this.props.updateDisplayValue(displayPrice);
+    // let web3 = this.props.web3.web3Instance;
+    // let currency = this.props.reducers.currency;
+    // let totalBalance = this.props.reducers.totalBalance.toString();
+    // let exchangeRates = this.props.reducers.exchangeRates;
+    // if (exchangeRates === undefined || exchangeRates === null) return;
+    // let displayPrice;
+    // if (currency === 'FINNEY') {
+    //   displayPrice = web3.utils.fromWei(totalBalance, 'finney');
+    // } else {
+    //   displayPrice = web3.utils.fromWei(totalBalance, 'ether');
+    //   if (currency !== 'ETHER') {
+    //     displayPrice = Number(
+    //       Math.round(
+    //         displayPrice * exchangeRates[currency.toLowerCase()] + 'e2'
+    //       ) + 'e-2'
+    //     );
+    //   }
+    // }
+    // this.props.updateDisplayValue(displayPrice);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
