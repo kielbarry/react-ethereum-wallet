@@ -152,7 +152,9 @@ class App extends Component {
                 <MistAlertBubble />
               </main>
             </div>
+            {/*
             <GlobalNotifications />
+          */}
             <NoConnection connection={this.props.web3} />
           </div>
         </div>
