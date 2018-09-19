@@ -20,7 +20,7 @@ import NavBar from './components/navbar';
 
 // components
 import MistAlertBubble from './components/mistAlertBubble.js';
-import GlobalNotifications from './components/elements/GlobalNotifications.jsx';
+// import GlobalNotifications from './components/elements/GlobalNotifications.jsx';
 
 // Modals
 import NoConnection from './components/views/modals/NoConnection.jsx';
