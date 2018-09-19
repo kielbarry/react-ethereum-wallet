@@ -1,6 +1,29 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
+export function displayPriceFormatter(props) {
+  let web3 = props.web3.web3Instance;
+  let currency = props.reducers.currency;
+  let totalBalance = props.reducers.totalBalance.toString();
+  let exchangeRates = props.reducers.exchangeRates;
+  if (exchangeRates === undefined || exchangeRates === null) return;
+  let displayPrice;
+  if (currency === 'FINNEY') {
+    displayPrice = web3.utils.fromWei(totalBalance, 'finney');
+  } else {
+    displayPrice = web3.utils.fromWei(totalBalance, 'ether');
+    if (currency !== 'ETHER') {
+      displayPrice = Number(
+        Math.round(
+          displayPrice * exchangeRates[currency.toLowerCase()] + 'e2'
+        ) + 'e-2'
+      );
+    }
+  }
+  return displayPrice;
+  // this.props.updateDisplayValue(displayPrice);
+}
+
 export async function getCryptoComparePrices() {
   // TODO :  used to update transactions as well
   // TODO : extraParams field in url
