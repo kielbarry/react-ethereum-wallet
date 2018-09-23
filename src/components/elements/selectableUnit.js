@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import keyIndex from 'react-key-index';
 import { connect } from 'react-redux';
 // import onClickOutside from "react-onclickoutside";
+import shortid from 'shortid';
 
 import { updateCurrency } from '../../actions/actions.js';
 
@@ -31,14 +31,19 @@ class SelectableUnit extends Component {
   }
 
   render() {
-    let selectableUnits = keyIndex(
-      ['ether', 'finney', 'btc', 'usd', 'eur', 'gbp', 'brl'],
-      1
-    );
+    let selectableUnits = [
+      'ether',
+      'finney',
+      'btc',
+      'usd',
+      'eur',
+      'gbp',
+      'brl',
+    ];
     let cn = require('classnames');
     let newClasses = cn({
       'simple-modal': true,
-      animate: this.props.displaySU,
+      animate: !this.props.displaySU,
     });
 
     return (
@@ -50,9 +55,9 @@ class SelectableUnit extends Component {
         <ul>
           {selectableUnits.map(item => {
             return (
-              <li key={item.id}>
-                <button data-value={item.value} onClick={this.unitSelected}>
-                  {item.value.toUpperCase()}
+              <li key={shortid.generate()}>
+                <button data-value={item} onClick={this.unitSelected}>
+                  {item.toUpperCase()}
                 </button>
               </li>
             );

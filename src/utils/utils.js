@@ -104,6 +104,8 @@ export function nameProvider(prov) {
 export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/web3.js/issues/494');
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
+  console.log('here');
+  // web3.eth.accounts.wallet.add().then(resp =>console.log(resp));
   // web3.eth.personal.newAccount(function(err, resp){
   //   console.log(err)
   //   console.log(resp)

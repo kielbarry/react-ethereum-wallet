@@ -11,6 +11,10 @@ class NavBar extends Component {
     this.state = this.props;
   }
 
+  // componentWillMount() {
+  //   if(this.state.displaySU === undefined) this.setState({ displaySU: false })
+  // }
+
   componentDidMount() {
     this.setState({
       small: false,

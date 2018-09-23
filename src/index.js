@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import store from './store/store.js';
 // web3Init
 import getWeb3 from './web3/getWeb3.js';
-require('dotenv').config();
 
 getWeb3.catch(err => console.warn('Error in web3 initialization.', err));
 
