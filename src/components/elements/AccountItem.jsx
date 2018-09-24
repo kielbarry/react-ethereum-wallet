@@ -6,6 +6,8 @@ import { selectedWallet } from '../../actions/actions.js';
 
 import makeBlockie from 'ethereum-blockies-base64';
 
+import * as Utils from '../../utils/utils.js';
+
 class AccountItem extends Component {
   constructor(props) {
     super(props);
@@ -21,10 +23,23 @@ class AccountItem extends Component {
     });
   }
 
+  renderBalance() {
+    let wallet = this.props.wallet;
+    return (
+      <React.Fragment>
+        <span className="account-balance">
+          {this.props.props.web3 && this.props.props.web3.web3Instance
+            ? Utils.displayPriceFormatter(this.props.props, wallet)
+            : wallet}
+          <span> {this.props.props.reducers.currency} </span>
+        </span>
+      </React.Fragment>
+    );
+  }
+
   render() {
     let address = this.props.address;
     let number = this.props.number;
-    let wallet = this.props.wallet;
     const AccountURL = '/account/' + address;
     const icon = makeBlockie(this.props.address);
     let divStyle = {
@@ -51,16 +66,13 @@ class AccountItem extends Component {
               alt=""
             />
           </span>
+
           <ul className="token-list" />
           <h3 className="not-ens-name">
             <i className="icon-key" title="Account" />
             Account {number}
           </h3>
-
-          <span className="account-balance">
-            {wallet}
-            <span> ether </span>
-          </span>
+          {this.renderBalance()}
           <span className="account-id">{address}</span>
         </Link>
       </React.Fragment>

@@ -1,10 +1,10 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
-export function displayPriceFormatter(props) {
+export function displayPriceFormatter(props, balance) {
   let web3 = props.web3.web3Instance;
   let currency = props.reducers.currency;
-  let totalBalance = props.reducers.totalBalance.toString();
+  let totalBalance = balance.toString();
   let exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;
   let displayPrice;
@@ -21,7 +21,6 @@ export function displayPriceFormatter(props) {
     }
   }
   return displayPrice;
-  // this.props.updateDisplayValue(displayPrice);
 }
 
 export async function getCryptoComparePrices() {

@@ -4,6 +4,7 @@ import SU from './elements/selectableUnit.js';
 import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
 import { NavFields } from '../constants/FieldConstants.jsx';
+import * as Utils from '../utils/utils.js';
 
 class NavBar extends Component {
   constructor(props) {
@@ -80,7 +81,9 @@ class NavBar extends Component {
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
         <span className={field.firstClass}>
-          {this.props.totalBalance}
+          {this.props.web3 && this.props.web3.web3Instance
+            ? Utils.displayPriceFormatter(this.props, this.props.totalBalance)
+            : this.props.totalBalance}
           <span className="inline-form" name="unit">
             <button
               type="button"
@@ -137,12 +140,13 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = state => ({
+  ...state,
+
   timeSinceLastBlock: state.reducers.timeSinceLastBlock,
   peerCount: state.reducers.peerCount,
   peerCountIntervalId: state.reducers.peerCountIntervalId,
   totalBalance: state.reducers.totalBalance,
   blockHeader: state.reducers.blockHeader,
-  // ...state,
   currency: state.reducers.currency,
 });
 

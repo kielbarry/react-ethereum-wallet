@@ -6,6 +6,7 @@ import AccountActionBar from '../elements/AccountActionBar.js';
 import NotFound from './NotFound.jsx';
 
 import makeBlockie from 'ethereum-blockies-base64';
+import * as Utils from '../../utils/utils.js';
 
 export class SingleAccountView extends Component {
   constructor(props) {
@@ -27,6 +28,8 @@ export class SingleAccountView extends Component {
   }
 
   renderSingleAccount() {
+    console.log(this.props);
+
     let sw = this.props.reducers.selectedWallet;
     const icon = makeBlockie(sw.address);
     let divStyle = {
@@ -62,7 +65,9 @@ export class SingleAccountView extends Component {
             </h2>
             <div className="clear" />
             <span className="account-balance">
-              {sw.wallet}
+              {this.props.web3 && this.props.web3.web3Instance
+                ? Utils.displayPriceFormatter(this.props, sw.wallet)
+                : sw.wallet}
               <span className="inline-form" name="unit">
                 <button
                   type="button"
