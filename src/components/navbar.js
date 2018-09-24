@@ -105,11 +105,16 @@ class NavBar extends Component {
     return (
       <li className={field.liClass}>
         <i className={field.firstIcon} />
-        {this.props.peerCount}
-        <span className={field.secondClass}> {field.firstText} </span>|
-        <i className={field.secondIcon} style={inlineStyle} />
-        {this.props.blockHeader.number}
-        <span className={field.secondClass}>{this.state.time}</span>
+        <span style={inlineStyle} className={field.secondClass}>
+          {this.props.peerCount}
+          &nbsp;
+          {field.firstText}
+        </span>
+        &nbsp; &nbsp;| &nbsp; &nbsp;
+        <i className={field.secondIcon} />
+        <span>&nbsp; {this.props.blockHeader.number}</span>
+        <i className={field.thirdIcon} style={inlineStyle} />
+        <span className={field.secondClass}>&nbsp; {this.state.time}</span>
       </li>
     );
   }
