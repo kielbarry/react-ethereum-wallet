@@ -129,26 +129,20 @@ class App extends Component {
         <div>
           <div className="App">
             <NavBar />
-
             <div className="dapp-flex-content">
               <main className="dapp-content">
-                <div>
-                  <AnimatedSwitch
-                    atEnter={bounceTransition.atEnter}
-                    atLeave={bounceTransition.atLeave}
-                    atActive={bounceTransition.atActive}
-                    mapStyles={mapStyles}
-                  >
-                    <Route path="/account/*" component={SingleAccountView} />
-                    <Route exact path="/" component={AccountView} />
-                    <Route
-                      exact
-                      path="/send-from"
-                      component={SendContractForm}
-                    />
-                    <Route exact path="/contracts" component={ContractsView} />
-                  </AnimatedSwitch>
-                </div>
+                <AnimatedSwitch
+                  atEnter={bounceTransition.atEnter}
+                  atLeave={bounceTransition.atLeave}
+                  atActive={bounceTransition.atActive}
+                  mapStyles={mapStyles}
+                >
+                  <Route path="/account/*" component={SingleAccountView} />
+                  <Route exact path="/" component={AccountView} />
+                  <Route exact path="/send-from" component={SendContractForm} />
+                  <Route exact path="/contracts" component={ContractsView} />
+                </AnimatedSwitch>
+
                 <MistAlertBubble />
               </main>
             </div>

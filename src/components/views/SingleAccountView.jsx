@@ -29,7 +29,9 @@ export class SingleAccountView extends Component {
   renderSingleAccount() {
     let sw = this.props.reducers.selectedWallet;
     const icon = makeBlockie(sw.address);
-
+    let divStyle = {
+      backgroundImage: 'url(' + icon + ')',
+    };
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
@@ -39,8 +41,14 @@ export class SingleAccountView extends Component {
             title="This is a security icon.  If there were any change to the address, 
 						the resulting icon would be a completely different one"
             src={icon}
+            style={divStyle}
           >
-            <img src={icon} className="identicon-pixel" alt="" />
+            <img
+              src={icon}
+              style={divStyle}
+              className="identicon-pixel"
+              alt=""
+            />
           </span>
           <header>
             <h1>

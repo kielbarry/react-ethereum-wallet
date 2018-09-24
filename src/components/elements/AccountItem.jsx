@@ -27,7 +27,9 @@ class AccountItem extends Component {
     let wallet = this.props.wallet;
     const AccountURL = '/account/' + address;
     const icon = makeBlockie(this.props.address);
-
+    let divStyle = {
+      backgroundImage: 'url(' + icon + ')',
+    };
     return (
       <React.Fragment>
         <Link
@@ -40,8 +42,14 @@ class AccountItem extends Component {
             title="This is a security icon.  If there were any change to the address, 
           the resulting icon would be a completely different one"
             src={icon}
+            style={divStyle}
           >
-            <img src={icon} className="identicon-pixel" alt="" />
+            <img
+              src={icon}
+              style={divStyle}
+              className="identicon-pixel"
+              alt=""
+            />
           </span>
           <ul className="token-list" />
           <h3 className="not-ens-name">
