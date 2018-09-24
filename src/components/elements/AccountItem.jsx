@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { selectedWallet } from '../../actions/actions.js';
 
+import makeBlockie from 'ethereum-blockies-base64';
+
 class AccountItem extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,7 @@ class AccountItem extends Component {
     let number = this.props.number;
     let wallet = this.props.wallet;
     const AccountURL = '/account/' + address;
+    const icon = makeBlockie(this.props.address);
 
     return (
       <React.Fragment>
@@ -34,10 +37,12 @@ class AccountItem extends Component {
         >
           <span
             className="dapp-identicon dapp-small"
-            title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
-          />
-          <img className="identicon-pixel" src={AccountURL} alt="" />
-
+            title="This is a security icon.  If there were any change to the address, 
+          the resulting icon would be a completely different one"
+            src={icon}
+          >
+            <img src={icon} className="identicon-pixel" alt="" />
+          </span>
           <ul className="token-list" />
           <h3 className="not-ens-name">
             <i className="icon-key" title="Account" />

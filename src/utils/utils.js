@@ -110,7 +110,7 @@ export function createNewAccount(web3, cb) {
   //   console.log(err)
   //   console.log(resp)
   // })
-  // web3.eth.accounts.create().then(console.log)
+  // web3.eth.accounts.create(this.random32Bytes()).then(console.log)
   // web3.personal.newAccount()
 }
 
