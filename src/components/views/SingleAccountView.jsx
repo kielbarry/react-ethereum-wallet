@@ -28,8 +28,6 @@ export class SingleAccountView extends Component {
   }
 
   renderSingleAccount() {
-    console.log(this.props);
-
     let sw = this.props.reducers.selectedWallet;
     const icon = makeBlockie(sw.address);
     let divStyle = {

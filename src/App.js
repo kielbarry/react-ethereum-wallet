@@ -33,6 +33,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
+    this.getCCP = this.getCCP.bind(this);
+    this.getCCP();
+    this.CCInterval = setInterval(() => {
+      this.getCCP();
+    }, 15000);
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -56,18 +61,23 @@ class App extends Component {
     }, 1000);
   }
 
+  getCCP = () => {
+    Utils.getCryptoComparePrices().then(exchangeRates => {
+      this.props.updateEtherPrices(exchangeRates);
+    });
+  };
+
   componentDidMount() {
-    setInterval(() => {
-      Utils.getCryptoComparePrices().then(exchangeRates => {
-        this.props.updateEtherPrices(exchangeRates);
-      });
-    }, 15000);
     window.addEventListener('blur', e =>
       document.body.classList.add('app-blur')
     );
     window.addEventListener('focus', e =>
       document.body.classList.remove('app-blur')
     );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.CCInterval);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
