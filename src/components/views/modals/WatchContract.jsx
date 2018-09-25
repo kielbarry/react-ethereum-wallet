@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import InputItem from '../../elements/InputItem.jsx';
+import * as Actions from '../../../actions/actions.js';
 
 const listInputs = [
   {
@@ -39,6 +40,15 @@ class WatchItem extends Component {
   constructor(props) {
     super(props);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
+    this.cancelFunction = this.cancelFunction.bind(this);
+    this.submitFunction = this.submitFunction.bind(this);
+  }
+
+  shouldComponentUpdate(prevProps, prevState) {
+    if (this.props.display !== prevProps.display) {
+      return true;
+    }
+    return false;
   }
 
   handleOnKeyUp(e) {
@@ -46,12 +56,20 @@ class WatchItem extends Component {
     console.log('advfadsvf');
   }
 
+  cancelFunction(e) {
+    this.props.closeModal('displayWatchContract');
+  }
+
+  submitFunction(e) {
+    this.props.closeModal('displayWatchContract');
+  }
+
   render() {
     // var cn = require('classnames');
     // var newClasses = cn({
     // });
     return (
-      <div className="dapp-modal-overlay">
+      <div className={this.props.display}>
         <section className="dapp-modal-container modals-add-custom-contract">
           <h1>Watch contract</h1>
           {/*
@@ -67,13 +85,20 @@ class WatchItem extends Component {
             <InputItem
               key={`contract-field-${i}`}
               field={field}
-              onKeyPress={this.handleOnKeyUp}
+              onKeyPress={() => this.handleOnKeyUp()}
             />
           ))}
 
           <div className="dapp-modal-buttons">
-            <button className="cancel">Cancel</button>
-            <button className="ok dapp-primary-button">OK</button>
+            <button className="cancel" onClick={() => this.cancelFunction()}>
+              Cancel
+            </button>
+            <button
+              className="ok dapp-primary-button"
+              onClick={() => this.submitFunction()}
+            >
+              OK
+            </button>
           </div>
         </section>
       </div>
@@ -81,7 +106,11 @@ class WatchItem extends Component {
   }
 }
 const mapStateToProps = state => {
+  // return {modals: state.modals}
   return state;
 };
 
-export default connect(mapStateToProps)(WatchItem);
+export default connect(
+  mapStateToProps,
+  { ...Actions }
+)(WatchItem);

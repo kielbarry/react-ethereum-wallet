@@ -1,89 +1,109 @@
 const initialState = {
-	displayAlertMessage: false,
-	alertKey: 'alert_20171104-hidden',
-	peerCountIntervalId: null,
-	currency: 'ETHER',
-	totalBalance: 0.0,
-	Wallets: {},
-	CustomContracts: {},
-	Transactions: {},
-	PendingConfirmations: {},
-	Events: {},
-	Tokens: {},
-	peerCount: 0,
-	blockHeader: 0,
-	timeSinceLastBlock: 0,
-	network: '',
-	provider: '',
+  displayAlertMessage: false,
+  alertKey: 'alert_20171104-hidden',
+  peerCountIntervalId: null,
+  currency: 'ETHER',
+  totalBalance: 0.0,
+  Wallets: {},
+  CustomContracts: {},
+  Transactions: {},
+  PendingConfirmations: {},
+  Events: {},
+  Tokens: {},
+  peerCount: 0,
+  blockHeader: 0,
+  timeSinceLastBlock: 0,
+  network: '',
+  provider: '',
+  modals: {
+    displayWatchContract: false,
+    displayWatchCustomToken: false,
+  },
 };
 
 const reducers = (state = initialState, action) => {
-	switch (action.type) {
-		case 'CREATE_INIT_WALLET_CONTRACT':
-			return {
-				...state,
-				Wallet: action.payload,
-			}
-		case 'UPDATE_EXCHANGE_RATES':
-			return {
-				...state,
-				exchangeRates: action.payload,
-			};
-		case 'UPDATE_ETHER_PRICES':
-			return {
-				...state,
-				prices: action.payload,
-			};
-		case 'SET_SELECTED_WALLET':
-			return {
-				...state,
-				selectedWallet: action.payload,
-			};
-		case 'UPDATE_DISPLAY_VALUE':
-			return {
-				...state,
-				displayValue: action.payload
-			}
-		case 'UPDATE_TOTAL_BALANCE':
-			return {
-				...state,
-				totalBalance: action.payload,
-			}
-		case 'SET_WALLETS':
-			return {
-				...state,
-				Wallets: Object.assign({}, state.Wallets, {
-					[action.payload.account]: action.payload.balance,
-				}),
-			};
-		case 'UPDATE_PROVIDER':
-			return {
-				...state,
-				provider: action.payload,
-			};
-		case 'UPDATE_BLOCKHEADER':
-			return {
-				...state,
-				blockHeader: action.payload,
-			};
-		case 'UPDATE_PEERCOUNT':
-			return {
-				...state,
-				peerCount: action.payload,
-			};
-		case 'UPDATE_CURRENCY_UNIT':
-			return {
-				...state,
-				currency: action.payload,
-			};
-		case 'UPDATE_CONNECTED_NETWORK':
-			return {
-				...state,
-				network: action.payload,
-			};
-		default:
-			return state;
-	}
+  if (action.type === 'DISPLAY_MODAL') {
+  }
+  switch (action.type) {
+    case 'CLOSE_MODAL':
+      return {
+        ...state,
+        modals: Object.assign({}, ...state.modals, {
+          [action.payload]: false,
+        }),
+      };
+    case 'DISPLAY_MODAL':
+      return {
+        ...state,
+        modals: Object.assign({}, ...state.modals, {
+          [action.payload]: true,
+        }),
+      };
+    case 'CREATE_INIT_WALLET_CONTRACT':
+      return {
+        ...state,
+        Wallet: action.payload,
+      };
+    case 'UPDATE_EXCHANGE_RATES':
+      return {
+        ...state,
+        exchangeRates: action.payload,
+      };
+    case 'UPDATE_ETHER_PRICES':
+      return {
+        ...state,
+        prices: action.payload,
+      };
+    case 'SET_SELECTED_WALLET':
+      return {
+        ...state,
+        selectedWallet: action.payload,
+      };
+    case 'UPDATE_DISPLAY_VALUE':
+      return {
+        ...state,
+        displayValue: action.payload,
+      };
+    case 'UPDATE_TOTAL_BALANCE':
+      return {
+        ...state,
+        totalBalance: action.payload,
+      };
+    case 'SET_WALLETS':
+      return {
+        ...state,
+        Wallets: Object.assign({}, state.Wallets, {
+          [action.payload.account]: action.payload.balance,
+        }),
+      };
+    case 'UPDATE_PROVIDER':
+      return {
+        ...state,
+        provider: action.payload,
+      };
+    case 'UPDATE_BLOCKHEADER':
+      return {
+        ...state,
+        blockHeader: action.payload,
+      };
+    case 'UPDATE_PEERCOUNT':
+      return {
+        ...state,
+        peerCount: action.payload,
+      };
+    case 'UPDATE_CURRENCY_UNIT':
+      return {
+        ...state,
+        currency: action.payload,
+      };
+    case 'UPDATE_CONNECTED_NETWORK':
+      return {
+        ...state,
+        network: action.payload,
+      };
+    default:
+      return state;
+  }
 };
 
 export default reducers;

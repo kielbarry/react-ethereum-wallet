@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import SU from '../elements/selectableUnit.js';
-import AccountActionBar from '../elements/AccountActionBar.js';
+import AccountActionBar from '../elements/AccountActionBar.jsx';
 import NotFound from './NotFound.jsx';
 
 import makeBlockie from 'ethereum-blockies-base64';

@@ -10,15 +10,23 @@ import '../../stylesheets/mergedstyles.css';
 class SelectableUnit extends Component {
   constructor(props) {
     super(props);
+    this.state = this.props;
     this.unitSelected = this.unitSelected.bind(this);
   }
 
   componentWillMount() {
+    this.setState({ displaySU: false });
     document.addEventListener('mousedown', this.unitSelected, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.unitSelected, false);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.displaySU !== prevState.displaySU) {
+      this.setState({ displaySU: !this.props.displaySU });
+    }
   }
 
   unitSelected(e) {
@@ -27,6 +35,7 @@ class SelectableUnit extends Component {
         CurrencyUnit: e.target.getAttribute('data-value').toUpperCase(),
       };
       this.props.updateCurrency(newUnit);
+      // this.setState({displaySU: !this.state.displaySU})
     }
   }
 
@@ -43,7 +52,7 @@ class SelectableUnit extends Component {
     let cn = require('classnames');
     let newClasses = cn({
       'simple-modal': true,
-      animate: !this.props.displaySU,
+      animate: this.state.displaySU,
     });
 
     return (

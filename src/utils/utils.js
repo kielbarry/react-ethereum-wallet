@@ -47,8 +47,8 @@ export async function getCryptoComparePrices() {
     })
     .catch(err => {
       console.warn(
-        'Cannot connect to https://min-api.cryptocompare.com/ to get price ticker data, please check your internet connection.' +
-          err
+        `Cannot connect to https://min-api.cryptocompare.com/ to get price ticker data, 
+        please check your internet connection.` + err
       );
       return err;
     });
@@ -134,7 +134,7 @@ export function getNewBlockHeaders(web3, cb1, cb2) {
       cb1({
         gasLimit: b.gasLimit,
         gasUsed: b.gasUsed,
-        number: b.number,
+        number: b.number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
         size: b.size,
         timestamp: b.timestamp,
       });

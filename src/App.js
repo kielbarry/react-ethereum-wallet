@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { spring, AnimatedSwitch } from 'react-router-transition';
-// import cn from 'classnames';
+import cn from 'classnames';
 
 // actions
 import * as Actions from './actions/actions.js';
@@ -24,6 +24,8 @@ import MistAlertBubble from './components/mistAlertBubble.js';
 
 // Modals
 import NoConnection from './components/views/modals/NoConnection.jsx';
+import WatchContract from './components/views/modals/WatchContract.jsx';
+import QRCode from './components/views/modals/QRCode.jsx';
 
 // stylesheets
 import './stylesheets/mergedstyles.css';
@@ -35,9 +37,7 @@ class App extends Component {
     this.state = this.props;
     this.getCCP = this.getCCP.bind(this);
     this.getCCP();
-    this.CCInterval = setInterval(() => {
-      this.getCCP();
-    }, 15000);
+    this.CCInterval = setInterval(() => this.getCCP(), 15000);
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -91,6 +91,18 @@ class App extends Component {
     ) {
       // this.props.updateDisplayValue(Utils.displayPriceFormatter(this.props));
     }
+    Object.values(this.props.reducers.modals).includes(true)
+      ? document.body.classList.add('disable-scroll', 'blur', 'app-blur')
+      : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
+  }
+
+  renderModal() {
+    // let modals = this.props.reducers.modals;
+    let modals = this.props.reducers.modals;
+    let modalClass = cn({
+      'dapp-modal-overlay': modals.displayWatchContract || false,
+    });
+    return <WatchContract display={modalClass} />;
   }
 
   render() {
@@ -112,6 +124,13 @@ class App extends Component {
       // and rest at an opaque, normally-scaled state
       atActive: { opacity: bounce(1), scale: bounce(1) },
     };
+
+    // let modals = this.props.reducers.modals
+    // let modalClass = cn({'dapp-modal-overlay': modals.displayWatchContract})
+    let modals = this.props.reducers.modals;
+    let modalClass = cn({ 'dapp-modal-overlay': modals.displayWatchContract });
+    // console.log(modals.displayWatchContract)
+    // console.log(modalClass)
     return (
       <BrowserRouter>
         <div>
@@ -130,13 +149,14 @@ class App extends Component {
                   <Route exact path="/send-from" component={SendContractForm} />
                   <Route exact path="/contracts" component={ContractsView} />
                 </AnimatedSwitch>
-
                 <MistAlertBubble />
               </main>
             </div>
             {/*
             <GlobalNotifications />
           */}
+            <WatchContract display={modalClass} />
+            <QRCode />
             <NoConnection connection={this.props.web3} />
           </div>
         </div>

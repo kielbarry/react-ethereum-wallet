@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import AddForm from '../AddForm.jsx';
 
-import WatchContract from './modals/WatchContract.jsx';
+// import WatchContract from './modals/WatchContract.jsx';
 
 // import PageHeader from '../elements/PageHeaders.jsx';
 // import { ContractPageHeader } from '../../constants/FieldConstants.jsx';
@@ -16,10 +16,10 @@ class ContractsView extends Component {
     let CSL = ContractSectionList;
     return (
       <div className="dapp-container">
-        <h1><strong>Contracts</strong></h1>
+        <h1>
+          <strong>Contracts</strong>
+        </h1>
 
-        {/*<WatchContract /> */}
-        <WatchContract />
         <AddForm
           key={`contracts-view-deply-contract}`}
           field={CSL.DeployContract}

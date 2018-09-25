@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as Actions from '../actions/actions.js';
 
 // import * as Utils from '../utils/utils.js';
 
 export class AddForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = this.props;
+  }
+
   componentWillMount() {
     // document.body.addEventListener()
   }
@@ -25,22 +31,26 @@ export class AddForm extends Component {
   renderActionButton() {
     let field = this.props.field;
     let onClickFunction;
+
     switch (field.buttonDescription) {
       case 'ADD ACCOUNT':
-        onClickFunction = function(e) {
-          if (field.buttonDescription === 'ADD ACCOUNT') {
-            e.preventDefault();
-          }
+        onClickFunction = e => {
+          if (field.buttonDescription === 'ADD ACCOUNT') e.preventDefault();
         };
         break;
       case 'WATCH CONTRACT':
-        onClickFunction = function(e) {
-          console.log('here in onclick');
+        onClickFunction = e => {
+          this.props.displayModal('displayWatchContract');
+        };
+        break;
+      case 'WATCH CUSTOM TOKEN':
+        onClickFunction = e => {
+          this.props.displayModal('displayWatchCustomToken');
         };
         break;
       default:
-        onClickFunction = function(e) {
-          console.log('asdfasdfa');
+        onClickFunction = e => {
+          console.log('field.buttonDescription', field.buttonDescription);
         };
         break;
     }
@@ -63,9 +73,9 @@ export class AddForm extends Component {
     let field = this.props.field;
     return (
       <React.Fragment>
-        {
-          field.redirect ? this.renderRedirectButton() : this.renderActionButton()
-        }
+        {field.redirect
+          ? this.renderRedirectButton()
+          : this.renderActionButton()}
       </React.Fragment>
     );
   }
@@ -73,6 +83,10 @@ export class AddForm extends Component {
 
 const mapStateToProps = state => ({
   ...state,
+  modals: state.modals,
 });
 
-export default connect(mapStateToProps)(AddForm);
+export default connect(
+  mapStateToProps,
+  { ...Actions }
+)(AddForm);
