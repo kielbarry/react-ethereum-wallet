@@ -68,8 +68,10 @@ class WatchItem extends Component {
     // var cn = require('classnames');
     // var newClasses = cn({
     // });
+    let divStyle;
+    if (!this.props.display) divStyle = { display: 'none' };
     return (
-      <div className={this.props.display}>
+      <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container modals-add-custom-contract">
           <h1>Watch contract</h1>
           {/*
