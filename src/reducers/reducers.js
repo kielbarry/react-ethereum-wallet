@@ -5,6 +5,7 @@ const initialState = {
   currency: 'ETHER',
   totalBalance: 0.0,
   Wallets: {},
+  ObservedContracts: {},
   CustomContracts: {},
   Transactions: {},
   PendingConfirmations: {},
@@ -22,9 +23,28 @@ const initialState = {
 };
 
 const reducers = (state = initialState, action) => {
-  if (action.type === 'DISPLAY_MODAL') {
-  }
   switch (action.type) {
+    case 'ADD_OBSERVED_CONTRACT':
+      return {
+        ...state,
+        ObservedContracts: Object.assign(
+          {},
+          state.ObservedContracts,
+          action.payload
+        ),
+      };
+    case 'CANCEL_CONTRACT_TO_WATCH':
+      return {
+        ...state,
+        ContractToWatch: {},
+      };
+    case 'UPDATE_CONTRACT_TO_WATCH':
+      return {
+        ...state,
+        ContractToWatch: Object.assign({}, state.ContractToWatch, {
+          [action.payload.name]: action.payload.value,
+        }),
+      };
     case 'CLOSE_MODAL':
       return {
         ...state,
