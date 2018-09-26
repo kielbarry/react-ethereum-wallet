@@ -10,6 +10,7 @@ const InputType = ({ f }) => {
           name={f.name}
           placeholder={f.placeholder}
           className={f.className}
+          onKeyPress={e => this.props.onKeyPress(e)}
         />
       </div>
     </React.Fragment>
@@ -19,6 +20,7 @@ const InputType = ({ f }) => {
 const TextAreaType = ({ f }) => {
   if (!f.cols) f.cols = 30;
   if (!f.rows) f.rows = 10;
+  console.log(this);
   return (
     <React.Fragment>
       <h3>{f.title}</h3>
@@ -29,6 +31,7 @@ const TextAreaType = ({ f }) => {
           placeholder={f.placeholder}
           cols={f.cols}
           rows={f.rows}
+          onKeyPress={e => this.props.onKeyPress(e)}
         />
       </div>
     </React.Fragment>
@@ -36,6 +39,7 @@ const TextAreaType = ({ f }) => {
 };
 
 export const InputItem = ({ field }) => {
+  console.log(this);
   return (
     <React.Fragment>
       {field.editor === 'textarea' ? (
