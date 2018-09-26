@@ -25,6 +25,7 @@ import MistAlertBubble from './components/mistAlertBubble.js';
 // Modals
 import NoConnection from './components/views/modals/NoConnection.jsx';
 import WatchContract from './components/views/modals/WatchContract.jsx';
+import WatchToken from './components/views/modals/WatchToken.jsx';
 import QRCode from './components/views/modals/QRCode.jsx';
 
 // stylesheets
@@ -96,14 +97,13 @@ class App extends Component {
       : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
   }
 
-  renderModal() {
-    // let modals = this.props.reducers.modals;
-    let modals = this.props.reducers.modals;
-    let modalClass = cn({
-      'dapp-modal-overlay': modals.displayWatchContract || false,
-    });
-    return <WatchContract display={modalClass} />;
-  }
+  // renderModal() {
+  //   // let modals = this.props.reducers.modals;
+  //   let modals = this.props.reducers.modals;
+  //   let watchContract = cn({ 'dapp-modal-overlay': modals.displayWatchContract || false});
+  //   let watchToken = cn({ 'dapp-modal-overlay': modals.displayTokenContract || false});
+  //   return <WatchContract display={modalClass} />;
+  // }
 
   render() {
     // we need to map the `scale` prop we define below
@@ -128,7 +128,12 @@ class App extends Component {
     // let modals = this.props.reducers.modals
     // let modalClass = cn({'dapp-modal-overlay': modals.displayWatchContract})
     let modals = this.props.reducers.modals;
-    let modalClass = cn({ 'dapp-modal-overlay': modals.displayWatchContract });
+    let watchContract = cn({
+      'dapp-modal-overlay': modals.displayWatchContract || false,
+    });
+    let watchToken = cn({
+      'dapp-modal-overlay': modals.displayWatchToken || false,
+    });
     // console.log(modals.displayWatchContract)
     // console.log(modalClass)
     return (
@@ -155,7 +160,8 @@ class App extends Component {
             {/*
             <GlobalNotifications />
           */}
-            <WatchContract display={modalClass} />
+            <WatchToken display={watchToken} />
+            <WatchContract display={watchContract} />
             <QRCode />
             <NoConnection connection={this.props.web3} />
           </div>

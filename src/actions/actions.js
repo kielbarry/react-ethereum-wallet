@@ -2,6 +2,27 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const addObservedToken = token => dispatch => {
+  dispatch({
+    type: actionTypes.ADD_OBSERVED_TOKEN,
+    payload: token,
+  });
+};
+
+export const cancelTokenToWatch = () => dispatch => {
+  dispatch({
+    type: actionTypes.CANCEL_TOKEN_TO_WATCH,
+    payload: '',
+  });
+};
+
+export const updateTokenToWatch = tokenInfo => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_TOKEN_TO_WATCH,
+    payload: tokenInfo,
+  });
+};
+
 export const addObservedContract = contract => dispatch => {
   dispatch({
     type: actionTypes.ADD_OBSERVED_CONTRACT,

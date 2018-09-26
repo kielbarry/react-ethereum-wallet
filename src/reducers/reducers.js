@@ -6,6 +6,7 @@ const initialState = {
   totalBalance: 0.0,
   Wallets: {},
   ObservedContracts: {},
+  ObservedTokens: {},
   CustomContracts: {},
   Transactions: {},
   PendingConfirmations: {},
@@ -18,12 +19,31 @@ const initialState = {
   provider: '',
   modals: {
     displayWatchContract: false,
-    displayWatchCustomToken: false,
+    displayWatchToken: false,
   },
+  ContractToWatch: {},
+  TokenToWatch: {},
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'ADD_OBSERVED_TOKEN':
+      return {
+        ...state,
+        ObservedTokens: Object.assign({}, state.ObservedTokens, action.payload),
+      };
+    case 'CANCEL_TOKEN_TO_WATCH':
+      return {
+        ...state,
+        TokenToWatch: {},
+      };
+    case 'UPDATE_TOKEN_TO_WATCH':
+      return {
+        ...state,
+        TokenToWatch: Object.assign({}, state.TokenToWatch, {
+          [action.payload.name]: action.payload.value,
+        }),
+      };
     case 'ADD_OBSERVED_CONTRACT':
       return {
         ...state,

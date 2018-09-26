@@ -40,12 +40,14 @@ export class AddForm extends Component {
         break;
       case 'WATCH CONTRACT':
         onClickFunction = e => {
+          console.log('in watch contract');
           this.props.displayModal('displayWatchContract');
         };
         break;
       case 'WATCH CUSTOM TOKEN':
         onClickFunction = e => {
-          this.props.displayModal('displayWatchCustomToken');
+          console.log('in watch token');
+          this.props.displayModal('displayWatchToken');
         };
         break;
       default:
