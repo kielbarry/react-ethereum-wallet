@@ -594,20 +594,24 @@ class WatchItem extends Component {
     // let token = 'https://etherscan.io/address/0xe41d2489571d322189246dafa5ebde1f4699f498#code'
     // let testcontract = 'https://etherscan.io/address/0x06012c8cf97bead5deae237070f9587f8e7a266d'
     let web3;
-    let contract = this.props.reducers.ContractToWatch;
+    // let contract = this.props.reducers.ContractToWatch;
 
-    contract = EtherTankInfo;
+    let contract = EtherTankInfo;
 
-    console.log(contract);
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
-      let newContract = new web3.eth.Contract(
-        contract.jsonInterface,
-        contract.address
-      );
+      // let newContract = new web3.eth.Contract(
+      //   contract.jsonInterface,
+      //   contract.address
+      // );
+
       let con = {};
-      con[contract['contract-name']] = contract;
-      this.props.addObservedContract(con);
+      web3.eth.getBalance(contract.address, (err, res) => {
+        //if err global note
+        contract.balance = res;
+        con[contract['contract-name']] = contract;
+        this.props.addObservedContract(con);
+      });
     } else {
       // TODO:trigger global notification here
     }

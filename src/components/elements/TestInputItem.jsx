@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 class TestInputItem extends Component {
-  constructor(props) {
-    super(props);
-    // this.onKeyUp = this.props.onKeyUp.bind(this);
-  }
-
   renderInputType(f) {
     return (
       <React.Fragment>

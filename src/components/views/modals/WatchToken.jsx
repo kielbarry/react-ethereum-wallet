@@ -65,18 +65,44 @@ class WatchToken extends Component {
   submitFunction(e) {
     // let token = 'https://etherscan.io/address/0xe41d2489571d322189246dafa5ebde1f4699f498#code'
     let web3;
-    let token = this.props.reducers.TokenToWatch;
+    // let token = this.props.reducers.TokenToWatch;
+    let token = {
+      address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
+      name: 'zerox',
+      symbol: '0x',
+      division: '2',
+    };
+
+    let address = token.address;
 
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
 
-      // let newContract = new web3.eth.Contract(
-      //   contract.jsonInterface,
-      //   contract.address
-      // );
-      // let con = {};
-      // con[contract['contract-name']] = contract;
-      // this.props.addObservedContract(con);
+      //TODO: Global Notifications
+      // if(!web3.utils.isAddress(address)){
+      // }
+
+      //TODO: Global Notifications
+      // if(this.props.reducers.Tokens.includes(address)) {
+      // }
+
+      web3.eth
+        .call({
+          to: address.replace(' ', ''), // contract address
+          // data: "0xc6888fa10000000000000000000000000000000000000000000000000000000000000003"
+          data: '0x70a08231000000000000000000000000', //+ account.substring(2).replace(' ', '')
+        })
+        .then(result => {
+          let tokenAmt = web3.utils.toBN(result);
+          if (!tokenAmt.isZero()) {
+            this.props.addObservedToken({
+              name: token.name,
+              value: Object.assign({}, token, {
+                amount: web3.utils.fromWei(tokenAmt, 'ether'),
+              }),
+            });
+          }
+        });
     } else {
       // TODO:trigger global notification here
     }
@@ -118,7 +144,7 @@ class WatchToken extends Component {
           <br />
           <h3>Preview</h3>
           <button className="wallet-box-tokens" style={iconStyle}>
-            <h3 />
+            {/*<h3></h3> */}
             <button className="delete-token">
               <i className="icon-trash" />
             </button>

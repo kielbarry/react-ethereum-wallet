@@ -26,11 +26,16 @@ const initialState = {
 };
 
 const reducers = (state = initialState, action) => {
+  if (action.type === 'ADD_OBSERVED_TOKEN') {
+    console.log(Object.assign({}, state.ObservedTokens, action.payload));
+  }
   switch (action.type) {
     case 'ADD_OBSERVED_TOKEN':
       return {
         ...state,
-        ObservedTokens: Object.assign({}, state.ObservedTokens, action.payload),
+        ObservedTokens: Object.assign({}, state.ObservedTokens, {
+          [action.payload.name]: action.payload.value,
+        }),
       };
     case 'CANCEL_TOKEN_TO_WATCH':
       return {
