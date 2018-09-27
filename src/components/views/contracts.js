@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import TokenBox from '../elements/tokenbox.js';
+import isEqual from 'lodash/isEqual';
 
 import AddForm from '../AddForm.jsx';
 import { connect } from 'react-redux';
@@ -7,7 +8,7 @@ import { connect } from 'react-redux';
 // import WatchContract from './modals/WatchContract.jsx';
 
 import ContractItem from '../elements/ContractItem.jsx';
-
+import TokenBox from '../elements/TokenBox.jsx';
 // import PageHeader from '../elements/PageHeaders.jsx';
 // import { ContractPageHeader } from '../../constants/FieldConstants.jsx';
 // import { DefaultContractList } from '../../constants/FieldConstants.jsx';
@@ -15,8 +16,47 @@ import ContractItem from '../elements/ContractItem.jsx';
 import { ContractSectionList } from '../../constants/FieldConstants.jsx';
 
 class ContractsView extends Component {
+  shouldComponentUpdate(prevProps, prevState) {
+    if (
+      !isEqual(
+        prevProps.reducers.ObservedTokens,
+        this.props.reducers.ObservedTokens
+      ) ||
+      !isEqual(
+        prevProps.reducers.ObservedContracts,
+        this.props.reducers.ObservedContracts
+      )
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  renderObservedTokens() {
+    let obj = this.props.reducers;
+    if (
+      obj.ObservedTokens !== undefined &&
+      Object.keys(obj.ObservedTokens).length !== 0
+    ) {
+      let tokens = this.props.reducers.ObservedTokens;
+      return (
+        <React.Fragment>
+          <button className="wallet-box list">
+            {Object.keys(tokens).map(token => (
+              <TokenBox key={tokens[token].address} token={tokens[token]} />
+            ))}
+          </button>
+        </React.Fragment>
+      );
+    }
+  }
+
   renderObservedContracts() {
-    if (this.props.reducers.ObservedContracts !== undefined) {
+    let obj = this.props.reducers;
+    if (
+      obj.ObservedContracts !== undefined &&
+      Object.keys(obj.ObservedContracts).length !== 0
+    ) {
       const contracts = this.props.reducers.ObservedContracts;
       return (
         <React.Fragment>
@@ -24,10 +64,7 @@ class ContractsView extends Component {
             {Object.keys(contracts).map(contract => (
               <ContractItem
                 key={contract.address}
-                // number={i + 1}
-                // address={address}
                 contract={contracts[contract]}
-                // props={this.props}
               />
             ))}
           </div>
@@ -56,6 +93,8 @@ class ContractsView extends Component {
           key={`contracts-view-custom-contracts`}
           field={CSL.CustomContracts}
         />
+
+        {this.renderObservedTokens()}
 
         <AddForm
           key={`contracts-view-custom-tokens`}

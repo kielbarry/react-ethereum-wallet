@@ -143,7 +143,7 @@ class WatchToken extends Component {
           />
           <br />
           <h3>Preview</h3>
-          <button className="wallet-box-tokens" style={iconStyle}>
+          <button className="wallet-box tokens" style={iconStyle}>
             {/*<h3></h3> */}
             <button className="delete-token">
               <i className="icon-trash" />

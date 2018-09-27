@@ -28,6 +28,11 @@ const listItems = [
 ];
 
 class AccountView extends Component {
+  // constructor(props) {
+  //   super(props)
+  //   this.state = this.props
+  // }
+
   renderAccounts() {
     if (this.props.reducers.Wallets !== undefined) {
       const wallets = this.props.reducers.Wallets;
@@ -50,7 +55,9 @@ class AccountView extends Component {
   render() {
     return (
       <div className="dapp-container account-page">
-        <h1><strong>Accounts</strong> Overview</h1>
+        <h1>
+          <strong>Accounts</strong> Overview
+        </h1>
         {this.renderAccounts()}
         {listItems.map((field, i) => (
           <AddForm key={`account-view-${i}`} field={field} />
