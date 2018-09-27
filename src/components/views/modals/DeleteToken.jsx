@@ -22,9 +22,7 @@ class DeleteToken extends Component {
   }
 
   deleteToken(e) {
-    console.log(e.target);
-    console.log(this.props);
-    this.props.deleteToken(this.props.name);
+    this.props.deleteToken(this.props.token);
     this.props.closeModal('displayDeleteToken');
   }
 

@@ -2,7 +2,8 @@ import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
 export function displayPriceFormatter(props, balance) {
-  if (balance === undefined) return 0;
+  // console.log(typeof balance, balance)
+  if (balance === undefined) balance = 0;
   let web3 = props.web3.web3Instance;
   let currency = props.reducers.currency;
   let totalBalance = balance.toString();
@@ -104,7 +105,6 @@ export function nameProvider(prov) {
 export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/web3.js/issues/494');
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
-  console.log('here');
   // web3.eth.accounts.wallet.add().then(resp =>console.log(resp));
   // web3.eth.personal.newAccount(function(err, resp){
   //   console.log(err)

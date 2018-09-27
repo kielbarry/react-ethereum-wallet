@@ -618,54 +618,6 @@ class WatchItem extends Component {
     this.props.closeModal('displayWatchContract');
   }
 
-  // renderInputType(f){
-  //   return (
-  //     <React.Fragment>
-  //       <h3>{f.title}</h3>
-  //       <div className={f.divClass}>
-  //         <input
-  //           type={f.type}
-  //           name={f.name}
-  //           placeholder={f.placeholder}
-  //           className={f.className}
-  //           onKeyPress={(e)=>this.handleOnKeyUp(e)}
-  //         />
-  //       </div>
-  //     </React.Fragment>
-  //   )
-  // }
-
-  // renderTextAreaType(f){
-  //   if (!f.cols) f.cols = 30;
-  //   if (!f.rows) f.rows = 10;
-  //   return (
-  //     <React.Fragment>
-  //       <h3>{f.title}</h3>
-  //       <div className={f.divClass}>
-  //         <input
-  //           type={f.type}
-  //           name={f.name}
-  //           placeholder={f.placeholder}
-  //           className={f.className}
-  //           onKeyPress={(e)=>this.handleOnKeyUp(e)}
-  //         />
-  //       </div>
-  //     </React.Fragment>
-  //   );
-  // }
-  // renderInputItem(field, i) {
-  //   // let field = this.props.field
-  //   return (
-  //     <div key={`contract-field-${i}`}>
-  //       {
-  //         field.editor === 'textarea'
-  //           ? this.renderTextAreaType(field)
-  //           : this.renderInputType(field)
-  //       }
-  //     </div>
-  //   );
-  // }
-
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
@@ -681,17 +633,6 @@ class WatchItem extends Component {
               onKeyUp={e => this.handleOnKeyUp(e)}
             />
           ))}
-
-          {/*
-          {listInputs.map((field, i) => (
-            this.renderInputItem(field, i)
-            // <TestInputItem
-            //   key={`contract-field-${i}`}
-            //   field={field}
-            //   onKeyPress={() => this.handleOnKeyUp()}
-            // />
-          ))}
-          */}
 
           <div className="dapp-modal-buttons">
             <button className="cancel" onClick={() => this.cancelFunction()}>

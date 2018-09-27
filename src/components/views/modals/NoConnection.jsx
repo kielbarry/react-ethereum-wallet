@@ -9,17 +9,13 @@ class NoConnection extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.connection === null && this.props.connection !== null) {
       this.setState({ noConnection: false });
-      document.body.classList.remove('disable-scroll');
-      document.body.classList.remove('blur');
-      document.body.classList.remove('app-blur');
+      document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
     } else if (
       prevProps.connection !== null &&
       this.props.connection === null
     ) {
       this.setState({ noConnection: true });
-      document.body.classList.add('disable-scroll');
-      document.body.classList.add('blur');
-      document.body.classList.add('app-blur');
+      document.body.classList.add('disable-scroll', 'blur', 'app-blur');
     }
   }
 

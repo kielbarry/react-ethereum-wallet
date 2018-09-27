@@ -94,20 +94,10 @@ class App extends Component {
       // this.props.updateDisplayValue(Utils.displayPriceFormatter(this.props));
     }
 
-    console.log(this.props.reducers.modals);
-
     Object.values(this.props.reducers.modals).includes(true)
       ? document.body.classList.add('disable-scroll', 'blur', 'app-blur')
       : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
   }
-
-  // renderModal() {
-  //   // let modals = this.props.reducers.modals;
-  //   let modals = this.props.reducers.modals;
-  //   let watchContract = cn({ 'dapp-modal-overlay': modals.displayWatchContract || false});
-  //   let watchToken = cn({ 'dapp-modal-overlay': modals.displayTokenContract || false});
-  //   return <WatchContract display={modalClass} />;
-  // }
 
   render() {
     // we need to map the `scale` prop we define below
@@ -168,7 +158,10 @@ class App extends Component {
             {/*
             <GlobalNotifications />
           */}
-            <DeleteToken display={deleteToken} />
+            <DeleteToken
+              token={this.props.reducers.TokenToDelete}
+              display={deleteToken}
+            />
             <WatchToken display={watchToken} />
             <WatchContract display={watchContract} />
             <QRCode />

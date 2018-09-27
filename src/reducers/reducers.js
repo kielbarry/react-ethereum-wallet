@@ -23,17 +23,27 @@ const initialState = {
   },
   ContractToWatch: {},
   TokenToWatch: {},
+  TokenToDelete: '',
 };
 
 const reducers = (state = initialState, action) => {
-  if (action.type === 'ADD_OBSERVED_TOKEN') {
-    console.log(Object.assign({}, state.ObservedTokens, action.payload));
-  }
   switch (action.type) {
-    case 'DELETE_TOKEN':
-      delete state.ObservedTokens[action.payload];
+    case 'SET_TOKEN_TO_DELETE': {
       return {
         ...state,
+        TokenToDelete: action.payload,
+      };
+    }
+    case 'DELETE_TOKEN':
+      return {
+        ...state,
+        ObservedTokens: Object.assign(
+          {},
+          ...Object.entries(state.ObservedTokens)
+            .filter(([k]) => k !== action.payload)
+            .map(([k, v]) => ({ [k]: v }))
+        ),
+        TokenToDelete: '',
       };
     case 'ADD_OBSERVED_TOKEN':
       return {

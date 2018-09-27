@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-// import TokenBox from '../elements/tokenbox.js';
+
 import isEqual from 'lodash/isEqual';
 
 import AddForm from '../AddForm.jsx';
 import { connect } from 'react-redux';
 
-// import WatchContract from './modals/WatchContract.jsx';
-
 import ContractItem from '../elements/ContractItem.jsx';
 import TokenBox from '../elements/TokenBox.jsx';
-// import PageHeader from '../elements/PageHeaders.jsx';
-// import { ContractPageHeader } from '../../constants/FieldConstants.jsx';
-// import { DefaultContractList } from '../../constants/FieldConstants.jsx';
 
 import { ContractSectionList } from '../../constants/FieldConstants.jsx';
 
@@ -93,9 +88,9 @@ class ContractsView extends Component {
           key={`contracts-view-custom-contracts`}
           field={CSL.CustomContracts}
         />
-
+        <div className="dapp-clear-fix" />
         {this.renderObservedTokens()}
-
+        <div className="dapp-clear-fix" />
         <AddForm
           key={`contracts-view-custom-tokens`}
           field={CSL.CustomTokens}

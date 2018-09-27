@@ -28,11 +28,6 @@ const listItems = [
 ];
 
 class AccountView extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = this.props
-  // }
-
   renderAccounts() {
     if (this.props.reducers.Wallets !== undefined) {
       const wallets = this.props.reducers.Wallets;

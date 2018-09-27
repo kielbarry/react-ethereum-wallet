@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
 
 import { connect } from 'react-redux';
-import { displayModal } from '../../actions/actions.js';
+import { displayModal, tokenToDelete } from '../../actions/actions.js';
 
 class TokenBox extends Component {
   constructor(props) {
     super(props);
     this.deleteTokenModal = this.deleteTokenModal.bind(this);
-    console.log(this.props);
   }
 
   deleteTokenModal(e) {
+    this.props.tokenToDelete(this.props.token.name);
     this.props.displayModal('displayDeleteToken');
   }
 
@@ -19,9 +19,7 @@ class TokenBox extends Component {
     var GeoPattern = require('geopattern');
     var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
     let iconStyle = { backgroundImage: pattern.toDataUrl() };
-
     let token = this.props.token;
-    console.log(token);
     const icon = makeBlockie(token.address);
     let divStyle = {
       backgroundImage: 'url(' + icon + ')',
@@ -52,5 +50,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { displayModal }
+  { displayModal, tokenToDelete }
 )(TokenBox);
