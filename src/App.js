@@ -26,6 +26,7 @@ import MistAlertBubble from './components/mistAlertBubble.js';
 import NoConnection from './components/views/modals/NoConnection.jsx';
 import WatchContract from './components/views/modals/WatchContract.jsx';
 import WatchToken from './components/views/modals/WatchToken.jsx';
+import DeleteToken from './components/views/modals/DeleteToken.jsx';
 import QRCode from './components/views/modals/QRCode.jsx';
 
 // stylesheets
@@ -92,6 +93,9 @@ class App extends Component {
     ) {
       // this.props.updateDisplayValue(Utils.displayPriceFormatter(this.props));
     }
+
+    console.log(this.props.reducers.modals);
+
     Object.values(this.props.reducers.modals).includes(true)
       ? document.body.classList.add('disable-scroll', 'blur', 'app-blur')
       : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
@@ -134,6 +138,10 @@ class App extends Component {
     let watchToken = cn({
       'dapp-modal-overlay': modals.displayWatchToken || false,
     });
+    let deleteToken = cn({
+      'dapp-modal-overlay': modals.displayDeleteToken || false,
+    });
+
     // console.log(modals.displayWatchContract)
     // console.log(modalClass)
     return (
@@ -160,6 +168,7 @@ class App extends Component {
             {/*
             <GlobalNotifications />
           */}
+            <DeleteToken display={deleteToken} />
             <WatchToken display={watchToken} />
             <WatchContract display={watchContract} />
             <QRCode />

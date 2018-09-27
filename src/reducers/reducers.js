@@ -30,6 +30,11 @@ const reducers = (state = initialState, action) => {
     console.log(Object.assign({}, state.ObservedTokens, action.payload));
   }
   switch (action.type) {
+    case 'DELETE_TOKEN':
+      delete state.ObservedTokens[action.payload];
+      return {
+        ...state,
+      };
     case 'ADD_OBSERVED_TOKEN':
       return {
         ...state,
