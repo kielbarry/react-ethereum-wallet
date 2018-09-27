@@ -26,10 +26,18 @@ class TokenBox extends Component {
     };
     return (
       <div className="wallet-box tokens" style={iconStyle}>
+        <span
+          className="dapp-identicon dapp-small"
+          title="This is a security icon.  If there were any change to the address, 
+        the resulting icon would be a completely different one"
+          src={icon}
+          style={divStyle}
+        >
+          <img src={icon} style={divStyle} className="identicon-pixel" alt="" />
+        </span>
         <h3>{token.name}</h3>
         <button
           className="delete-token"
-          style={divStyle}
           onClick={e => this.deleteTokenModal(e)}
         >
           <i className="icon-trash" />

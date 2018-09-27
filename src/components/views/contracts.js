@@ -43,7 +43,7 @@ class ContractsView extends Component {
       let tokens = this.props.reducers.ObservedTokens;
       return (
         <React.Fragment>
-          <button className="wallet-box list">
+          <button className="wallet-box-list">
             {Object.keys(tokens).map(token => (
               <TokenBox key={tokens[token].address} token={tokens[token]} />
             ))}
