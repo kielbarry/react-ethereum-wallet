@@ -33,7 +33,7 @@ class DeleteToken extends Component {
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container" style={divStyle}>
           <p>
-            Do you want to remove the token <strong>{this.props.name}</strong>{' '}
+            Do you want to remove the token <strong>{this.props.token}</strong>{' '}
             from your list?
           </p>
           <div className="dapp-modal-buttons">

@@ -10,7 +10,14 @@ import TokenBox from '../elements/TokenBox.jsx';
 
 import { ContractSectionList } from '../../constants/FieldConstants.jsx';
 
+import * as Actions from '../../actions/actions.js';
+
 class ContractsView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = this.props;
+  }
+
   shouldComponentUpdate(prevProps, prevState) {
     if (
       !isEqual(
@@ -70,6 +77,8 @@ class ContractsView extends Component {
 
   render() {
     let CSL = ContractSectionList;
+    let CC = CSL.CustomContracts;
+    let CT = CSL.CustomTokens;
     return (
       <div className="dapp-container">
         <h1>
@@ -81,22 +90,39 @@ class ContractsView extends Component {
           field={CSL.DeployContract}
         />
 
-        <div className="dapp-clear-fix" />
-        {this.renderObservedContracts()}
+        <div className="contracts-view-custom-contracts">
+          <h2>{CC.title}</h2>
+          <p>{CC.contractDescription}</p>
+          <div className="dapp-clear-fix" />
 
-        <AddForm
-          key={`contracts-view-custom-contracts`}
-          field={CSL.CustomContracts}
-        />
-        <div className="dapp-clear-fix" />
-        {this.renderObservedTokens()}
-        <div className="dapp-clear-fix" />
-        <AddForm
-          key={`contracts-view-custom-tokens`}
-          field={CSL.CustomTokens}
-        />
+          {this.renderObservedContracts()}
 
-        {/*{DefaultContractList.map((field, i) => <AddForm key={`contracts-view-${i}`} field={field} />)} */}
+          <button
+            className={CC.buttonClass}
+            onClick={() => this.props.displayModal('displayWatchContract')}
+          >
+            <div className="account-pattern">+</div>
+            <h3>{CC.buttonDescription}</h3>
+          </button>
+          <div className="dapp-clear-fix" />
+        </div>
+
+        <div className="contracts-view-custom-tokens">
+          <h2>{CT.title}</h2>
+          <p>{CT.contractDescription}</p>
+          <div className="dapp-clear-fix" />
+
+          {this.renderObservedTokens()}
+
+          <button
+            className={CT.buttonClass}
+            onClick={() => this.props.displayModal('displayWatchToken')}
+          >
+            <div className="account-pattern">+</div>
+            <h3>{CT.buttonDescription}</h3>
+          </button>
+          <div className="dapp-clear-fix" />
+        </div>
       </div>
     );
   }
@@ -105,4 +131,7 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default connect(mapStateToProps)(ContractsView);
+export default connect(
+  mapStateToProps,
+  { ...Actions }
+)(ContractsView);
