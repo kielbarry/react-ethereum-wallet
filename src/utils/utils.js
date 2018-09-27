@@ -2,6 +2,7 @@ import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
 export function displayPriceFormatter(props, balance) {
+  if (balance === undefined) return 0;
   let web3 = props.web3.web3Instance;
   let currency = props.reducers.currency;
   let totalBalance = balance.toString();
