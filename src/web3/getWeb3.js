@@ -1,4 +1,4 @@
-import store from '../store/store.js';
+import { store } from '../store/store.js';
 import Web3 from 'web3';
 
 export const WEB3_INITIALIZED = 'WEB3_INITIALIZED';

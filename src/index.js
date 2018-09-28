@@ -5,9 +5,14 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import ErrorBoundary from './errorBoundaries/ErrorBoundary';
 import { Provider } from 'react-redux';
-import store from './store/store.js';
+import { store, persistor } from './store/store.js';
 // web3Init
 import getWeb3 from './web3/getWeb3.js';
+
+import { PersistGate } from 'redux-persist/integration/react';
+
+console.log(store);
+console.log(persistor);
 
 getWeb3.catch(err => console.warn('Error in web3 initialization.', err));
 
@@ -18,9 +23,11 @@ if (process.env.NODE_ENV === 'development') {
 
 ReactDOM.render(
   <Provider store={store}>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <PersistGate loading={null} persistor={persistor}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );
