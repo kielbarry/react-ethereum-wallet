@@ -28,6 +28,11 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_SELECTED_CONTRACT':
+      return {
+        ...state,
+        selectedContract: action.payload,
+      };
     case 'SET_TOKEN_TO_DELETE': {
       return {
         ...state,

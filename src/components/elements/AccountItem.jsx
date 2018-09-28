@@ -20,6 +20,7 @@ class AccountItem extends Component {
       number: this.props.number,
       wallet: this.props.wallet,
       currency: this.props.props.reducers.currency,
+      addressType: 'account',
     });
   }
 

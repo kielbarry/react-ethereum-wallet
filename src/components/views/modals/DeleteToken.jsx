@@ -37,7 +37,9 @@ class DeleteToken extends Component {
             from your list?
           </p>
           <div className="dapp-modal-buttons">
-            <button className="cancel">Cancel</button>
+            <button className="cancel" onClick={e => this.cancelFunction(e)}>
+              Cancel
+            </button>
             <button
               className="ok dapp-primary-button"
               onClick={e => this.deleteToken(e)}

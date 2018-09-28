@@ -27,7 +27,7 @@ import NoConnection from './components/views/modals/NoConnection.jsx';
 import WatchContract from './components/views/modals/WatchContract.jsx';
 import WatchToken from './components/views/modals/WatchToken.jsx';
 import DeleteToken from './components/views/modals/DeleteToken.jsx';
-import QRCode from './components/views/modals/QRCode.jsx';
+// import QRCode from './components/views/modals/QRCode.jsx';
 
 // stylesheets
 import './stylesheets/mergedstyles.css';
@@ -164,7 +164,7 @@ class App extends Component {
             />
             <WatchToken display={watchToken} />
             <WatchContract display={watchContract} />
-            <QRCode />
+            {/* <QRCode /> */}
             <NoConnection connection={this.props.web3} />
           </div>
         </div>

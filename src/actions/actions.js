@@ -2,6 +2,13 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const selectedContract = contract => dispatch => {
+  dispatch({
+    type: actionTypes.SET_SELECTED_CONTRACT,
+    payload: contract,
+  });
+};
+
 export const tokenToDelete = token => dispatch => {
   dispatch({
     type: actionTypes.SET_TOKEN_TO_DELETE,

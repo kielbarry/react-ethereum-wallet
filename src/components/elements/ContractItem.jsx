@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // import { selectedWallet } from '../../actions/actions.js';
+import { selectedContract } from '../../actions/actions.js';
 
 import makeBlockie from 'ethereum-blockies-base64';
 
@@ -16,11 +17,12 @@ class ContractItem extends Component {
   }
 
   openAccountPage() {
-    this.props.selectedContract = {
+    this.props.selectedContract({
       contract: this.props.contract,
       currency: this.props.reducers.currency,
       exchangeRates: this.props.reducers.exchangeRates,
-    };
+      addressType: 'contract',
+    });
   }
 
   renderBalance() {
@@ -79,4 +81,7 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default connect(mapStateToProps)(ContractItem);
+export default connect(
+  mapStateToProps,
+  { selectedContract }
+)(ContractItem);
