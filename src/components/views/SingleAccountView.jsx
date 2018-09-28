@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import SU from '../elements/selectableUnit.js';
 import AccountActionBar from '../elements/AccountActionBar.jsx';
+import ContractActionBar from '../elements/ContractActionBar.jsx';
 // import ContractActionBar from '../elements/ContractActionBar.jsx';
 import NotFound from './NotFound.jsx';
 
@@ -34,7 +35,6 @@ export class SingleAccountView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
-    console.log(contract);
 
     const icon = makeBlockie(contract.address);
     let divStyle = {
@@ -44,57 +44,70 @@ export class SingleAccountView extends Component {
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
-        <span
-          className="dapp-identicon"
-          title="This is a security icon.  If there were any change to the address, 
-            the resulting icon would be a completely different one"
-          src={icon}
-          style={divStyle}
-        >
-          <img src={icon} style={divStyle} className="identicon-pixel" alt="" />
-        </span>
-        <header>
-          <h1>
-            <em class="edit-name">{contract['contract-name']}</em>
-            <i class="edit-icon icon-pencil" />
-          </h1>
-          <h2 class="copyable-address">
-            <i class="icon-key" title="Account" />
-            <span>{contract.address}</span>
-          </h2>
-          <div class="clear" />
-          {/*<span title="This is testnet ether, no real market value">ETHER*</span>*/}
-          <span class="account-balance">{contract.balance}</span>
-        </header>
-        <table class="token-list dapp-zebra">
-          <tbody />
-        </table>
-        <div class="accounts-transactions">
-          <h2>Latest events</h2>
-          <br />
-          <div>
-            <input
-              type="checkbox"
-              id="watch-events-checkbox"
-              class="toggle-watch-events"
+        <div className="accounts-page-summary">
+          <span
+            className="dapp-identicon"
+            title="This is a security icon.  If there were any change to the address, 
+              the resulting icon would be a completely different one"
+            src={icon}
+            style={divStyle}
+          >
+            <img
+              src={icon}
+              style={divStyle}
+              className="identicon-pixel"
+              alt=""
             />
-            <label for="watch-events-checkbox">Watch contract events</label>
-          </div>
-          <br />
-          <input
-            type="text"
-            class="filter-transactions"
-            placeholder="Filter events"
-          />
-          <table class="dapp-zebra transactions">
-            <tbody>
-              <tr class="full-width">
-                <td colspan="3">No matching transaction found.</td>
-              </tr>
-            </tbody>
+          </span>
+          <header>
+            <h1>
+              <em class="edit-name">{contract['contract-name']}</em>
+              <i class="edit-icon icon-pencil" />
+            </h1>
+            <h2 class="copyable-address">
+              <i class="icon-key" title="Account" />
+              <span>{contract.address}</span>
+            </h2>
+            <div class="clear" />
+            {/*<span title="This is testnet ether, no real market value">ETHER*</span>*/}
+            <span class="account-balance">
+              {this.props.web3 && this.props.web3.web3Instance
+                ? Utils.displayPriceFormatter(this.props, contract.balance)
+                : contract.balance}
+
+              {contract.balance}
+            </span>
+          </header>
+          <table class="token-list dapp-zebra">
+            <tbody />
           </table>
+          <div class="accounts-transactions">
+            <h2>Latest events</h2>
+            <br />
+            <div>
+              <input
+                type="checkbox"
+                id="watch-events-checkbox"
+                class="toggle-watch-events"
+              />
+              <label for="watch-events-checkbox">Watch contract events</label>
+            </div>
+            <br />
+            <input
+              type="text"
+              class="filter-transactions"
+              placeholder="Filter events"
+            />
+            <table class="dapp-zebra transactions">
+              <tbody>
+                <tr class="full-width">
+                  <td colSpan="3">No matching transaction found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        {/*<ContractActionBar props={contract} /> */}
+        <ContractActionBar props={contract} />
       </div>
     );
   }
@@ -171,8 +184,7 @@ export class SingleAccountView extends Component {
   }
 
   render() {
-    let r = this.props.reducers;
-    console.log(r);
+    // let r = this.props.reducers;
 
     return this.props.reducers.selectedWallet === undefined ? (
       this.props.reducers.selectedContract === undefined ? (

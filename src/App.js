@@ -28,6 +28,7 @@ import WatchContract from './components/views/modals/WatchContract.jsx';
 import WatchToken from './components/views/modals/WatchToken.jsx';
 import DeleteToken from './components/views/modals/DeleteToken.jsx';
 // import QRCode from './components/views/modals/QRCode.jsx';
+// import JsonInterface from './components/views/modals/JsonInterface.jsx';
 
 // stylesheets
 import './stylesheets/mergedstyles.css';
@@ -131,6 +132,12 @@ class App extends Component {
     let deleteToken = cn({
       'dapp-modal-overlay': modals.displayDeleteToken || false,
     });
+    //  let JsonInterface = cn({
+    //   'dapp-modal-overlay': modals.displayJSONInterface || false,
+    // });
+    // let QRCode = cn({
+    //   'dapp-modal-overlay': modals.displayQRCode || false,
+    // });
 
     // console.log(modals.displayWatchContract)
     // console.log(modalClass)
@@ -164,7 +171,9 @@ class App extends Component {
             />
             <WatchToken display={watchToken} />
             <WatchContract display={watchContract} />
-            {/* <QRCode /> */}
+            {/*<QRCode display={QRCode} /> */}
+            {/*} <JsonInterface display={JsonInterface} />*/}
+
             <NoConnection connection={this.props.web3} />
           </div>
         </div>

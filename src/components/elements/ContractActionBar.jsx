@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import * as Actions from '../../actions/actions.js';
 
-export class AccountActionBar extends Component {
+export class ContractActionBar extends Component {
   render() {
     let address = this.props.props.address;
-    let etherScanAddress = 'https://etherscan.io/address/' + address;
     let transferEtherAddress = '/send/' + address;
-    let changellyAddress =
-      'https://changelly.com/widget/v1?auth=email&amp;from=USD&amp;to=ETH&amp;merchant_id=47f87f7cddda&amp;address=' +
-      address +
-      '&amp;amount=1&amp;ref_id=e25c5a2e8719&amp;color=02a8f3';
 
     return (
       <aside className="dapp-actionbar">
@@ -22,18 +18,6 @@ export class AccountActionBar extends Component {
               <a href={transferEtherAddress} title={address}>
                 <i className="icon-arrow-down" />
                 Transfer Ether &amp; Tokens
-              </a>
-            </li>
-            <li>
-              <a href={changellyAddress} target="_blank">
-                <i className="icon-ethereum" />
-                Buy ether
-              </a>
-            </li>
-            <li>
-              <a href={etherScanAddress} target="_blank">
-                <i className="icon-info" />
-                View on Etherscan
               </a>
             </li>
             <CopyToClipboard text={address}>
@@ -53,6 +37,15 @@ export class AccountActionBar extends Component {
                 Show QR-Code
               </button>
             </li>
+            <li>
+              <button
+                class="interface-button"
+                onClick={e => this.props.displayModal('displayJSONInterface')}
+              >
+                <i class="icon-settings" />
+                Show Interface
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -66,4 +59,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { ...Actions }
-)(AccountActionBar);
+)(ContractActionBar);
