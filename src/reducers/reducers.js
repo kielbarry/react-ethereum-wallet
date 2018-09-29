@@ -24,10 +24,16 @@ const initialState = {
   ContractToWatch: {},
   TokenToWatch: {},
   TokenToDelete: '',
+  GasStats: {},
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'RECEIVE_GAS_STATS':
+      return {
+        ...state,
+        GasStats: Object.assign({}, action.payload),
+      };
     case 'SET_SELECTED_CONTRACT':
       return {
         ...state,

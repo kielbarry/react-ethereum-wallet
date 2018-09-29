@@ -39,8 +39,16 @@ class App extends Component {
     super(props);
     this.state = this.props;
     this.getCCP = this.getCCP.bind(this);
+
     this.getCCP();
     this.CCInterval = setInterval(() => this.getCCP(), 15000);
+
+    this.props.fetchEthGasStationStats();
+    this.GasInterval = setInterval(
+      () => this.props.fetchEthGasStationStats(),
+      15000
+    );
+
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -81,6 +89,7 @@ class App extends Component {
 
   componentWillUnmount() {
     clearInterval(this.CCInterval);
+    clearInterval(this.GasInterval);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -120,8 +129,6 @@ class App extends Component {
       atActive: { opacity: bounce(1), scale: bounce(1) },
     };
 
-    // let modals = this.props.reducers.modals
-    // let modalClass = cn({'dapp-modal-overlay': modals.displayWatchContract})
     let modals = this.props.reducers.modals;
     let watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,
@@ -139,8 +146,6 @@ class App extends Component {
     //   'dapp-modal-overlay': modals.displayQRCode || false,
     // });
 
-    // console.log(modals.displayWatchContract)
-    // console.log(modalClass)
     return (
       <BrowserRouter>
         <div>

@@ -63,16 +63,8 @@ class WatchToken extends Component {
   }
 
   submitFunction(e) {
-    // let token = 'https://etherscan.io/address/0xe41d2489571d322189246dafa5ebde1f4699f498#code'
     let web3;
-    // let token = this.props.reducers.TokenToWatch;
-    let token = {
-      address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
-      name: 'zerox',
-      symbol: '0x',
-      division: '2',
-    };
-
+    let token = this.props.reducers.TokenToWatch;
     let address = token.address;
 
     if (this.props.web3.web3Instance) {

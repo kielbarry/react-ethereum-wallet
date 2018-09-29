@@ -2,6 +2,32 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const fetchEthGasStationStats = gasStats => {
+  const requestGas = gasStats => {
+    return {
+      type: actionTypes.REQUEST_GAS_STATS,
+      payload: gasStats,
+    };
+  };
+  const receiveGas = jsonGasStats => {
+    return {
+      type: actionTypes.RECEIVE_GAS_STATS,
+      payload: jsonGasStats,
+    };
+  };
+  return dispatch => {
+    dispatch(requestGas(gasStats));
+    return fetch('https://ethgasstation.info/json/ethgasAPI.json')
+      .then(
+        response => response.json(),
+        error => console.log('An error occurred.', error)
+      )
+      .then(jsonGasStats => {
+        dispatch(receiveGas(jsonGasStats));
+      });
+  };
+};
+
 export const selectedContract = contract => dispatch => {
   dispatch({
     type: actionTypes.SET_SELECTED_CONTRACT,
@@ -84,36 +110,6 @@ export const createInitWalletContract = wc => dispatch => {
     type: actionTypes.CREATE_INIT_WALLET_CONTRACT,
     payload: wc,
   });
-};
-
-export const createCryptoCompareSocket = () => dispatch => {
-  // 	let socket = io('wss://streamer.cryptocompare.com')
-  // 	socket.on('connect', () => {
-  // 		dispatch({
-  // 			type: actionTypes.CRYPTO_COMPARE_CONNECTED,
-  // 			payload: socket.connected,
-  // 		})
-  // 	})
-  // 	var subscription = [
-  // 		'5~CCCAGG~ETH~USD',
-  // 		// '5~CCCAGG~ETH~BTC',
-  // 		// '5~CCCAGG~ETH~EUR',
-  // 		// '5~CCCAGG~ETH~GBP',
-  // 		// '5~CCCAGG~ETH~BRL',
-  // 	];
-  // 	socket.emit('SubAdd', { subs: subscription });
-  // 	socket.on("m", function(message) {
-  // 		var messageType = parseInt(message.substring(0, message.indexOf("~")));
-  // 		if (messageType == 5) {
-  // 			dataUnpack(message);
-  // 		}
-  // 	});
-  // 	socket.on('disconnect', () => {
-  // 		dispatch({
-  // 			type: actionTypes.CRYPTO_COMPARE_CONNECTED,
-  // 			payload: socket.connected,
-  // 		})
-  // 	})
 };
 
 export const updateEtherPrices = exchangeRates => dispatch => {

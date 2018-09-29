@@ -11,9 +11,6 @@ import getWeb3 from './web3/getWeb3.js';
 
 import { PersistGate } from 'redux-persist/integration/react';
 
-console.log(store);
-console.log(persistor);
-
 getWeb3.catch(err => console.warn('Error in web3 initialization.', err));
 
 if (process.env.NODE_ENV === 'development') {

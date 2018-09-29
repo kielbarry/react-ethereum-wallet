@@ -61,16 +61,16 @@ export class SingleAccountView extends Component {
           </span>
           <header>
             <h1>
-              <em class="edit-name">{contract['contract-name']}</em>
-              <i class="edit-icon icon-pencil" />
+              <em className="edit-name">{contract['contract-name']}</em>
+              <i className="edit-icon icon-pencil" />
             </h1>
-            <h2 class="copyable-address">
-              <i class="icon-key" title="Account" />
+            <h2 className="copyable-address">
+              <i className="icon-key" title="Account" />
               <span>{contract.address}</span>
             </h2>
-            <div class="clear" />
+            <div className="clear" />
             {/*<span title="This is testnet ether, no real market value">ETHER*</span>*/}
-            <span class="account-balance">
+            <span className="account-balance">
               {this.props.web3 && this.props.web3.web3Instance
                 ? Utils.displayPriceFormatter(this.props, contract.balance)
                 : contract.balance}
@@ -78,29 +78,31 @@ export class SingleAccountView extends Component {
               {contract.balance}
             </span>
           </header>
-          <table class="token-list dapp-zebra">
+          <table className="token-list dapp-zebra">
             <tbody />
           </table>
-          <div class="accounts-transactions">
+          <div className="accounts-transactions">
             <h2>Latest events</h2>
             <br />
             <div>
               <input
                 type="checkbox"
                 id="watch-events-checkbox"
-                class="toggle-watch-events"
+                className="toggle-watch-events"
               />
-              <label for="watch-events-checkbox">Watch contract events</label>
+              <label htmlFor="watch-events-checkbox">
+                Watch contract events
+              </label>
             </div>
             <br />
             <input
               type="text"
-              class="filter-transactions"
+              className="filter-transactions"
               placeholder="Filter events"
             />
-            <table class="dapp-zebra transactions">
+            <table className="dapp-zebra transactions">
               <tbody>
-                <tr class="full-width">
+                <tr className="full-width">
                   <td colSpan="3">No matching transaction found.</td>
                 </tr>
               </tbody>

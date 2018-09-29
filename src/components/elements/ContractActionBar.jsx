@@ -39,10 +39,10 @@ export class ContractActionBar extends Component {
             </li>
             <li>
               <button
-                class="interface-button"
+                className="interface-button"
                 onClick={e => this.props.displayModal('displayJSONInterface')}
               >
-                <i class="icon-settings" />
+                <i className="icon-settings" />
                 Show Interface
               </button>
             </li>
