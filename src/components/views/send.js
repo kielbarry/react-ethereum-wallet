@@ -101,9 +101,6 @@ class SendContractForm extends Component {
 
         <FormInput />
         <LatestTransactions />
-        {/*
-        <ShowMoreOptions />
-        */}
         <Slider />
         <TotalGas />
 
