@@ -99,6 +99,7 @@ export const closeModal = modalName => dispatch => {
 };
 
 export const displayModal = modalName => dispatch => {
+  console.log('in display modal??!?!?!', modalName);
   dispatch({
     type: actionTypes.DISPLAY_MODAL,
     payload: modalName,

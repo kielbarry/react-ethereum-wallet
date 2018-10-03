@@ -25,13 +25,13 @@ export class AccountActionBar extends Component {
               </a>
             </li>
             <li>
-              <a href={changellyAddress} target="_blank">
+              <a href={changellyAddress} target="noopener noreferrer _blank">
                 <i className="icon-ethereum" />
                 Buy ether
               </a>
             </li>
             <li>
-              <a href={etherScanAddress} target="_blank">
+              <a href={etherScanAddress} target="noopener noreferrer _blank">
                 <i className="icon-info" />
                 View on Etherscan
               </a>

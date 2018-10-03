@@ -29,14 +29,17 @@ class SendContractForm extends Component {
             <div className="dapp-select-account send-from">
               <select name="dapp-select-account" className="send-from">
                 <option value="0x6a6964034c192ccaa8594a179db7a98ad581e4f2">
-                  🔑 Main account (Etherbase) - 0.21 USD (0.00 ETHER)
+                  <span role="img" aria-label="key">
+                    🔑
+                  </span>
+                  "Main account (Etherbase) - 0.21 USD (0.00 ETHER)""
                 </option>
               </select>
               <span
                 className="dapp-identicon dapp-small"
                 title="This is a security icon.  If there were any change to the address, the resulting icon would be a completely different one"
               >
-                <img src="" className="identicon-pixel" />
+                <img src="" className="identicon-pixel" alt="" />
               </span>
             </div>
           </div>
@@ -48,7 +51,7 @@ class SendContractForm extends Component {
                 name="to"
                 placeholder="0x000000.."
                 className="to"
-                autoFocus="true"
+                autoFocus={true}
               />
             </div>
           </div>
@@ -76,7 +79,7 @@ class SendContractForm extends Component {
               rates from
               <a
                 href="https://www.cryptocompare.com/coins/eth/overview/BTC"
-                target="_blank"
+                target="noopener noreferrer _blank"
               >
                 {' '}
                 cryptocompare.com

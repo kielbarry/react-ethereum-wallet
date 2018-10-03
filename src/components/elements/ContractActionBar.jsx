@@ -9,7 +9,6 @@ export class ContractActionBar extends Component {
   render() {
     let address = this.props.props.address;
     let transferEtherAddress = '/send/' + address;
-
     return (
       <aside className="dapp-actionbar">
         <nav>

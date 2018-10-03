@@ -55,6 +55,7 @@ class MistAlertBubble extends Component {
           </p>
           <p>
             <a
+              href=""
               className="hide-alert button"
               onClick={() => this.toggleAlertMessage()}
             >
