@@ -22,7 +22,7 @@ import MistAlertBubble from './components/mistAlertBubble.js';
 // import GlobalNotifications from './components/elements/GlobalNotifications.jsx';
 
 // Modals
-import NoConnection from './components/views/modals/NoConnection.jsx';
+// import NoConnection from './components/views/modals/NoConnection.jsx';
 import WatchContract from './components/views/modals/WatchContract.jsx';
 import WatchToken from './components/views/modals/WatchToken.jsx';
 import DeleteToken from './components/views/modals/DeleteToken.jsx';
@@ -178,7 +178,7 @@ class App extends Component {
             {/*<QRCode display={QRCode} /> */}
             {/*} <JsonInterface display={JsonInterface} />*/}
 
-            <NoConnection connection={this.props.web3} />
+            {/*<NoConnection connection={this.props.web3} />*/}
           </div>
         </div>
       </BrowserRouter>

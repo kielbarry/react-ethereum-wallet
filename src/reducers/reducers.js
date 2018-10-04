@@ -26,10 +26,25 @@ const initialState = {
   TokenToDelete: '',
   GasStats: {},
   TransactionToSend: {},
+  globalNotification: {},
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'ADD_TRANSACTION':
+      return {
+        ...state,
+        Transactions: Object.assign({}, state.Transactions, action.payload),
+      };
+    case 'DISPLAY_GLOBAL_NOTIFICATION':
+      return {
+        ...state,
+        globalNotification: Object.assign(
+          {},
+          state.globalNotification,
+          action.payload
+        ),
+      };
     case 'UPDATE_TRANSACTION_TO_SEND':
       return {
         ...state,

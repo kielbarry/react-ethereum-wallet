@@ -27,6 +27,7 @@
     "react-router-transition": "^1.2.1",
     "react-scripts": "1.1.4",
     "react-style": "^0.5.5",
+    "react-toggle-button": "^2.2.0",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-persist": "^5.10.0",

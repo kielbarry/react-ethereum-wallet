@@ -24,6 +24,10 @@ export class SingleAccountView extends Component {
     this.setState({ displaySU: false });
   }
 
+  componentWillUnmount() {
+    console.log('unmounting');
+  }
+
   toggleSU() {
     if (this.state.displaySU === undefined) this.setState({ displaySU: false });
     else {
