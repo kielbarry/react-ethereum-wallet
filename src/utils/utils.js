@@ -1,11 +1,10 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
-export function displayPriceFormatter(props, balance) {
-  // console.log(typeof balance, balance)
-  if (balance === undefined) balance = 0;
+export function displayPriceFormatter(props, balance, currencyOverride) {
+  if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
   let web3 = props.web3.web3Instance;
-  let currency = props.reducers.currency;
+  let currency = currencyOverride ? 'ETHER' : props.reducers.currency;
   let totalBalance = balance.toString();
   let exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;

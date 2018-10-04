@@ -10,7 +10,7 @@ import '../../stylesheets/mergedstyles.css';
 class SelectableUnit extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    // this.state = this.props;
     this.unitSelected = this.unitSelected.bind(this);
   }
 

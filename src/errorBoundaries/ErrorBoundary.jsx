@@ -11,7 +11,7 @@ class ErrorBoundary extends Component {
     this.setState({ hasError: true });
     // You can also log the error to an error reporting service
     // logErrorToMyService(error, info);
-    console.warn(error, info);
+    console.warn('in error boundary', error, info);
   }
 
   render() {

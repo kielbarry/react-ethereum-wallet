@@ -25,10 +25,18 @@ const initialState = {
   TokenToWatch: {},
   TokenToDelete: '',
   GasStats: {},
+  TransactionToSend: {},
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'UPDATE_TRANSACTION_TO_SEND':
+      return {
+        ...state,
+        TransactionToSend: Object.assign({}, state.TransactionToSend, {
+          [action.payload.name]: action.payload.value,
+        }),
+      };
     case 'RECEIVE_GAS_STATS':
       return {
         ...state,

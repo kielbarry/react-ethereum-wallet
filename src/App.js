@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { spring, AnimatedSwitch } from 'react-router-transition';
 import cn from 'classnames';
 
@@ -37,7 +36,7 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    // this.state = this.props;
     this.getCCP = this.getCCP.bind(this);
 
     this.getCCP();

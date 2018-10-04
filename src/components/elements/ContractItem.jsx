@@ -12,7 +12,7 @@ import * as Utils from '../../utils/utils.js';
 class ContractItem extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    // this.state = this.props;
     this.openAccountPage = this.openAccountPage.bind(this);
   }
 

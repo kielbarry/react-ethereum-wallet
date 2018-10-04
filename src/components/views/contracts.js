@@ -15,7 +15,7 @@ import * as Actions from '../../actions/actions.js';
 class ContractsView extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    // this.state = this.props;
   }
 
   shouldComponentUpdate(prevProps, prevState) {

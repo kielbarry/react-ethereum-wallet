@@ -2,6 +2,13 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const updateTransactionToSend = tx => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_TRANSACTION_TO_SEND,
+    payload: tx,
+  });
+};
+
 export const fetchEthGasStationStats = gasStats => {
   const requestGas = gasStats => {
     return {
@@ -99,7 +106,6 @@ export const closeModal = modalName => dispatch => {
 };
 
 export const displayModal = modalName => dispatch => {
-  console.log('in display modal??!?!?!', modalName);
   dispatch({
     type: actionTypes.DISPLAY_MODAL,
     payload: modalName,
