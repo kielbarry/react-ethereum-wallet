@@ -9,6 +9,15 @@ const middlewares = [thunk];
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: [
+    'TransactionToSend',
+    'network',
+    'provider',
+    'blockHeader',
+    'timeSinceLastBlock',
+    'peerCount',
+    'modals',
+  ],
 };
 
 export const store = createStore(
@@ -19,3 +28,5 @@ export const store = createStore(
   )
 );
 export const persistor = persistStore(store);
+
+persistor.purge();
