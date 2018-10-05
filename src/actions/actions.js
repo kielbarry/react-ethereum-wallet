@@ -2,13 +2,6 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
-export const updateTransactionConfirmation = txnInfo => dispatch => {
-  dispatch({
-    type: actionTypes.UPDATE_TRANSACTION_CONFIRMATION,
-    payload: txnInfo,
-  });
-};
-
 export const updateTransaction = txnInfo => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_TRANSACTION,
@@ -58,6 +51,7 @@ export const fetchEthGasStationStats = gasStats => {
         error => console.log('An error occurred.', error)
       )
       .then(jsonGasStats => {
+        console.log;
         dispatch(receiveGas(jsonGasStats));
       });
   };

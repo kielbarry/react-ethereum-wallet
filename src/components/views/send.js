@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
-import Slider from '../elements/Slider.jsx';
+// import Slider from '../elements/Slider.jsx';
 import TotalGas from '../elements/TotalGas.jsx';
+
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
+import Slider from 'rc-slider';
+// import Range from 'rc-slider/lib/Range';
+import Tooltip from 'rc-tooltip';
 
 import shortid from 'shortid';
 // import ToggleButton from 'react-toggle-button';
@@ -35,11 +41,49 @@ class SendContractForm extends Component {
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
     this.selectWallet = this.selectWallet.bind(this);
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
-    this.sendTransaction = this.sendTransaction.bind(this);
+    this.changeGas = this.changeGas.bind(this);
+    this.estimateGas = this.estimateGas.bind(this);
+  }
+
+  changeGas(e) {
+    console.log(e);
+    // this.props.updateTransactionToSend({
+    //   name: 'gasPrice',
+    //   value: e*1000000000,
+    // });
+  }
+
+  estimateGas() {
+    let web3 = this.props.web3.web3Instance;
+    web3.eth.estimateGas(
+      {
+        to: '0x9cA862100a77B316e1d20B9553Cf73e5a89fB281',
+        from: '0x65B42142606a9D46d05ea5205Ad4b610A9130e92',
+        amount: 100,
+      },
+      (err, res) => {
+        err
+          ? console.log(err)
+          : this.props.updateTransactionToSend({
+              name: 'estimatedGas',
+              value: res,
+            });
+      }
+    );
   }
 
   handleOnKeyUp(e) {
     // TODO:validate inputs here
+    // let web3 = this.props.web3.web3Instance;
+
+    // if(web3.utils.isAddress(e.target.value)
+    //   ?
+
+    //   this.props.updateTransactionToSend({
+    //     name: 'isValid',
+    //     value: e.target.value,
+    //   });
+
     this.props.updateTransactionToSend({
       name: e.target.getAttribute('name'),
       value: e.target.value,
@@ -60,39 +104,6 @@ class SendContractForm extends Component {
       name: 'amount',
       value: this.props.reducers.Wallets[this.state.fromWallet],
     });
-  }
-
-  sendTransaction(e) {
-    let web3 = this.props.web3.web3Instance;
-    let transaction = this.props.reducers.TransactionToSend;
-
-    web3.eth
-      .sendTransaction(transaction)
-      .on('transactionHash', hash => this.props.addTransaction(hash))
-      .on('receipt', receipt =>
-        this.props.updateTransaction({ [receipt.transactionHash]: receipt })
-      )
-      .on('confirmation', (confirmationNumber, receipt) => {
-        this.props.updateTransactionConfirmation({
-          name: receipt.transactionHash,
-          value: confirmationNumber,
-        });
-        console.log(confirmationNumber);
-        console.log(this.props.reducers.Transactions);
-        //0x60160E29cc7F310892a197f2f13A0D81c2d864df
-      })
-      .on('error', err => {
-        console.log(err.Error);
-        if (err) {
-          this.props.displayGlobalNotification({
-            display: true,
-            type: 'error',
-            msg: err,
-            duration: 5,
-          });
-          console.warn(err);
-        }
-      });
   }
 
   renderWalletDropDown() {
@@ -123,6 +134,48 @@ class SendContractForm extends Component {
             })}
           </select>
         </div>
+      </div>
+    );
+  }
+
+  renderSlider() {
+    let gasStats = this.props.reducers.GasStats;
+    const createSliderWithTooltip = Slider.createSliderWithTooltip;
+    const Range = createSliderWithTooltip(Slider.Range);
+    const Handle = Slider.Handle;
+    const handle = props => {
+      const { value, dragging, index, ...restProps } = props;
+      return (
+        <Tooltip
+          prefixCls="rc-slider-tooltip"
+          overlay={value}
+          visible={dragging}
+          placement="top"
+          key={index}
+        >
+          <Handle value={value} {...restProps} />
+        </Tooltip>
+      );
+    };
+    const wrapperStyle = { width: 400, margin: 50 };
+    return (
+      <div style={wrapperStyle}>
+        {this.props.web3 && this.props.web3.web3Instance ? (
+          <p>
+            {Utils.displayPriceFormatter(
+              this.props,
+              this.props.reducers.TransactionToSend.gasPrice
+            )}
+          </p>
+        ) : (
+          <p>{0 || this.props.reducers.TransactionToSend.gasPrice}</p>
+        )}
+        <Slider
+          min={gasStats.safeLow}
+          max={gasStats.fast}
+          defaultValue={gasStats.average}
+          onChange={e => this.changeGas(e)}
+        />
       </div>
     );
   }
@@ -223,46 +276,7 @@ class SendContractForm extends Component {
           <div className="dapp-clear-fix" />
         </div>
 
-        {/*
-        <ToggleButton
-          inactiveLabel={''}
-          activeLabel={''}
-          colors={{
-            activeThumb: {
-              base: 'rgb(250,250,250)',
-            },
-            inactiveThumb: {
-              base: 'rgb(62,130,247)',
-            },
-            active: {
-              base: 'rgb(207,221,245)',
-              hover: 'rgb(177, 191, 215)',
-            },
-            inactive: {
-              base: 'rgb(65,66,68)',
-              hover: 'rgb(95,96,98)',
-            }
-          }}
-          // trackStyle={styles.trackStyle}
-          // thumbStyle={styles.thumbStyle}
-          thumbAnimateRange={[-10, 36]}
-          // thumbIcon={<ThumbIcon/>}
-          // value={self.state.value}
-          onToggle={(value) => {
-            console.log(value)
-            // this.setState({
-            //   value: !value,
-            // })
-          }} 
-          // thumbStyle={styles.thumbStyle}
-          // thumbStyleHover={styles.thumbStyleHover}
-          animateThumbStyleHover={(n) => {
-            return {
-              boxShadow: `0 0 ${2 + 4*n}px rgba(0,0,0,.16),0 ${2 + 3*n}px ${4 + 8*n}px rgba(0,0,0,.32)`,
-            }
-          }}
-        />
-      */}
+        {this.renderSlider()}
 
         <FormInput />
         <LatestTransactions />
@@ -272,7 +286,11 @@ class SendContractForm extends Component {
         <button
           type="submit"
           className="dapp-block-button"
-          onClick={e => this.sendTransaction(e)}
+          onClick={e => {
+            e.preventDefault();
+            this.estimateGas();
+            this.props.displayModal('displaySendTransaction');
+          }}
         >
           Send
         </button>

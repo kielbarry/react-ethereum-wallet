@@ -26,6 +26,7 @@ import MistAlertBubble from './components/mistAlertBubble.js';
 import WatchContract from './components/views/modals/WatchContract.jsx';
 import WatchToken from './components/views/modals/WatchToken.jsx';
 import DeleteToken from './components/views/modals/DeleteToken.jsx';
+import SendTransaction from './components/views/modals/SendTransaction.jsx';
 // import QRCode from './components/views/modals/QRCode.jsx';
 // import JsonInterface from './components/views/modals/JsonInterface.jsx';
 
@@ -138,6 +139,9 @@ class App extends Component {
     let deleteToken = cn({
       'dapp-modal-overlay': modals.displayDeleteToken || false,
     });
+    let sendTransaction = cn({
+      'dapp-modal-overlay': modals.displaySendTransaction || false,
+    });
     //  let JsonInterface = cn({
     //   'dapp-modal-overlay': modals.displayJSONInterface || false,
     // });
@@ -175,6 +179,7 @@ class App extends Component {
             />
             <WatchToken display={watchToken} />
             <WatchContract display={watchContract} />
+            <SendTransaction display={sendTransaction} />
             {/*<QRCode display={QRCode} /> */}
             {/*} <JsonInterface display={JsonInterface} />*/}
 

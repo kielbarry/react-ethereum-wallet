@@ -30,35 +30,7 @@ const initialState = {
 };
 
 const reducers = (state = initialState, action) => {
-  if (action.type === 'UPDATE_TRANSACTION_CONFIRMATION') {
-    console.log(state.Transactions[action.payload.name]);
-    console.log(state.Transactions[action.payload.name]);
-    console.log(
-      Object.assign({}, state.Transactions[action.payload.name], {
-        confirmationNumber: action.payload.value,
-      })
-    );
-    // console.log(
-    //   Object.assign({},
-    //       state.Transactions,
-    //         Object.assign({}, ...state.Transactions[action.payload.name], {confirmationNumber: action.payload.value})
-    //       )
-    // )
-  }
   switch (action.type) {
-    case 'UPDATE_TRANSACTION_CONFIRMATION':
-      return {
-        ...state,
-        // Transactions: Object.assign({}, state.Transactions,
-        //   state.Transactions[action.payload.name]['confirmationNumber']: action.payload.value),
-        Transactions: Object.assign(
-          {},
-          ...state.Transactions,
-          Object.assign({}, state.Transactions[action.payload.name], {
-            confirmationNumber: action.payload.value,
-          })
-        ),
-      };
     case 'UPDATE_TRANSACTION':
       return {
         ...state,
