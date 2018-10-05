@@ -67,30 +67,32 @@ class SendContractForm extends Component {
     let transaction = this.props.reducers.TransactionToSend;
 
     web3.eth
-      .sendTransaction(transaction, (err, result) => {
+      .sendTransaction(transaction)
+      .on('transactionHash', hash => this.props.addTransaction(hash))
+      .on('receipt', receipt =>
+        this.props.updateTransaction({ [receipt.transactionHash]: receipt })
+      )
+      .on('confirmation', (confirmationNumber, receipt) => {
+        this.props.updateTransactionConfirmation({
+          name: receipt.transactionHash,
+          value: confirmationNumber,
+        });
+        console.log(confirmationNumber);
+        console.log(this.props.reducers.Transactions);
+        //0x60160E29cc7F310892a197f2f13A0D81c2d864df
+      })
+      .on('error', err => {
+        console.log(err.Error);
         if (err) {
-          this.displayGlobalNotification({
+          this.props.displayGlobalNotification({
             display: true,
+            type: 'error',
             msg: err,
             duration: 5,
           });
           console.warn(err);
         }
-        if (result) {
-          console.log(result);
-        }
-      })
-      .on('transactionHash', function(hash) {
-        console.log('transactionHash', hash);
-      })
-      .on('receipt', function(receipt) {
-        console.log('receipt', receipt);
-      })
-      .on('confirmation', function(confirmationNumber, receipt) {
-        console.log('confirmation confirmationNumber', confirmationNumber);
-        console.log('confirmation receipt', receipt);
-      })
-      .on('error', console.error);
+      });
   }
 
   renderWalletDropDown() {
