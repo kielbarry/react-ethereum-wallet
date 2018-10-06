@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // import InputItem from '../../elements/InputItem.jsx';
-import TestInputItem from '../../elements/TestInputItem.jsx';
+// import TestInputItem from '../../elements/TestInputItem.jsx';
 import SecurityIcon from '../../elements/SecurityIcon.jsx';
 import * as Actions from '../../../actions/actions.js';
 
@@ -23,32 +23,39 @@ class SendTransactionModal extends Component {
   }
 
   handleOnKeyUp(e) {
-    // TODO:validate inputs here
-    // this.props.updateContractToWatch({
-    //   name: e.target.getAttribute('name'),
-    //   value: e.target.value,
-    // });
+    this.props.updateTransactionToSend({
+      name: e.target.getAttribute('name'),
+      value: e.target.value,
+    });
   }
 
   cancelFunction(e) {
-    // this.props.cancelContractToWatch(); //
     this.props.closeModal('displaySendTransaction');
   }
 
   sendTransaction(e) {
-    //TODO: TODO:reset data values in inputs
+    //TODO: reset data values in inputs
     e.preventDefault();
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
-    let obj = { from: tx.from, to: tx.to, amount: tx.value };
     let date = new Date();
 
     web3.eth
-      .sendTransaction({ from: tx.from, to: tx.to, amount: tx.value })
+      .sendTransaction({
+        from: tx.from,
+        to: tx.to,
+        amount: tx.value,
+        gasPrice: tx.gasPrice,
+      })
       .on('transactionHash', hash => {
         this.props.addTransaction({
           hash: hash,
           value: { ...tx, dateSent: date, confirmationNumber: 'Pending' },
+        });
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'warning',
+          msg: 'Your transaction has been submitted and is currently pending',
         });
         this.props.clearTransactionToSend();
       })
@@ -59,10 +66,24 @@ class SendTransactionModal extends Component {
         });
       })
       .on('confirmation', (confirmationNumber, receipt) => {
+        let cn = confirmationNumber;
         this.props.updateTransactionConfirmation({
           name: [receipt.transactionHash],
-          value: confirmationNumber,
+          value: cn,
         });
+
+        let msg;
+        if (cn === 0 || cn === 12) {
+          cn === 0
+            ? (msg =
+                'Success! Your transaction has been confirmed. Please allow for 12 confirmations')
+            : (msg = 'Your transaction has been confirmed 12 times!');
+          this.props.displayGlobalNotification({
+            display: true,
+            type: 'success',
+            msg: msg,
+          });
+        }
       })
       .on('error', err => {
         this.props.displayGlobalNotification({
@@ -76,17 +97,9 @@ class SendTransactionModal extends Component {
   }
 
   submitFunction(e) {
-    let web3;
-    // let transaction = this.props.reducers.TransactionToSend;
-
     this.sendTransaction(e);
     this.props.closeModal('displaySendTransaction');
   }
-
-  // {this.props.web3 && this.props.web3.web3Instance
-  //               ? Utils.displayPriceFormatter(this.props, transaction.value, "ETHER")
-  //               : transaction.value
-  //           }
 
   render() {
     let divStyle;
@@ -101,12 +114,12 @@ class SendTransactionModal extends Component {
             ETHER
           </h1>
           <p>
-            <SecurityIcon wallet="123fdsf" />
+            <SecurityIcon wallet="asdf" />
             {transaction.from}
           </p>
           <i className="icon-arrow-down" />
           <p>
-            <SecurityIcon wallet="Asdgafb43" />
+            <SecurityIcon wallet="qwerty" />
             {transaction.to}
           </p>
           <hr />
@@ -136,8 +149,8 @@ class SendTransactionModal extends Component {
     );
   }
 }
+
 const mapStateToProps = state => {
-  // return {modals: state.modals}
   return state;
 };
 

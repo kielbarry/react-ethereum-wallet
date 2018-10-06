@@ -17,16 +17,15 @@ const initialState = {
   timeSinceLastBlock: 0,
   network: '',
   provider: '',
-  modals: {
-    displayWatchContract: false,
-    displayWatchToken: false,
-  },
+  modals: {},
   ContractToWatch: {},
   TokenToWatch: {},
   TokenToDelete: '',
   GasStats: {},
   TransactionToSend: {},
-  globalNotification: {},
+  globalNotification: {
+    display: false,
+  },
 };
 
 const reducers = (state = initialState, action) => {
@@ -81,6 +80,7 @@ const reducers = (state = initialState, action) => {
           [action.payload.name]: action.payload.value,
         }),
       };
+    // case RECEIVED_GAS_ERROR:
     case 'RECEIVE_GAS_STATS':
       return {
         ...state,
@@ -91,12 +91,11 @@ const reducers = (state = initialState, action) => {
         ...state,
         selectedContract: action.payload,
       };
-    case 'SET_TOKEN_TO_DELETE': {
+    case 'SET_TOKEN_TO_DELETE':
       return {
         ...state,
         TokenToDelete: action.payload,
       };
-    }
     case 'DELETE_TOKEN':
       return {
         ...state,

@@ -61,10 +61,17 @@ export const fetchEthGasStationStats = gasStats => {
     return fetch('https://ethgasstation.info/json/ethgasAPI.json')
       .then(
         response => response.json(),
-        error => console.log('An error occurred.', error)
+        error => {
+          console.warn('An error occurred.', error);
+          this.displayGlobalNotification({
+            display: true,
+            type: 'error',
+            msg: 'There was an error fetching gas stats',
+            duration: 5,
+          });
+        }
       )
       .then(jsonGasStats => {
-        console.log;
         dispatch(receiveGas(jsonGasStats));
       });
   };

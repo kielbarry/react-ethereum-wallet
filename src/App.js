@@ -4,6 +4,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { spring, AnimatedSwitch } from 'react-router-transition';
 import cn from 'classnames';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // actions
 import * as Actions from './actions/actions.js';
@@ -19,7 +21,6 @@ import NavBar from './components/navbar';
 
 // components
 import MistAlertBubble from './components/mistAlertBubble.js';
-// import GlobalNotifications from './components/elements/GlobalNotifications.jsx';
 
 // Modals
 // import NoConnection from './components/views/modals/NoConnection.jsx';
@@ -37,9 +38,7 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    // this.state = this.props;
     this.getCCP = this.getCCP.bind(this);
-
     this.getCCP();
     this.CCInterval = setInterval(() => this.getCCP(), 15000);
 
@@ -102,6 +101,43 @@ class App extends Component {
       )
     ) {
       // this.props.updateDisplayValue(Utils.displayPriceFormatter(this.props));
+    }
+
+    if (
+      this.props.reducers.globalNotification !==
+        prevProps.reducers.globalNotification.display &&
+      this.props.reducers.globalNotification.display === true
+    ) {
+      let notification = this.props.reducers.globalNotification;
+      let toastConfig = {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      };
+      switch (notification.type) {
+        case 'error':
+          toast.error(notification.msg, toastConfig);
+          break;
+        case 'warning':
+          toast.warning(notification.msg, toastConfig);
+          break;
+        case 'success':
+          toast.success(notification.msg, toastConfig);
+          break;
+        case 'info':
+          toast.info(notification.msg, toastConfig);
+          break;
+        case 'default':
+          toast(notification.msg, toastConfig);
+          break;
+        default:
+          toast('a notification type was not set', toastConfig);
+          break;
+      }
+      this.props.displayGlobalNotification({ display: false });
     }
 
     Object.values(this.props.reducers.modals).includes(true)
@@ -170,9 +206,19 @@ class App extends Component {
                 <MistAlertBubble />
               </main>
             </div>
-            {/*
-            <GlobalNotifications />
-          */}
+
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnVisibilityChange
+              draggable
+              pauseOnHover
+            />
+
             <DeleteToken
               token={this.props.reducers.TokenToDelete}
               display={deleteToken}

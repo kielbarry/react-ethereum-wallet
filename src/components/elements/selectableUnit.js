@@ -10,11 +10,10 @@ import '../../stylesheets/mergedstyles.css';
 class SelectableUnit extends Component {
   constructor(props) {
     super(props);
-    // this.state = this.props;
     this.unitSelected = this.unitSelected.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ displaySU: false });
     document.addEventListener('mousedown', this.unitSelected, false);
   }
@@ -35,7 +34,6 @@ class SelectableUnit extends Component {
         CurrencyUnit: e.target.getAttribute('data-value').toUpperCase(),
       };
       this.props.updateCurrency(newUnit);
-      // this.setState({displaySU: !this.state.displaySU})
     }
   }
 

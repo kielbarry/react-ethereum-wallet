@@ -13,10 +13,10 @@ import { ContractSectionList } from '../../constants/FieldConstants.jsx';
 import * as Actions from '../../actions/actions.js';
 
 class ContractsView extends Component {
-  constructor(props) {
-    super(props);
-    // this.state = this.props;
-  }
+  // constructor(props) {
+  //   super(props);
+  //   // this.state = this.props;
+  // }
 
   shouldComponentUpdate(prevProps, prevState) {
     if (
@@ -84,12 +84,10 @@ class ContractsView extends Component {
         <h1>
           <strong>Contracts</strong>
         </h1>
-
         <AddForm
           key={`contracts-view-deply-contract}`}
           field={CSL.DeployContract}
         />
-
         <div className="contracts-view-custom-contracts">
           <h2>{CC.title}</h2>
           <p>{CC.contractDescription}</p>

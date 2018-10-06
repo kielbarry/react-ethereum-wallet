@@ -10,7 +10,7 @@ export class AddForm extends Component {
     this.state = this.props;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // document.body.addEventListener()
   }
 

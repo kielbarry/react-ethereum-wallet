@@ -12,7 +12,6 @@ import * as Utils from '../../utils/utils.js';
 class ContractItem extends Component {
   constructor(props) {
     super(props);
-    // this.state = this.props;
     this.openAccountPage = this.openAccountPage.bind(this);
   }
 
@@ -40,7 +39,6 @@ class ContractItem extends Component {
   }
 
   render() {
-    // let currency = this.props.reducers.currency;
     let contract = this.props.contract;
     let address = contract.address;
     const icon = makeBlockie(address);

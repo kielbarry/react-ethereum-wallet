@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Utils from '../../utils/utils.js';
+// import * as Utils from '../../utils/utils.js';
 
 import SecurityIcon from './SecurityIcon.jsx';
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 // import Slider from '../elements/Slider.jsx';
-import TotalGas from '../elements/TotalGas.jsx';
+// import TotalGas from '../elements/TotalGas.jsx';
 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import Slider from 'rc-slider';
 // import Range from 'rc-slider/lib/Range';
-import Tooltip from 'rc-tooltip';
+// import Tooltip from 'rc-tooltip';
 
 import shortid from 'shortid';
 // import ToggleButton from 'react-toggle-button';
@@ -43,27 +43,82 @@ class SendContractForm extends Component {
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.changeGas = this.changeGas.bind(this);
     this.estimateGas = this.estimateGas.bind(this);
+    this.validateForm = this.validateForm.bind(this);
+  }
+
+  validateForm(tx) {
+    let msg;
+    let valid = true;
+    let web3 = this.props.web3.web3Instance;
+    let totalBalance = this.props.reducers.totalBalance;
+    if (!web3.utils.isAddress(tx.to)) {
+      msg =
+        'The To field has an invalid address! Please check that it has been entered correctly';
+      valid = false;
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: msg,
+      });
+    }
+    if (!web3.utils.isAddress(tx.from)) {
+      msg =
+        'The From field has an invalid address! Please check that it has been entered correctly';
+      valid = false;
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: msg,
+      });
+    }
+    if (!tx.value) {
+      msg = "Oops! You'll need  to specify an amount to send";
+      valid = false;
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'info',
+        msg: msg,
+      });
+    }
+    if (tx.amount > totalBalance) {
+      msg =
+        "Oops! That's more than the wallet holds. Please select a lesser amount";
+      valid = false;
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'warning',
+        msg: msg,
+      });
+    }
+    if (valid) this.props.displayModal('displaySendTransaction');
   }
 
   changeGas(e) {
-    console.log(e);
-    // this.props.updateTransactionToSend({
-    //   name: 'gasPrice',
-    //   value: e*1000000000,
-    // });
+    this.props.updateTransactionToSend({
+      name: 'gasPrice',
+      value: e * 1000000000,
+    });
+    // if(this.props.web3 && this.props.web3.web3Instance) {
+    //   let web3 = this.props.web3.web3Instance;
+    //   this.props.updateTransactionToSend({
+    //     name: 'gasPrice',
+    //     value: web3.utils.toWei(e, "gwei"),
+    //   });
+    // }
   }
 
   estimateGas() {
     let web3 = this.props.web3.web3Instance;
+    let tx = this.props.reducers.TransactionToSend;
     web3.eth.estimateGas(
       {
-        to: '0x9cA862100a77B316e1d20B9553Cf73e5a89fB281',
-        from: '0x65B42142606a9D46d05ea5205Ad4b610A9130e92',
-        amount: 100,
+        to: tx.to,
+        from: tx.from,
+        amount: tx.value,
       },
       (err, res) => {
         err
-          ? console.log(err)
+          ? console.warn(err)
           : this.props.updateTransactionToSend({
               name: 'estimatedGas',
               value: res,
@@ -122,7 +177,7 @@ class SendContractForm extends Component {
               let balance = wallets[w];
               return (
                 <React.Fragment>
-                  <option value={w} key={shortid.generate()}>
+                  <option key={shortid.generate()} value={w}>
                     {this.props.web3 && this.props.web3.web3Instance
                       ? Utils.displayPriceFormatter(this.props, balance)
                       : balance}
@@ -140,23 +195,6 @@ class SendContractForm extends Component {
 
   renderSlider() {
     let gasStats = this.props.reducers.GasStats;
-    const createSliderWithTooltip = Slider.createSliderWithTooltip;
-    const Range = createSliderWithTooltip(Slider.Range);
-    const Handle = Slider.Handle;
-    const handle = props => {
-      const { value, dragging, index, ...restProps } = props;
-      return (
-        <Tooltip
-          prefixCls="rc-slider-tooltip"
-          overlay={value}
-          visible={dragging}
-          placement="top"
-          key={index}
-        >
-          <Handle value={value} {...restProps} />
-        </Tooltip>
-      );
-    };
     const wrapperStyle = { width: 400, margin: 50 };
     return (
       <div style={wrapperStyle}>
@@ -182,7 +220,7 @@ class SendContractForm extends Component {
 
   render() {
     let wallets = this.props.reducers.Wallets;
-    let txAmt = this.props.reducers.TransactionToSend.amount || 0;
+    // let txAmt = this.props.reducers.TransactionToSend.amount || 0;
     return (
       <form
         className="account-send-form"
@@ -279,9 +317,11 @@ class SendContractForm extends Component {
         {this.renderSlider()}
 
         <FormInput />
-        <LatestTransactions />
-        {/*<Slider /> */}
-        {/*<TotalGas /> */}
+        {this.props.reducers.Transactions ? (
+          <LatestTransactions transactions={this.props.reducers.Transactions} />
+        ) : (
+          <div>No transactions found...</div>
+        )}
 
         <button
           type="submit"
@@ -289,7 +329,7 @@ class SendContractForm extends Component {
           onClick={e => {
             e.preventDefault();
             this.estimateGas();
-            this.props.displayModal('displaySendTransaction');
+            this.validateForm(this.props.reducers.TransactionToSend);
           }}
         >
           Send
