@@ -31,6 +31,11 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'CLEAR_TRANSACTION_TO_SEND':
+      return {
+        ...state,
+        TransactionToSend: {},
+      };
     case 'UPDATE_TRANSACTION_CONFIRMATION':
       return {
         ...state,

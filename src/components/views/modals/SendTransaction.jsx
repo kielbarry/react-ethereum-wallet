@@ -48,8 +48,9 @@ class SendTransactionModal extends Component {
       .on('transactionHash', hash => {
         this.props.addTransaction({
           hash: hash,
-          value: { ...tx, dateSent: date },
+          value: { ...tx, dateSent: date, confirmationNumber: 'Pending' },
         });
+        this.props.clearTransactionToSend();
       })
       .on('receipt', receipt => {
         this.props.updateTransaction({
