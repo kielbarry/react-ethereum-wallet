@@ -31,41 +31,46 @@ class SendTransactionModal extends Component {
   }
 
   cancelFunction(e) {
-    // this.props.cancelContractToWatch(); // TODO:reset data values in inputs
+    // this.props.cancelContractToWatch(); //
     this.props.closeModal('displaySendTransaction');
   }
 
   sendTransaction(e) {
+    //TODO: TODO:reset data values in inputs
     e.preventDefault();
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
     let obj = { from: tx.from, to: tx.to, amount: tx.value };
     let date = new Date();
+
     web3.eth
       .sendTransaction({ from: tx.from, to: tx.to, amount: tx.value })
       .on('transactionHash', hash => {
-        this.props.addTransaction(hash);
+        this.props.addTransaction({
+          hash: hash,
+          value: { ...tx, dateSent: date },
+        });
       })
       .on('receipt', receipt => {
-        receipt['confirmationNumber'] = 'Pending';
-        receipt['dateSent'] = date;
-        this.props.updateTransaction({ [receipt.transactionHash]: receipt });
+        this.props.updateTransaction({
+          name: [receipt.transactionHash],
+          value: receipt,
+        });
       })
       .on('confirmation', (confirmationNumber, receipt) => {
-        receipt['confirmationNumber'] = confirmationNumber;
-        receipt['dateSent'] = date;
-        this.props.updateTransaction({ [receipt.transactionHash]: receipt });
+        this.props.updateTransactionConfirmation({
+          name: [receipt.transactionHash],
+          value: confirmationNumber,
+        });
       })
       .on('error', err => {
-        if (err) {
-          this.props.displayGlobalNotification({
-            display: true,
-            type: 'error',
-            msg: err,
-            duration: 5,
-          });
-          console.warn(err);
-        }
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'error',
+          msg: err,
+          duration: 5,
+        });
+        console.warn(err);
       });
   }
 
@@ -98,7 +103,7 @@ class SendTransactionModal extends Component {
             <SecurityIcon wallet="123fdsf" />
             {transaction.from}
           </p>
-          <i class="icon-arrow-down" />
+          <i className="icon-arrow-down" />
           <p>
             <SecurityIcon wallet="Asdgafb43" />
             {transaction.to}
@@ -108,7 +113,7 @@ class SendTransactionModal extends Component {
             <small>"+ Estimated fee"</small>
             {transaction.estimatedGas} Wei
             <br />
-            <small class="gas-price">
+            <small className="gas-price">
               Gas price {transaction.gasPrice} gWei
               <br />
               Estimated required gas {transaction.estimatedGas}

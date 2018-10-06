@@ -2,6 +2,13 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const updateTransactionConfirmation = cn => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_TRANSACTION_CONFIRMATION,
+    payload: cn,
+  });
+};
+
 export const updateTransaction = txnInfo => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_TRANSACTION,

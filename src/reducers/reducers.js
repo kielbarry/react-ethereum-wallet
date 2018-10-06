@@ -31,16 +31,33 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'UPDATE_TRANSACTION_CONFIRMATION':
+      return {
+        ...state,
+        Transactions: {
+          ...state.Transactions,
+          [action.payload.name]: {
+            ...state.Transactions[action.payload.name],
+            confirmationNumber: action.payload.value,
+          },
+        },
+      };
     case 'UPDATE_TRANSACTION':
       return {
         ...state,
-        Transactions: Object.assign({}, state.Transactions, action.payload),
+        Transactions: {
+          ...state.Transactions,
+          [action.payload.name]: {
+            ...state.Transactions[action.payload.name],
+            ...action.payload.value,
+          },
+        },
       };
     case 'ADD_TRANSACTION':
       return {
         ...state,
         Transactions: Object.assign({}, state.Transactions, {
-          [action.payload]: {},
+          [action.payload.hash]: action.payload.value,
         }),
       };
     case 'DISPLAY_GLOBAL_NOTIFICATION':

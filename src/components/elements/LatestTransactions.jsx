@@ -17,32 +17,34 @@ class LatestTransactions extends Component {
           placeholder="Filter transactions"
         />
         <table>
-          <tr data-transacation-hash="" data-block-hash="">
-            <td
-              className="time simptip-position-right simptip-tip-movable"
-              data-tool-tip=""
-            >
-              <h2>month</h2>
-              <p>day</p>
-            </td>
-            <td>
-              <h2>Transaction Type</h2>
-              <p>
-                <span className="address dapp-shorten-text not-ens-name">
-                  <SecurityIcon wallet="asdvfasdvas" />
-                </span>
-                <span className="arrow">→</span>
-                <span className="address dapp-shorten-text not-ens-name">
-                  <SecurityIcon wallet="asdvfasdvas" />
-                </span>
-              </p>
-            </td>
-            <td className="info">time ago</td>
-            <td className="transaction-amount minus">amount sent</td>
-            <td>
-              <i className="icon-arrow-right minus" />
-            </td>
-          </tr>
+          <tbody>
+            <tr data-transacation-hash="" data-block-hash="">
+              <td
+                className="time simptip-position-right simptip-tip-movable"
+                data-tool-tip=""
+              >
+                <h2>month</h2>
+                <p>day</p>
+              </td>
+              <td>
+                <h2>Transaction Type</h2>
+                <p>
+                  <span className="address dapp-shorten-text not-ens-name">
+                    <SecurityIcon wallet="asdvfasdvas" />
+                  </span>
+                  <span className="arrow">→</span>
+                  <span className="address dapp-shorten-text not-ens-name">
+                    <SecurityIcon wallet="asdvfasdvas" />
+                  </span>
+                </p>
+              </td>
+              <td className="info">time ago</td>
+              <td className="transaction-amount minus">amount sent</td>
+              <td>
+                <i className="icon-arrow-right minus" />
+              </td>
+            </tr>
+          </tbody>
         </table>
       </React.Fragment>
     );
