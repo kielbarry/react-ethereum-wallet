@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.1.2",
+    "@material-ui/icons": "^3.0.1",
     "ajv": "^6.5.2",
     "blockies-identicon": "^0.1.0",
     "classnames": "^2.2.6",
@@ -29,14 +31,18 @@
     "react-router-transition": "^1.2.1",
     "react-scripts": "1.1.4",
     "react-style": "^0.5.5",
+    "react-style-proptype": "^3.2.2",
     "react-toastify": "^4.4.0",
     "react-toggle-button": "^2.2.0",
+    "react-toolbox": "^2.0.0-beta.6",
+    "react-toolbox-themr": "^1.0.2",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "shortid": "^2.2.13",
     "socket.io-client": "^2.1.1",
+    "update": "^0.7.4",
     "uuid": "^3.3.2",
     "web3": "^1.0.0-beta.35",
     "why-did-you-update": "^0.1.1"
@@ -45,7 +51,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "toolbox": "react-toolbox-themr"
   },
   "devDependencies": {
     "babel-plugin-react-intl": "^2.4.0",
@@ -61,6 +68,20 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "reactToolbox": {
+    "include": [
+      "TABLE",
+      "PROGRESS_BAR"
+    ],
+    "customProperties": {
+      "animation-duration": "0.3s",
+      "color-accent": "var(--palette-pink-a200)",
+      "color-accent-dark": "var(--palette-pink-700)",
+      "color-primary-contrast": "var(--color-dark-contrast)",
+      "color-accent-contrast": "var(--color-dark-contrast)"
+    },
+    "output": "assets/react-toolbox"
   },
   "plugins": [
     "react",

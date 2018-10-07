@@ -187,50 +187,51 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <div>
-          <div className="App">
-            <NavBar />
-            <div className="dapp-flex-content">
-              <main className="dapp-content">
-                <AnimatedSwitch
-                  atEnter={bounceTransition.atEnter}
-                  atLeave={bounceTransition.atLeave}
-                  atActive={bounceTransition.atActive}
-                  mapStyles={mapStyles}
-                >
-                  <Route path="/account/*" component={SingleAccountView} />
-                  <Route exact path="/" component={AccountView} />
-                  <Route exact path="/send-from" component={SendContractForm} />
-                  <Route exact path="/contracts" component={ContractsView} />
-                </AnimatedSwitch>
-                <MistAlertBubble />
-              </main>
-            </div>
-
-            <ToastContainer
-              position="bottom-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnVisibilityChange
-              draggable
-              pauseOnHover
-            />
-
-            <DeleteToken
-              token={this.props.reducers.TokenToDelete}
-              display={deleteToken}
-            />
-            <WatchToken display={watchToken} />
-            <WatchContract display={watchContract} />
-            <SendTransaction display={sendTransaction} />
-            {/*<QRCode display={QRCode} /> */}
-            {/*} <JsonInterface display={JsonInterface} />*/}
-
-            {/*<NoConnection connection={this.props.web3} />*/}
+        <div className="App">
+          <NavBar />
+          <div className="dapp-flex-content">
+            <main className="dapp-content">
+              {/*
+              <AnimatedSwitch
+                atEnter={bounceTransition.atEnter}
+                atLeave={bounceTransition.atLeave}
+                atActive={bounceTransition.atActive}
+                mapStyles={mapStyles}
+              > */}
+              <Route path="/account/*" component={SingleAccountView} />
+              <Route exact path="/" component={AccountView} />
+              <Route exact path="/send-from" component={SendContractForm} />
+              <Route exact path="/contracts" component={ContractsView} />
+              {/*
+              </AnimatedSwitch>
+              */}
+              <MistAlertBubble />
+            </main>
           </div>
+
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
+
+          <DeleteToken
+            token={this.props.reducers.TokenToDelete}
+            display={deleteToken}
+          />
+          <WatchToken display={watchToken} />
+          <WatchContract display={watchContract} />
+          <SendTransaction display={sendTransaction} />
+          {/*<QRCode display={QRCode} /> */}
+          {/*} <JsonInterface display={JsonInterface} />*/}
+
+          {/*<NoConnection connection={this.props.web3} />*/}
         </div>
       </BrowserRouter>
     );

@@ -89,7 +89,7 @@ class SendTransactionModal extends Component {
         this.props.displayGlobalNotification({
           display: true,
           type: 'error',
-          msg: err,
+          msg: err.Error,
           duration: 5,
         });
         console.warn(err);
@@ -114,12 +114,20 @@ class SendTransactionModal extends Component {
             ETHER
           </h1>
           <p>
-            <SecurityIcon wallet="asdf" />
+            <SecurityIcon
+              type="address"
+              classes="dapp-identicon dapp-small"
+              hash="asdf"
+            />
             {transaction.from}
           </p>
           <i className="icon-arrow-down" />
           <p>
-            <SecurityIcon wallet="qwerty" />
+            <SecurityIcon
+              type="address"
+              classes="dapp-identicon dapp-small"
+              hash="qwerty"
+            />
             {transaction.to}
           </p>
           <hr />

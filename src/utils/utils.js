@@ -1,6 +1,30 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
+export function getDate(string) {
+  let d = new Date(string);
+  return d.getDate();
+}
+
+export function getMonthName(string) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const d = new Date();
+  return monthNames[d.getMonth()];
+}
+
 export function displayPriceFormatter(props, balance, currencyOverride) {
   if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
   let web3 = props.web3.web3Instance;

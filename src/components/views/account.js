@@ -5,6 +5,7 @@ import AddForm from '../AddForm.jsx';
 // import PageHeader from '../elements/PageHeaders.jsx';
 // import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
 import AccountItem from '../elements/AccountItem.jsx';
+import LatestTransactions from '../elements/LatestTransactions.jsx';
 
 const listItems = [
   {
@@ -57,6 +58,12 @@ class AccountView extends Component {
         {listItems.map((field, i) => (
           <AddForm key={`account-view-${i}`} field={field} />
         ))}
+
+        {this.props.reducers.Transactions ? (
+          <LatestTransactions transactions={this.props.reducers.Transactions} />
+        ) : (
+          <div>No transactions found...</div>
+        )}
       </div>
     );
   }

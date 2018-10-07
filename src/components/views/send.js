@@ -183,7 +183,11 @@ class SendContractForm extends Component {
                       : balance}
                     " - " + {w}
                   </option>
-                  <SecurityIcon wallet={w} />
+                  <SecurityIcon
+                    type="address"
+                    classes="dapp-identicon dapp-small"
+                    hash={w}
+                  />
                 </React.Fragment>
               );
             })}
@@ -317,11 +321,13 @@ class SendContractForm extends Component {
         {this.renderSlider()}
 
         <FormInput />
-        {this.props.reducers.Transactions ? (
-          <LatestTransactions transactions={this.props.reducers.Transactions} />
-        ) : (
-          <div>No transactions found...</div>
-        )}
+
+        {/*
+        { this.props.reducers.Transactions
+          ? <LatestTransactions transactions={this.props.reducers.Transactions}/>
+          : <div>No transactions found...</div>  
+        }
+      */}
 
         <button
           type="submit"
