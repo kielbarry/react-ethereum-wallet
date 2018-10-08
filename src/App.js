@@ -17,6 +17,7 @@ import AccountView from './components/views/account.js';
 import SingleAccountView from './components/views/SingleAccountView.jsx';
 import ContractsView from './components/views/contracts.js';
 import SendContractForm from './components/views/send.js';
+import NewWalletContract from './components/views/NewWalletContract.jsx';
 import NavBar from './components/navbar';
 
 // components
@@ -28,6 +29,7 @@ import WatchContract from './components/views/modals/WatchContract.jsx';
 import WatchToken from './components/views/modals/WatchToken.jsx';
 import DeleteToken from './components/views/modals/DeleteToken.jsx';
 import SendTransaction from './components/views/modals/SendTransaction.jsx';
+import MaterialModal from './components/views/modals/MaterialModal.jsx';
 // import QRCode from './components/views/modals/QRCode.jsx';
 // import JsonInterface from './components/views/modals/JsonInterface.jsx';
 
@@ -198,9 +200,12 @@ class App extends Component {
                 atActive={bounceTransition.atActive}
                 mapStyles={mapStyles}
               > */}
+              <Route exact path="/account/new" component={NewWalletContract} />
+
               <Route path="/account/*" component={SingleAccountView} />
               <Route exact path="/" component={AccountView} />
               <Route exact path="/send-from" component={SendContractForm} />
+              <Route exact path="/contracts" component={ContractsView} />
               <Route exact path="/contracts" component={ContractsView} />
               {/*
               </AnimatedSwitch>
@@ -221,6 +226,7 @@ class App extends Component {
             pauseOnHover
           />
 
+          <MaterialModal />
           <DeleteToken
             token={this.props.reducers.TokenToDelete}
             display={deleteToken}

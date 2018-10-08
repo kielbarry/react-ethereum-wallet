@@ -8,6 +8,7 @@ import 'rc-tooltip/assets/bootstrap.css';
 import Slider from 'rc-slider';
 // import Range from 'rc-slider/lib/Range';
 // import Tooltip from 'rc-tooltip';
+import Switch from '@material-ui/core/Switch';
 
 import shortid from 'shortid';
 // import ToggleButton from 'react-toggle-button';
@@ -44,6 +45,7 @@ class SendContractForm extends Component {
     this.changeGas = this.changeGas.bind(this);
     this.estimateGas = this.estimateGas.bind(this);
     this.validateForm = this.validateForm.bind(this);
+    this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   validateForm(tx) {
@@ -233,9 +235,18 @@ class SendContractForm extends Component {
     );
   }
 
+  handleSwitch = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
   render() {
     let wallets = this.props.reducers.Wallets;
     // let txAmt = this.props.reducers.TransactionToSend.amount || 0;
+
+    let state = {
+      switchChecked: true,
+    };
+
     return (
       <form
         className="account-send-form"
@@ -329,15 +340,28 @@ class SendContractForm extends Component {
           <div className="dapp-clear-fix" />
         </div>
         <div className="row clear">{this.renderSlider()}</div>
+        Slowest:
+        {this.props.reducers.GasStats !== {}
+          ? Utils.floatToTime(this.props.reducers.GasStats.safeLowWait)
+          : 0}
+        <Switch
+          checked={this.state.switchChecked}
+          checked={true}
+          onChange={this.handleSwitch('switchChecked')}
+          value="checkedB"
+          color="primary"
+        />
+        Fastest:
+        {this.props.reducers.GasStats !== {}
+          ? Utils.floatToTime(this.props.reducers.GasStats.fastWait)
+          : 0}
         <FormInput />
-
         {/*
         { this.props.reducers.Transactions
           ? <LatestTransactions Transactionsctions={this.props.reducers.Transactions}/>
           : <div>No transactions found...</div>  
         }
       */}
-
         <div class="row clear total">
           <div class="col col-12 mobile-full">
             <h3>total</h3>
@@ -347,7 +371,6 @@ class SendContractForm extends Component {
           </div>
           <div class="dapp-clear-fix" />
         </div>
-
         <button
           type="submit"
           className="dapp-block-button"

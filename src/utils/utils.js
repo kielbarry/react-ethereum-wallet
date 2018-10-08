@@ -2,7 +2,7 @@ import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
 export function floatToTime(input) {
-  let str;
+  let str = ' ~';
   if (input < 1) {
     str += Math.round((input * 60) / 10) * 10 + ' seconds.';
   } else if (input < 60) {
