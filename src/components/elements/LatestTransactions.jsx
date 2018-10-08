@@ -41,7 +41,7 @@ class LatestTransactions extends Component {
     return (
       <React.Fragment>
         <tr
-          className=""
+          className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}
           key={tx.transactionHash}
           data-transaction-hash={tx.transactionHash}
           data-block-hash={tx.blockHash}
@@ -73,7 +73,11 @@ class LatestTransactions extends Component {
               </span>
             </p>
           </td>
-          <td className="info">{tx.confirmationNumber} of 12 Confirmations</td>
+          <td className="info">
+            {tx.confirmationNumber === 'Pending'
+              ? 'Pending...'
+              : tx.confirmationNumber + ' of 12 Confirmations'}
+          </td>
           <td className="transaction-amount minus">
             -
             {this.props.web3 && this.props.web3.web3Instance

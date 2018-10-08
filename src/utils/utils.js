@@ -1,6 +1,18 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
+export function floatToTime(input) {
+  let str;
+  if (input < 1) {
+    str += Math.round((input * 60) / 10) * 10 + ' seconds.';
+  } else if (input < 60) {
+    str += Math.ceil(input) + ' minute(s).';
+  } else {
+    Math.ceil(input / 60) + ' hour(s).';
+  }
+  return str;
+}
+
 export function getDate(string) {
   let d = new Date(string);
   return d.getDate();

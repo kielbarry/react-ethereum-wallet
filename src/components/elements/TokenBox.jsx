@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import makeBlockie from 'ethereum-blockies-base64';
-
 import { connect } from 'react-redux';
 import { displayModal, tokenToDelete } from '../../actions/actions.js';
+import SecurityIcon from './SecurityIcon.jsx';
 
 class TokenBox extends Component {
   constructor(props) {
@@ -20,21 +19,13 @@ class TokenBox extends Component {
     var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
     let iconStyle = { backgroundImage: pattern.toDataUrl() };
     let token = this.props.token;
-    const icon = makeBlockie(token.address);
-    let divStyle = {
-      backgroundImage: 'url(' + icon + ')',
-    };
     return (
       <div className="wallet-box tokens" style={iconStyle}>
-        <span
-          className="dapp-identicon dapp-small"
-          title="This is a security icon.  If there were any change to the address, 
-        the resulting icon would be a completely different one"
-          src={icon}
-          style={divStyle}
-        >
-          <img src={icon} style={divStyle} className="identicon-pixel" alt="" />
-        </span>
+        <SecurityIcon
+          type="tokenBox"
+          classes="dapp-identicon dapp-small"
+          hash={token.address}
+        />
         <h3>{token.name}</h3>
         <button
           className="delete-token"

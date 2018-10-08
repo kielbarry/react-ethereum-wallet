@@ -131,14 +131,6 @@ class SendContractForm extends Component {
     // TODO:validate inputs here
     // let web3 = this.props.web3.web3Instance;
 
-    // if(web3.utils.isAddress(e.target.value)
-    //   ?
-
-    //   this.props.updateTransactionToSend({
-    //     name: 'isValid',
-    //     value: e.target.value,
-    //   });
-
     this.props.updateTransactionToSend({
       name: e.target.getAttribute('name'),
       value: e.target.value,
@@ -199,26 +191,45 @@ class SendContractForm extends Component {
 
   renderSlider() {
     let gasStats = this.props.reducers.GasStats;
+    let gasPrice = this.props.reducers.TransactionToSend.gasPrice;
+    console.log(gasStats);
     const wrapperStyle = { width: 400, margin: 50 };
     return (
-      <div style={wrapperStyle}>
-        {this.props.web3 && this.props.web3.web3Instance ? (
-          <p>
-            {Utils.displayPriceFormatter(
-              this.props,
-              this.props.reducers.TransactionToSend.gasPrice
+      <React.Fragment>
+        <div class="col col-7 mobile-full">
+          <h3>Select Fee</h3>
+          <div class="dapp-select-gas-price">
+            {this.props.web3 && this.props.web3.web3Instance ? (
+              <span>
+                {Utils.displayPriceFormatter(this.props, gasPrice, 'ETHER')}
+                <span>ETHER</span>
+              </span>
+            ) : (
+              <span>{0 || gasPrice}</span>
             )}
-          </p>
-        ) : (
-          <p>{0 || this.props.reducers.TransactionToSend.gasPrice}</p>
-        )}
-        <Slider
-          min={gasStats.safeLow}
-          max={gasStats.fast}
-          defaultValue={gasStats.average}
-          onChange={e => this.changeGas(e)}
-        />
-      </div>
+            <Slider
+              min={gasStats.safeLow}
+              max={gasStats.fast}
+              defaultValue={gasStats.average}
+              onChange={e => this.changeGas(e)}
+            />
+          </div>
+        </div>
+        <div class="col col-5 mobile-full send-info">
+          <br />
+          <br />
+          This is the most amount of money that might be used to process this
+          transaction. Your transaction will be mined
+          <strong>
+            probably within
+            {/*
+            {Utils.floatToTime(gasPrice/1000000000)}
+          */}
+          </strong>
+          .
+        </div>
+        <div class="dapp-clear-fix" />
+      </React.Fragment>
     );
   }
 
@@ -317,17 +328,25 @@ class SendContractForm extends Component {
           </div>
           <div className="dapp-clear-fix" />
         </div>
-
-        {this.renderSlider()}
-
+        <div className="row clear">{this.renderSlider()}</div>
         <FormInput />
 
         {/*
         { this.props.reducers.Transactions
-          ? <LatestTransactions transactions={this.props.reducers.Transactions}/>
+          ? <LatestTransactions Transactionsctions={this.props.reducers.Transactions}/>
           : <div>No transactions found...</div>  
         }
       */}
+
+        <div class="row clear total">
+          <div class="col col-12 mobile-full">
+            <h3>total</h3>
+            <span class="amount">0.00 ETHER</span>
+            <br />
+            Gas is paid by the owner of the wallet contract (0.000044187 ETHER)
+          </div>
+          <div class="dapp-clear-fix" />
+        </div>
 
         <button
           type="submit"

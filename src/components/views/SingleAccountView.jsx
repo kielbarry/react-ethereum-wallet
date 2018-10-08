@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import SU from '../elements/selectableUnit.js';
 import AccountActionBar from '../elements/AccountActionBar.jsx';
 import ContractActionBar from '../elements/ContractActionBar.jsx';
-// import ContractActionBar from '../elements/ContractActionBar.jsx';
 import NotFound from './NotFound.jsx';
 
 import makeBlockie from 'ethereum-blockies-base64';
+import SecurityIcon from '../elements/SecurityIcon.jsx';
 import * as Utils from '../../utils/utils.js';
+import LatestTransactions from '../elements/LatestTransactions.jsx';
 
 export class SingleAccountView extends Component {
   constructor(props) {
@@ -49,20 +50,11 @@ export class SingleAccountView extends Component {
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
         <div className="accounts-page-summary">
-          <span
-            className="dapp-identicon"
-            title="This is a security icon.  If there were any change to the address, 
-              the resulting icon would be a completely different one"
-            src={icon}
-            style={divStyle}
-          >
-            <img
-              src={icon}
-              style={divStyle}
-              className="identicon-pixel"
-              alt=""
-            />
-          </span>
+          <SecurityIcon
+            type="singleAccountView"
+            classes="dapp-identicon"
+            hash={contract.address}
+          />
           <header>
             <h1>
               <em className="edit-name">{contract['contract-name']}</em>
@@ -118,30 +110,39 @@ export class SingleAccountView extends Component {
     );
   }
 
+  renderAccountTransactions() {
+    let sw = this.props.reducers.selectedWallet;
+    let address = sw.address;
+    let transactions = this.props.reducers.Transactions;
+    let accountTxns = {};
+    Object.keys(transactions).map(hash => {
+      if (hash === address) {
+        accountTxns[address] = transactions[hash];
+      }
+    });
+    return (
+      <div className="accounts-transactions">
+        {accountTxns !== {} ? (
+          <LatestTransactions transactions={accountTxns} />
+        ) : (
+          <div>No transactions found...</div>
+        )}
+      </div>
+    );
+  }
+
   renderSingleAccount() {
     let sw = this.props.reducers.selectedWallet;
-    const icon = makeBlockie(sw.address);
-    let divStyle = {
-      backgroundImage: 'url(' + icon + ')',
-    };
+    let address = sw.address;
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
         <div className="accounts-page-summary">
-          <span
-            className="dapp-identicon"
-            title="This is a security icon.  If there were any change to the address, 
-						the resulting icon would be a completely different one"
-            src={icon}
-            style={divStyle}
-          >
-            <img
-              src={icon}
-              style={divStyle}
-              className="identicon-pixel"
-              alt=""
-            />
-          </span>
+          <SecurityIcon
+            type="singleAccountView"
+            classes="dapp-identicon"
+            hash={sw.address}
+          />
           <header>
             <h1>
               <span>Account {sw.number}</span>
@@ -185,6 +186,7 @@ export class SingleAccountView extends Component {
           </header>
         </div>
         <AccountActionBar props={sw} />
+        {this.renderAccountTransactions()}
       </div>
     );
   }
