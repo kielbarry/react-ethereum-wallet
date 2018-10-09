@@ -27,7 +27,10 @@ const styles = theme => ({
     margin: `${theme.spacing.unit}px 0`,
   },
   fadeRoot: {
-    height: 180,
+    // height: 'auto',
+    // importwalletHeight: this.state.checked.importwallet ? 'auto' : 0,
+    // multisigHeight: this.state.checked.multisig ? 'auto' : 0,
+    // simpleHeight: this.state.checked.simple ? 'auto' : 0,
   },
   paper: {
     margin: theme.spacing.unit,
@@ -44,25 +47,33 @@ const styles = theme => ({
 });
 
 class NewWalletContract extends Component {
-  state = {
-    value: 'male',
-    checked: {
-      simple: true,
-      multisig: false,
-      importwallet: false,
-    },
-  };
+  // this.state = {
+  //   value: 'male',
+  //   checked: {
+  //     simple: true,
+  //     multisig: false,
+  //     importwallet: false,
+  //   },
+  // };
 
-  handleChange = event => {
+  handleChange(event) {
     this.setState({ value: event.target.value });
     this.setState(state => ({ checked: !state.checked }));
-  };
+  }
   // handleFade = event => {
   // 	this.setState(state => ({ checked: !state.checked }));
   // };
   render() {
     const { classes } = this.props;
     const { value, checked } = this.state;
+    //   this.state = {
+    //   value: 'male',
+    //   checked: {
+    //     simple: true,
+    //     multisig: false,
+    //     importwallet: false,
+    //   },
+    // };
     return (
       <main className="dapp-content">
         <h1>
@@ -85,7 +96,7 @@ class NewWalletContract extends Component {
                 label="SINGLE OWNER ACCOUNT"
                 name="accountType"
               />
-              <div className={classes.fadeRoot}>
+              <div className={classes.fadeRoot.simpleRoot}>
                 <Fade in={this.state.checked.simple}>
                   <div className="indented-box">
                     <br />
@@ -103,7 +114,7 @@ class NewWalletContract extends Component {
                 label="MULTISIGNATURE WALLET CONTRACT"
                 name="accountType"
               />
-              <div className={classes.fadeRoot}>
+              <div className={classes.fadeRoot.multisigRoot}>
                 <Fade in={this.state.checked.multisig}>
                   <div className="indented-box">
                     <p>
@@ -176,19 +187,22 @@ class NewWalletContract extends Component {
                 label="IMPORT WALLET"
                 name="accountType"
               />
-              {/*
-		            	<div className={classes.fadeRoot}>
-						        <Fade in={this.state.checked.importwallet}>
-						          <div className="indented-box">
-		                    <br />
-					                <div className="dapp-address-input">
-										        <input type="text" placeholder="Wallet address" className="import" />
-											    </div>
-			                    <p className="invalid"></p>
-					                </div>
-						        </Fade>
-						      </div>
-						      */}
+
+              <div className={classes.fadeRoot.importwalletRoot}>
+                <Fade in={this.state.checked.importwallet}>
+                  <div className="indented-box">
+                    <br />
+                    <div className="dapp-address-input">
+                      <input
+                        type="text"
+                        placeholder="Wallet address"
+                        className="import"
+                      />
+                    </div>
+                    <p className="invalid" />
+                  </div>
+                </Fade>
+              </div>
             </RadioGroup>
           </FormControl>
         </div>
@@ -201,8 +215,8 @@ NewWalletContract.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-// const mapStateToProps = state => {
-//   return state;
-// };
+const mapStateToProps = state => {
+  return state;
+};
 
 export default withStyles(styles)(NewWalletContract);

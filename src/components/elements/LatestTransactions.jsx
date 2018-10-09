@@ -10,18 +10,19 @@ import { connect } from 'react-redux';
 // import Table from 'react-toolbox/lib/table';
 
 import SecurityIcon from './SecurityIcon.jsx';
-
+import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+// import PropTypes from 'prop-types';
+// import { withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Tooltip from '@material-ui/core/Tooltip';
+// import Tooltip from '@material-ui/core/Tooltip';
 
 class LatestTransactions extends Component {
   renderProgresBar(tx) {
     this.state = {
-      completed: tx.confirmationNumber != 'Pending' ? tx.confirmationNumber : 0,
+      completed:
+        tx.confirmationNumber !== 'Pending' ? tx.confirmationNumber : 0,
     };
     return (
       <React.Fragment>
@@ -45,9 +46,16 @@ class LatestTransactions extends Component {
           key={tx.transactionHash}
           data-transaction-hash={tx.transactionHash}
           data-block-hash={tx.blockHash}
+          // onClick={() => this.props.displayModal('displayTransaction') }
+          onClick={e => {
+            if (e.target.tagName !== 'A') {
+              this.props.updateSelectedTransaction(tx);
+              this.props.displayModal('displayTransaction');
+            }
+          }}
         >
           <td
-            className="time simptip-position-right simptip-tip-movable"
+            className="time simptip-position-right simptip-movable"
             data-tool-tip={tx.dateSent}
           >
             <h2>{Utils.getMonthName(tx.dateSent)}</h2>
@@ -104,7 +112,7 @@ class LatestTransactions extends Component {
           className="filter-transactions"
           placeholder="Filter transactions"
         />
-        <table class="dapp-zebra transactions">
+        <table className="dapp-zebra transactions">
           <tbody>
             {Object.keys(transactions).map(txHash =>
               this.renderTransaction(transactions[txHash])
@@ -117,6 +125,9 @@ class LatestTransactions extends Component {
 }
 const mapStateToProps = state => ({
   ...state,
-  // Transactions: state.reducers.Transactions,
 });
-export default connect(mapStateToProps)(LatestTransactions);
+
+export default connect(
+  mapStateToProps,
+  { ...Actions }
+)(LatestTransactions);

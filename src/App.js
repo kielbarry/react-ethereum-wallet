@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { spring, AnimatedSwitch } from 'react-router-transition';
+// import { spring, AnimatedSwitch } from 'react-router-transition';
 import cn from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,6 +30,7 @@ import WatchToken from './components/views/modals/WatchToken.jsx';
 import DeleteToken from './components/views/modals/DeleteToken.jsx';
 import SendTransaction from './components/views/modals/SendTransaction.jsx';
 import MaterialModal from './components/views/modals/MaterialModal.jsx';
+import TransactionInfo from './components/views/modals/TransactionInfo.jsx';
 // import QRCode from './components/views/modals/QRCode.jsx';
 // import JsonInterface from './components/views/modals/JsonInterface.jsx';
 
@@ -49,7 +50,8 @@ class App extends Component {
       () => this.props.fetchEthGasStationStats(),
       15000
     );
-
+    console.log(this.props);
+    console.log(this.state);
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -73,11 +75,11 @@ class App extends Component {
     }, 1000);
   }
 
-  getCCP = () => {
+  getCCP() {
     Utils.getCryptoComparePrices().then(exchangeRates => {
       this.props.updateEtherPrices(exchangeRates);
     });
-  };
+  }
 
   componentDidMount() {
     window.addEventListener('blur', e =>
@@ -150,22 +152,22 @@ class App extends Component {
   render() {
     // we need to map the `scale` prop we define below
     // to the transform style property
-    function mapStyles(styles) {
-      return { opacity: styles.opacity, transform: `scale(${styles.scale})` };
-    }
+    // function mapStyles(styles) {
+    //   return { opacity: styles.opacity, transform: `scale(${styles.scale})` };
+    // }
     // wrap the `spring` helper to use a bouncy config
-    function bounce(val) {
-      return spring(val, { stiffness: 330, damping: 22 });
-    }
+    // function bounce(val) {
+    //   return spring(val, { stiffness: 330, damping: 22 });
+    // }
     // child matches will...
-    const bounceTransition = {
-      // start in a transparent, upscaled state
-      atEnter: { opacity: 0, scale: 1.2 },
-      // leave in a transparent, downscaled state
-      atLeave: { opacity: bounce(0), scale: bounce(0.8) },
-      // and rest at an opaque, normally-scaled state
-      atActive: { opacity: bounce(1), scale: bounce(1) },
-    };
+    // const bounceTransition = {
+    //   // start in a transparent, upscaled state
+    //   atEnter: { opacity: 0, scale: 1.2 },
+    //   // leave in a transparent, downscaled state
+    //   atLeave: { opacity: bounce(0), scale: bounce(0.8) },
+    //   // and rest at an opaque, normally-scaled state
+    //   atActive: { opacity: bounce(1), scale: bounce(1) },
+    // };
 
     let modals = this.props.reducers.modals;
     let watchContract = cn({
@@ -180,6 +182,10 @@ class App extends Component {
     let sendTransaction = cn({
       'dapp-modal-overlay': modals.displaySendTransaction || false,
     });
+    let viewTransaction = cn({
+      'dapp-modal-overlay': modals.displayTransaction || false,
+    });
+
     //  let JsonInterface = cn({
     //   'dapp-modal-overlay': modals.displayJSONInterface || false,
     // });
@@ -230,6 +236,10 @@ class App extends Component {
           <DeleteToken
             token={this.props.reducers.TokenToDelete}
             display={deleteToken}
+          />
+          <TransactionInfo
+            display={viewTransaction}
+            transaction={this.props.reducers.SelectedTransaction}
           />
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />

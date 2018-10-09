@@ -17,7 +17,9 @@ const initialState = {
   timeSinceLastBlock: 0,
   network: '',
   provider: '',
-  modals: {},
+  modals: {
+    displayTransaction: false,
+  },
   ContractToWatch: {},
   TokenToWatch: {},
   TokenToDelete: '',
@@ -26,10 +28,19 @@ const initialState = {
   globalNotification: {
     display: false,
   },
+  DeployContractForm: {},
 };
 
 const reducers = (state = initialState, action) => {
+  if (action.type === 'UPDATE_SELECTED_TRANSACTION') {
+    console.log(action.payload);
+  }
   switch (action.type) {
+    case 'UPDATE_SELECTED_TRANSACTION':
+      return {
+        ...state,
+        SelectedTransaction: action.payload,
+      };
     case 'CLEAR_TRANSACTION_TO_SEND':
       return {
         ...state,

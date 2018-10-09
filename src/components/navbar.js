@@ -10,6 +10,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +49,7 @@ class NavBar extends Component {
     clearInterval(this.interval);
   }
 
-  handleScroll = () => {
+  handleScroll() {
     let scrollPosition = window.scrollY;
     if (scrollPosition > 150) {
       this.setState({ small: true, sticky: true });
@@ -57,7 +58,7 @@ class NavBar extends Component {
     } else {
       this.setState({ small: false, sticky: false });
     }
-  };
+  }
 
   renderHeaderField(field) {
     return (

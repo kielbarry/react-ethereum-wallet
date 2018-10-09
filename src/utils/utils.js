@@ -8,7 +8,7 @@ export function floatToTime(input) {
   } else if (input < 60) {
     str += Math.ceil(input) + ' minute(s).';
   } else {
-    Math.ceil(input / 60) + ' hour(s).';
+    str += Math.ceil(input / 60) + ' hour(s).';
   }
   return str;
 }

@@ -19,7 +19,7 @@ export const SecurityIcon = props => {
         <img src={icon} style={divStyle} className="identicon-pixel" alt="" />
       </span>
       {props.type === 'transactionHref' ? (
-        <Link to={{ pathname: '/send/' + props.hash }} title="{props.hash}">
+        <Link to={{ pathname: '/send/' + props.hash }} title={props.hash}>
           {props.hash}
         </Link>
       ) : (

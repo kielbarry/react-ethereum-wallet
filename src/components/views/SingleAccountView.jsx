@@ -6,7 +6,6 @@ import AccountActionBar from '../elements/AccountActionBar.jsx';
 import ContractActionBar from '../elements/ContractActionBar.jsx';
 import NotFound from './NotFound.jsx';
 
-import makeBlockie from 'ethereum-blockies-base64';
 import SecurityIcon from '../elements/SecurityIcon.jsx';
 import * as Utils from '../../utils/utils.js';
 import LatestTransactions from '../elements/LatestTransactions.jsx';
@@ -40,12 +39,6 @@ export class SingleAccountView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
-
-    const icon = makeBlockie(contract.address);
-    let divStyle = {
-      backgroundImage: 'url(' + icon + ')',
-    };
-
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
@@ -119,6 +112,7 @@ export class SingleAccountView extends Component {
       if (hash === address) {
         accountTxns[address] = transactions[hash];
       }
+      return null;
     });
     return (
       <div className="accounts-transactions">
@@ -133,7 +127,6 @@ export class SingleAccountView extends Component {
 
   renderSingleAccount() {
     let sw = this.props.reducers.selectedWallet;
-    let address = sw.address;
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />

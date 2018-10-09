@@ -8,7 +8,7 @@ import 'rc-tooltip/assets/bootstrap.css';
 import Slider from 'rc-slider';
 // import Range from 'rc-slider/lib/Range';
 // import Tooltip from 'rc-tooltip';
-import Switch from '@material-ui/core/Switch';
+// import Switch from '@material-ui/core/Switch';
 
 import shortid from 'shortid';
 // import ToggleButton from 'react-toggle-button';
@@ -16,12 +16,17 @@ import shortid from 'shortid';
 // import makeBlockie from 'ethereum-blockies-base64';
 
 //exp
-import FormInput from '../elements/FormInput.jsx';
-import LatestTransactions from '../elements/LatestTransactions.jsx';
+// import FormInput from '../elements/FormInput.jsx';
+// import LatestTransactions from '../elements/LatestTransactions.jsx';
 import SecurityIcon from '../elements/SecurityIcon.jsx';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
+
+// import classNames from 'classnames';
+// import { withStyles } from '@material-ui/core/styles';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import TextField from '@material-ui/core/TextField';
 
 class SendContractForm extends Component {
   constructor(props) {
@@ -45,7 +50,7 @@ class SendContractForm extends Component {
     this.changeGas = this.changeGas.bind(this);
     this.estimateGas = this.estimateGas.bind(this);
     this.validateForm = this.validateForm.bind(this);
-    this.handleSwitch = this.handleSwitch.bind(this);
+    // this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   validateForm(tx) {
@@ -140,6 +145,7 @@ class SendContractForm extends Component {
   }
 
   selectWallet(e) {
+    console.log(e);
     this.setState({ fromWallet: e.target.value });
     // TODO:validate inputs here
     this.props.updateTransactionToSend({
@@ -157,8 +163,67 @@ class SendContractForm extends Component {
 
   renderWalletDropDown() {
     let wallets = this.props.reducers.Wallets;
+    //     const styles = theme => ({
+    //   container: {
+    //     display: 'flex',
+    //     flexWrap: 'wrap',
+    //   },
+    //   textField: {
+    //     marginLeft: theme.spacing.unit,
+    //     marginRight: theme.spacing.unit,
+    //     width: 200,
+    //   },
+    //   dense: {
+    //     marginTop: 19,
+    //   },
+    //   menu: {
+    //     width: 200,
+    //   },
+    // });
+    // const { classes } = this.props;
+
     return (
       <div className="col col-6 mobile-full from">
+        {/*
+        <div className="dapp-select-account send-from">
+          <SecurityIcon
+              type="address"
+              classes="dapp-identicon dapp-small"
+              hash={this.state.fromWallet}
+            />
+          <TextField
+            // id="standard-select-currency"
+            // className="send-from"
+            // className={classNames(classes.textField, classes.dense, "send-from")}
+              name="from"
+              onChange={this.selectWallet}
+              value={this.state.fromWallet}
+            select
+            label="Select"
+            // className={classes.textField}
+            // value={this.state.currency}
+            // onChange={this.handleChange('currency')}
+            // SelectProps={wallets}
+            // helperText="Please select your currency"
+            // margin="normal"
+          >
+          {Object.keys(wallets).map(option => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+          id="standard-with-placeholder"
+          error
+          label="With placeholder"
+          placeholder="Placeholder"
+          // className={classes.textField}
+          margin="normal"
+        />
+        </div>
+      */}
+
         <h3>From</h3>
         <div className="dapp-select-account send-from">
           <select
@@ -177,15 +242,15 @@ class SendContractForm extends Component {
                       : balance}
                     " - " + {w}
                   </option>
-                  <SecurityIcon
-                    type="address"
-                    classes="dapp-identicon dapp-small"
-                    hash={w}
-                  />
                 </React.Fragment>
               );
             })}
           </select>
+          <SecurityIcon
+            type="address"
+            classes="dapp-identicon dapp-small"
+            hash={this.state.fromWallet}
+          />
         </div>
       </div>
     );
@@ -195,7 +260,7 @@ class SendContractForm extends Component {
     let gasStats = this.props.reducers.GasStats;
     let gasPrice = this.props.reducers.TransactionToSend.gasPrice;
     console.log(gasStats);
-    const wrapperStyle = { width: 400, margin: 50 };
+    // const wrapperStyle = { width: 400, margin: 50 };
     return (
       <React.Fragment>
         <div class="col col-7 mobile-full">
@@ -235,17 +300,17 @@ class SendContractForm extends Component {
     );
   }
 
-  handleSwitch = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
+  // handleSwitch = name => event => {
+  //   this.setState({ [name]: event.target.checked });
+  // };
 
   render() {
     let wallets = this.props.reducers.Wallets;
     // let txAmt = this.props.reducers.TransactionToSend.amount || 0;
 
-    let state = {
-      switchChecked: true,
-    };
+    // let state = {
+    //   switchChecked: true,
+    // };
 
     return (
       <form
@@ -257,6 +322,7 @@ class SendContractForm extends Component {
         <h1>
           <strong>Send</strong> Funds
         </h1>
+
         <div className="row clear from-to">
           {this.renderWalletDropDown()}
 
@@ -340,6 +406,7 @@ class SendContractForm extends Component {
           <div className="dapp-clear-fix" />
         </div>
         <div className="row clear">{this.renderSlider()}</div>
+        {/*
         Slowest:
         {this.props.reducers.GasStats !== {}
           ? Utils.floatToTime(this.props.reducers.GasStats.safeLowWait)
@@ -356,6 +423,7 @@ class SendContractForm extends Component {
           ? Utils.floatToTime(this.props.reducers.GasStats.fastWait)
           : 0}
         <FormInput />
+      */}
         {/*
         { this.props.reducers.Transactions
           ? <LatestTransactions Transactionsctions={this.props.reducers.Transactions}/>
