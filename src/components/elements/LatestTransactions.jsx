@@ -89,7 +89,8 @@ class LatestTransactions extends Component {
           <td className="transaction-amount minus">
             -
             {this.props.web3 && this.props.web3.web3Instance
-              ? Utils.displayPriceFormatter(this.props, tx.value)
+              ? Utils.displayPriceFormatter(this.props, tx.value, 'ETHER') +
+                ' ETHER'
               : tx.value}
           </td>
           <td>

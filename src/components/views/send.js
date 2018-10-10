@@ -18,6 +18,7 @@ import shortid from 'shortid';
 //exp
 // import FormInput from '../elements/FormInput.jsx';
 // import LatestTransactions from '../elements/LatestTransactions.jsx';
+import NumberFormat from 'react-number-format';
 import SecurityIcon from '../elements/SecurityIcon.jsx';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/actions.js';
@@ -137,15 +138,24 @@ class SendContractForm extends Component {
   handleOnKeyUp(e) {
     // TODO:validate inputs here
     // let web3 = this.props.web3.web3Instance;
+    let target = e.target.getAttribute('name');
+    let targetValue = e.target.value;
+
+    if (target === 'value' && this.props.web3 && targetValue) {
+      let web3 = this.props.web3.web3Instance;
+      targetValue = web3.utils.toWei(targetValue, 'ETHER');
+    }
+
+    console.log(target);
+    console.log(targetValue);
 
     this.props.updateTransactionToSend({
-      name: e.target.getAttribute('name'),
-      value: e.target.value,
+      name: target,
+      value: targetValue,
     });
   }
 
   selectWallet(e) {
-    console.log(e);
     this.setState({ fromWallet: e.target.value });
     // TODO:validate inputs here
     this.props.updateTransactionToSend({
@@ -155,8 +165,14 @@ class SendContractForm extends Component {
   }
 
   toggleCheckbox(e) {
+    console.log(e);
+    // console.log(this.state)
+
+    // console.log(this.props.reducers.Wallets)
+    // console.log(this.props.reducers.Wallets[this.state.fromWallet])
+    // console.log(this.props.reducers.TransactionToSend)
     this.props.updateTransactionToSend({
-      name: 'amount',
+      name: 'value',
       value: this.props.reducers.Wallets[this.state.fromWallet],
     });
   }
@@ -259,13 +275,12 @@ class SendContractForm extends Component {
   renderSlider() {
     let gasStats = this.props.reducers.GasStats;
     let gasPrice = this.props.reducers.TransactionToSend.gasPrice;
-    console.log(gasStats);
     // const wrapperStyle = { width: 400, margin: 50 };
     return (
       <React.Fragment>
-        <div class="col col-7 mobile-full">
+        <div className="col col-7 mobile-full">
           <h3>Select Fee</h3>
-          <div class="dapp-select-gas-price">
+          <div className="dapp-select-gas-price">
             {this.props.web3 && this.props.web3.web3Instance ? (
               <span>
                 {Utils.displayPriceFormatter(this.props, gasPrice, 'ETHER')}
@@ -282,7 +297,7 @@ class SendContractForm extends Component {
             />
           </div>
         </div>
-        <div class="col col-5 mobile-full send-info">
+        <div className="col col-5 mobile-full send-info">
           <br />
           <br />
           This is the most amount of money that might be used to process this
@@ -295,7 +310,7 @@ class SendContractForm extends Component {
           </strong>
           .
         </div>
-        <div class="dapp-clear-fix" />
+        <div className="dapp-clear-fix" />
       </React.Fragment>
     );
   }
@@ -352,21 +367,36 @@ class SendContractForm extends Component {
               placeholder="0.0"
               className="dapp-large"
               pattern="[0-9\.,]*"
+              // value={this.props.reducers.TransactionToSend.value || ''}
               onKeyUp={e => this.handleOnKeyUp(e)}
               // value={txAmt}
             />
             <br />
             <label>
+              {/*
               <input
                 type="checkbox"
                 className="send-all"
                 onChange={e => this.toggleCheckbox(e)}
               />
               Send everything
+              */}
             </label>
+
             <p className="send-info">
-              You want to send <strong>0 USD</strong> in Ether, using exchange
-              rates from
+              You want to send
+              <strong>
+                {this.props.web3 && this.props.web3.web3Instance
+                  ? ' ' +
+                    Utils.displayPriceFormatter(
+                      this.props,
+                      this.props.reducers.TransactionToSend.value
+                    ) +
+                    ' ' +
+                    this.props.reducers.currency
+                  : 0 + ' ' + this.props.reducers.currency}
+              </strong>{' '}
+              in Ether, using exchange rates from
               <a
                 href="https://www.cryptocompare.com/coins/eth/overview/BTC"
                 target="noopener noreferrer _blank"
@@ -375,7 +405,19 @@ class SendContractForm extends Component {
                 cryptocompare.com
               </a>
               .<br />
-              Which is currently an equivalent of <strong>0 ETHER</strong>.
+              Which is currently an equivalent of
+              <strong>
+                {this.props.web3 && this.props.web3.web3Instance
+                  ? ' ' +
+                    Utils.displayPriceFormatter(
+                      this.props,
+                      this.props.reducers.TransactionToSend.value,
+                      'ETHER'
+                    ) +
+                    ' ETHER'
+                  : 0 + ' ETHER'}
+              </strong>
+              .
             </p>
           </div>
           <div className="col col-6 mobile-full">
@@ -386,7 +428,8 @@ class SendContractForm extends Component {
               <span className="token-name">ETHER</span>
               <span className="balance">
                 {this.props.web3 && this.props.web3.web3Instance
-                  ? Utils.displayPriceFormatter(
+                  ? ' ' +
+                    Utils.displayPriceFormatter(
                       this.props,
                       wallets[this.state.fromWallet]
                     ) +
@@ -430,14 +473,25 @@ class SendContractForm extends Component {
           : <div>No transactions found...</div>  
         }
       */}
-        <div class="row clear total">
-          <div class="col col-12 mobile-full">
+        <div className="row clear total">
+          <div className="col col-12 mobile-full">
             <h3>total</h3>
-            <span class="amount">0.00 ETHER</span>
+            <span className="amount">
+              {this.props.web3 && this.props.web3.web3Instance
+                ? ' ' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    this.props.reducers.TransactionToSend.value +
+                      this.props.reducers.TransactionToSend.gasPrice
+                  ) +
+                  ' ' +
+                  this.props.reducers.currency
+                : 0 + ' ' + this.props.reducers.currency}
+            </span>
             <br />
             Gas is paid by the owner of the wallet contract (0.000044187 ETHER)
           </div>
-          <div class="dapp-clear-fix" />
+          <div className="dapp-clear-fix" />
         </div>
         <button
           type="submit"

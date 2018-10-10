@@ -8,7 +8,6 @@ import SecurityIcon from '../../elements/SecurityIcon.jsx';
 
 class TransactionInfo extends Component {
   handleClickOutside(evt) {
-    console.log('here');
     if (!this.props.display) return;
     this.props.closeModal('displayTransaction');
   }
@@ -17,7 +16,6 @@ class TransactionInfo extends Component {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     let tx = this.props.transaction;
-    console.log(this.props);
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container transaction-info">
@@ -31,7 +29,7 @@ class TransactionInfo extends Component {
                 tx.transactionHash
               }
               target="_blank"
-              style={{ 'font-size': '0.4em' }}
+              style={{ fontSize: '0.4em' }}
               rel="noopener noreferrer"
             />
           </h1>
@@ -101,7 +99,6 @@ class TransactionInfo extends Component {
 }
 
 const mapStateToProps = state => {
-  // return {modals: state.modals}
   return state;
 };
 

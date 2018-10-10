@@ -28,7 +28,15 @@ const initialState = {
   globalNotification: {
     display: false,
   },
-  DeployContractForm: {},
+  DeployContractForm: {
+    simpleChecked: true,
+    multisigChecked: false,
+    importwalletChecked: false,
+    multiSigContract: {
+      ownerCount: 3,
+      confirmationAddressesRequired: 1,
+    },
+  },
 };
 
 const reducers = (state = initialState, action) => {

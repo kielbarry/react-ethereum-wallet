@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 
@@ -15,6 +17,9 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
 import Fade from '@material-ui/core/Fade';
+import Collapse from '@material-ui/core/Collapse';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => ({
   radioRoot: {
@@ -27,7 +32,8 @@ const styles = theme => ({
     margin: `${theme.spacing.unit}px 0`,
   },
   fadeRoot: {
-    // height: 'auto',
+    height: 'auto',
+    noHeight: 0,
     // importwalletHeight: this.state.checked.importwallet ? 'auto' : 0,
     // multisigHeight: this.state.checked.multisig ? 'auto' : 0,
     // simpleHeight: this.state.checked.simple ? 'auto' : 0,
@@ -47,162 +53,212 @@ const styles = theme => ({
 });
 
 class NewWalletContract extends Component {
-  // this.state = {
-  //   value: 'male',
-  //   checked: {
-  //     simple: true,
-  //     multisig: false,
-  //     importwallet: false,
-  //   },
-  // };
-
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-    this.setState(state => ({ checked: !state.checked }));
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+    // this.state = this.props
   }
-  // handleFade = event => {
-  // 	this.setState(state => ({ checked: !state.checked }));
-  // };
+
+  state = {
+    checked: {
+      simple: false,
+      multisig: true,
+      importwallet: false,
+    },
+    multiSigContract: {
+      ownerCount: 3,
+      confirmationAddressesRequired: 1,
+    },
+  };
+
+  // shouldComponentUpdate(prevProps, prevState){
+  //   console.log(this.props)
+  // }
+
+  handleChange = e => {
+    // console.log(e)
+    // console.log(e.target)
+
+    let buttonValue = e.target.value;
+    let name = e.target.name;
+
+    let obj = {};
+
+    switch (name) {
+      case 'ContractToDeploy':
+        obj = { ...this.state.checked };
+        Object.keys(this.state.checked).map(key => {
+          obj[key] = false;
+          this.setState({ checked: obj });
+        });
+        obj[buttonValue] = true;
+        this.setState({ checked: obj });
+        break;
+      case 'multisigSignees':
+        obj = { ...this.state.multiSigContract };
+        obj.ownerCount = buttonValue;
+        this.setState({ multiSigContract: obj });
+        break;
+      case 'multisigSigneesRequired':
+        obj = { ...this.state.multiSigContract };
+        obj.confirmationAddressesRequired = buttonValue;
+        this.setState({ multiSigContract: obj });
+        break;
+      default:
+        break;
+    }
+    console.log('state after setstate', this.state);
+  };
+
+  renderMultiSigOwners() {
+    return (
+      <div className="dapp-address-input">
+        <input type="text" placeholder="Owner address" className="owners" />
+      </div>
+    );
+  }
+
   render() {
+    // console.log(this.props)
     const { classes } = this.props;
-    const { value, checked } = this.state;
-    //   this.state = {
-    //   value: 'male',
-    //   checked: {
-    //     simple: true,
-    //     multisig: false,
-    //     importwallet: false,
-    //   },
-    // };
     return (
       <main className="dapp-content">
         <h1>
           <strong>Accounts</strong> Overview
         </h1>
-
         <div className={classes.radioRoot}>
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>
             <RadioGroup
-              aria-label="Gender"
-              name="gender1"
+              aria-label="ContractToDeploy"
+              name="ContractToDeploy"
               className={classes.group}
               value={this.state.value}
-              onChange={this.handleChange}
+              onChange={e => this.handleChange(e)}
             >
               <FormControlLabel
                 value="simple"
-                control={<Radio color="primary" />}
+                control={
+                  <Radio checked={this.state.checked.simple} color="primary" />
+                }
                 label="SINGLE OWNER ACCOUNT"
                 name="accountType"
               />
-              <div className={classes.fadeRoot.simpleRoot}>
-                <Fade in={this.state.checked.simple}>
-                  <div className="indented-box">
-                    <br />
-                    <span>
-                      Note: If your owner account is compromised, your wallet
-                      has no protection.
-                    </span>
-                  </div>
-                </Fade>
-              </div>
-
+              <Collapse in={this.state.checked.simple}>
+                <div className="indented-box">
+                  <br />
+                  <span>
+                    Note: If your owner account is compromised, your wallet has
+                    no protection.
+                  </span>
+                </div>
+              </Collapse>
               <FormControlLabel
                 value="multisig"
-                control={<Radio color="primary" />}
+                control={
+                  <Radio
+                    checked={this.state.checked.multisig}
+                    color="primary"
+                  />
+                }
                 label="MULTISIGNATURE WALLET CONTRACT"
                 name="accountType"
               />
-              <div className={classes.fadeRoot.multisigRoot}>
-                <Fade in={this.state.checked.multisig}>
-                  <div className="indented-box">
-                    <p>
-                      This is a joint account controlled by
-                      <span className="inline-form" name="multisigSignees">
-                        <button
-                          type="button"
-                          data-name="multisigSignees"
-                          data-value="3"
-                        >
-                          3
-                        </button>
-                      </span>{' '}
-                      owners. You can send up to
-                      <span className="inline-form" name="dailyLimitAmount">
-                        <input
-                          type="text"
-                          name="dailyLimitAmount"
-                          required=""
-                          size="2"
-                        />
-                      </span>{' '}
-                      Ether per day.
-                    </p>
-                    <p>
-                      Any transaction over that daily limit requires the
-                      confirmation of
-                      <span className="inline-form" name="multisigSignatures">
-                        <button
-                          type="button"
-                          data-name="multisigSignatures"
-                          data-value="2"
-                        >
-                          2
-                        </button>
-                      </span>{' '}
-                      owners.
-                    </p>
-                    <h4>Account owners</h4>
-                    <div className="dapp-address-input">
+              <Collapse in={this.state.checked.multisig}>
+                <div className="indented-box">
+                  <p>
+                    This is a joint account controlled by
+                    <TextField
+                      select
+                      data-name="multisigSignees"
+                      className="inline-form"
+                      name="multisigSignees"
+                      // className={classes.textField}
+                      value={this.state.multiSigContract.ownerCount}
+                      onChange={e => this.handleChange(e)}
+                      margin="normal"
+                      variant="filled"
+                    >
+                      {[...Array(10).keys()].map(num => (
+                        <MenuItem key={num + 1} value={num + 1}>
+                          {num + 1}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    owners. You can send up to
+                    <span className="inline-form" name="dailyLimitAmount">
                       <input
                         type="text"
-                        placeholder="Owner address"
-                        className="owners"
-                        disabled="true"
+                        name="dailyLimitAmount"
+                        required=""
+                        size="2"
                       />
-                    </div>
-                    <div className="dapp-address-input">
-                      <input
-                        type="text"
-                        placeholder="Owner address"
-                        className="owners"
-                        disabled="true"
-                      />
-                    </div>
-                    <div className="dapp-address-input">
-                      <input
-                        type="text"
-                        placeholder="Owner address"
-                        className="owners"
-                        disabled="true"
-                      />
-                    </div>
-                  </div>
-                </Fade>
-              </div>
+                    </span>{' '}
+                    Ether per day.
+                  </p>
+                  <p>
+                    Any transaction over that daily limit requires the
+                    confirmation of
+                    <span className="inline-form" name="multisigSignatures">
+                      <button
+                        type="button"
+                        data-name="multisigSignatures"
+                        data-value="2"
+                      >
+                        2
+                      </button>
+                    </span>{' '}
+                    <TextField
+                      select
+                      data-name="multisigSigneesRequired"
+                      className="inline-form"
+                      name="multisigSigneesRequired"
+                      value={
+                        this.state.multiSigContract
+                          .confirmationAddressesRequired
+                      }
+                      onChange={e => this.handleChange(e)}
+                      margin="normal"
+                      variant="filled"
+                    >
+                      {[
+                        ...Array(this.state.multiSigContract.ownerCount).keys(),
+                      ].map(num => (
+                        <MenuItem key={num + 1} value={num + 1}>
+                          {num + 1}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    owners.
+                  </p>
+                  <h4>Account owners</h4>
+                  {this.renderMultiSigOwners()}
+                </div>
+              </Collapse>
               <FormControlLabel
                 value="importwallet"
-                control={<Radio color="primary" />}
+                control={
+                  <Radio
+                    checked={this.state.checked.importwallet}
+                    color="primary"
+                  />
+                }
                 label="IMPORT WALLET"
                 name="accountType"
               />
-
-              <div className={classes.fadeRoot.importwalletRoot}>
-                <Fade in={this.state.checked.importwallet}>
-                  <div className="indented-box">
-                    <br />
-                    <div className="dapp-address-input">
-                      <input
-                        type="text"
-                        placeholder="Wallet address"
-                        className="import"
-                      />
-                    </div>
-                    <p className="invalid" />
+              <Collapse in={this.state.checked.importwallet}>
+                <div className="indented-box">
+                  <br />
+                  <div className="dapp-address-input">
+                    <input
+                      type="text"
+                      placeholder="Wallet address"
+                      className="import"
+                    />
                   </div>
-                </Fade>
-              </div>
+                  <p className="invalid" />
+                </div>
+              </Collapse>
             </RadioGroup>
           </FormControl>
         </div>
@@ -219,4 +275,10 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default withStyles(styles)(NewWalletContract);
+export default compose(
+  withStyles(styles, { name: 'NewWalletContract' }),
+  connect(
+    mapStateToProps,
+    null
+  )
+)(NewWalletContract);

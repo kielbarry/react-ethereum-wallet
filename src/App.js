@@ -50,8 +50,6 @@ class App extends Component {
       () => this.props.fetchEthGasStationStats(),
       15000
     );
-    console.log(this.props);
-    console.log(this.state);
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -237,10 +235,11 @@ class App extends Component {
             token={this.props.reducers.TokenToDelete}
             display={deleteToken}
           />
+          {/*
           <TransactionInfo
             display={viewTransaction}
             transaction={this.props.reducers.SelectedTransaction}
-          />
+          /> */}
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />

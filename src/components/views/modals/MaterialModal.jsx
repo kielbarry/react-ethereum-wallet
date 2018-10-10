@@ -27,16 +27,17 @@ class AlertDialogSlide extends React.Component {
   render() {
     return (
       <div>
+        {/*
         <Button onClick={this.handleClickOpen}>Slide in alert dialog</Button>
         <Dialog
           open={this.state.open}
           TransitionComponent={Transition}
           keepMounted
           onClose={this.handleClose}
-          aria-labelledby="alert-dialog-slide-title"
+          aria-labelledby="alert-dialog-slide-h6"
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle id="alert-dialog-slide-title">
+          <DialogTitle id="alert-dialog-slide-h6">
             {"Use Google's location service?"}
           </DialogTitle>
           <DialogContent>
@@ -54,6 +55,7 @@ class AlertDialogSlide extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+      */}
       </div>
     );
   }

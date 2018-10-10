@@ -6,6 +6,8 @@ import '../stylesheets/navbar.css';
 import { NavFields } from '../constants/FieldConstants.jsx';
 import * as Utils from '../utils/utils.js';
 
+import NumberFormat from 'react-number-format';
+
 class NavBar extends Component {
   constructor(props) {
     super(props);
@@ -82,9 +84,22 @@ class NavBar extends Component {
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
         <span className={field.firstClass}>
-          {this.props.web3 && this.props.web3.web3Instance
-            ? Utils.displayPriceFormatter(this.props, this.props.totalBalance)
-            : this.props.totalBalance}
+          {this.props.web3 && this.props.web3.web3Instance ? (
+            <NumberFormat
+              value={Utils.displayPriceFormatter(
+                this.props,
+                this.props.totalBalance
+              )}
+              displayType={'text'}
+              thousandSeparator={true}
+            />
+          ) : (
+            <NumberFormat
+              value={this.props.totalBalance}
+              displayType={'text'}
+              thousandSeparator={true}
+            />
+          )}
           <span className="inline-form" name="unit">
             <button
               type="button"
