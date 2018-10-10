@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import AddForm from '../AddForm.jsx';
+import AddForm from '../AddForm.js';
 // import PageHeader from '../elements/PageHeaders.jsx';
 // import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
-import AccountItem from '../elements/AccountItem.jsx';
-import LatestTransactions from '../elements/LatestTransactions.jsx';
+import AccountItem from '../elements/AccountItem.js';
+import LatestTransactions from '../elements/LatestTransactions.js';
 
 const listItems = [
   {

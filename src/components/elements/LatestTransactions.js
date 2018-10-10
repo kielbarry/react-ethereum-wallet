@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 // import ProgressBar from 'react-toolbox/lib/progress_bar';
 // import Table from 'react-toolbox/lib/table';
 
-import SecurityIcon from './SecurityIcon.jsx';
+import SecurityIcon from './SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 

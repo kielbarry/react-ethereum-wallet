@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // import InputItem from '../../elements/InputItem.jsx';
 import * as Actions from '../../../actions/actions.js';
 import onClickOutside from 'react-onclickoutside';
-import SecurityIcon from '../../elements/SecurityIcon.jsx';
+import SecurityIcon from '../../elements/SecurityIcon.js';
 
 class TransactionInfo extends Component {
   handleClickOutside(evt) {

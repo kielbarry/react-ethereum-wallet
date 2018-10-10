@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import SU from '../elements/selectableUnit.js';
-import AccountActionBar from '../elements/AccountActionBar.jsx';
-import ContractActionBar from '../elements/ContractActionBar.jsx';
-import NotFound from './NotFound.jsx';
+import SU from '../elements/SelectableUnit.js';
+import AccountActionBar from '../elements/AccountActionBar.js';
+import ContractActionBar from '../elements/ContractActionBar.js';
+import NotFound from './NotFound.js';
 
-import SecurityIcon from '../elements/SecurityIcon.jsx';
+import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
-import LatestTransactions from '../elements/LatestTransactions.jsx';
+import LatestTransactions from '../elements/LatestTransactions.js';
 
 export class SingleAccountView extends Component {
   constructor(props) {

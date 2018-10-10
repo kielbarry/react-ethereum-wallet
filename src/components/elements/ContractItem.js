@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectedContract } from '../../actions/actions.js';
-import SecurityIcon from './SecurityIcon.jsx';
+import SecurityIcon from './SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
 
 class ContractItem extends Component {

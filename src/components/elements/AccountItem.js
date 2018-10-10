@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
-import SecurityIcon from './SecurityIcon.jsx';
+import SecurityIcon from './SecurityIcon.js';
 
 class AccountItem extends Component {
   constructor(props) {
@@ -51,7 +51,6 @@ class AccountItem extends Component {
             classes="dapp-identicon dapp-small"
             hash={this.props.address}
           />
-
           <ul className="token-list" />
           <h3 className="not-ens-name">
             <i className="icon-key" title="Account" />

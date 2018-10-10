@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 
 import isEqual from 'lodash/isEqual';
 
-import AddForm from '../AddForm.jsx';
+import AddForm from '../AddForm.js';
 import { connect } from 'react-redux';
 
-import ContractItem from '../elements/ContractItem.jsx';
-import TokenBox from '../elements/TokenBox.jsx';
+import ContractItem from '../elements/ContractItem.js';
+import TokenBox from '../elements/TokenBox.js';
 
-import { ContractSectionList } from '../../constants/FieldConstants.jsx';
+import { ContractSectionList } from '../../constants/FieldConstants.js';
 
 import * as Actions from '../../actions/actions.js';
 
@@ -119,6 +119,7 @@ class ContractsView extends Component {
             <div className="account-pattern">+</div>
             <h3>{CT.buttonDescription}</h3>
           </button>
+
           <div className="dapp-clear-fix" />
         </div>
       </div>

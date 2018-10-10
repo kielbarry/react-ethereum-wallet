@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import InputItem from '../../elements/InputItem.jsx';
-// import TestInputItem from '../../elements/TestInputItem.jsx';
-import SecurityIcon from '../../elements/SecurityIcon.jsx';
+// import InputItem from '../../elements/InputItem.js';
+// import TestInputItem from '../../elements/TestInputItem.js';
+import SecurityIcon from '../../elements/SecurityIcon.js';
 import * as Actions from '../../../actions/actions.js';
 
 class SendTransactionModal extends Component {

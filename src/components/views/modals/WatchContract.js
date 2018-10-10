@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // import InputItem from '../../elements/InputItem.jsx';
-import TestInputItem from '../../elements/TestInputItem.jsx';
+import TestInputItem from '../../elements/TestInputItem.js';
 import * as Actions from '../../../actions/actions.js';
 
 const listInputs = [

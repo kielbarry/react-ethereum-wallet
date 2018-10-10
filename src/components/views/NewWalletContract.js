@@ -23,7 +23,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import SecurityIcon from '../elements/SecurityIcon.jsx';
+import SecurityIcon from '../elements/SecurityIcon.js';
 
 const styles = theme => ({
   radioRoot: {

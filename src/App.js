@@ -13,26 +13,26 @@ import * as Utils from './utils/utils.js';
 import * as WalletUtils from './utils/WalletUtils.js';
 
 // views
-import AccountView from './components/views/account.js';
-import SingleAccountView from './components/views/SingleAccountView.jsx';
-import ContractsView from './components/views/contracts.js';
-import SendContractForm from './components/views/send.js';
-import NewWalletContract from './components/views/NewWalletContract.jsx';
-import NavBar from './components/navbar';
+import AccountView from './components/views/Account.js';
+import SingleAccountView from './components/views/SingleAccountView.js';
+import ContractsView from './components/views/Contracts.js';
+import SendContractForm from './components/views/Send.js';
+import NewWalletContract from './components/views/NewWalletContract.js';
+import NavBar from './components/Navbar';
 
 // components
-import MistAlertBubble from './components/mistAlertBubble.js';
+import MistAlertBubble from './components/MistAlertBubble.js';
 
 // Modals
-// import NoConnection from './components/views/modals/NoConnection.jsx';
-import WatchContract from './components/views/modals/WatchContract.jsx';
-import WatchToken from './components/views/modals/WatchToken.jsx';
-import DeleteToken from './components/views/modals/DeleteToken.jsx';
-import SendTransaction from './components/views/modals/SendTransaction.jsx';
-import MaterialModal from './components/views/modals/MaterialModal.jsx';
-import TransactionInfo from './components/views/modals/TransactionInfo.jsx';
-// import QRCode from './components/views/modals/QRCode.jsx';
-// import JsonInterface from './components/views/modals/JsonInterface.jsx';
+// import NoConnection from './components/views/modals/NoConnection.js';
+import WatchContract from './components/views/modals/WatchContract.js';
+import WatchToken from './components/views/modals/WatchToken.js';
+import DeleteToken from './components/views/modals/DeleteToken.js';
+import SendTransaction from './components/views/modals/SendTransaction.js';
+import MaterialModal from './components/views/modals/MaterialModal.js';
+import TransactionInfo from './components/views/modals/TransactionInfo.js';
+// import QRCode from './components/views/modals/QRCode.js';
+// import JsonInterface from './components/views/modals/JsonInterface.js';
 
 // stylesheets
 import './stylesheets/mergedstyles.css';
@@ -209,7 +209,6 @@ class App extends Component {
               <Route path="/account/*" component={SingleAccountView} />
               <Route exact path="/" component={AccountView} />
               <Route exact path="/send-from" component={SendContractForm} />
-              <Route exact path="/contracts" component={ContractsView} />
               <Route exact path="/contracts" component={ContractsView} />
               {/*
               </AnimatedSwitch>

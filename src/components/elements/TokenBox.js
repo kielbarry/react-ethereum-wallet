@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { displayModal, tokenToDelete } from '../../actions/actions.js';
-import SecurityIcon from './SecurityIcon.jsx';
+import SecurityIcon from './SecurityIcon.js';
 
 class TokenBox extends Component {
   constructor(props) {

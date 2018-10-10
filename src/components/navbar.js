@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SU from './elements/selectableUnit.js';
+import SU from './elements/SelectableUnit.js';
 import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
-import { NavFields } from '../constants/FieldConstants.jsx';
+import { NavFields } from '../constants/FieldConstants.js';
 import * as Utils from '../utils/utils.js';
 
 import NumberFormat from 'react-number-format';

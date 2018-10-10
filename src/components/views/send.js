@@ -19,7 +19,7 @@ import shortid from 'shortid';
 // import FormInput from '../elements/FormInput.jsx';
 // import LatestTransactions from '../elements/LatestTransactions.jsx';
 import NumberFormat from 'react-number-format';
-import SecurityIcon from '../elements/SecurityIcon.jsx';
+import SecurityIcon from '../elements/SecurityIcon.js';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
