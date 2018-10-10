@@ -35,6 +35,7 @@ const initialState = {
     multiSigContract: {
       ownerCount: 3,
       confirmationAddressesRequired: 1,
+      dailyLimitAmount: 10,
     },
   },
 };

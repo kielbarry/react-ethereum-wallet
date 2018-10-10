@@ -20,6 +20,10 @@ import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputBase from '@material-ui/core/InputBase';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+import SecurityIcon from '../elements/SecurityIcon.jsx';
 
 const styles = theme => ({
   radioRoot: {
@@ -79,31 +83,60 @@ class NewWalletContract extends Component {
         dcfRadio.map(key => (obj[key] = false));
         obj[buttonValue] = true;
         this.props.updateDCFRadio(obj);
-
         break;
       case 'multisigSignees':
         obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
         obj.ownerCount = buttonValue;
-        // this.setState({ multiSigContract: obj });
         this.props.updateDeployContractForm(obj);
         break;
       case 'multisigSigneesRequired':
         obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
         obj.confirmationAddressesRequired = buttonValue;
-        // this.setState({ multiSigContract: obj });
+        this.props.updateDeployContractForm(obj);
+        break;
+      case 'dailyLimitAmount':
+        obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
+        obj.dailyLimitAmount = buttonValue;
         this.props.updateDeployContractForm(obj);
         break;
       default:
         break;
     }
-    console.log('state after setstate', this.state);
   };
 
+  // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+  makeID() {
+    var text = '';
+    var possible =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
+
   renderMultiSigOwners() {
+    let acc = this.props.reducers.DeployContractForm.multiSigContract
+      .ownerCount;
     return (
-      <div className="dapp-address-input">
-        <input type="text" placeholder="Owner address" className="owners" />
-      </div>
+      <React.Fragment>
+        {[...Array(acc).keys()].map(num => (
+          <TextField
+            label="Owner address"
+            className="dapp-address-input owners"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SecurityIcon
+                    type="address"
+                    classes="dapp-identicon dapp-small"
+                    hash={this.makeID()}
+                  />
+                </InputAdornment>
+              ),
+            }}
+          />
+        ))}
+      </React.Fragment>
     );
   }
 
@@ -140,8 +173,12 @@ class NewWalletContract extends Component {
               />
               <Collapse in={DeployContractForm.simpleChecked}>
                 <div className="indented-box">
-                  <br />
-                  <span>
+                  <span
+                    style={{
+                      'vertical-align': 'middle',
+                      'line-height': '35px',
+                    }}
+                  >
                     Note: If your owner account is compromised, your wallet has
                     no protection.
                   </span>
@@ -160,18 +197,24 @@ class NewWalletContract extends Component {
               />
               <Collapse in={DeployContractForm.multisigChecked}>
                 <div className="indented-box">
-                  <p>
-                    This is a joint account controlled by
+                  <p
+                    style={{
+                      'vertical-align': 'middle',
+                      'line-height': '35px',
+                    }}
+                  >
+                    This is a joint account controlled by &nbsp;
                     <TextField
                       select
                       data-name="multisigSignees"
                       className="inline-form"
                       name="multisigSignees"
+                      multiline
                       // className={classes.textField}
                       value={DeployContractForm.multiSigContract.ownerCount}
                       onChange={e => this.handleChange(e)}
-                      margin="normal"
-                      variant="filled"
+                      // margin="normal"
+                      // variant="filled"
                     >
                       {[...Array(10).keys()].map(num => (
                         <MenuItem key={num + 1} value={num + 1}>
@@ -179,41 +222,40 @@ class NewWalletContract extends Component {
                         </MenuItem>
                       ))}
                     </TextField>
-                    owners. You can send up to
-                    <span className="inline-form" name="dailyLimitAmount">
-                      <input
-                        type="text"
-                        name="dailyLimitAmount"
-                        required=""
-                        size="2"
-                      />
-                    </span>{' '}
-                    Ether per day.
+                    owners. You can send up to &nbsp;
+                    <TextField
+                      value={
+                        DeployContractForm.multiSigContract.dailyLimitAmount
+                      }
+                      onChange={e => this.handleChange(e)}
+                      type="number"
+                      className="inline-form"
+                      name="dailyLimitAmount"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                    &nbsp;Ether per day.
                   </p>
-                  <p>
+                  <p
+                    style={{
+                      'vertical-align': 'middle',
+                      'line-height': '35px',
+                    }}
+                  >
                     Any transaction over that daily limit requires the
-                    confirmation of
-                    <span className="inline-form" name="multisigSignatures">
-                      <button
-                        type="button"
-                        data-name="multisigSignatures"
-                        data-value="2"
-                      >
-                        2
-                      </button>
-                    </span>{' '}
+                    confirmation of &nbsp;
                     <TextField
                       select
                       data-name="multisigSigneesRequired"
                       className="inline-form"
+                      data-name="multisigSignatures"
                       name="multisigSigneesRequired"
                       value={
                         DeployContractForm.multiSigContract
                           .confirmationAddressesRequired
                       }
                       onChange={e => this.handleChange(e)}
-                      margin="normal"
-                      variant="filled"
                     >
                       {[
                         ...Array(
@@ -225,7 +267,7 @@ class NewWalletContract extends Component {
                         </MenuItem>
                       ))}
                     </TextField>
-                    owners.
+                    &nbsp; owners.
                   </p>
                   <h4>Account owners</h4>
                   {this.renderMultiSigOwners()}
