@@ -235,11 +235,11 @@ class App extends Component {
             token={this.props.reducers.TokenToDelete}
             display={deleteToken}
           />
-          {/*
+          {/*}
           <TransactionInfo
             display={viewTransaction}
             transaction={this.props.reducers.SelectedTransaction}
-          /> */}
+          />*/}
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />

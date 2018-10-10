@@ -17,6 +17,7 @@ const persistConfig = {
     'timeSinceLastBlock',
     'peerCount',
     'modals',
+    'DeployContractForm',
   ],
 };
 

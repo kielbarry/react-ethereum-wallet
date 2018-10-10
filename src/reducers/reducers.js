@@ -44,6 +44,25 @@ const reducers = (state = initialState, action) => {
     console.log(action.payload);
   }
   switch (action.type) {
+    case 'UPDATE_DCF_RADIO':
+      return {
+        ...state,
+        DeployContractForm: Object.assign(
+          {},
+          state.DeployContractForm,
+          action.payload
+        ),
+      };
+    case 'UPDATE_DEPLOY_CONTRACT_FORM':
+      return {
+        ...state,
+        DeployContractForm: {
+          ...state.DeployContractForm,
+          multiSigContract: {
+            ...action.payload,
+          },
+        },
+      };
     case 'UPDATE_SELECTED_TRANSACTION':
       return {
         ...state,

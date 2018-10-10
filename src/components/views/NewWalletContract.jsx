@@ -34,9 +34,6 @@ const styles = theme => ({
   fadeRoot: {
     height: 'auto',
     noHeight: 0,
-    // importwalletHeight: this.state.checked.importwallet ? 'auto' : 0,
-    // multisigHeight: this.state.checked.multisig ? 'auto' : 0,
-    // simpleHeight: this.state.checked.simple ? 'auto' : 0,
   },
   paper: {
     margin: theme.spacing.unit,
@@ -52,57 +49,49 @@ const styles = theme => ({
   },
 });
 
+let dcfRadio = ['simpleChecked', 'multisigChecked', 'importwalletChecked'];
+
 class NewWalletContract extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-    // this.state = this.props
+    this.state = this.props;
   }
 
-  state = {
-    checked: {
-      simple: false,
-      multisig: true,
-      importwallet: false,
-    },
-    multiSigContract: {
-      ownerCount: 3,
-      confirmationAddressesRequired: 1,
-    },
-  };
-
-  // shouldComponentUpdate(prevProps, prevState){
-  //   console.log(this.props)
-  // }
+  shouldComponentUpdate(prevProps, prevState) {
+    if (
+      this.props.reducers.DeployContractForm !==
+        prevProps.reducers.DeployContractForm ||
+      this.props.reducers.DeployContractForm.multiSigContract !==
+        prevProps.reducers.DeployContractForm.multiSigContract
+    ) {
+      return true;
+    }
+    return false;
+  }
 
   handleChange = e => {
-    // console.log(e)
-    // console.log(e.target)
-
     let buttonValue = e.target.value;
     let name = e.target.name;
-
     let obj = {};
-
     switch (name) {
-      case 'ContractToDeploy':
-        obj = { ...this.state.checked };
-        Object.keys(this.state.checked).map(key => {
-          obj[key] = false;
-          this.setState({ checked: obj });
-        });
+      case 'ContractToDeployRadio':
+        obj = { ...this.props.reducers.DeployContractForm };
+        dcfRadio.map(key => (obj[key] = false));
         obj[buttonValue] = true;
-        this.setState({ checked: obj });
+        this.props.updateDCFRadio(obj);
+
         break;
       case 'multisigSignees':
-        obj = { ...this.state.multiSigContract };
+        obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
         obj.ownerCount = buttonValue;
-        this.setState({ multiSigContract: obj });
+        // this.setState({ multiSigContract: obj });
+        this.props.updateDeployContractForm(obj);
         break;
       case 'multisigSigneesRequired':
-        obj = { ...this.state.multiSigContract };
+        obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
         obj.confirmationAddressesRequired = buttonValue;
-        this.setState({ multiSigContract: obj });
+        // this.setState({ multiSigContract: obj });
+        this.props.updateDeployContractForm(obj);
         break;
       default:
         break;
@@ -121,6 +110,8 @@ class NewWalletContract extends Component {
   render() {
     // console.log(this.props)
     const { classes } = this.props;
+    const { DeployContractForm } = this.props.reducers;
+    console.log(DeployContractForm);
     return (
       <main className="dapp-content">
         <h1>
@@ -130,21 +121,24 @@ class NewWalletContract extends Component {
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>
             <RadioGroup
-              aria-label="ContractToDeploy"
-              name="ContractToDeploy"
+              aria-label="ContractToDeployRadio"
+              name="ContractToDeployRadio"
               className={classes.group}
               value={this.state.value}
               onChange={e => this.handleChange(e)}
             >
               <FormControlLabel
-                value="simple"
+                value="simpleChecked"
                 control={
-                  <Radio checked={this.state.checked.simple} color="primary" />
+                  <Radio
+                    checked={DeployContractForm.simpleChecked}
+                    color="primary"
+                  />
                 }
                 label="SINGLE OWNER ACCOUNT"
                 name="accountType"
               />
-              <Collapse in={this.state.checked.simple}>
+              <Collapse in={DeployContractForm.simpleChecked}>
                 <div className="indented-box">
                   <br />
                   <span>
@@ -154,17 +148,17 @@ class NewWalletContract extends Component {
                 </div>
               </Collapse>
               <FormControlLabel
-                value="multisig"
+                value="multisigChecked"
                 control={
                   <Radio
-                    checked={this.state.checked.multisig}
+                    checked={DeployContractForm.multisigChecked}
                     color="primary"
                   />
                 }
                 label="MULTISIGNATURE WALLET CONTRACT"
                 name="accountType"
               />
-              <Collapse in={this.state.checked.multisig}>
+              <Collapse in={DeployContractForm.multisigChecked}>
                 <div className="indented-box">
                   <p>
                     This is a joint account controlled by
@@ -174,7 +168,7 @@ class NewWalletContract extends Component {
                       className="inline-form"
                       name="multisigSignees"
                       // className={classes.textField}
-                      value={this.state.multiSigContract.ownerCount}
+                      value={DeployContractForm.multiSigContract.ownerCount}
                       onChange={e => this.handleChange(e)}
                       margin="normal"
                       variant="filled"
@@ -214,7 +208,7 @@ class NewWalletContract extends Component {
                       className="inline-form"
                       name="multisigSigneesRequired"
                       value={
-                        this.state.multiSigContract
+                        DeployContractForm.multiSigContract
                           .confirmationAddressesRequired
                       }
                       onChange={e => this.handleChange(e)}
@@ -222,7 +216,9 @@ class NewWalletContract extends Component {
                       variant="filled"
                     >
                       {[
-                        ...Array(this.state.multiSigContract.ownerCount).keys(),
+                        ...Array(
+                          DeployContractForm.multiSigContract.ownerCount
+                        ).keys(),
                       ].map(num => (
                         <MenuItem key={num + 1} value={num + 1}>
                           {num + 1}
@@ -236,17 +232,17 @@ class NewWalletContract extends Component {
                 </div>
               </Collapse>
               <FormControlLabel
-                value="importwallet"
+                value="importwalletChecked"
                 control={
                   <Radio
-                    checked={this.state.checked.importwallet}
+                    checked={DeployContractForm.importwalletChecked}
                     color="primary"
                   />
                 }
                 label="IMPORT WALLET"
                 name="accountType"
               />
-              <Collapse in={this.state.checked.importwallet}>
+              <Collapse in={DeployContractForm.importwalletChecked}>
                 <div className="indented-box">
                   <br />
                   <div className="dapp-address-input">
@@ -279,6 +275,6 @@ export default compose(
   withStyles(styles, { name: 'NewWalletContract' }),
   connect(
     mapStateToProps,
-    null
+    { ...Actions }
   )
 )(NewWalletContract);

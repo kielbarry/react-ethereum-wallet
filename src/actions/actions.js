@@ -2,6 +2,20 @@ import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
 
+export const updateDCFRadio = data => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_DCF_RADIO,
+    payload: data,
+  });
+};
+
+export const updateDeployContractForm = data => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_DEPLOY_CONTRACT_FORM,
+    payload: data,
+  });
+};
+
 export const updateSelectedTransaction = tx => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_SELECTED_TRANSACTION,
