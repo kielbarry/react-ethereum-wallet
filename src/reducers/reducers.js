@@ -38,6 +38,8 @@ const initialState = {
       dailyLimitAmount: 10,
     },
   },
+  balancesAutoScanChecked: 0,
+  errorsAutoScanReceived: 0,
 };
 
 const reducers = (state = initialState, action) => {
@@ -45,6 +47,16 @@ const reducers = (state = initialState, action) => {
     console.log(action.payload);
   }
   switch (action.type) {
+    case 'UPDATE_BALANCE_CHECKED':
+      return {
+        ...state,
+        balancesAutoScanChecked: action.payload,
+      };
+    case 'UPDATE_ERR_CHECKED':
+      return {
+        ...state,
+        errorsAutoScanReceived: action.payload,
+      };
     case 'UPDATE_DCF_RADIO':
       return {
         ...state,

@@ -5,12 +5,27 @@ import isEqual from 'lodash/isEqual';
 import AddForm from '../AddForm.js';
 import { connect } from 'react-redux';
 
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+
+import { withStyles } from '@material-ui/core/styles';
+import compose from 'recompose/compose';
+
 import ContractItem from '../elements/ContractItem.js';
 import TokenBox from '../elements/TokenBox.js';
 
 import { ContractSectionList } from '../../constants/FieldConstants.js';
 
 import * as Actions from '../../actions/actions.js';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit,
+  },
+});
 
 class ContractsView extends Component {
   // constructor(props) {
@@ -75,10 +90,30 @@ class ContractsView extends Component {
     }
   }
 
+  autoScanTokens(e) {
+    console.log(this.props);
+    this.props.instantiateContract();
+
+    // console.log(e)
+    // let r = this.props.reducers
+    // let addresses = [
+    //   ...Object.keys(r.Wallets),
+    //   ...Object.keys(r.ObservedContracts).map(key => {
+    //     return r.ObservedContracts[key].address
+    //   }),
+    //   ...Object.keys(r.ObservedContracts).map(key => {
+    //     return r.ObservedContracts[key].address
+    //   })
+    // ]
+    // console.log(addresses)
+    // this.props.fetchTokensForAutoScan(addresses)
+  }
+
   render() {
     let CSL = ContractSectionList;
     let CC = CSL.CustomContracts;
     let CT = CSL.CustomTokens;
+    const { classes } = this.props;
     return (
       <div className="dapp-container">
         <h1>
@@ -120,17 +155,31 @@ class ContractsView extends Component {
             <h3>{CT.buttonDescription}</h3>
           </button>
 
+          <Button
+            variant="fab"
+            color="primary"
+            aria-label="Add"
+            className={classes.button}
+            onClick={e => this.autoScanTokens(e)}
+          >
+            <AddIcon />
+          </Button>
+
           <div className="dapp-clear-fix" />
         </div>
       </div>
     );
   }
 }
+
 const mapStateToProps = state => {
   return state;
 };
 
-export default connect(
-  mapStateToProps,
-  { ...Actions }
+export default compose(
+  withStyles(styles, { name: 'ContractsView' }),
+  connect(
+    mapStateToProps,
+    { ...Actions }
+  )
 )(ContractsView);

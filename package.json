@@ -51,7 +51,7 @@
     "socket.io-client": "^2.1.1",
     "update": "^0.7.4",
     "uuid": "^3.3.2",
-    "web3": "^1.0.0-beta.35",
+    "web3": "^1.0.0-beta.36",
     "why-did-you-update": "^0.1.1"
   },
   "scripts": {
