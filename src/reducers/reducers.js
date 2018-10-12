@@ -19,6 +19,7 @@ const initialState = {
   provider: '',
   modals: {
     displayTransaction: false,
+    displayQRCode: false,
   },
   ContractToWatch: {},
   TokenToWatch: {},

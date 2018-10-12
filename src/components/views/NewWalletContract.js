@@ -3,24 +3,24 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import * as Actions from '../../actions/actions.js';
-import * as Utils from '../../utils/utils.js';
+// import * as Utils from '../../utils/utils.js';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
+// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
-import Switch from '@material-ui/core/Switch';
-import Paper from '@material-ui/core/Paper';
-import Fade from '@material-ui/core/Fade';
+// import Switch from '@material-ui/core/Switch';
+// import Paper from '@material-ui/core/Paper';
+// import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputBase from '@material-ui/core/InputBase';
+// import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import SecurityIcon from '../elements/SecurityIcon.js';
@@ -249,7 +249,7 @@ class NewWalletContract extends Component {
                       select
                       data-name="multisigSigneesRequired"
                       className="inline-form"
-                      data-name="multisigSignatures"
+                      // data-name="multisigSignatures"
                       name="multisigSigneesRequired"
                       value={
                         DeployContractForm.multiSigContract

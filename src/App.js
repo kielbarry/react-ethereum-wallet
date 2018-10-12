@@ -31,7 +31,8 @@ import DeleteToken from './components/views/modals/DeleteToken.js';
 import SendTransaction from './components/views/modals/SendTransaction.js';
 import MaterialModal from './components/views/modals/MaterialModal.js';
 import TransactionInfo from './components/views/modals/TransactionInfo.js';
-// import QRCode from './components/views/modals/QRCode.js';
+import QRCode from './components/views/modals/QRCode.js';
+
 // import JsonInterface from './components/views/modals/JsonInterface.js';
 
 // stylesheets
@@ -187,9 +188,12 @@ class App extends Component {
     //  let JsonInterface = cn({
     //   'dapp-modal-overlay': modals.displayJSONInterface || false,
     // });
-    // let QRCode = cn({
-    //   'dapp-modal-overlay': modals.displayQRCode || false,
-    // });
+    let qrCode = cn({
+      'dapp-modal-overlay': modals.displayQRCode || false,
+    });
+
+    // let qrHash = this.props.reducers.SelectedWallet ? this.props.reducers.SelectedWallet.adress : ''
+    // let qrHash = this.props.reducers.SelectedTransaction ? this.props.reducers.SelectedTransaction.adress : ''
 
     return (
       <BrowserRouter>
@@ -242,7 +246,7 @@ class App extends Component {
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />
-          {/*<QRCode display={QRCode} /> */}
+          {/*<QRCode hash={qrHash} display={qrCode} /> */}
           {/*} <JsonInterface display={JsonInterface} />*/}
 
           {/*<NoConnection connection={this.props.web3} />*/}
