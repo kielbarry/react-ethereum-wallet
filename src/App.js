@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { spring, AnimatedSwitch } from 'react-router-transition';
 import cn from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,6 +31,7 @@ import SendTransaction from './components/views/modals/SendTransaction.js';
 import MaterialModal from './components/views/modals/MaterialModal.js';
 import TransactionInfo from './components/views/modals/TransactionInfo.js';
 import QRCode from './components/views/modals/QRCode.js';
+// import ReactModal from './components/views/modals/ReactModal.js';
 
 // import JsonInterface from './components/views/modals/JsonInterface.js';
 
@@ -149,25 +149,6 @@ class App extends Component {
   }
 
   render() {
-    // we need to map the `scale` prop we define below
-    // to the transform style property
-    // function mapStyles(styles) {
-    //   return { opacity: styles.opacity, transform: `scale(${styles.scale})` };
-    // }
-    // wrap the `spring` helper to use a bouncy config
-    // function bounce(val) {
-    //   return spring(val, { stiffness: 330, damping: 22 });
-    // }
-    // child matches will...
-    // const bounceTransition = {
-    //   // start in a transparent, upscaled state
-    //   atEnter: { opacity: 0, scale: 1.2 },
-    //   // leave in a transparent, downscaled state
-    //   atLeave: { opacity: bounce(0), scale: bounce(0.8) },
-    //   // and rest at an opaque, normally-scaled state
-    //   atActive: { opacity: bounce(1), scale: bounce(1) },
-    // };
-
     let modals = this.props.reducers.modals;
     let watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,
@@ -201,22 +182,11 @@ class App extends Component {
           <NavBar />
           <div className="dapp-flex-content">
             <main className="dapp-content">
-              {/*
-              <AnimatedSwitch
-                atEnter={bounceTransition.atEnter}
-                atLeave={bounceTransition.atLeave}
-                atActive={bounceTransition.atActive}
-                mapStyles={mapStyles}
-              > */}
               <Route exact path="/account/new" component={NewWalletContract} />
-
               <Route path="/account/*" component={SingleAccountView} />
               <Route exact path="/" component={AccountView} />
               <Route exact path="/send-from" component={SendContractForm} />
               <Route exact path="/contracts" component={ContractsView} />
-              {/*
-              </AnimatedSwitch>
-              */}
               <MistAlertBubble />
             </main>
           </div>
@@ -243,6 +213,9 @@ class App extends Component {
             display={viewTransaction}
             transaction={this.props.reducers.SelectedTransaction}
           />*/}
+
+          {/*<ReactModal /> */}
+
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />
