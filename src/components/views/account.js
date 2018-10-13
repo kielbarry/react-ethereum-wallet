@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 // import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
 import AccountItem from '../elements/AccountItem.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
+import { Link } from 'react-router-dom';
 
 // const listItems = [
 //   {
@@ -94,13 +95,13 @@ class AccountView extends Component {
         </p>
         <div className="dapp-clear-fix" />
         <div className="wallet-box-list">{this.renderWalletBoxList()}</div>
-        <button
+        <Link
+          to={{ pathname: '/account/new' }}
           className="wallet-box create add-contract"
-          onClick={e => this.routeToDeployContract(e)}
         >
           <div className="account-pattern">+</div>
           <h3>ADD WALLET CONTRACT</h3>
-        </button>
+        </Link>
         <div className="dapp-clear-fix" />
         {this.props.reducers.Transactions ? (
           <LatestTransactions transactions={this.props.reducers.Transactions} />
