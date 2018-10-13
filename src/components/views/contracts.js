@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import isEqual from 'lodash/isEqual';
 
-import AddForm from '../AddForm.js';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
@@ -92,21 +91,21 @@ class ContractsView extends Component {
 
   autoScanTokens(e) {
     console.log(this.props);
-    this.props.instantiateContract();
+    // this.props.instantiateContract();
 
-    // console.log(e)
-    // let r = this.props.reducers
-    // let addresses = [
-    //   ...Object.keys(r.Wallets),
-    //   ...Object.keys(r.ObservedContracts).map(key => {
-    //     return r.ObservedContracts[key].address
-    //   }),
-    //   ...Object.keys(r.ObservedContracts).map(key => {
-    //     return r.ObservedContracts[key].address
-    //   })
-    // ]
-    // console.log(addresses)
-    // this.props.fetchTokensForAutoScan(addresses)
+    console.log(e);
+    let r = this.props.reducers;
+    let addresses = [
+      ...Object.keys(r.Wallets),
+      ...Object.keys(r.ObservedContracts).map(key => {
+        return r.ObservedContracts[key].address;
+      }),
+      ...Object.keys(r.ObservedContracts).map(key => {
+        return r.ObservedContracts[key].address;
+      }),
+    ];
+    console.log(addresses);
+    this.props.fetchTokensForAutoScan(addresses);
   }
 
   render() {
@@ -119,10 +118,7 @@ class ContractsView extends Component {
         <h1>
           <strong>Contracts</strong>
         </h1>
-        <AddForm
-          key={`contracts-view-deply-contract}`}
-          field={CSL.DeployContract}
-        />
+
         <div className="contracts-view-custom-contracts">
           <h2>{CC.title}</h2>
           <p>{CC.contractDescription}</p>

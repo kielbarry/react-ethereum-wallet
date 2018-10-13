@@ -1,33 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import AddForm from '../AddForm.js';
 // import PageHeader from '../elements/PageHeaders.jsx';
 // import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
 import AccountItem from '../elements/AccountItem.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
 import { Link } from 'react-router-dom';
-
-// const listItems = [
-//   {
-//     title: 'Accounts',
-//     redirect: true,
-//     link: '',
-//     buttonClass: 'wallet-box create',
-//     buttonDescription: 'ADD ACCOUNT',
-//     contractDescription:
-//       "Accounts are password protected keys that can hold Ether and Ethereum-based tokens. They can control contracts, but can't display incoming transactions.",
-//   },
-//   {
-//     title: 'Wallet Contracts',
-//     redirect: false,
-//     link: 'account/new',
-//     buttonClass: 'wallet-box create add-contract',
-//     buttonDescription: 'ADD WALLET CONTRACT',
-//     contractDescription:
-//       'These contracts are stored on the blockchain and can hold and secure Ether. They can have multiple accounts as owners and keep a full log of all transactions.',
-//   },
-// ];
 
 class AccountView extends Component {
   renderAccounts() {
