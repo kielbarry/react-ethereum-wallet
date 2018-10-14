@@ -107,7 +107,7 @@ Make a ID out of a given hash and prefix.
 @param {String} hash
 */
 export function makeId(prefix, hash) {
-  return typeof hash === 'string' || value instanceof String
+  return typeof hash === 'string' || hash instanceof String
     ? prefix + '_' + hash.replace('0x', '').substr(0, 10)
     : null;
 }
@@ -121,26 +121,26 @@ Format a number based on decimal numbers
 */
 
 // TODO
-export function formatNumberByDecimals(number, decimals) {
-  var numberFormat = '0,0.';
+// export function formatNumberByDecimals(number, decimals) {
+//   var numberFormat = '0,0.';
 
-  for (i = 0; i < Number(decimals); i++) {
-    numberFormat += '0';
-  }
+//   for (var i = 0; i < Number(decimals); i++) {
+//     numberFormat += '0';
+//   }
 
-  return EthTools.formatNumber(
-    new BigNumber(number, 10).dividedBy(Math.pow(10, decimals)),
-    numberFormat,
-  );
-}
+//   return EthTools.formatNumber(
+//     new BigNumber(number, 10).dividedBy(Math.pow(10, decimals)),
+//     numberFormat,
+//   );
+// }
 
 /**
 Display logs in the console for events.
 
 @method eventLogs
 */
-export function eventLogs(arguments) {
-  console.log('EVENT LOG: ', arguments);
+export function eventLogs(args) {
+  console.log('EVENT LOG: ', args);
 }
 
 /**
@@ -183,20 +183,20 @@ Shows a notification and plays a sound
 @param {Object} the i18n values passed to the i18n text
 */
 //. TODO
-Helpers.showNotification = function(i18nText, values, callback) {
-  if (Notification.permission === 'granted') {
-    var notification = new Notification(
-      TAPi18n.__(i18nText + '.title', values),
-      {
-        // icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
-        body: TAPi18n.__(i18nText + '.text', values),
-      },
-    );
+// Helpers.showNotification = function(i18nText, values, callback) {
+//   if (Notification.permission === 'granted') {
+//     var notification = new Notification(
+//       TAPi18n.__(i18nText + '.title', values),
+//       {
+//         // icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+//         body: TAPi18n.__(i18nText + '.text', values),
+//       },
+//     );
 
-    if (_.isFunction(callback)) notification.onclick = callback;
-  }
-  if (typeof mist !== 'undefined') mist.sounds.bip();
-};
+//     if (_.isFunction(callback)) notification.onclick = callback;
+//   }
+//   if (typeof mist !== 'undefined') mist.sounds.bip();
+// };
 
 /**
 Gets the docuement matching the given addess from the EthAccounts or Wallets collection.
@@ -206,16 +206,16 @@ Gets the docuement matching the given addess from the EthAccounts or Wallets col
 @param {Boolean} reactive
 */
 // TODO
-export function getAccountByAddress(address, reactive) {
-  var options = reactive === false ? { reactive: false } : {};
-  // if(_.isString(address))
-  //     address = address.toLowerCase();
-  return (
-    EthAccounts.findOne({ address: address }, options) ||
-    Wallets.findOne({ address: address }, options) ||
-    CustomContracts.findOne({ address: address }, options)
-  );
-}
+// export function getAccountByAddress(address, reactive) {
+//   var options = reactive === false ? { reactive: false } : {};
+//   // if(_.isString(address))
+//   //     address = address.toLowerCase();
+//   return (
+//     EthAccounts.findOne({ address: address }, options) ||
+//     Wallets.findOne({ address: address }, options) ||
+//     CustomContracts.findOne({ address: address }, options)
+//   );
+// }
 
 /**
 Gets the docuement matching the given query from the EthAccounts or Wallets collection.
@@ -225,13 +225,13 @@ Gets the docuement matching the given query from the EthAccounts or Wallets coll
 @param {Boolean} reactive
 */
 // TODO
-export function getAccounts(query, reactive) {
-  var options = reactive === false ? { reactive: false } : {};
-  if (_.isString(query.address)) query.address = query.address.toLowerCase();
-  return EthAccounts.find(query, options)
-    .fetch()
-    .concat(Wallets.find(query, options).fetch());
-}
+// export function getAccounts(query, reactive) {
+//   var options = reactive === false ? { reactive: false } : {};
+//   if (_.isString(query.address)) query.address = query.address.toLowerCase();
+//   return EthAccounts.find(query, options)
+//     .fetch()
+//     .concat(Wallets.find(query, options).fetch());
+// }
 
 /**
 Gets the docuement matching the given addess from the EthAccounts or Wallets collection and returns its name or address.
@@ -257,13 +257,13 @@ Reactive wrapper for the moment package.
 **/
 
 // TODO
-export function moment(time) {
-  // react to language changes as well
-  TAPi18n.getLanguage();
+// export function moment(time) {
+//   // react to language changes as well
+//   TAPi18n.getLanguage();
 
-  if (_.isFinite(time) && moment.unix(time).isValid()) return moment.unix(time);
-  else return moment(time);
-}
+//   if (_.isFinite(time) && moment.unix(time).isValid()) return moment.unix(time);
+//   else return moment(time);
+// }
 
 /**
 Formats a timestamp to any format given.
@@ -445,7 +445,7 @@ Takes a camelcase and shows it with spaces
 @param {string} camelCase    A name in CamelCase or snake_case format
 @return {string} sentence    The same name, sanitized, with spaces
 **/
-Helpers.toSentence = function(inputString, noHTML) {
+export function toSentence(inputString, noHTML) {
   if (typeof inputString == 'undefined') {
     return false;
   } else {
@@ -458,7 +458,7 @@ Helpers.toSentence = function(inputString, noHTML) {
           .replace(/([\_])/g, '<span class="dapp-punctuation">$1</span>');
     return inputString;
   }
-};
+}
 
 /**
 Returns true if Main is the current network.
@@ -479,17 +479,17 @@ export function sha3(web3, str, opt) {
 }
 
 // TODO
-// function namehash(name) {
-//   var node =
-//     '0x0000000000000000000000000000000000000000000000000000000000000000';
-//   if (name != '') {
-//     var labels = name.split('.');
-//     for (var i = labels.length - 1; i >= 0; i--) {
-//       node = sha3(node + sha3(labels[i]).slice(2), { encoding: 'hex' });
-//     }
-//   }
-//   return node.toString();
-// }
+export function namehash(name) {
+  var node =
+    '0x0000000000000000000000000000000000000000000000000000000000000000';
+  if (name != '') {
+    var labels = name.split('.');
+    for (var i = labels.length - 1; i >= 0; i--) {
+      node = sha3(node + sha3(labels[i]).slice(2), { encoding: 'hex' });
+    }
+  }
+  return node.toString();
+}
 
 var ensContractAbi = [
   {
@@ -774,64 +774,63 @@ Returns a string, given an address
 **/
 
 // TODO
+// export function getENSName(address, network, callback) {
+//   if (!address) {
+//     return;
+//   }
 
-Helpers.getENSName = function(address, callback) {
-  if (!address) {
-    return;
-  }
+//   if (network !== 'main') {
+//     callback(
+//       'Cannot retrieve ENS addresses unless fully synced on main chain',
+//       null,
+//       null,
+//     );
+//     return;
+//   }
 
-  if (Session.get('network') !== 'main') {
-    callback(
-      'Cannot retrieve ENS addresses unless fully synced on main chain',
-      null,
-      null,
-    );
-    return;
-  }
+//   var node = namehash(
+//     address.toLowerCase().replace('0x', '') + '.addr.reverse',
+//   );
+//   var ensContract = new web3.eth.Contract(ensContractAbi, ensAddress);
+//   var resolverContract = new web3.eth.Contract(resolverContractAbi);
 
-  var node = namehash(
-    address.toLowerCase().replace('0x', '') + '.addr.reverse',
-  );
-  var ensContract = new web3.eth.Contract(ensContractAbi, ensAddress);
-  var resolverContract = new web3.eth.Contract(resolverContractAbi);
-
-  // get a resolver address for that name
-  ensContract.methods.resolver(node).call(function(err, resolverAddress) {
-    if (err) callback(err, null, null);
-    else if (resolverAddress == 0) callback('no resolver address', null, null);
-    else {
-      // if you find one, find the name on that resolver
-      resolverContract.options.address = resolverAddress;
-      resolverContract.methods.name(node).call(function(error, name) {
-        if (err) callback(err, null, null);
-        else if (name == 0) callback('Found resolver but no name', null, null);
-        else {
-          // any address can claim any name, we need to check the name now
-          var node = namehash(name);
-          // get a resolver address for that name
-          ensContract.methods
-            .resolver(node)
-            .call(function(err, resolverAddress) {
-              if (err) callback(err, null, null);
-              else if (resolverAddress == 0)
-                callback('Name has no resolver', null, null);
-              else {
-                // if you find one, find the addr of that resolver
-                resolverContract.options.address = resolverAddress;
-                resolverContract.methods
-                  .addr(node)
-                  .call(function(error, returnAddr) {
-                    if (err) callback(err, null, null);
-                    else if (returnAddr == 0)
-                      callback('No address returned', null, null);
-                    else {
-                      callback(error, name, returnAddr);
-                    }
-                  });
-              }
-            });
-        }
-      });
-    }
-  });
-};
+//   // get a resolver address for that name
+//   ensContract.methods.resolver(node).call(function(err, resolverAddress) {
+//     if (err) callback(err, null, null);
+//     else if (resolverAddress == 0) callback('no resolver address', null, null);
+//     else {
+//       // if you find one, find the name on that resolver
+//       resolverContract.options.address = resolverAddress;
+//       resolverContract.methods.name(node).call(function(error, name) {
+//         if (err) callback(err, null, null);
+//         else if (name == 0) callback('Found resolver but no name', null, null);
+//         else {
+//           // any address can claim any name, we need to check the name now
+//           var node = namehash(name);
+//           // get a resolver address for that name
+//           ensContract.methods
+//             .resolver(node)
+//             .call(function(err, resolverAddress) {
+//               if (err) callback(err, null, null);
+//               else if (resolverAddress == 0)
+//                 callback('Name has no resolver', null, null);
+//               else {
+//                 // if you find one, find the addr of that resolver
+//                 resolverContract.options.address = resolverAddress;
+//                 resolverContract.methods
+//                   .addr(node)
+//                   .call(function(error, returnAddr) {
+//                     if (err) callback(err, null, null);
+//                     else if (returnAddr == 0)
+//                       callback('No address returned', null, null);
+//                     else {
+//                       callback(error, name, returnAddr);
+//                     }
+//                   });
+//               }
+//             });
+//         }
+//       });
+//     }
+//   });
+// };

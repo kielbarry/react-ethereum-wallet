@@ -18,7 +18,12 @@ const initialState = {
   network: '',
   provider: '',
   modals: {
+    displayWatchContract: false,
+    displayWatchToken: false,
+    displayDeleteToken: false,
+    displaySendTransaction: false,
     displayTransaction: false,
+    displayJSONInterface: false,
     displayQRCode: false,
   },
   ContractToWatch: {},
@@ -44,10 +49,26 @@ const initialState = {
 };
 
 const reducers = (state = initialState, action) => {
-  if (action.type === 'UPDATE_SELECTED_TRANSACTION') {
-    console.log(action.payload);
+  if (action.type === 'ADD_PAST_CONTRACT_LOGS') {
+    console.log('here in reducers', action.payload);
   }
   switch (action.type) {
+    case 'UPDATE_PAST_CONTRACT_LOGS':
+      return {
+        ...state,
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          // action.payload['contract-name']: ...state.ObservedContracts[action.payload['contract-name']]
+        },
+      };
+    case 'ADD_PAST_CONTRACT_LOGS':
+      return {
+        ...state,
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          // action.payload['contract-name']: action.payload
+        },
+      };
     case 'UPDATE_BALANCE_CHECKED':
       return {
         ...state,

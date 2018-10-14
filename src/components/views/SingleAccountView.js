@@ -8,18 +8,17 @@ import NotFound from './NotFound.js';
 
 import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
+import * as Helpers from '../../utils/helperFunctions.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
+
+import * as Actions from '../../actions/actions.js';
 
 export class SingleAccountView extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
+    this.watchContractEvents = this.watchContractEvents.bind(this);
   }
-
-  // shouldComponentUpdate(prevProps, prevState){
-
-  // }
-
   componentDidMount() {
     this.setState({ displaySU: false });
   }
@@ -37,8 +36,81 @@ export class SingleAccountView extends Component {
     }
   }
 
+  /**
+  Watches custom events
+
+  @param {Object} contract the account object with .jsonInterface
+  */
+  watchContractEvents(e, contract) {
+    console.log('here in watchContractEvents', e);
+    console.log('contract', contract);
+    let web3;
+    if (this.props.web3 && this.props.web3.web3Instance) {
+      web3 = this.props.web3.web3Instance;
+    } else {
+      return;
+    }
+
+    console.log(contract.jsonInterface);
+    let contractInstance = new web3.eth.Contract(
+      JSON.parse(contract.jsonInterface),
+      contract.address
+    );
+    //TODO: block to checback on?
+    console.log(
+      'EVENT LOG:  Checking Custom Contract Events for ' +
+        contract.address +
+        ' (_id: ' +
+        'todo: create and supply an id' +
+        ') from block # ' +
+        'todo: find blocktocheckback'
+    );
+
+    //TODO: delete the last logs until block -500
+
+    let subscription = contractInstance.events.allEvents({
+      // fromBlock: blockToCheckBack,
+      // toBlock: 'latest'
+    });
+
+    contractInstance.getPastEvents('allEvents', (error, logs) => {
+      if (!error) {
+        // update last checkpoint block
+        console.log('the logs in get past events', logs);
+        contract['logs'] = logs;
+        console.log(contract);
+        this.props.addPastContractLogs(contract);
+
+        // CustomContracts.update(
+        //   { _id: newDocument._id },
+        //   {
+        //     $set: {
+        //       checkpointBlock:
+        //         (currentBlock || EthBlocks.latest.number) -
+        //         ethereumConfig.rollBackBy
+        //     }
+        //   }
+        // );
+      }
+    });
+
+    subscription.on('data', log => {
+      let id = Helpers.makeId(
+        'log',
+        web3.utils.sha3(
+          log.logIndex + 'x' + log.transactionHash + 'x' + log.blockHash
+        )
+      );
+      console.log('the log id', id);
+      console.log('the log', log);
+    });
+
+    console.log(subscription);
+  }
+
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
+
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
@@ -78,6 +150,7 @@ export class SingleAccountView extends Component {
                 type="checkbox"
                 id="watch-events-checkbox"
                 className="toggle-watch-events"
+                onClick={e => this.watchContractEvents(e, contract)}
               />
               <label htmlFor="watch-events-checkbox">
                 Watch contract events
@@ -203,4 +276,7 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default connect(mapStateToProps)(SingleAccountView);
+export default connect(
+  mapStateToProps,
+  { ...Actions }
+)(SingleAccountView);
