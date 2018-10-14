@@ -80,7 +80,8 @@ class WatchItem extends Component {
       web3.eth.getBalance(contract.address, (err, res) => {
         //if err global note
         contract.balance = res;
-        con[contract['contract-name']] = contract;
+        contract['logs'];
+        con[contract['address']] = contract;
         this.props.addObservedContract(con);
       });
     } else {

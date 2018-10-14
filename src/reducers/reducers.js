@@ -58,16 +58,21 @@ const reducers = (state = initialState, action) => {
         ...state,
         ObservedContracts: {
           ...state.ObservedContracts,
-          // action.payload['contract-name']: ...state.ObservedContracts[action.payload['contract-name']]
+          [action.payload.address]: {
+            ...state.ObservedContracts[action.payload.address],
+            logs: [
+              ...state.ObservedContracts[action.payload.address]['logs'],
+              action.payload,
+            ],
+          },
         },
       };
     case 'ADD_PAST_CONTRACT_LOGS':
       return {
         ...state,
-        ObservedContracts: {
-          ...state.ObservedContracts,
-          // action.payload['contract-name']: action.payload
-        },
+        ObservedContracts: Object.assign({}, state.ObservedContracts, {
+          [action.payload.address]: action.payload,
+        }),
       };
     case 'UPDATE_BALANCE_CHECKED':
       return {

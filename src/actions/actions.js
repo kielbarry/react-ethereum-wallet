@@ -1,9 +1,12 @@
 import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
-// import Web3 from 'web3';
+import Web3 from 'web3';
 
 // const web3 = new Web3('ws://127.0.0.1:8546');
+const web3 = new Web3(
+  'https://mainnet.infura.io/v3/2e1f7de617754b72a8a61bef3f7de966'
+);
 
 // export async function instantiateContract(){
 //    const testFunction = t => {
@@ -25,87 +28,150 @@ import { actionTypes } from './actionTypes.js';
 //   }
 // }
 
-// export const fetchTokensForAutoScan = (accounts) => {
-//   const requestTokens = accounts => {
-//     console.log("here in requestTokens", accounts)
-//     return {
-//       type: actionTypes.REQUEST_TOKENS_AUTOSCAN,
-//       payload: accounts,
-//     };
-//   };
-//   const receiveTokens = tokens => {
-//     return {
-//       type: actionTypes.RECEIVE_GAS_AUTOSCAN,
-//       payload: tokens,
-//     };
-//   };
-//   const updateBalanceChecked = num => {
-//     return {
-//       type: actionTypes.UPDATE_BALANCE_CHECKED,
-//       payload: num,
-//     };
-//   };
-//   const updateErrChecked = num => {
-//     return {
-//       type: actionTypes.UPDATE_ERR_CHECKED,
-//       payload: num,
-//     };
-//   };
-//   return dispatch => {
-//     dispatch(requestTokens(accounts));
-//     let tokenListURL =
-//       'https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/dist/tokens/eth/tokens-eth.json'
+export const updateContractLog = newLog => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_PAST_CONTRACT_LOGS,
+    payload: newLog,
+  });
+};
 
-//     return fetch(tokenListURL)
-//       .then(
-//         response => response.json(),
-//         error => {
-//           console.warn('An error occurred in fetchTokensForAutoScan', error);
-//           this.displayGlobalNotification({
-//             display: true,
-//             type: 'error',
-//             msg: 'There was an error scanning tokens for autoscan',
-//             duration: 5,
-//           });
-//         }
-//       )
-//       .then(async (tokens) => {
-//         let balancesChecked = 0
-//         let errChecked = 0
-//         tokens.map(token => {
-//           accounts.map(account => {
+export const addPastContractLogs = contractWithLogs => dispatch => {
+  dispatch({
+    type: actionTypes.ADD_PAST_CONTRACT_LOGS,
+    payload: contractWithLogs,
+  });
+};
 
-//             // let web3 = new Web3('ws://127.0.0.1:8546');
+export const fetchTokensForAutoScan = accounts => {
+  const requestTokens = accounts => {
+    console.log('here in requestTokens', accounts);
+    return {
+      type: actionTypes.REQUEST_TOKENS_AUTOSCAN,
+      payload: accounts,
+    };
+  };
+  const receiveTokens = tokens => {
+    return {
+      type: actionTypes.RECEIVE_GAS_AUTOSCAN,
+      payload: tokens,
+    };
+  };
+  const updateBalanceChecked = num => {
+    return {
+      type: actionTypes.UPDATE_BALANCE_CHECKED,
+      payload: num,
+    };
+  };
+  const updateErrChecked = num => {
+    return {
+      type: actionTypes.UPDATE_ERR_CHECKED,
+      payload: num,
+    };
+  };
+  return dispatch => {
+    dispatch(requestTokens(accounts));
+    let tokenListURL =
+      'https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/dist/tokens/eth/tokens-eth.json';
 
-//             // balanceOf(address)
-//             const callData ='0x70a08231000000000000000000000000' + account.substring(2).replace(' ', '');
-//             let tokenArray = web3.eth.call({
-//               to: token.address.replace(' ', ''),
-//               data: callData
-//             })
-//             .then((result) => {
-//               console.log(result)
-//               dispatch(updateBalanceChecked(balancesChecked += 1));
-//               const tokenAmt = web3.utils.toBN(result);
-//               return null;
-//             })
-//             .catch(function(error) {
-//               console.error(error);
-//               dispatch(updateErrChecked(errChecked += 1));
-//               errChecked += 1;
-//               this.displayGlobalNotification({
-//                 display: true,
-//                 type: 'error',
-//                 msg: 'There was an error tokens for autoscan during a web3 call',
-//                 duration: 5,
-//               });
-//             });
-//           })
-//         })
-//         // dispatch(receiveTokens(tokens));
-//       });
-//   };
-// };
+    return fetch(tokenListURL)
+      .then(
+        response => response.json(),
+        error => {
+          console.warn('An error occurred in fetchTokensForAutoScan', error);
+          // this.displayGlobalNotification({
+          //   display: true,
+          //   type: 'error',
+          //   msg: 'There was an error scanning tokens for autoscan',
+          //   duration: 5,
+          // });
+        }
+      )
+      .then(async tokens => {
+        let balancesChecked = 0;
+        let errChecked = 0;
+        tokens.map(token => {
+          accounts.map(account => {
+            // let web3 = new Web3('ws://127.0.0.1:8546');
+
+            // balanceOf(address)
+            const callData =
+              '0x70a08231000000000000000000000000' +
+              account.substring(2).replace(' ', '');
+
+            async function sendTransactionPromise(params) {
+              return new Promise((resolve, reject) => {
+                web3.eth
+                  .call({
+                    to: token.address.replace(' ', ''),
+                    data: callData,
+                  })
+
+                  .then(result => {
+                    console.log(result);
+                    dispatch(updateBalanceChecked((balancesChecked += 1)));
+                    const tokenAmt = web3.utils.toBN(result);
+
+                    const tokenAmtInEther = web3.utils.fromWei(
+                      tokenAmt,
+                      'ether'
+                    );
+
+                    // if (!tokenAmt.isZero()) {
+                    this.props.addObservedToken({
+                      name: token.name,
+                      value: Object.assign({}, token, {
+                        amount: web3.utils.fromWei(tokenAmt, 'ether'),
+                      }),
+                    });
+                    // }
+
+                    return null;
+                  })
+                  .catch(function(error) {
+                    console.error(error);
+                    dispatch(updateErrChecked((errChecked += 1)));
+                    errChecked += 1;
+                  });
+              });
+            }
+
+            sendTransactionPromise();
+
+            // console.log(yield call(sendTransactionPromise, sendParams))
+            // tx = yield call(sendTransactionPromise, sendParams);
+
+            // const promise = new Promise(web3.eth.call({
+            //   to: token.address.replace(' ', ''),
+            //   data: callData
+            // }))
+            // // console.log(promise)
+            // let tokenArray = web3.eth.call({
+            //   to: token.address.replace(' ', ''),
+            //   data: callData
+            // })
+            // .then((result) => {
+            //   console.log(result)
+            //   dispatch(updateBalanceChecked(balancesChecked += 1));
+            //   const tokenAmt = web3.utils.toBN(result);
+            //   return null;
+            // })
+            // .catch(function(error) {
+            //   console.error(error);
+            //   dispatch(updateErrChecked(errChecked += 1));
+            //   errChecked += 1;
+            //   // this.displayGlobalNotification({
+            //   //   display: true,
+            //   //   type: 'error',
+            //   //   msg: 'There was an error tokens for autoscan during a web3 call',
+            //   //   duration: 5,
+            //   // });
+            // });
+          });
+        });
+        // dispatch(receiveTokens(tokens));
+      });
+  };
+};
 
 export const updateDCFRadio = data => dispatch => {
   dispatch({

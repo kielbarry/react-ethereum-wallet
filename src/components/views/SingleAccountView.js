@@ -18,6 +18,7 @@ export class SingleAccountView extends Component {
     super(props);
     this.state = this.props;
     this.watchContractEvents = this.watchContractEvents.bind(this);
+    this.toggleContractInfo = this.toggleContractInfo.bind(this);
   }
   componentDidMount() {
     this.setState({ displaySU: false });
@@ -42,8 +43,6 @@ export class SingleAccountView extends Component {
   @param {Object} contract the account object with .jsonInterface
   */
   watchContractEvents(e, contract) {
-    console.log('here in watchContractEvents', e);
-    console.log('contract', contract);
     let web3;
     if (this.props.web3 && this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
@@ -51,20 +50,11 @@ export class SingleAccountView extends Component {
       return;
     }
 
-    console.log(contract.jsonInterface);
     let contractInstance = new web3.eth.Contract(
       JSON.parse(contract.jsonInterface),
       contract.address
     );
     //TODO: block to checback on?
-    console.log(
-      'EVENT LOG:  Checking Custom Contract Events for ' +
-        contract.address +
-        ' (_id: ' +
-        'todo: create and supply an id' +
-        ') from block # ' +
-        'todo: find blocktocheckback'
-    );
 
     //TODO: delete the last logs until block -500
 
@@ -78,7 +68,6 @@ export class SingleAccountView extends Component {
         // update last checkpoint block
         console.log('the logs in get past events', logs);
         contract['logs'] = logs;
-        console.log(contract);
         this.props.addPastContractLogs(contract);
 
         // CustomContracts.update(
@@ -95,21 +84,46 @@ export class SingleAccountView extends Component {
     });
 
     subscription.on('data', log => {
-      let id = Helpers.makeId(
-        'log',
-        web3.utils.sha3(
-          log.logIndex + 'x' + log.transactionHash + 'x' + log.blockHash
-        )
-      );
-      console.log('the log id', id);
-      console.log('the log', log);
+      this.props.updateContractLog(log);
     });
+  }
 
-    console.log(subscription);
+  toggleContractInfo(e) {
+    console.log('here intoggleContractInfo', e);
+  }
+
+  renderContractEvents() {
+    return (
+      <div className="execute-contract">
+        <button
+          className="toggle-visibility dapp-block-button dapp-small"
+          onClick={e => this.toggleContractInfo(e)}
+        >
+          Hide contract info
+        </button>
+        <div className="dapp-clear-fix" />
+        <div className="row clear">
+          <div className="col col-8 mobile-full contract-info">
+            <h2>Read from contract</h2>
+            <table className="contract-constants dapp-zebra">
+              <tbody>
+                <tr />
+              </tbody>
+            </table>
+          </div>
+          <div className="col col-8 mobile-full contract-functions">
+            <h2>Write to contract</h2>
+            <h4>Select Function</h4>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
+    let logs = this.props.reducers.ObservedContract[contract.address].logs;
+    console.log(logs);
 
     return (
       <div className="dapp-container accounts-page">
@@ -170,6 +184,7 @@ export class SingleAccountView extends Component {
               </tbody>
             </table>
           </div>
+          {logs ? this.renderContractEvents() : ''}
         </div>
         <ContractActionBar props={contract} />
       </div>
