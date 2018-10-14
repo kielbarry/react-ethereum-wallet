@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import moment from 'moment';
+
 import SU from '../elements/SelectableUnit.js';
 import AccountActionBar from '../elements/AccountActionBar.js';
 import ContractActionBar from '../elements/ContractActionBar.js';
@@ -20,6 +22,11 @@ export class SingleAccountView extends Component {
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
   }
+
+  // shouldComponentUpdate(prevProps, prevState) {
+
+  // }
+
   componentDidMount() {
     this.setState({ displaySU: false });
   }
@@ -87,6 +94,7 @@ export class SingleAccountView extends Component {
 
     contractInstance.getPastEvents('allEvents', (error, logs) => {
       if (!error) {
+        console.log(logs);
         // update last checkpoint block
         contract['logs'] = logs;
         this.props.addPastContractLogs(contract);
@@ -104,6 +112,7 @@ export class SingleAccountView extends Component {
     });
 
     subscription.on('data', log => {
+      console.log(log);
       this.props.updateContractLog(log);
     });
   }
@@ -112,15 +121,13 @@ export class SingleAccountView extends Component {
     console.log('here intoggleContractInfo', e);
   }
 
-  renderContractEvents() {
+  renderContractFunctions() {
     let contract = this.props.reducers.selectedContract.contract;
-    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
+    // let logs = this.props.reducers.ObservedContracts[contract.address].logs;
     let functions = this.props.reducers.ObservedContracts[contract.address]
       .contractFunctions;
     let constants = this.props.reducers.ObservedContracts[contract.address]
       .contractConstants;
-
-    console.log(constants);
 
     return (
       <div className="execute-contract">
@@ -182,6 +189,43 @@ export class SingleAccountView extends Component {
     );
   }
 
+  renderContractEvents() {
+    let contract = this.props.reducers.selectedContract.contract;
+    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
+
+    // <h2>{Utils.getMonthName(log.dateSent)}</h2>
+    //              <p>{Utils.getDate(log.dateSent)}</p>
+
+    return (
+      <table className="dapp-zebra transactions">
+        <tbody>
+          {logs.map(log => (
+            <tr
+              data-transaction-hash={log.transactionHash}
+              data-block-hash={log.blockHash}
+            >
+              <td
+                className="time simptip-position-right simptip-movable"
+                data-tooltip="//TODO: get timestamp"
+              />
+              <td className="account-name">
+                <h2>{log.event}</h2>
+                <p style={{ wordBreak: 'break-word' }}>
+                  {Object.keys(log.returnValues).map((val, i) => (
+                    <React.Fragment>
+                      {val} : &nbsp; <strong> {log.returnValues[val]}</strong>
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </p>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
     let logs = this.props.reducers.ObservedContracts[contract.address].logs;
@@ -239,7 +283,8 @@ export class SingleAccountView extends Component {
           </div>
         </div>
         <ContractActionBar props={contract} />
-        {logs ? this.renderContractEvents() : ''}
+        {logs && logs.length > 0 ? this.renderContractFunctions() : ''}
+        {logs && logs.length > 0 ? this.renderContractEvents() : ''}
       </div>
     );
   }
