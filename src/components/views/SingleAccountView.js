@@ -54,9 +54,31 @@ export class SingleAccountView extends Component {
       JSON.parse(contract.jsonInterface),
       contract.address
     );
-    //TODO: block to checback on?
 
-    //TODO: delete the last logs until block -500
+    console.log(contractInstance.methods);
+    console.log(contractInstance);
+
+    let contractFunctions = [];
+    let contractConstants = [];
+
+    JSON.parse(contract.jsonInterface).map(func => {
+      if (func.type == 'function') {
+        func.constant
+          ? contractConstants.push(func)
+          : contractFunctions.push(func);
+      }
+    });
+
+    this.props.addContractFunctions({
+      address: contract.address,
+      value: contractFunctions,
+      name: 'contractFunctions',
+    });
+    this.props.addContractConstants({
+      address: contract.address,
+      value: contractConstants,
+      name: 'contractConstants',
+    });
 
     let subscription = contractInstance.events.allEvents({
       // fromBlock: blockToCheckBack,
@@ -66,10 +88,8 @@ export class SingleAccountView extends Component {
     contractInstance.getPastEvents('allEvents', (error, logs) => {
       if (!error) {
         // update last checkpoint block
-        console.log('the logs in get past events', logs);
         contract['logs'] = logs;
         this.props.addPastContractLogs(contract);
-
         // CustomContracts.update(
         //   { _id: newDocument._id },
         //   {
@@ -93,6 +113,15 @@ export class SingleAccountView extends Component {
   }
 
   renderContractEvents() {
+    let contract = this.props.reducers.selectedContract.contract;
+    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
+    let functions = this.props.reducers.ObservedContracts[contract.address]
+      .contractFunctions;
+    let constants = this.props.reducers.ObservedContracts[contract.address]
+      .contractConstants;
+
+    console.log(constants);
+
     return (
       <div className="execute-contract">
         <button
@@ -107,13 +136,46 @@ export class SingleAccountView extends Component {
             <h2>Read from contract</h2>
             <table className="contract-constants dapp-zebra">
               <tbody>
-                <tr />
+                {constants
+                  ? constants.map(func => (
+                      <React.Fragment>
+                        <tr>
+                          <td>
+                            <h3>{Helpers.toSentence(func.name)}</h3>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <dl class={'constant-' + func.name + ' dapp-zebra'}>
+                              <dd class="output">
+                                {Helpers.toSentence(func.name)}
+                                <br />
+                              </dd>
+                            </dl>
+                          </td>
+                        </tr>
+                      </React.Fragment>
+                    ))
+                  : ''}
               </tbody>
             </table>
           </div>
-          <div className="col col-8 mobile-full contract-functions">
+          <div className="col col-4 mobile-full contract-functions">
             <h2>Write to contract</h2>
             <h4>Select Function</h4>
+            <select
+              className="select-contract-function"
+              name="select-contract-function"
+            >
+              <option disabled="">Pick a function</option>
+              {functions
+                ? functions.map(c => (
+                    <option value={c.name}>
+                      {Helpers.toSentence(c.name, true)}
+                    </option>
+                  ))
+                : ''}
+            </select>
           </div>
         </div>
       </div>
@@ -122,9 +184,7 @@ export class SingleAccountView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
-    let logs = this.props.reducers.ObservedContract[contract.address].logs;
-    console.log(logs);
-
+    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
@@ -176,17 +236,10 @@ export class SingleAccountView extends Component {
               className="filter-transactions"
               placeholder="Filter events"
             />
-            <table className="dapp-zebra transactions">
-              <tbody>
-                <tr className="full-width">
-                  <td colSpan="3">No matching transaction found.</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
-          {logs ? this.renderContractEvents() : ''}
         </div>
         <ContractActionBar props={contract} />
+        {logs ? this.renderContractEvents() : ''}
       </div>
     );
   }

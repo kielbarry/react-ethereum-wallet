@@ -28,6 +28,21 @@ const web3 = new Web3(
 //   }
 // }
 
+export const addContractFunctions = funcs => dispatch => {
+  console.log(funcs);
+  dispatch({
+    type: actionTypes.ADD_CONTRACT_FUNCTIONS,
+    payload: funcs,
+  });
+};
+
+export const addContractConstants = consts => dispatch => {
+  console.log(consts);
+  dispatch({
+    type: actionTypes.ADD_CONTRACT_CONSTANTS,
+    payload: consts,
+  });
+};
 export const updateContractLog = newLog => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_PAST_CONTRACT_LOGS,

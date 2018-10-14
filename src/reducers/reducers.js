@@ -50,9 +50,31 @@ const initialState = {
 
 const reducers = (state = initialState, action) => {
   if (action.type === 'ADD_PAST_CONTRACT_LOGS') {
-    console.log('here in reducers', action.payload);
+    // console.log('here in reducers', action.payload);
   }
   switch (action.type) {
+    case 'ADD_CONTRACT_FUNCTIONS':
+      return {
+        ...state,
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          [action.payload.address]: {
+            ...state.ObservedContracts[action.payload.address],
+            [action.payload.name]: action.payload.value,
+          },
+        },
+      };
+    case 'ADD_CONTRACT_CONSTANTS':
+      return {
+        ...state,
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          [action.payload.address]: {
+            ...state.ObservedContracts[action.payload.address],
+            [action.payload.name]: action.payload.value,
+          },
+        },
+      };
     case 'UPDATE_PAST_CONTRACT_LOGS':
       return {
         ...state,
@@ -70,9 +92,13 @@ const reducers = (state = initialState, action) => {
     case 'ADD_PAST_CONTRACT_LOGS':
       return {
         ...state,
-        ObservedContracts: Object.assign({}, state.ObservedContracts, {
-          [action.payload.address]: action.payload,
-        }),
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          [action.payload.address]: {
+            ...state.ObservedContracts[action.payload.address],
+            logs: action.payload,
+          },
+        },
       };
     case 'UPDATE_BALANCE_CHECKED':
       return {
