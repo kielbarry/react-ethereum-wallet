@@ -61,13 +61,8 @@ export class SingleAccountView extends Component {
       JSON.parse(contract.jsonInterface),
       contract.address
     );
-
-    console.log(contractInstance.methods);
-    console.log(contractInstance);
-
     let contractFunctions = [];
     let contractConstants = [];
-
     JSON.parse(contract.jsonInterface).map(func => {
       if (func.type == 'function') {
         func.constant
@@ -94,26 +89,25 @@ export class SingleAccountView extends Component {
 
     contractInstance.getPastEvents('allEvents', (error, logs) => {
       if (!error) {
-        console.log(logs);
-        // update last checkpoint block
-        contract['logs'] = logs;
-        this.props.addPastContractLogs(contract);
-        // CustomContracts.update(
-        //   { _id: newDocument._id },
-        //   {
-        //     $set: {
-        //       checkpointBlock:
-        //         (currentBlock || EthBlocks.latest.number) -
-        //         ethereumConfig.rollBackBy
-        //     }
-        //   }
-        // );
+        if (logs.length > 0) {
+          logs.map(log => {
+            web3.eth.getBlock(log.blockNumber, (err, res) => {
+              log['timestamp'] = res.timestamp;
+              this.props.updateContractLog(log);
+            });
+          });
+        }
       }
     });
 
     subscription.on('data', log => {
-      console.log(log);
-      this.props.updateContractLog(log);
+      web3.eth.getBlock(log.blockNumber, (err, res) => {
+        if (err) console.warn(err);
+        if (res) {
+          log['timestamp'] = res.timestamp;
+          this.props.updateContractLog(log);
+        }
+      });
     });
   }
 
