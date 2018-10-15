@@ -11,7 +11,7 @@ import Slide from '@material-ui/core/Slide';
 //   return <Slide direction="up" {...props} />;
 // }
 
-class AlertDialogSlide extends React.Component {
+class MaterialModal extends React.Component {
   state = {
     open: true,
   };
@@ -61,4 +61,4 @@ class AlertDialogSlide extends React.Component {
   }
 }
 
-export default AlertDialogSlide;
+export default MaterialModal;

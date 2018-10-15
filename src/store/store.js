@@ -18,6 +18,9 @@ const persistConfig = {
     'peerCount',
     'modals',
     'DeployContractForm',
+    'SelectedTransction',
+    'SelectedWallet',
+    'SelectedEvent',
   ],
 };
 

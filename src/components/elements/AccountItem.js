@@ -53,7 +53,7 @@ class AccountItem extends Component {
           />
           <ul className="token-list" />
           <h3 className="not-ens-name">
-            <i className="icon-key" title="Account" />
+            <i className={this.props.icon} title="Account" />
             Account {number}
           </h3>
           {this.renderBalance()}

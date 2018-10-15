@@ -31,7 +31,9 @@ import SendTransaction from './components/views/modals/SendTransaction.js';
 import MaterialModal from './components/views/modals/MaterialModal.js';
 import TransactionInfo from './components/views/modals/TransactionInfo.js';
 import QRCode from './components/views/modals/QRCode.js';
-// import ReactModal from './components/views/modals/ReactModal.js';
+import ReactModal from './components/views/modals/ReactModal.js';
+
+import EventInfo from './components/views/modals/EventInfo.js';
 
 // import JsonInterface from './components/views/modals/JsonInterface.js';
 
@@ -43,6 +45,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.getCCP = this.getCCP.bind(this);
+
     this.getCCP();
     this.CCInterval = setInterval(() => this.getCCP(), 15000);
 
@@ -51,6 +54,8 @@ class App extends Component {
       () => this.props.fetchEthGasStationStats(),
       15000
     );
+
+    this.props.closeModal('displayEventInfo');
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -159,9 +164,9 @@ class App extends Component {
     let deleteToken = cn({
       'dapp-modal-overlay': modals.displayDeleteToken || false,
     });
-    let sendTransaction = cn({
-      'dapp-modal-overlay': modals.displaySendTransaction || false,
-    });
+    // let sendTransaction = cn({
+    //   'dapp-modal-overlay': modals.displaySendTransaction || false,
+    // });
     let viewTransaction = cn({
       'dapp-modal-overlay': modals.displayTransaction || false,
     });
@@ -171,6 +176,14 @@ class App extends Component {
     // });
     let qrCode = cn({
       'dapp-modal-overlay': modals.displayQRCode || false,
+    });
+
+    let sendTransaction = cn({
+      'dapp-modal-overlay': modals.displaySendTransaction || false,
+    });
+
+    let viewEventInfo = cn({
+      'dapp-modal-overlay': modals.displayEventInfo || false,
     });
 
     // let qrHash = this.props.reducers.SelectedWallet ? this.props.reducers.SelectedWallet.adress : ''
@@ -203,23 +216,27 @@ class App extends Component {
             pauseOnHover
           />
 
-          <MaterialModal />
           <DeleteToken
             token={this.props.reducers.TokenToDelete}
             display={deleteToken}
           />
-          {/*}
-          <TransactionInfo
-            display={viewTransaction}
-            transaction={this.props.reducers.SelectedTransaction}
-          />*/}
 
-          {/*<ReactModal /> */}
+          {this.props.reducers.SelectedTransaction ? (
+            <TransactionInfo
+              display={viewTransaction}
+              transaction={this.props.reducers.SelectedTransaction}
+            />
+          ) : null}
+
+          <EventInfo
+            display={viewEventInfo}
+            event={this.props.reducers.SelectedEvent}
+          />
 
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />
-          {/*<QRCode hash={qrHash} display={qrCode} /> */}
+          <QRCode hash={this.props.reducers.qrCode} display={qrCode} />
           {/*} <JsonInterface display={JsonInterface} />*/}
 
           {/*<NoConnection connection={this.props.web3} />*/}

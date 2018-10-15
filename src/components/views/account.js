@@ -61,10 +61,6 @@ class AccountView extends Component {
           <strong>Accounts</strong> Overview
         </h1>
         {this.renderAccounts()}
-        <a href="" className="wallet-box create">
-          <div className="account-pattern">+</div>
-          <h3>ADD ACCOUNT</h3>
-        </a>
         <h2>Wallet Contracts</h2>
         <p>
           These contracts are stored on the blockchain and can hold and secure

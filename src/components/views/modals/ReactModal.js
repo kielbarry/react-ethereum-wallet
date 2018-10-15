@@ -1,62 +1,81 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 import SecurityIcon from '../../elements/SecurityIcon.js';
-import * as Utils from '../../../utils/utils.js';
-import * as Actions from '../../../actions/actions.js';
 
-class TransactionInfo extends Component {
-  shouldComponentUpdate(prevProps, prevState) {
-    if (
-      this.props.transaction !== prevProps.transaction ||
-      this.props.display !== prevProps.display
-    ) {
-      return true;
-    }
-    return false;
+// const customStyles = {
+//   content : {
+//     top                   : '50%',
+//     left                  : '50%',
+//     right                 : 'auto',
+//     bottom                : 'auto',
+//     marginRight           : '-50%',
+//     transform             : 'translate(-50%, -50%)'
+//   }
+// };
+
+// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
+// Modal.setAppElement('#yourAppElement')
+
+class ReactModal extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      modalIsOpen: false,
+    };
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
-  handleClickOutside(evt) {
-    if (!this.props.display) return;
-    this.props.closeModal('displayTransaction');
+  openModal() {
+    this.setState({ modalIsOpen: true });
   }
-  closeModal(e) {
-    e.preventDefault();
-    if (e.target.getAttribute('id') === 'viewTransaction') {
-      this.props.closeModal('displayTransaction');
-    }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     let tx = this.props.transaction;
-    console.log(this.props);
-    console.log(this.props.transaction);
     return (
-      <div
-        className={this.props.display}
-        style={divStyle}
-        onClick={e => this.closeModal(e)}
-        id="viewTransaction"
-      >
-        <section className="dapp-modal-container transaction-info">
+      <div className={this.props.display} style={divStyle}>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          // className={this.props.display}
+          // style={divStyle}
+          // style={customStyles}
+          contentLabel="Example Modal"
+          // className="dapp-modal-container transaction-info"
+        >
+          <div>hello world</div>
+          {/*
           <h1>
             Transaction
             <a
-              href={
-                'http://' +
-                this.props.reducers.network +
-                ' .etherscan.io/tx/' +
-                tx.transactionHash
-              }
+              // href={
+              //   'http://' +
+              //   this.props.reducers.network +
+              //   ' .etherscan.io/tx/' +
+              //   tx.transactionHash
+              // }
+              href=''
               target="_blank"
               style={{ fontSize: '0.4em' }}
               rel="noopener noreferrer"
             />
           </h1>
           <p>
-            {Utils.getMonthName(tx.dateSent)}
-            {Utils.getDate(tx.dateSent)}
+            {tx.dateSent}
             <br />
             <small>
               (a day ago, <strong>6,511</strong> Confirmations)
@@ -114,17 +133,11 @@ class TransactionInfo extends Component {
               </tr>
             </tbody>
           </table>
-        </section>
+        */}
+        </Modal>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
-
-export default connect(
-  mapStateToProps,
-  { ...Actions }
-)(TransactionInfo);
+export default ReactModal;

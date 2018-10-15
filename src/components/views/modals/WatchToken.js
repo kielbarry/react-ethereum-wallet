@@ -67,6 +67,8 @@ class WatchToken extends Component {
     let token = this.props.reducers.TokenToWatch;
     let address = token.address;
 
+    console.log('HERE IN SUBMIT FUNCTION', this.props);
+
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
 
@@ -86,14 +88,14 @@ class WatchToken extends Component {
         })
         .then(result => {
           let tokenAmt = web3.utils.toBN(result);
-          if (!tokenAmt.isZero()) {
-            this.props.addObservedToken({
-              name: token.name,
-              value: Object.assign({}, token, {
-                amount: web3.utils.fromWei(tokenAmt, 'ether'),
-              }),
-            });
-          }
+          // if (!tokenAmt.isZero()) {
+          this.props.addObservedToken({
+            name: token.name,
+            value: Object.assign({}, token, {
+              amount: web3.utils.fromWei(tokenAmt, 'ether'),
+            }),
+          });
+          // }
         });
     } else {
       // TODO:trigger global notification here

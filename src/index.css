@@ -3,3 +3,44 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.fee-selector {
+  text-align: left;
+  margin: 12px 34px;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.fee-selector__btn {
+  color: #00aafa;
+  cursor: pointer;
+}
+
+.fee-amount {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.fee-selector [data-tooltip]:hover:before,
+.fee-selector [data-tooltip]:hover:after,
+.fee-selector [data-tooltip]:focus:before,
+.fee-selector [data-tooltip]:focus:after {
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  color: #eee;
+  top: 22px;
+  text-transform: capitalize;
+}
+
+.fee-selector__error {
+  position: absolute;
+  margin-top: 6px;
+  text-transform: none;
+  color: red;
+  font-size: 12px;
+}
+
+.react-spinner {
+  top: -2px;
+}

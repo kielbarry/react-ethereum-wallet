@@ -5,6 +5,18 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as Actions from '../../actions/actions.js';
 
 export class AccountActionBar extends Component {
+  shouldComponentUpdate(prevProps, prevState) {
+    if (this.props !== prevProps) {
+      return true;
+    }
+    return false;
+  }
+
+  displayAndSetQRCode(e) {
+    this.props.updateQRCode(this.props.props.address);
+    this.props.displayModal('displayQRCode');
+  }
+
   render() {
     let address = this.props.props.address;
     let etherScanAddress = 'https://etherscan.io/address/' + address;
@@ -47,7 +59,7 @@ export class AccountActionBar extends Component {
             <li>
               <button
                 className="qrcode-button"
-                onClick={e => this.props.displayModal('displayQRCode')}
+                onClick={e => this.displayAndSetQRCode(e)}
               >
                 <i className="icon-camera" />
                 Show QR-Code

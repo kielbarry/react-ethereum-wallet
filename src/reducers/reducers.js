@@ -25,6 +25,7 @@ const initialState = {
     displayTransaction: false,
     displayJSONInterface: false,
     displayQRCode: false,
+    displayEventInfo: false,
   },
   ContractToWatch: {},
   TokenToWatch: {},
@@ -46,6 +47,8 @@ const initialState = {
   },
   balancesAutoScanChecked: 0,
   errorsAutoScanReceived: 0,
+  SelectedEvent: {},
+  qrCode: '',
 };
 
 const reducers = (state = initialState, action) => {
@@ -53,6 +56,17 @@ const reducers = (state = initialState, action) => {
     // console.log('here in reducers', action.payload);
   }
   switch (action.type) {
+    case 'UPDATE_QR_CODE':
+      return {
+        ...state,
+        qrCode: action.payload,
+      };
+
+    case 'UPDATE_SELECTED_EVENT':
+      return {
+        ...state,
+        SelectedEvent: action.payload,
+      };
     case 'ADD_CONTRACT_FUNCTIONS':
       return {
         ...state,

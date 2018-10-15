@@ -28,8 +28,22 @@ const web3 = new Web3(
 //   }
 // }
 
+export const updateQRCode = address => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_QR_CODE,
+    payload: address,
+  });
+};
+
+export const updateSelectedEvent = event => dispatch => {
+  console.log('event/log in updateSelectedEvent', event);
+  dispatch({
+    type: actionTypes.UPDATE_SELECTED_EVENT,
+    payload: event,
+  });
+};
+
 export const addContractFunctions = funcs => dispatch => {
-  console.log(funcs);
   dispatch({
     type: actionTypes.ADD_CONTRACT_FUNCTIONS,
     payload: funcs,
@@ -37,7 +51,6 @@ export const addContractFunctions = funcs => dispatch => {
 };
 
 export const addContractConstants = consts => dispatch => {
-  console.log(consts);
   dispatch({
     type: actionTypes.ADD_CONTRACT_CONSTANTS,
     payload: consts,

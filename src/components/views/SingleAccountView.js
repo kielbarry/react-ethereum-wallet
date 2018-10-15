@@ -12,6 +12,7 @@ import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
 import * as Helpers from '../../utils/helperFunctions.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
+import shortid from 'shortid';
 
 import * as Actions from '../../actions/actions.js';
 
@@ -21,6 +22,7 @@ export class SingleAccountView extends Component {
     this.state = this.props;
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
+    this.displayEventModal = this.displayEventModal.bind(this);
   }
 
   // shouldComponentUpdate(prevProps, prevState) {
@@ -42,6 +44,19 @@ export class SingleAccountView extends Component {
         ? this.setState({ displaySU: false })
         : this.setState({ displaySU: true });
     }
+  }
+
+  displayEventModal(e, log) {
+    // log['originalContract'] = this.props.reducers.
+    log['originalContractName'] = this.props.reducers.selectedContract.contract[
+      'contract-name'
+    ];
+    log[
+      'originalContractAddress'
+    ] = this.props.reducers.selectedContract.contract.address;
+
+    this.props.updateSelectedEvent(log);
+    this.props.displayModal('displayEventInfo');
   }
 
   /**
@@ -88,15 +103,16 @@ export class SingleAccountView extends Component {
     });
 
     contractInstance.getPastEvents('allEvents', (error, logs) => {
-      if (!error) {
-        if (logs.length > 0) {
-          logs.map(log => {
-            web3.eth.getBlock(log.blockNumber, (err, res) => {
-              log['timestamp'] = res.timestamp;
-              this.props.updateContractLog(log);
-            });
+      if (!error && logs.length > 0) {
+        logs.map(log => {
+          web3.eth.getBlock(log.blockNumber, (err, res) => {
+            log['timestamp'] = res.timestamp;
+            this.props.updateContractLog(log);
           });
-        }
+        });
+      } else {
+        console.warn('error', error);
+        //TODO: global notification
       }
     });
 
@@ -147,8 +163,12 @@ export class SingleAccountView extends Component {
                         </tr>
                         <tr>
                           <td>
-                            <dl class={'constant-' + func.name + ' dapp-zebra'}>
-                              <dd class="output">
+                            <dl
+                              className={
+                                'constant-' + func.name + ' dapp-zebra'
+                              }
+                            >
+                              <dd className="output">
                                 {Helpers.toSentence(func.name)}
                                 <br />
                               </dd>
@@ -187,21 +207,25 @@ export class SingleAccountView extends Component {
     let contract = this.props.reducers.selectedContract.contract;
     let logs = this.props.reducers.ObservedContracts[contract.address].logs;
 
-    // <h2>{Utils.getMonthName(log.dateSent)}</h2>
-    //              <p>{Utils.getDate(log.dateSent)}</p>
-
     return (
       <table className="dapp-zebra transactions">
         <tbody>
           {logs.map(log => (
             <tr
+              key={shortid.generate()}
+              onClick={e => {
+                this.displayEventModal(e, log);
+              }}
               data-transaction-hash={log.transactionHash}
               data-block-hash={log.blockHash}
             >
               <td
                 className="time simptip-position-right simptip-movable"
                 data-tooltip="//TODO: get timestamp"
-              />
+              >
+                <h2>{Utils.getMonthName(log.timestamp)}</h2>
+                <p>{Utils.getDate(log.timestamp)}</p>
+              </td>
               <td className="account-name">
                 <h2>{log.event}</h2>
                 <p style={{ wordBreak: 'break-word' }}>

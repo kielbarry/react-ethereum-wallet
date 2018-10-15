@@ -1,6 +1,19 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
+/**
+  Returns the from now time, if less than 23 hours
+
+  @method (fromNowTime)
+  @return {String}
+  */
+export function fromNowTime(timestamp) {
+  setInterval(() => {
+    var diff = moment().diff(moment.unix(timestamp), 'hours');
+    return diff < 23 ? ' ' + moment.unix(timestamp).fromNow() : '';
+  }, 10000);
+}
+
 export function floatToTime(input) {
   let str = ' ~';
   if (input < 1) {
