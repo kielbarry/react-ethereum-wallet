@@ -28,6 +28,7 @@ class SendContractForm extends Component {
       fromWallet: defaultWallet,
       switchChecked: true,
       checkbox: false,
+      standardFee: false,
     };
 
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
@@ -37,6 +38,7 @@ class SendContractForm extends Component {
     this.estimateGas = this.estimateGas.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.handleSwitch = this.handleSwitch.bind(this);
+    this.toggleFee = this.toggleFee.bind(this);
   }
 
   validateForm(tx) {
@@ -188,6 +190,190 @@ class SendContractForm extends Component {
     this.setState({ [name]: event.target.checked });
   };
 
+  toggleFee(e) {
+    console.log(e);
+    this.setState({ standardFee: !this.state.standardFee });
+    this.props.reducers.GasStats !== {} && this.state.standardFee
+      ? this.changeGas(this.props.reducers.GasStats.safeLow)
+      : this.changeGas(this.props.reducers.GasStats.fastest);
+  }
+
+  renderFromToRow() {
+    return (
+      <div className="row clear from-to">
+        {this.renderWalletDropDown()}
+        <div className="col col-6 mobile-full">
+          <h3>To</h3>
+          <div className="dapp-address-input">
+            <input
+              type="text"
+              name="to"
+              placeholder="0x000000.."
+              className="to"
+              autoFocus={true}
+              onKeyUp={e => this.handleOnKeyUp(e)}
+            />
+          </div>
+        </div>
+        <div className="dapp-clear-fix" />
+      </div>
+    );
+  }
+
+  renderAmountRow() {
+    let wallets = this.props.reducers.Wallets;
+    return (
+      <div className="row clear">
+        <div className="col col-6 mobile-full amount">
+          <h3>Amount</h3>
+          <input
+            type="text"
+            min="0"
+            step="any"
+            name="value"
+            placeholder="0.0"
+            className="dapp-large"
+            pattern="[0-9\.,]*"
+            // value={this.props.reducers.TransactionToSend.value || ''}
+            onKeyUp={e => this.handleOnKeyUp(e)}
+            // value={txAmt}
+          />
+          <br />
+          <label>
+            <input
+              type="checkbox"
+              className="send-all"
+              onChange={e => this.toggleCheckbox(e)}
+            />
+            Send everything
+          </label>
+          <p className="send-info">
+            You want to send
+            <strong>
+              {this.props.web3 && this.props.web3.web3Instance
+                ? ' ' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    this.props.reducers.TransactionToSend.value
+                  ) +
+                  ' ' +
+                  this.props.reducers.currency
+                : 0 + ' ' + this.props.reducers.currency}
+            </strong>{' '}
+            in Ether, using exchange rates from
+            <a
+              href="https://www.cryptocompare.com/coins/eth/overview/BTC"
+              target="noopener noreferrer _blank"
+            >
+              {' '}
+              cryptocompare.com
+            </a>
+            .<br />
+            Which is currently an equivalent of
+            <strong>
+              {this.props.web3 && this.props.web3.web3Instance
+                ? ' ' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    this.props.reducers.TransactionToSend.value,
+                    'ETHER'
+                  ) +
+                  ' ETHER'
+                : 0 + ' ETHER'}
+            </strong>
+            .
+          </p>
+        </div>
+        <div className="col col-6 mobile-full">
+          <br />
+          <br />
+          <div className="token-ether">
+            <span className="ether-symbol">Ξ</span>
+            <span className="token-name">ETHER</span>
+            <span className="balance">
+              {this.props.web3 && this.props.web3.web3Instance
+                ? ' ' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    wallets[this.state.fromWallet]
+                  ) +
+                  ' ' +
+                  this.props.reducers.currency +
+                  ' (' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    wallets[this.state.fromWallet],
+                    'ETHER'
+                  ) +
+                  'ETHER)'
+                : '5,538.38 USD (26.41223000001 ETHER)'}
+            </span>
+          </div>
+        </div>
+        <div className="dapp-clear-fix" />
+      </div>
+    );
+  }
+
+  renderFeeRow() {
+    let GasStats = this.props.reducers.GasStats;
+    return (
+      <div className="row clear">
+        <div className="col col-7 mobile-full">
+          <h3>Select Fee</h3>
+          <div
+            className="dapp-select-gas-price"
+            onClick={e => this.toggleFee(e)}
+          >
+            {GasStats !== {} && this.state.standardFee ? (
+              <span>STANDARD FEE: &nbsp; {GasStats.safeLow} </span>
+            ) : (
+              <span>PRIORITY FEE: &nbsp; {GasStats.fastest}</span>
+            )}
+          </div>
+        </div>
+        <div className="col col-5 mobile-full send-info">
+          <br />
+          <br />
+          This is the most amount of money that might be used to process this
+          transaction. Your transaction will be mined
+          <strong>
+            probably within &nbsp;
+            {GasStats !== {} && this.state.standardFee
+              ? Utils.floatToTime(GasStats.safeLowWait)
+              : Utils.floatToTime(GasStats.fastWait)}
+          </strong>
+        </div>
+        <div class="dapp-clear-fix" />
+      </div>
+    );
+  }
+
+  renderTotalRow() {
+    return (
+      <div className="row clear total">
+        <div className="col col-12 mobile-full">
+          <h3>total</h3>
+          <span className="amount">
+            {this.props.web3 && this.props.web3.web3Instance
+              ? ' ' +
+                Utils.displayPriceFormatter(
+                  this.props,
+                  this.props.reducers.TransactionToSend.value +
+                    this.props.reducers.TransactionToSend.gasPrice
+                ) +
+                ' ' +
+                this.props.reducers.currency
+              : 0 + ' ' + this.props.reducers.currency}
+          </span>
+          <br />
+          Gas is paid by the owner of the wallet contract (0.000044187 ETHER)
+        </div>
+        <div className="dapp-clear-fix" />
+      </div>
+    );
+  }
+
   render() {
     let wallets = this.props.reducers.Wallets;
     // let txAmt = this.props.reducers.TransactionToSend.amount || 0;
@@ -199,164 +385,13 @@ class SendContractForm extends Component {
         target="dapp-form-helper-iframe"
         autoComplete="on"
       >
-        <div className="fee-selector">
-          <button
-            // onClick={this.handleClick}
-            className="fee-selector__btn"
-            data-tooltip="Click For Standard Fee"
-          />
-          <button
-            // onClick={this.handleClick}
-            className="fee-selector__btn"
-            data-tooltip="Click For Priority Fee"
-          />
-          <span className="fee-amount">
-            {this.props.reducers.TransactionToSend.gasPrice}
-          </span>
-        </div>
-        <input type="switch" />
         <h1>
           <strong>Send</strong> Funds
         </h1>
-        <div className="row clear from-to">
-          {this.renderWalletDropDown()}
-
-          <div className="col col-6 mobile-full">
-            <h3>To</h3>
-            <div className="dapp-address-input">
-              <input
-                type="text"
-                name="to"
-                placeholder="0x000000.."
-                className="to"
-                autoFocus={true}
-                onKeyUp={e => this.handleOnKeyUp(e)}
-              />
-            </div>
-          </div>
-          <div className="dapp-clear-fix" />
-        </div>
-        <div className="row clear">
-          <div className="col col-6 mobile-full amount">
-            <h3>Amount</h3>
-            <input
-              type="text"
-              min="0"
-              step="any"
-              name="value"
-              placeholder="0.0"
-              className="dapp-large"
-              pattern="[0-9\.,]*"
-              // value={this.props.reducers.TransactionToSend.value || ''}
-              onKeyUp={e => this.handleOnKeyUp(e)}
-              // value={txAmt}
-            />
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                className="send-all"
-                onChange={e => this.toggleCheckbox(e)}
-              />
-              Send everything
-            </label>
-
-            <p className="send-info">
-              You want to send
-              <strong>
-                {this.props.web3 && this.props.web3.web3Instance
-                  ? ' ' +
-                    Utils.displayPriceFormatter(
-                      this.props,
-                      this.props.reducers.TransactionToSend.value
-                    ) +
-                    ' ' +
-                    this.props.reducers.currency
-                  : 0 + ' ' + this.props.reducers.currency}
-              </strong>{' '}
-              in Ether, using exchange rates from
-              <a
-                href="https://www.cryptocompare.com/coins/eth/overview/BTC"
-                target="noopener noreferrer _blank"
-              >
-                {' '}
-                cryptocompare.com
-              </a>
-              .<br />
-              Which is currently an equivalent of
-              <strong>
-                {this.props.web3 && this.props.web3.web3Instance
-                  ? ' ' +
-                    Utils.displayPriceFormatter(
-                      this.props,
-                      this.props.reducers.TransactionToSend.value,
-                      'ETHER'
-                    ) +
-                    ' ETHER'
-                  : 0 + ' ETHER'}
-              </strong>
-              .
-            </p>
-          </div>
-          <div className="col col-6 mobile-full">
-            <br />
-            <br />
-            <div className="token-ether">
-              <span className="ether-symbol">Ξ</span>
-              <span className="token-name">ETHER</span>
-              <span className="balance">
-                {this.props.web3 && this.props.web3.web3Instance
-                  ? ' ' +
-                    Utils.displayPriceFormatter(
-                      this.props,
-                      wallets[this.state.fromWallet]
-                    ) +
-                    ' ' +
-                    this.props.reducers.currency +
-                    ' (' +
-                    Utils.displayPriceFormatter(
-                      this.props,
-                      wallets[this.state.fromWallet],
-                      'ETHER'
-                    ) +
-                    'ETHER)'
-                  : '5,538.38 USD (26.41223000001 ETHER)'}
-              </span>
-            </div>
-          </div>
-          <div className="dapp-clear-fix" />
-        </div>
-        Slowest:
-        {this.props.reducers.GasStats !== {}
-          ? Utils.floatToTime(this.props.reducers.GasStats.safeLowWait)
-          : 0}
-        Fastest:
-        {this.props.reducers.GasStats !== {}
-          ? Utils.floatToTime(this.props.reducers.GasStats.fastWait)
-          : 0}
-        {/*
-        <FormInput />
-        */}
-        <div className="row clear total">
-          <div className="col col-12 mobile-full">
-            <h3>total</h3>
-            <span className="amount">
-              {this.props.web3 && this.props.web3.web3Instance
-                ? ' ' +
-                  Utils.displayPriceFormatter(
-                    this.props,
-                    this.props.reducers.TransactionToSend.value +
-                      this.props.reducers.TransactionToSend.gasPrice
-                  ) +
-                  ' ' +
-                  this.props.reducers.currency
-                : 0 + ' ' + this.props.reducers.currency}
-            </span>
-            <br />
-            Gas is paid by the owner of the wallet contract (0.000044187 ETHER)
-          </div>
-          <div className="dapp-clear-fix" />
-        </div>
+        {this.renderFromToRow()}
+        {this.renderAmountRow()}
+        {this.renderFeeRow()}
+        {this.renderTotalRow()}
         <button
           type="submit"
           className="dapp-block-button"
