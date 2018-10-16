@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import * as Actions from '../../actions/actions.js';
-// import * as Utils from '../../utils/utils.js';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -24,6 +23,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import SecurityIcon from '../elements/SecurityIcon.js';
+import shortid from 'shortid';
+import * as Utils from '../../utils/utils.js';
 
 const styles = theme => ({
   radioRoot: {
@@ -59,14 +60,50 @@ class NewWalletContract extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
+    this.selectWallet = this.selectWallet.bind(this);
+    let defaultWallet;
+    let wallets = this.props.reducers.Wallets;
+    for (var prop in wallets) {
+      defaultWallet = prop;
+      break;
+    }
+
+    console.log(this.state);
+
+    this.setState(prevState => ({
+      ...prevState,
+      reducers: {
+        ...prevState.reducers,
+        DeployContractForm: {
+          ...prevState.reducers.DeployContractForm,
+          MainOwnerAddress: defaultWallet,
+        },
+      },
+    }));
+
+    // var stateObj = {...this.state.reducers.DeployContractForm}
+    // stateObj.reducers.DeployContractForm = true;
+    // this.setState({someProperty})
+
+    // let obj = { ...this.props.reducers.DeployContractForm };
+    // obj.MainOwnerAddress = defaultWallet;
+    // this.props.updateDeployContractForm(obj);
+  }
+
+  selectWallet(e) {
+    // TODO:validate inputs here
+    let obj = { ...this.props.reducers.DeployContractForm };
+    obj.MainOwnerAddress = e.target.value;
+    this.props.updateDeployContractForm(obj);
   }
 
   shouldComponentUpdate(prevProps, prevState) {
+    let dcf = this.props.reducers.DeployContractForm;
+    let prevDcf = prevProps.reducers.DeployContractForm;
     if (
-      this.props.reducers.DeployContractForm !==
-        prevProps.reducers.DeployContractForm ||
-      this.props.reducers.DeployContractForm.multiSigContract !==
-        prevProps.reducers.DeployContractForm.multiSigContract
+      dcf !== prevDcf ||
+      dcf.multiSigContract !== prevDcf.multiSigContract ||
+      dcf.MainOwnerAddress !== prevDcf.MainOwnerAddress
     ) {
       return true;
     }
@@ -99,6 +136,16 @@ class NewWalletContract extends Component {
         obj.dailyLimitAmount = buttonValue;
         this.props.updateDeployContractForm(obj);
         break;
+      case 'WalletContractName':
+        obj = { ...this.props.reducers.DeployContractForm };
+        obj.WalletContractName = buttonValue;
+        this.props.updateDeployContractForm(obj);
+        break;
+      case 'MainOwnerAddress':
+        obj = { ...this.props.reducers.DeployContractForm };
+        obj.MainOwnerAddress = buttonValue;
+        this.props.updateDeployContractForm(obj);
+        break;
       default:
         break;
     }
@@ -121,6 +168,7 @@ class NewWalletContract extends Component {
       <React.Fragment>
         {[...Array(acc).keys()].map(num => (
           <TextField
+            key={shortid.generate()}
             label="Owner address"
             className="dapp-address-input owners"
             InputProps={{
@@ -140,16 +188,71 @@ class NewWalletContract extends Component {
     );
   }
 
+  renderWalletDropDown() {
+    let wallets = this.props.reducers.Wallets;
+    let dcf = this.props.reducers.DeployContractForm;
+    console.log(this.props.reducers.DeployContractForm);
+    console.log(this.state.reducers.DeployContractForm);
+
+    return (
+      <div className="col col-6 mobile-full from">
+        <h3>From</h3>
+        <div className="dapp-select-account send-from">
+          <select
+            className="send-from"
+            name="MainOwnerAddress"
+            onChange={this.selectWallet}
+            value={this.props.reducers.DeployContractForm}
+          >
+            {Object.keys(wallets).map(w => {
+              let balance = wallets[w];
+              return (
+                <React.Fragment>
+                  <option key={shortid.generate()} value={w}>
+                    {this.props.web3 && this.props.web3.web3Instance
+                      ? Utils.displayPriceFormatter(this.props, balance)
+                      : balance}
+                    " - " + {w}
+                  </option>
+                </React.Fragment>
+              );
+            })}
+          </select>
+          <SecurityIcon
+            type="address"
+            classes="dapp-identicon dapp-small"
+            hash={this.state.DeployContractForm.MainOwnerAddress}
+          />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     // console.log(this.props)
+    console.log(this.props);
     const { classes } = this.props;
     const { DeployContractForm } = this.props.reducers;
     console.log(DeployContractForm);
+    console.log(this.props);
+
+    let dcf = this.props.reducers.DeployContractForm;
     return (
       <main className="dapp-content">
         <h1>
-          <strong>Accounts</strong> Overview
+          New <strong>wallet contract</strong>
         </h1>
+        <input
+          type="text"
+          name="WalletContractName"
+          placeholder="Wallet contract name"
+          onChange={e => this.handleChange(e)}
+          autoFocus={true}
+        />
+        <h2>Select owner</h2>
+
+        {dcf && dcf.MainOwnerAddress ? this.renderWalletDropDown() : <div />}
+
         <div className={classes.radioRoot}>
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>
@@ -175,8 +278,8 @@ class NewWalletContract extends Component {
                 <div className="indented-box">
                   <span
                     style={{
-                      'vertical-align': 'middle',
-                      'line-height': '35px',
+                      verticalAlign: 'middle',
+                      lineHeight: '35px',
                     }}
                   >
                     Note: If your owner account is compromised, your wallet has
@@ -199,8 +302,8 @@ class NewWalletContract extends Component {
                 <div className="indented-box">
                   <p
                     style={{
-                      'vertical-align': 'middle',
-                      'line-height': '35px',
+                      verticalAlign: 'middle',
+                      lineHeight: '35px',
                     }}
                   >
                     This is a joint account controlled by &nbsp;
@@ -239,8 +342,8 @@ class NewWalletContract extends Component {
                   </p>
                   <p
                     style={{
-                      'vertical-align': 'middle',
-                      'line-height': '35px',
+                      verticalAlign: 'middle',
+                      lineHeight: '35px',
                     }}
                   >
                     Any transaction over that daily limit requires the
