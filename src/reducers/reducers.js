@@ -49,6 +49,7 @@ const initialState = {
   errorsAutoScanReceived: 0,
   SelectedEvent: {},
   qrCode: '',
+  JSONInterface: '',
 };
 
 const reducers = (state = initialState, action) => {
@@ -56,6 +57,11 @@ const reducers = (state = initialState, action) => {
     // console.log('here in reducers', action.payload);
   }
   switch (action.type) {
+    case 'UPDATE_JSON_INTERFACE':
+      return {
+        ...state,
+        JSONInterface: action.payload,
+      };
     case 'UPDATE_QR_CODE':
       return {
         ...state,

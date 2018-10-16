@@ -80,9 +80,21 @@ class WatchItem extends Component {
       web3.eth.getBalance(contract.address, (err, res) => {
         //if err global note
         contract.balance = res;
-        contract['logs'];
+        contract['logs'] = [];
         con[contract['address']] = contract;
         this.props.addObservedContract(con);
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'success',
+          msg: 'Added custom contract',
+        });
+
+        Object.keys(this.props.reducers.selectedContract).map(key => {
+          this.props.updateContractToWatch({
+            name: key,
+            value: '',
+          });
+        });
       });
     } else {
       // TODO:trigger global notification here

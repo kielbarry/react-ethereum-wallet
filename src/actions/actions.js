@@ -28,6 +28,13 @@ const web3 = new Web3(
 //   }
 // }
 
+export const updateJSON = json => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_JSON_INTERFACE,
+    payload: json,
+  });
+};
+
 export const updateQRCode = address => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_QR_CODE,

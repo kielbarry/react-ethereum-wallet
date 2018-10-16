@@ -95,6 +95,11 @@ class WatchToken extends Component {
               amount: web3.utils.fromWei(tokenAmt, 'ether'),
             }),
           });
+          this.props.displayGlobalNotification({
+            display: true,
+            type: 'success',
+            msg: 'Added custom token',
+          });
           // }
         });
     } else {

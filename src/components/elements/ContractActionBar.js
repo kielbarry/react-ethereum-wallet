@@ -6,9 +6,29 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as Actions from '../../actions/actions.js';
 
 export class ContractActionBar extends Component {
+  displayCopiedNotification(e) {
+    e.preventDefault();
+    this.props.displayGlobalNotification({
+      display: true,
+      type: 'info',
+      msg: 'Copied to clipboad',
+    });
+  }
+
+  displayAndSetQRCode(e) {
+    this.props.updateQRCode(this.props.props.address);
+    this.props.displayModal('displayQRCode');
+  }
+
+  displayAndSetJSON(e) {
+    this.props.updateJSON(this.props.props.jsonInterface);
+    this.props.displayModal('displayJSONInterface');
+  }
+
   render() {
     let address = this.props.props.address;
     let transferEtherAddress = '/send/' + address;
+    let etherScanAddress = 'https://etherscan.io/address/' + address;
     return (
       <aside className="dapp-actionbar">
         <nav>
@@ -19,9 +39,18 @@ export class ContractActionBar extends Component {
                 Transfer Ether &amp; Tokens
               </a>
             </li>
+            <li>
+              <a href={etherScanAddress} target="noopener noreferrer _blank">
+                <i className="icon-info" />
+                View on Etherscan
+              </a>
+            </li>
             <CopyToClipboard text={address}>
               <li>
-                <button className="copy-to-clipboard-button">
+                <button
+                  className="copy-to-clipboard-button"
+                  onClick={e => this.displayCopiedNotification(e)}
+                >
                   <i className="icon-docs" />
                   Copy address
                 </button>
@@ -30,7 +59,7 @@ export class ContractActionBar extends Component {
             <li>
               <button
                 className="qrcode-button"
-                onClick={e => this.props.displayModal('displayQRCode')}
+                onClick={e => this.displayAndSetQRCode(e)}
               >
                 <i className="icon-camera" />
                 Show QR-Code
@@ -39,7 +68,7 @@ export class ContractActionBar extends Component {
             <li>
               <button
                 className="interface-button"
-                onClick={e => this.props.displayModal('displayJSONInterface')}
+                onClick={e => this.displayAndSetJSON('displayJSONInterface')}
               >
                 <i className="icon-settings" />
                 Show Interface

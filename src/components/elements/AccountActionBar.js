@@ -12,6 +12,15 @@ export class AccountActionBar extends Component {
     return false;
   }
 
+  displayCopiedNotification(e) {
+    e.preventDefault();
+    this.props.displayGlobalNotification({
+      display: true,
+      type: 'info',
+      msg: 'Copied to clipboad',
+    });
+  }
+
   displayAndSetQRCode(e) {
     this.props.updateQRCode(this.props.props.address);
     this.props.displayModal('displayQRCode');
@@ -50,7 +59,10 @@ export class AccountActionBar extends Component {
             </li>
             <CopyToClipboard text={address}>
               <li>
-                <button className="copy-to-clipboard-button">
+                <button
+                  className="copy-to-clipboard-button"
+                  onClick={e => this.displayCopiedNotification(e)}
+                >
                   <i className="icon-docs" />
                   Copy address
                 </button>

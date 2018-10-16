@@ -1,46 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-// import InputItem from '../../elements/InputItem.jsx';
-import TestInputItem from '../../elements/TestInputItem.js';
 import * as Actions from '../../../actions/actions.js';
 
-const listInputs = [
-  {
-    title: 'Contract JSON Interface',
-    divClass: 'dapp-json-interface-input',
-    editor: 'textarea',
-    type: 'text',
-    name: 'jsonInterface',
-    placeholder: '',
-    className: 'jsonInterface',
-    cols: '30',
-    rows: '10',
-  },
-];
+class JSONInterface extends Component {
+  shouldComponentUpdate(prevProps, prevState) {
+    if (
+      this.props.display !== prevProps.display ||
+      this.props.JSONInterface !== prevProps.JSONInterface
+    ) {
+      return true;
+    }
+    return false;
+  }
 
-class JsonInterface extends Component {
+  closeModal(e) {
+    e.preventDefault();
+    if (e.target.getAttribute('id') === 'JSONInterface') {
+      this.props.closeModal('displayJSONInterface');
+    }
+  }
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
+    console.log(this.props);
     return (
-      <div className={this.props.display} style={divStyle}>
-        <section className="dapp-modal-container modals-add-custom-contract">
-          <h1>Watch contract</h1>
-
-          {listInputs.map((field, i) => (
-            <TestInputItem key={`contract-field-${i}`} field={field} />
-          ))}
+      <div
+        className={this.props.display}
+        style={divStyle}
+        onClick={e => this.closeModal(e)}
+        id="JSONInterface"
+      >
+        <section className="dapp-modal-container">
+          <h1>Contract JSON Interface</h1>
+          <textarea name="jsonInterface" cols="40" rows="10">
+            {this.props.JSONInterface}
+          </textarea>
+          <p>
+            If you want to have someone else execute this contract, send this
+            information along with the contract's address.
+          </p>
         </section>
       </div>
     );
   }
 }
-const mapStateToProps = state => {
-  return state;
-};
 
 export default connect(
-  mapStateToProps,
+  null,
   { ...Actions }
-)(JsonInterface);
+)(JSONInterface);

@@ -35,7 +35,7 @@ import ReactModal from './components/views/modals/ReactModal.js';
 
 import EventInfo from './components/views/modals/EventInfo.js';
 
-// import JsonInterface from './components/views/modals/JsonInterface.js';
+import JSONInterface from './components/views/modals/JSONInterface.js';
 
 // stylesheets
 import './stylesheets/mergedstyles.css';
@@ -170,9 +170,9 @@ class App extends Component {
       'dapp-modal-overlay': modals.displayTransaction || false,
     });
 
-    //  let JsonInterface = cn({
-    //   'dapp-modal-overlay': modals.displayJSONInterface || false,
-    // });
+    let JsonInterface = cn({
+      'dapp-modal-overlay': modals.displayJSONInterface || false,
+    });
     let qrCode = cn({
       'dapp-modal-overlay': modals.displayQRCode || false,
     });
@@ -238,7 +238,10 @@ class App extends Component {
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />
           <QRCode hash={this.props.reducers.qrCode} display={qrCode} />
-          {/*} <JsonInterface display={JsonInterface} />*/}
+          <JSONInterface
+            JSONInterface={this.props.reducers.JSONInterface}
+            display={JsonInterface}
+          />
 
           {/*<NoConnection connection={this.props.web3} />*/}
         </div>
