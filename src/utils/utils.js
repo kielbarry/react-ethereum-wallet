@@ -24,18 +24,20 @@ export function displayPriceFormatter2(props, balance, currencyOverride) {
   }
   return displayPrice;
 }
+/*
+Returns the from now time, using a javascript date obejct if less than 23 hours
 
-/**
-  Returns the from now time, if less than 23 hours
+@method (timeFromNow)
+@return {String}
+*/
 
-  @method (fromNowTime)
-  @return {String}
-  */
-export function fromNowTime(timestamp) {
-  setInterval(() => {
-    var diff = moment().diff(moment.unix(timestamp), 'hours');
-    return diff < 23 ? ' ' + moment.unix(timestamp).fromNow() : '';
-  }, 10000);
+export function timeFromNow(string) {
+  let now = Date.now();
+  let diff = new Date() - new Date(string);
+  // console.log(Date.now() - new Date(string))
+  let hours = parseInt(diff / 360000);
+  if (hours <= 24) return '(Less than a day ago)';
+  return '(Less than ' + Math.ceil(hours / 24) + ' days ago)';
 }
 
 export function floatToTime(input) {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import SecurityIcon from '../../elements/SecurityIcon.js';
 import * as Actions from '../../../actions/actions.js';
+import * as Utils from '../../../utils/utils.js';
 
 class EventInfo extends Component {
   constructor() {
@@ -41,13 +42,9 @@ class EventInfo extends Component {
         <section className="dapp-modal-container transaction-info">
           <h1>Event</h1>
           <p>
-            timestamp
+            {Utils.getFullTime(event.timestamp)}
             <br />
-            <small>
-              timestamp fromNow if confirmations 1000
-              <strong>confirmations</strong>
-              confirmations
-            </small>
+            <small>{Utils.timeFromNow(event.timestamp)}</small>
           </p>
           <table className="dapp-zebra">
             <tbody>
@@ -83,7 +80,7 @@ class EventInfo extends Component {
                 <td>{event.logIndex}</td>
               </tr>
               <tr>
-                <td>trransaction index</td>
+                <td>Transaction index</td>
                 <td>{event.transactionIndex}</td>
               </tr>
               <tr>

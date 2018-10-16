@@ -23,6 +23,7 @@ export class SingleAccountView extends Component {
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
     this.displayEventModal = this.displayEventModal.bind(this);
+    this.setState({ showContractFunctions: true });
   }
 
   // shouldComponentUpdate(prevProps, prevState) {
@@ -141,6 +142,7 @@ export class SingleAccountView extends Component {
 
   toggleContractInfo(e) {
     console.log('here intoggleContractInfo', e);
+    this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
   renderContractFunctions() {
@@ -149,7 +151,11 @@ export class SingleAccountView extends Component {
       .contractFunctions;
     let constants = this.props.reducers.ObservedContracts[contract.address]
       .contractConstants;
-
+    let show = this.state.showContractFunctions;
+    let divStyle;
+    show === undefined || show
+      ? (divStyle = { display: 'block' })
+      : (divStyle = { display: 'none' });
     return (
       <div className="execute-contract">
         <button
@@ -159,7 +165,7 @@ export class SingleAccountView extends Component {
           Hide contract info
         </button>
         <div className="dapp-clear-fix" />
-        <div className="row clear">
+        <div className="row clear" style={divStyle}>
           <div className="col col-8 mobile-full contract-info">
             <h2>Read from contract</h2>
             <table className="contract-constants dapp-zebra">
@@ -240,12 +246,16 @@ export class SingleAccountView extends Component {
               <td className="account-name">
                 <h2>{log.event}</h2>
                 <p style={{ wordBreak: 'break-word' }}>
-                  {Object.keys(log.returnValues).map((val, i) => (
-                    <React.Fragment>
-                      {val} : &nbsp; <strong> {log.returnValues[val]}</strong>
-                      <br />
-                    </React.Fragment>
-                  ))}
+                  {Object.keys(log.returnValues).map(
+                    (val, i) =>
+                      isNaN(val) ? (
+                        <React.Fragment>
+                          {val} : &nbsp;{' '}
+                          <strong> {log.returnValues[val]}</strong>
+                          <br />
+                        </React.Fragment>
+                      ) : null
+                  )}
                 </p>
               </td>
             </tr>

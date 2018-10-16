@@ -227,12 +227,10 @@ class App extends Component {
             />
           ) : null}
 
-          {/*}
           <EventInfo
             display={viewEventInfo}
             event={this.props.reducers.SelectedEvent}
           />
-        */}
 
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
