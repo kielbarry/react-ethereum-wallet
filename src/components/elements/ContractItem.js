@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { selectedContract } from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
+import * as Actions from '../../actions/actions.js';
 
 class ContractItem extends Component {
   constructor(props) {
@@ -11,7 +12,13 @@ class ContractItem extends Component {
     this.openAccountPage = this.openAccountPage.bind(this);
   }
 
-  openAccountPage() {
+  openAccountPage(e) {
+    // e.preventDefault()
+
+    console.log(this.props);
+
+    this.props.emptySelectedWallet('');
+
     this.props.selectedContract({
       contract: this.props.contract,
       currency: this.props.reducers.currency,
@@ -42,7 +49,7 @@ class ContractItem extends Component {
       <React.Fragment>
         <Link
           to={{ pathname: AccountURL }}
-          onClick={this.openAccountPage}
+          onClick={e => this.openAccountPage(e)}
           className="wallet-box"
         >
           <SecurityIcon
@@ -69,5 +76,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { selectedContract }
+  { selectedContract, ...Actions }
 )(ContractItem);

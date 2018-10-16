@@ -71,11 +71,6 @@ class WatchItem extends Component {
 
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
-      // let newContract = new web3.eth.Contract(
-      //   contract.jsonInterface,
-      //   contract.address
-      // );
-
       let con = {};
       web3.eth.getBalance(contract.address, (err, res) => {
         //if err global note

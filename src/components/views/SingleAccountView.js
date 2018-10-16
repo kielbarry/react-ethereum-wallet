@@ -26,7 +26,16 @@ export class SingleAccountView extends Component {
   }
 
   // shouldComponentUpdate(prevProps, prevState) {
-
+  //   if(this.props.reducers.selectedWallet !== prevProps.reducers.selectedWallet) {
+  //     return true
+  //   }
+  //   else if(this.props.reducers.selectedContract !== prevProps.reducers.selectedContract) {
+  //     return true
+  //   }
+  //   else {
+  //     return false;
+  //   }
+  //   // else if (this.props.reducers.ObservedContracts[contract.address].logs;)
   // }
 
   componentDidMount() {
@@ -391,10 +400,10 @@ export class SingleAccountView extends Component {
   }
 
   render() {
-    // let r = this.props.reducers;
-
-    return this.props.reducers.selectedWallet === undefined ? (
-      this.props.reducers.selectedContract === undefined ? (
+    let w = this.props.reducers.selectedWallet;
+    let c = this.props.reducers.selectedContract;
+    return w === undefined || w === '' ? (
+      c === undefined || c === '' ? (
         <NotFound />
       ) : (
         this.renderSingleContract()

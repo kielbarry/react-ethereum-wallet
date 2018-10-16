@@ -27,11 +27,6 @@ const styles = theme => ({
 });
 
 class ContractsView extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.state = this.props;
-  // }
-
   shouldComponentUpdate(prevProps, prevState) {
     if (
       !isEqual(

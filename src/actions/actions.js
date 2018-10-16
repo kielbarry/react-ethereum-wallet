@@ -306,6 +306,13 @@ export const fetchEthGasStationStats = gasStats => {
   };
 };
 
+export const emptySelectedContract = empty => dispatch => {
+  dispatch({
+    type: actionTypes.EMPTY_SELECTED_CONTRACT,
+    payload: empty,
+  });
+};
+
 export const selectedContract = contract => dispatch => {
   dispatch({
     type: actionTypes.SET_SELECTED_CONTRACT,
@@ -394,6 +401,13 @@ export const updateEtherPrices = exchangeRates => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_EXCHANGE_RATES,
     payload: exchangeRates,
+  });
+};
+
+export const emptySelectedWallet = empty => dispatch => {
+  dispatch({
+    type: actionTypes.EMPTY_SELECTED_WALLET,
+    payload: empty,
   });
 };
 

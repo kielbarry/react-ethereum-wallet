@@ -210,6 +210,11 @@ const reducers = (state = initialState, action) => {
         ...state,
         GasStats: Object.assign({}, action.payload),
       };
+    case 'EMPTY_SELECTED_CONTRACT':
+      return {
+        ...state,
+        selectedContract: '',
+      };
     case 'SET_SELECTED_CONTRACT':
       return {
         ...state,
@@ -299,6 +304,11 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         prices: action.payload,
+      };
+    case 'EMPTY_SELECTED_WALLET':
+      return {
+        ...state,
+        selectedWallet: '',
       };
     case 'SET_SELECTED_WALLET':
       return {

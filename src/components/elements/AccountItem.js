@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
+import * as Actions from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
 
 class AccountItem extends Component {
@@ -12,6 +13,7 @@ class AccountItem extends Component {
   }
 
   openAccountPage(w) {
+    this.props.emptySelectedContract();
     this.props.selectedWallet({
       address: this.props.address,
       number: this.props.number,
@@ -66,5 +68,5 @@ class AccountItem extends Component {
 
 export default connect(
   null,
-  { selectedWallet }
+  { selectedWallet, ...Actions }
 )(AccountItem);
