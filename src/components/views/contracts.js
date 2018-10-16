@@ -108,6 +108,21 @@ class ContractsView extends Component {
     this.props.fetchTokensForAutoScan(addresses);
   }
 
+  renderAutoScan() {
+    return (
+      <button
+        className="wallet-box create token-auto-scan"
+        title="Automatically scan for balances of popular tokens on your accounts."
+        onClick={e => this.autoScanTokens(e)}
+      >
+        <div className="account-pattern">
+          <div className="icon icon-target" />
+        </div>
+        <h3>Auto-Scan</h3>
+      </button>
+    );
+  }
+
   render() {
     let CSL = ContractSectionList;
     let CC = CSL.CustomContracts;
@@ -140,27 +155,18 @@ class ContractsView extends Component {
           <h2>{CT.title}</h2>
           <p>{CT.contractDescription}</p>
           <div className="dapp-clear-fix" />
-
           {this.renderObservedTokens()}
-
           <button
             className={CT.buttonClass}
             onClick={() => this.props.displayModal('displayWatchToken')}
+            style={{ float: 'left' }}
           >
             <div className="account-pattern">+</div>
             <h3>{CT.buttonDescription}</h3>
           </button>
-
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="Add"
-            className={classes.button}
-            onClick={e => this.autoScanTokens(e)}
-          >
-            <AddIcon />
-          </Button>
-
+          {this.props.reducers.network === 'main'
+            ? this.renderAutoScan()
+            : null}
           <div className="dapp-clear-fix" />
         </div>
       </div>

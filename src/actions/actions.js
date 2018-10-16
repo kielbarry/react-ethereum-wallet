@@ -106,12 +106,14 @@ export const fetchTokensForAutoScan = accounts => {
         response => response.json(),
         error => {
           console.warn('An error occurred in fetchTokensForAutoScan', error);
-          // this.displayGlobalNotification({
-          //   display: true,
-          //   type: 'error',
-          //   msg: 'There was an error scanning tokens for autoscan',
-          //   duration: 5,
-          // });
+          dispatch(
+            displayGlobalNotification({
+              display: true,
+              type: 'error',
+              msg: 'There was an error scanning tokens for autoscan',
+              duration: 5,
+            })
+          );
         }
       )
       .then(async tokens => {
@@ -133,9 +135,7 @@ export const fetchTokensForAutoScan = accounts => {
                     to: token.address.replace(' ', ''),
                     data: callData,
                   })
-
                   .then(result => {
-                    console.log(result);
                     dispatch(updateBalanceChecked((balancesChecked += 1)));
                     const tokenAmt = web3.utils.toBN(result);
 
@@ -145,12 +145,14 @@ export const fetchTokensForAutoScan = accounts => {
                     );
 
                     // if (!tokenAmt.isZero()) {
-                    this.props.addObservedToken({
-                      name: token.name,
-                      value: Object.assign({}, token, {
-                        amount: web3.utils.fromWei(tokenAmt, 'ether'),
-                      }),
-                    });
+                    dispatch(
+                      addObservedToken({
+                        name: token.name,
+                        value: Object.assign({}, token, {
+                          amount: web3.utils.fromWei(tokenAmt, 'ether'),
+                        }),
+                      })
+                    );
                     // }
 
                     return null;

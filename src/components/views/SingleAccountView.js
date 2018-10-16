@@ -72,10 +72,13 @@ export class SingleAccountView extends Component {
       return;
     }
 
+    console.log(contract);
+
     let contractInstance = new web3.eth.Contract(
       JSON.parse(contract.jsonInterface),
       contract.address
     );
+    console.log(contractInstance);
     let contractFunctions = [];
     let contractConstants = [];
     JSON.parse(contract.jsonInterface).map(func => {
@@ -97,17 +100,16 @@ export class SingleAccountView extends Component {
       name: 'contractConstants',
     });
 
-    let subscription = contractInstance.events.allEvents({
-      // fromBlock: blockToCheckBack,
-      // toBlock: 'latest'
-    });
+    //TODO indicate block range
+    let subscription = contractInstance.events.allEvents({});
 
     contractInstance.getPastEvents('allEvents', (error, logs) => {
       if (!error && logs.length > 0) {
         logs.map(log => {
           web3.eth.getBlock(log.blockNumber, (err, res) => {
-            log['timestamp'] = res.timestamp;
-            this.props.updateContractLog(log);
+            // convert to milliseconds
+            log['timestamp'] = new Date(res.timestamp * 1000);
+            this.props.addPastContractLogs(log);
           });
         });
       } else {
@@ -120,7 +122,8 @@ export class SingleAccountView extends Component {
       web3.eth.getBlock(log.blockNumber, (err, res) => {
         if (err) console.warn(err);
         if (res) {
-          log['timestamp'] = res.timestamp;
+          // convert to milliseconds
+          log['timestamp'] = new Date(res.timestamp * 1000);
           this.props.updateContractLog(log);
         }
       });
@@ -133,7 +136,6 @@ export class SingleAccountView extends Component {
 
   renderContractFunctions() {
     let contract = this.props.reducers.selectedContract.contract;
-    // let logs = this.props.reducers.ObservedContracts[contract.address].logs;
     let functions = this.props.reducers.ObservedContracts[contract.address]
       .contractFunctions;
     let constants = this.props.reducers.ObservedContracts[contract.address]

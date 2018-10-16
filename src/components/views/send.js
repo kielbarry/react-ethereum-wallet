@@ -222,6 +222,7 @@ class SendContractForm extends Component {
 
   renderAmountRow() {
     let wallets = this.props.reducers.Wallets;
+    let { Wallets, currency } = this.props.reducers;
     return (
       <div className="row clear">
         <div className="col col-6 mobile-full amount">
@@ -234,9 +235,8 @@ class SendContractForm extends Component {
             placeholder="0.0"
             className="dapp-large"
             pattern="[0-9\.,]*"
-            // value={this.props.reducers.TransactionToSend.value || ''}
+            // value={this.props.reducers.TransactionToSend.value || 0}
             onKeyUp={e => this.handleOnKeyUp(e)}
-            // value={txAmt}
           />
           <br />
           <label>
@@ -336,7 +336,7 @@ class SendContractForm extends Component {
           <br />
           <br />
           This is the most amount of money that might be used to process this
-          transaction. Your transaction will be mined
+          transaction. Your transaction will be mined &nbsp;
           <strong>
             probably within &nbsp;
             {GasStats !== {} && this.state.standardFee
@@ -344,7 +344,7 @@ class SendContractForm extends Component {
               : Utils.floatToTime(GasStats.fastWait)}
           </strong>
         </div>
-        <div class="dapp-clear-fix" />
+        <div className="dapp-clear-fix" />
       </div>
     );
   }

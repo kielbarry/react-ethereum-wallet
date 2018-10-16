@@ -1,5 +1,29 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
+var Web3 = require('web3');
+let newWeb3 = new Web3();
+
+export function displayPriceFormatter2(props, balance, currencyOverride) {
+  if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
+  let currency = currencyOverride ? 'ETHER' : props.reducers.currency;
+  let totalBalance = balance.toString();
+  let exchangeRates = props.reducers.exchangeRates;
+  if (exchangeRates === undefined || exchangeRates === null) return;
+  let displayPrice;
+  if (currency === 'FINNEY') {
+    displayPrice = newWeb3.utils.fromWei(totalBalance, 'finney');
+  } else {
+    displayPrice = newWeb3.utils.fromWei(totalBalance, 'ether');
+    if (currency !== 'ETHER') {
+      displayPrice = Number(
+        Math.round(
+          displayPrice * exchangeRates[currency.toLowerCase()] + 'e2'
+        ) + 'e-2'
+      );
+    }
+  }
+  return displayPrice;
+}
 
 /**
   Returns the from now time, if less than 23 hours
@@ -24,6 +48,57 @@ export function floatToTime(input) {
     str += Math.ceil(input / 60) + ' hour(s).';
   }
   return str;
+}
+
+export function getFullTime(string) {
+  let h = getHours(string);
+  let amORpm = h > 12 ? 'PM' : 'AM';
+  if (h > 12) h = h % 12;
+
+  return (
+    getDayOfWeek(string) +
+    ', ' +
+    getMonthName(string) +
+    ' ' +
+    getDate(string) +
+    ', ' +
+    getYear(string) +
+    ' ' +
+    h +
+    ':' +
+    getMinutes(string) +
+    ' ' +
+    amORpm
+  );
+}
+
+export function getMinutes(string) {
+  let d = new Date(string);
+  return d.getMinutes();
+}
+
+export function getHours(string) {
+  let d = new Date(string);
+  return d.getHours();
+}
+
+export function getYear(string) {
+  let d = new Date(string);
+  return d.getFullYear();
+}
+
+export function getDayOfWeek(string) {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  let d = new Date(string);
+  return days[d.getDay()];
 }
 
 export function getDate(string) {

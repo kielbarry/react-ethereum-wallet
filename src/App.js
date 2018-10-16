@@ -54,7 +54,6 @@ class App extends Component {
       () => this.props.fetchEthGasStationStats(),
       15000
     );
-
     this.props.closeModal('displayEventInfo');
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
@@ -228,10 +227,12 @@ class App extends Component {
             />
           ) : null}
 
+          {/*}
           <EventInfo
             display={viewEventInfo}
             event={this.props.reducers.SelectedEvent}
           />
+        */}
 
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
