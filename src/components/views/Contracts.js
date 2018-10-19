@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-
 import isEqual from 'lodash/isEqual';
-
 import { connect } from 'react-redux';
-
+import compose from 'recompose/compose';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-
 import { withStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-
 import ContractItem from '../elements/ContractItem.js';
 import TokenBox from '../elements/TokenBox.js';
-
 import { ContractSectionList } from '../../constants/FieldConstants.js';
-
 import * as Actions from '../../actions/actions.js';
 
 const styles = theme => ({
@@ -85,10 +78,6 @@ class ContractsView extends Component {
   }
 
   autoScanTokens(e) {
-    console.log(this.props);
-    // this.props.instantiateContract();
-
-    console.log(e);
     let r = this.props.reducers;
     let addresses = [
       ...Object.keys(r.Wallets),
@@ -99,7 +88,6 @@ class ContractsView extends Component {
         return r.ObservedContracts[key].address;
       }),
     ];
-    console.log(addresses);
     this.props.fetchTokensForAutoScan(addresses);
   }
 

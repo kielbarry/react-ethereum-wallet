@@ -17,7 +17,7 @@ class ContractItem extends Component {
 
     console.log(this.props);
 
-    this.props.emptySelectedWallet('');
+    // this.props.emptySelectedWallet('');
 
     this.props.selectedContract({
       contract: this.props.contract,
@@ -44,11 +44,11 @@ class ContractItem extends Component {
   render() {
     let contract = this.props.contract;
     let address = contract.address;
-    const AccountURL = '/account/' + address;
+    const ContractUrl = '/contract/' + address;
     return (
       <React.Fragment>
         <Link
-          to={{ pathname: AccountURL }}
+          to={{ pathname: ContractUrl }}
           onClick={e => this.openAccountPage(e)}
           className="wallet-box"
         >

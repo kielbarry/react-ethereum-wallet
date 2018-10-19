@@ -1,10 +1,10 @@
-// modules
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cn from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Web3 from 'web3';
 
 // actions
 import * as Actions from './actions/actions.js';
@@ -14,6 +14,7 @@ import * as WalletUtils from './utils/WalletUtils.js';
 // views
 import AccountView from './components/views/Account.js';
 import SingleAccountView from './components/views/SingleAccountView.js';
+import SingleContractView from './components/views/SingleContractView.js';
 import ContractsView from './components/views/Contracts.js';
 import SendContractForm from './components/views/Send.js';
 import NewWalletContract from './components/views/NewWalletContract.js';
@@ -60,7 +61,6 @@ class App extends Component {
         clearInterval(web3Returned);
         let web3 = this.props.web3.web3Instance;
         Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
-        this.props.updateProvider(Utils.nameProvider(web3.currentProvider));
         Utils.getAccounts(
           web3,
           this.props.setWallets,
@@ -196,13 +196,13 @@ class App extends Component {
             <main className="dapp-content">
               <Route exact path="/account/new" component={NewWalletContract} />
               <Route path="/account/*" component={SingleAccountView} />
+              <Route path="/contract/*" component={SingleContractView} />
               <Route exact path="/" component={AccountView} />
               <Route exact path="/send-from" component={SendContractForm} />
               <Route exact path="/contracts" component={ContractsView} />
               <MistAlertBubble />
             </main>
           </div>
-
           <ToastContainer
             position="bottom-right"
             autoClose={5000}
@@ -226,12 +226,12 @@ class App extends Component {
               transaction={this.props.reducers.SelectedTransaction}
             />
           ) : null}
-
+          {/*}
           <EventInfo
             display={viewEventInfo}
             event={this.props.reducers.SelectedEvent}
           />
-
+        */}
           <WatchToken display={watchToken} />
           <WatchContract display={watchContract} />
           <SendTransaction display={sendTransaction} />

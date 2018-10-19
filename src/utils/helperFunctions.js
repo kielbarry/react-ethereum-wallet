@@ -439,6 +439,22 @@ Adds the input value from a form field to the inputs array
 // };
 
 /**
+ * Add space between camelCase text
+ */
+export function unCamelCaseToSentence(str) {
+  str = str.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])(([^a-z0-9_]))/gi, '$1 $2');
+  str = str.toLowerCase().replace(/^\w|\s\w/g, upperCase);
+  return str;
+}
+
+/**
+ * "Safer" String.toUpperCase()
+ */
+function upperCase(str) {
+  return str.toUpperCase();
+}
+
+/**
 Takes a camelcase and shows it with spaces
 
 @method toSentence

@@ -79,7 +79,6 @@ export const addPastContractLogs = contractWithLogs => dispatch => {
 
 export const fetchTokensForAutoScan = accounts => {
   const requestTokens = accounts => {
-    console.log('here in requestTokens', accounts);
     return {
       type: actionTypes.REQUEST_TOKENS_AUTOSCAN,
       payload: accounts,

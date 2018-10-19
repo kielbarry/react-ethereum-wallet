@@ -10,6 +10,7 @@ const persistConfig = {
   key: 'root',
   storage,
   blacklist: [
+    'web3',
     'TransactionToSend',
     'network',
     'provider',

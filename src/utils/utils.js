@@ -1,6 +1,7 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
-var Web3 = require('web3');
+// var Web3 = require('web3');
+import Web3 from 'web3';
 let newWeb3 = new Web3();
 
 export function displayPriceFormatter2(props, balance, currencyOverride) {
@@ -32,9 +33,7 @@ Returns the from now time, using a javascript date obejct if less than 23 hours
 */
 
 export function timeFromNow(string) {
-  let now = Date.now();
   let diff = new Date() - new Date(string);
-  // console.log(Date.now() - new Date(string))
   let hours = parseInt(diff / 360000);
   if (hours <= 24) return '(Less than a day ago)';
   return '(Less than ' + Math.ceil(hours / 24) + ' days ago)';

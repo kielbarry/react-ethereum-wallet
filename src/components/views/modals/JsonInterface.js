@@ -35,6 +35,7 @@ class JSONInterface extends Component {
             name="jsonInterface"
             cols="40"
             rows="10"
+            value={this.props.JSONInterface}
             defaultValue={this.props.JSONInterface}
           />
           <p>

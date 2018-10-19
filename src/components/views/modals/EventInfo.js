@@ -32,6 +32,7 @@ class EventInfo extends Component {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     let event = this.props.event;
+    console.log(event);
     return (
       <div
         className={this.props.display}
