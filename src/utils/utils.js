@@ -34,7 +34,7 @@ Returns the from now time, using a javascript date obejct if less than 23 hours
 
 export function timeFromNow(string) {
   let diff = new Date() - new Date(string);
-  let hours = parseInt(diff / 360000);
+  let hours = parseInt(diff / 360000, 10);
   if (hours <= 24) return '(Less than a day ago)';
   return '(Less than ' + Math.ceil(hours / 24) + ' days ago)';
 }

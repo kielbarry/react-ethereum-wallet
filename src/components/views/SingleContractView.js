@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SU from '../elements/SelectableUnit.js';
 import ContractActionBar from '../elements/ContractActionBar.js';
+import ExecutableContract from '../elements/ExecutableContract.js';
+import ContractEvents from '../elements/ContractEvents.js';
 import NotFound from './NotFound.js';
 import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
@@ -16,6 +18,7 @@ export class SingleContractView extends Component {
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
     this.displayEventModal = this.displayEventModal.bind(this);
+    this.chooseFunction = this.chooseFunction.bind(this);
     this.setState({ showContractFunctions: true });
   }
 
@@ -65,6 +68,8 @@ export class SingleContractView extends Component {
       contract.address
     );
 
+    // should i bag this and instead of push to array, redux it and set key to function name?
+    //START
     let contractFunctions = [];
     let contractConstants = [];
     JSON.parse(contract.jsonInterface).map(func => {
@@ -74,9 +79,20 @@ export class SingleContractView extends Component {
           : contractFunctions.push(func);
       }
     });
-
+    this.props.addContractFunctions({
+      address: contract.address,
+      value: contractFunctions,
+      name: 'contractFunctions',
+    });
+    this.props.addContractConstants({
+      address: contract.address,
+      value: contractConstants,
+      name: 'contractConstants',
+    });
+    // END
+    console.log(contractConstants);
     // TODO: NOT UPDATING STATE
-    contractConstants.map((method, ind) => {
+    contractConstants.map((method, index) => {
       let args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
         input.value === undefined || input.value === null
@@ -99,18 +115,16 @@ export class SingleContractView extends Component {
                 (output, i) => (method.outputs[i].value = res[i])
               );
       });
+      // TODO: NOT UPDATING STATE
+      // this.props.updateInitialContractMethodOutputs({
+      //   contractAddress: contract.address,
+      //   name: method.name,
+      //   index: index,
+      //   value: method.outputs,
+      //   location: contractConstants,
+      // })
     });
 
-    this.props.addContractFunctions({
-      address: contract.address,
-      value: contractFunctions,
-      name: 'contractFunctions',
-    });
-    this.props.addContractConstants({
-      address: contract.address,
-      value: contractConstants,
-      name: 'contractConstants',
-    });
     //TODO indicate block range
     let subscription = contractInstance.events.allEvents({});
     contractInstance.getPastEvents('allEvents', (error, logs) => {
@@ -140,84 +154,76 @@ export class SingleContractView extends Component {
     });
   }
 
-  toggleContractInfo(e) {
-    console.log('here intoggleContractInfo', e);
-    this.setState({ showContractFunctions: !this.state.showContractFunctions });
-  }
-
-  renderContractFunctions() {
+  renderFunctionInputs() {
     let contract = this.props.reducers.selectedContract.contract;
     let functions = this.props.reducers.ObservedContracts[contract.address]
       .contractFunctions;
-    let constants = this.props.reducers.ObservedContracts[contract.address]
-      .contractConstants;
-    let show = this.state.showContractFunctions;
-    let divStyle;
-    show === undefined || show
-      ? (divStyle = { display: 'block' })
-      : (divStyle = { display: 'none' });
+
+    let inputs = this.props.reducers.selectedFunction.inputs;
+    // .inputs
+    console.log(inputs);
     return (
-      <div className="execute-contract">
-        <button
-          className="toggle-visibility dapp-block-button dapp-small"
-          onClick={e => this.toggleContractInfo(e)}
+      <React.Fragment>
+        {inputs !== undefined
+          ? inputs.map(input => {
+              <React.Fragment>
+                <h4>
+                  {Helpers.toSentence(input.name)}><em>- {input.type}</em>
+                </h4>
+                <input
+                  type="number"
+                  step="1"
+                  placeholder="-123"
+                  name="elements_input_int"
+                />
+              </React.Fragment>;
+            })
+          : null}
+      </React.Fragment>
+    );
+  }
+
+  chooseFunction(e) {
+    let contract = this.props.reducers.selectedContract.contract;
+    let functions = this.props.reducers.ObservedContracts[contract.address];
+    let func = functions.contractFunctions[e.target.selectedIndex - 1];
+    if (func.name === e.target.value) {
+      func['contractAddress'] = contract.address;
+      this.props.updateSelectedFunction(func);
+    } else {
+      //TODO: global
+    }
+  }
+
+  renderExecuteFunctions() {
+    let contract = this.props.reducers.selectedContract.contract;
+    let functions = this.props.reducers.ObservedContracts[contract.address]
+      .contractFunctions;
+    return (
+      <div className="col col-4 mobile-full contract-functions">
+        <h2>Write to contract</h2>
+        <h4>Select Function</h4>
+        <select
+          className="select-contract-function"
+          name="select-contract-function"
+          onChange={e => this.chooseFunction(e)}
         >
-          Hide contract info
-        </button>
-        <div className="dapp-clear-fix" />
-        <div className="row clear" style={divStyle}>
-          <div className="col col-8 mobile-full contract-info">
-            <h2>Read from contract</h2>
-            <table className="contract-constants dapp-zebra">
-              <tbody>
-                {constants
-                  ? constants.map(func => (
-                      <React.Fragment>
-                        <tr>
-                          <td>
-                            <h3>{Helpers.unCamelCaseToSentence(func.name)}</h3>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <dl
-                              className={
-                                'constant-' + func.name + ' dapp-zebra'
-                              }
-                            >
-                              <dd className="output">
-                                {Helpers.unCamelCaseToSentence(func.name)}
-                                <br />
-                              </dd>
-                            </dl>
-                          </td>
-                        </tr>
-                      </React.Fragment>
-                    ))
-                  : ''}
-              </tbody>
-            </table>
-          </div>
-          <div className="col col-4 mobile-full contract-functions">
-            <h2>Write to contract</h2>
-            <h4>Select Function</h4>
-            <select
-              className="select-contract-function"
-              name="select-contract-function"
-            >
-              <option disabled="">Pick a function</option>
-              {functions
-                ? functions.map(c => (
-                    <option value={c.name}>
-                      {Helpers.toSentence(c.name, true)}
-                    </option>
-                  ))
-                : ''}
-            </select>
-          </div>
-        </div>
+          <option disabled="">Pick a function</option>
+          {functions
+            ? functions.map((c, i) => (
+                <option value={c.name}>
+                  {Helpers.toSentence(c.name, true)}
+                </option>
+              ))
+            : ''}
+        </select>
       </div>
     );
+  }
+
+  toggleContractInfo(e) {
+    console.log('here intoggleContractInfo', e);
+    this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
   renderContractEvents() {
@@ -321,10 +327,11 @@ export class SingleContractView extends Component {
             />
           </div>
         </div>
-
         <ContractActionBar props={contract} />
-        {logs && logs.length > 0 ? this.renderContractFunctions() : ''}
-        {logs && logs.length > 0 ? this.renderContractEvents() : ''}
+        {logs && logs.length ? <ExecutableContract /> : ''}
+        {logs && logs.length ? <ContractEvents /> : ''}
+        {/*{logs && logs.length > 0 ? this.renderContractFunctions() : ''}*/}
+        {/*{logs && logs.length > 0 ? this.renderContractEvents() : ''}*/}
       </div>
     );
   }

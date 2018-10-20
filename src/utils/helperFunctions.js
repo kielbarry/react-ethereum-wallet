@@ -91,8 +91,8 @@ Clear localStorage
 export function getLocalStorageSize(localStorage) {
   var size = 0;
   if (localStorage) {
-    Object.keys(localStorage).map(key => {
-      size += (localStorage[key].length * 2) / 1024 / 1024;
+    size += Object.keys(localStorage).map(key => {
+      return (localStorage[key].length * 2) / 1024 / 1024;
     });
   }
 
@@ -462,7 +462,7 @@ Takes a camelcase and shows it with spaces
 @return {string} sentence    The same name, sanitized, with spaces
 **/
 export function toSentence(inputString, noHTML) {
-  if (typeof inputString == 'undefined') {
+  if (typeof inputString === undefined) {
     return false;
   } else {
     inputString = inputString.replace(/[^a-z0-9_]/gi, '');
@@ -471,6 +471,7 @@ export function toSentence(inputString, noHTML) {
       : inputString
           .replace(/([A-Z]+|[0-9]+)/g, ' $1')
           .trim()
+          // eslint-disable-next-line
           .replace(/([\_])/g, '<span class="dapp-punctuation">$1</span>');
     return inputString;
   }
@@ -498,7 +499,7 @@ export function sha3(web3, str, opt) {
 export function namehash(name) {
   var node =
     '0x0000000000000000000000000000000000000000000000000000000000000000';
-  if (name != '') {
+  if (name !== '') {
     var labels = name.split('.');
     for (var i = labels.length - 1; i >= 0; i--) {
       node = sha3(node + sha3(labels[i]).slice(2), { encoding: 'hex' });
@@ -507,6 +508,7 @@ export function namehash(name) {
   return node.toString();
 }
 
+// eslint-disable-next-line
 var ensContractAbi = [
   {
     constant: true,
@@ -616,6 +618,7 @@ var ensContractAbi = [
   },
 ];
 
+// eslint-disable-next-line
 var resolverContractAbi = [
   {
     constant: true,
@@ -781,6 +784,7 @@ var resolverContractAbi = [
   },
 ];
 
+// eslint-disable-next-line
 var ensAddress = '0x314159265dd8dbb310642f98f50c066173c1259b';
 
 /**

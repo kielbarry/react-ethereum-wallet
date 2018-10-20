@@ -28,6 +28,20 @@ const web3 = new Web3(
 //   }
 // }
 
+// export const updateInitialContractMethodOutputs = outputs => dispatch => {
+//   dispatch({
+//     type: actionTypes.UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS,
+//     payload: outputs,
+//   });
+// };
+
+export const updateSelectedFunction = func => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_SELECTED_FUNCTION,
+    payload: func,
+  });
+};
+
 export const updateJSON = json => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_JSON_INTERFACE,

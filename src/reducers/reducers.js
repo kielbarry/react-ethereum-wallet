@@ -50,13 +50,42 @@ const initialState = {
   SelectedEvent: {},
   qrCode: '',
   JSONInterface: '',
+  SelectedFunction: {},
 };
 
 const reducers = (state = initialState, action) => {
-  if (action.type === 'ADD_PAST_CONTRACT_LOGS') {
+  if (action.type === 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS') {
     // console.log('here in reducers', action.payload);
+    console.log(action.payload);
+    // contractAddress: contract.address,
+    //     name: method.name,
+    //     index: index,
+    //     value: method.outputs,
+    //     location: contractConstants,
   }
   switch (action.type) {
+    // case 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS':
+    //   return {
+    //     ...state,
+    //     ObservedContracts: {
+    //       ...state.ObservedContracts,
+    //       [action.payload.contractAddress]: {
+    //         ...state.ObservedContracts[action.payload.contractAddress],
+    //         [action.payload.location]: [
+    //           ...state.ObservedContracts[action.payload.contractAddress][action.payload.location],
+    //           [action.payload.index]: {
+    //             ...state.ObservedContracts[action.payload.contractAddress][action.payload.location][action.payload.index],
+    //             outputs: [action.payload.value]
+    //           },
+    //         ],
+    //       },
+    //     },
+    //   };
+    case 'UPDATE_SELECTED_FUNCTION':
+      return {
+        ...state,
+        selectedFunction: action.payload,
+      };
     case 'UPDATE_JSON_INTERFACE':
       return {
         ...state,

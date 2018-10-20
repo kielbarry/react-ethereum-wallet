@@ -29,10 +29,8 @@ import WatchContract from './components/views/modals/WatchContract.js';
 import WatchToken from './components/views/modals/WatchToken.js';
 import DeleteToken from './components/views/modals/DeleteToken.js';
 import SendTransaction from './components/views/modals/SendTransaction.js';
-import MaterialModal from './components/views/modals/MaterialModal.js';
 import TransactionInfo from './components/views/modals/TransactionInfo.js';
 import QRCode from './components/views/modals/QRCode.js';
-import ReactModal from './components/views/modals/ReactModal.js';
 
 import EventInfo from './components/views/modals/EventInfo.js';
 
@@ -50,11 +48,11 @@ class App extends Component {
     this.getCCP();
     this.CCInterval = setInterval(() => this.getCCP(), 15000);
 
-    this.props.fetchEthGasStationStats();
-    this.GasInterval = setInterval(
-      () => this.props.fetchEthGasStationStats(),
-      15000
-    );
+    // this.props.fetchEthGasStationStats();
+    // this.GasInterval = setInterval(
+    //   () => this.props.fetchEthGasStationStats(),
+    //   15000
+    // );
     this.props.closeModal('displayEventInfo');
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {

@@ -69,6 +69,8 @@ class WatchItem extends Component {
     let web3;
     let contract = this.props.reducers.ContractToWatch;
 
+    console.log(contract);
+
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
       let con = {};
@@ -84,12 +86,12 @@ class WatchItem extends Component {
           msg: 'Added custom contract',
         });
 
-        Object.keys(this.props.reducers.selectedContract).map(key => {
-          this.props.updateContractToWatch({
-            name: key,
-            value: '',
-          });
-        });
+        // Object.keys(this.props.reducers.selectedContract).map(key => {
+        //   this.props.updateContractToWatch({
+        //     name: key,
+        //     value: '',
+        //   });
+        // });
       });
     } else {
       // TODO:trigger global notification here
