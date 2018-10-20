@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SecurityIcon from '../elements/SecurityIcon.js';
+import Inputs from '../elements/inputs/Inputs.js';
 import * as Utils from '../../utils/utils.js';
 import * as Helpers from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
@@ -9,17 +10,14 @@ import shortid from 'shortid';
 export class ExecutableContract extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   // contract: this.props.reducers.selectedContract.contract,
-    //   // ObservedContracts: this.props.reducers.ObservedContracts,
-    //   // selectedFunction: this.props.reducers.selectedFunction,
-    //   // selectedContract: this.props.reducers.selectedContract,
-    //   ...this.props,
-    //   showContractFunctions: true,
-    // };
     this.state = this.props;
     this.chooseFunction = this.chooseFunction.bind(this);
-    // this.setState({ showContractFunctions: true });
+    this.chooseWallet = this.chooseWallet.bind(this);
+
+    this.props.updateExecutingWallet({
+      name: 'executingWallet',
+      value: this.props.reducers.Wallets[0],
+    });
   }
 
   /**
@@ -27,16 +25,22 @@ export class ExecutableContract extends Component {
 
   @param {Object} contract the account object with .jsonInterface
   */
+
+  // <React.Fragment>
+  //         <input
+  //           type="number"
+  //           step="1"
+  //           placeholder="-123"
+  //           name="elements_input_int"
+  //         />
+  //       </React.Fragment>
+
   renderFunctionInputs() {
     let contract = this.props.reducers.selectedContract.contract;
     let functions = this.props.reducers.ObservedContracts[contract.address]
       .contractFunctions;
-
     let inputs = this.props.reducers.selectedFunction.inputs;
-    console.log(this.props.reducers.selectedFunction);
-    console.log(inputs);
-    console.log(inputs.length);
-    // .inputs
+
     return (
       <React.Fragment>
         {inputs
@@ -45,12 +49,8 @@ export class ExecutableContract extends Component {
                 <h4>
                   {Helpers.toSentence(input.name)}><em>- {input.type}</em>
                 </h4>
-                <input
-                  type="number"
-                  step="1"
-                  placeholder="-123"
-                  name="elements_input_int"
-                />
+
+                <Inputs data={input} />
               </React.Fragment>
             ))
           : null}
@@ -70,10 +70,21 @@ export class ExecutableContract extends Component {
     }
   }
 
+  chooseWallet(e) {
+    this.props.updateExecutingWallet({
+      name: 'executingWallet',
+      value: e.target.value,
+    });
+  }
+
   renderExecuteFunctions() {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address]
       .contractFunctions;
+
+    let wallets = this.state.reducers.Wallets;
+    console.log(wallets);
+    console.log(functions);
     return (
       <div className="col col-4 mobile-full contract-functions">
         <h2>Write to contract</h2>
@@ -93,6 +104,39 @@ export class ExecutableContract extends Component {
             : ''}
         </select>
         {this.renderFunctionInputs()}
+        <hr className="dapp-clear-fix" />
+        <h4> Execute from </h4>
+        <div className="dapp-select-account">
+          <select
+            name="dapp-select-account"
+            onChange={e => this.chooseWallet(e)}
+          >
+            {Object.keys(wallets).map(w => {
+              let balance = wallets[w];
+              return (
+                <React.Fragment>
+                  <option key={shortid.generate()} value={w}>
+                    {this.props.web3 && this.props.web3.web3Instance
+                      ? Utils.displayPriceFormatter(
+                          this.props,
+                          balance,
+                          'ETHER'
+                        )
+                      : balance}
+                    &nbsp; - &nbsp;
+                    {w}
+                  </option>
+                </React.Fragment>
+              );
+            })}
+          </select>
+          <SecurityIcon
+            type="address"
+            classes="dapp-identicon dapp-small"
+            hash="toBeReplaced"
+          />
+        </div>
+        <button className="dapp-block-button execute">Execute</button>
       </div>
     );
   }
@@ -133,16 +177,10 @@ export class ExecutableContract extends Component {
   }
 
   toggleContractInfo(e) {
-    console.log('here intoggleContractInfo', e);
     this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
   render() {
-    // let contract = this.props.reducers.selectedContract.contract;
-    // let functions = this.props.reducers.ObservedContracts[contract.address]
-    //   .contractFunctions;
-    // let constants = this.props.reducers.ObservedContracts[contract.address]
-    //   .contractConstants;
     let show = this.state.showContractFunctions;
     let divStyle;
     show === undefined || show
@@ -176,6 +214,7 @@ const mapStateToProps = state => ({
   selectedFunction: state.reducers.selectedFunction,
   selectedContract: state.reducers.selectedContract,
   showContractFunctions: state.reducers.showContractFunctions,
+  Wallets: state.reducers.Wallets,
 });
 
 export default connect(

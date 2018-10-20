@@ -16,24 +16,17 @@ export class Inputs extends Component {
   }
 
   renderAddress() {
+    console.log('here in renderAddress');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name <em>- Address</em>
-        </h4>
-        <input onChange={e => this.updateFunctionInputValue(e)}>
-          attributes
-        </input>
+        <input onChange={e => this.updateFunctionInputValue(e)} />
       </React.Fragment>
     );
   }
   renderBool() {
+    console.log('here in renderBool');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name
-          <em>-Boolean</em>
-        </h4>
         <input
           type="checkbox"
           name="elements_input_bool"
@@ -44,12 +37,9 @@ export class Inputs extends Component {
     );
   }
   renderBytes() {
+    console.log('here in renderBytes');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name
-          <em>- Bytes</em>
-        </h4>
         <input
           type="text"
           pattern="^(0x)?[0-9a-fA-F]+$"
@@ -61,12 +51,9 @@ export class Inputs extends Component {
     );
   }
   renderInt() {
+    console.log('here in renderInt');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name
-          <em>- signed integeger</em>
-        </h4>
         <input
           type="number"
           step="1"
@@ -78,12 +65,9 @@ export class Inputs extends Component {
     );
   }
   renderJson() {
+    console.log('here in renderJson');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name
-          <em>- JSON</em>
-        </h4>
         <textarea
           name="elements_input_json"
           cols="20"
@@ -97,12 +81,9 @@ export class Inputs extends Component {
     );
   }
   renderString() {
+    console.log('here in renderString');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name
-          <em>- JSON</em>
-        </h4>
         <input
           type="text"
           placeholder="MyString"
@@ -113,12 +94,9 @@ export class Inputs extends Component {
     );
   }
   renderUint() {
+    console.log('here in renderUint');
     return (
       <React.Fragment>
-        <h4>
-          tosentence name
-          <em>- unsigned integeger</em>
-        </h4>
         <input
           type="number"
           step="1"
@@ -132,38 +110,28 @@ export class Inputs extends Component {
   }
 
   render() {
-    let type = this.props.input.type;
-    {
-      /*}
-      <React.Fragment>
-        type === 'address'
-          ? {this.renderAddress(input)}
-          : type === 'bool'
-              ?  {this.renderBool(input)}
-              : type === 'bytes'
-                ?  {this.renderBytes(input)}
-                : type === 'int'
-                   ? {this.renderInt(input)}
-                   : type === 'json'
-                      ?  {this.renderJson(input)}
-                      : type === 'string'
-                        ?  {this.renderString(input)}
-                        : type === 'uint'
-                          ? {this.renderUint(input)}
-                          : null
-      </React.Fragment>
-    */
-    }
-
+    // let type = this.props.input.type;
+    let input = this.props.data;
+    let type = this.props.data.type.match(/[a-z]+/i)[0];
+    console.log(input);
+    console.log(type);
     return (
       <React.Fragment>
-        {this.renderAddress()}
-        {this.renderBool()}
-        {this.renderBytes()}
-        {this.renderInt()}
-        {this.renderJson()}
-        {this.renderString()}
-        {this.renderUint()}
+        {type === 'address'
+          ? this.renderAddress(input)
+          : type === 'bool'
+            ? this.renderBool(input)
+            : type === 'bytes'
+              ? this.renderBytes(input)
+              : type === 'int'
+                ? this.renderInt(input)
+                : type === 'json'
+                  ? this.renderJson(input)
+                  : type === 'string'
+                    ? this.renderString(input)
+                    : type === 'uint'
+                      ? this.renderUint(input)
+                      : null}
       </React.Fragment>
     );
   }

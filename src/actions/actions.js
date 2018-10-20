@@ -35,6 +35,13 @@ const web3 = new Web3(
 //   });
 // };
 
+export const updateExecutingWallet = address => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_EXECUTING_WALLET,
+    payload: address,
+  });
+};
+
 export const updateSelectedFunction = func => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_SELECTED_FUNCTION,

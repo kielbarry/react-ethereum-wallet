@@ -81,6 +81,13 @@ const reducers = (state = initialState, action) => {
     //       },
     //     },
     //   };
+    case 'UPDATE_EXECUTING_WALLET':
+      return {
+        ...state,
+        selectedFunction: Object.assign({}, state.selectedFunction, {
+          [action.payload.name]: action.payload.value,
+        }),
+      };
     case 'UPDATE_SELECTED_FUNCTION':
       return {
         ...state,
