@@ -11,32 +11,45 @@ export class Inputs extends Component {
   }
 
   updateFunctionInputValue(e) {
-    console.log(e);
-    console.log(e.target);
+    this.props.updateFunctionInput({
+      name: e.target.getAttribute('name'),
+      type: e.target.getAttribute('inputType'),
+      index: e.target.getAttribute('index'),
+      value: e.target.value,
+    });
   }
 
-  renderAddress() {
+  renderAddress(input) {
     console.log('here in renderAddress');
     return (
       <React.Fragment>
-        <input onChange={e => this.updateFunctionInputValue(e)} />
+        <input
+          onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          placeholder="0x123456..."
+          className=" abi-input"
+          name={input.name}
+          inputType={input.type}
+        />
       </React.Fragment>
     );
   }
-  renderBool() {
+  renderBool(input) {
     console.log('here in renderBool');
     return (
       <React.Fragment>
         <input
           type="checkbox"
-          name="elements_input_bool"
           onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          name={input.name}
+          inputType={input.type}
         />
         <label>contract buttons</label>
       </React.Fragment>
     );
   }
-  renderBytes() {
+  renderBytes(input) {
     console.log('here in renderBytes');
     return (
       <React.Fragment>
@@ -44,13 +57,15 @@ export class Inputs extends Component {
           type="text"
           pattern="^(0x)?[0-9a-fA-F]+$"
           placeholder="0x1234af..."
-          name="elements_input_bytes"
           onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          name={input.name}
+          inputType={input.type}
         />
       </React.Fragment>
     );
   }
-  renderInt() {
+  renderInt(input) {
     console.log('here in renderInt');
     return (
       <React.Fragment>
@@ -58,13 +73,15 @@ export class Inputs extends Component {
           type="number"
           step="1"
           placeholder="-123"
-          name="elements_input_int"
           onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          name={input.name}
+          inputType={input.type}
         />
       </React.Fragment>
     );
   }
-  renderJson() {
+  renderJson(input) {
     console.log('here in renderJson');
     return (
       <React.Fragment>
@@ -74,26 +91,31 @@ export class Inputs extends Component {
           rows="5"
           placeholder="['my text', 12345, '0x...']"
           onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          name={input.name}
+          inputType={input.type}
         >
           value
         </textarea>
       </React.Fragment>
     );
   }
-  renderString() {
+  renderString(input) {
     console.log('here in renderString');
     return (
       <React.Fragment>
         <input
           type="text"
           placeholder="MyString"
-          name="elements_input_string"
           onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          name={input.name}
+          inputType={input.type}
         />
       </React.Fragment>
     );
   }
-  renderUint() {
+  renderUint(input) {
     console.log('here in renderUint');
     return (
       <React.Fragment>
@@ -102,8 +124,10 @@ export class Inputs extends Component {
           step="1"
           min="0"
           placeholder="1234"
-          name="elements_input_uint"
           onChange={e => this.updateFunctionInputValue(e)}
+          index={input.index}
+          name={input.name}
+          inputType={input.type}
         />
       </React.Fragment>
     );
@@ -111,7 +135,10 @@ export class Inputs extends Component {
 
   render() {
     // let type = this.props.input.type;
-    let input = this.props.data;
+    let input = {
+      ...this.props.data,
+      index: this.props.index,
+    };
     let type = this.props.data.type.match(/[a-z]+/i)[0];
     console.log(input);
     console.log(type);

@@ -81,6 +81,22 @@ const reducers = (state = initialState, action) => {
     //       },
     //     },
     //   };
+    case 'UPDATE_FUNCTION_INPUT':
+      return {
+        ...state,
+        selectedFunction: {
+          ...state.selectedFunction,
+          inputs: state.selectedFunction.inputs.map((item, ind) => {
+            if (parseInt(action.payload.index, 10) === ind) {
+              return {
+                ...item,
+                value: action.payload.value,
+              };
+            }
+            return item;
+          }),
+        },
+      };
     case 'UPDATE_EXECUTING_WALLET':
       return {
         ...state,
@@ -91,7 +107,7 @@ const reducers = (state = initialState, action) => {
     case 'UPDATE_SELECTED_FUNCTION':
       return {
         ...state,
-        selectedFunction: action.payload,
+        selectedFunction: { ...action.payload },
       };
     case 'UPDATE_JSON_INTERFACE':
       return {

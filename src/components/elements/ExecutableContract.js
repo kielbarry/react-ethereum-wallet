@@ -14,10 +14,12 @@ export class ExecutableContract extends Component {
     this.chooseFunction = this.chooseFunction.bind(this);
     this.chooseWallet = this.chooseWallet.bind(this);
 
-    this.props.updateExecutingWallet({
-      name: 'executingWallet',
-      value: this.props.reducers.Wallets[0],
-    });
+    // this.props.selectedFunction.executingWallet
+    //   ? null
+    //   : this.props.updateExecutingWallet({
+    //       name: 'executingWallet',
+    //       value: this.props.reducers.Wallets[0],
+    //     });
   }
 
   /**
@@ -26,31 +28,24 @@ export class ExecutableContract extends Component {
   @param {Object} contract the account object with .jsonInterface
   */
 
-  // <React.Fragment>
-  //         <input
-  //           type="number"
-  //           step="1"
-  //           placeholder="-123"
-  //           name="elements_input_int"
-  //         />
-  //       </React.Fragment>
-
   renderFunctionInputs() {
     let contract = this.props.reducers.selectedContract.contract;
     let functions = this.props.reducers.ObservedContracts[contract.address]
       .contractFunctions;
-    let inputs = this.props.reducers.selectedFunction.inputs;
 
+    let selectedFunction = this.props.reducers.selectedFunction;
+    let inputs = selectedFunction !== undefined ? selectedFunction.inputs : [];
+    // let inputs = this.props.reducers.selectedFunction.inputs;
     return (
       <React.Fragment>
         {inputs
-          ? inputs.map(input => (
+          ? inputs.map((input, index) => (
               <React.Fragment>
                 <h4>
                   {Helpers.toSentence(input.name)}><em>- {input.type}</em>
                 </h4>
 
-                <Inputs data={input} />
+                <Inputs data={input} index={index} />
               </React.Fragment>
             ))
           : null}

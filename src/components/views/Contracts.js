@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import shortid from 'shortid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
@@ -67,7 +68,7 @@ class ContractsView extends Component {
           <div className="wallet-box-list">
             {Object.keys(contracts).map(contract => (
               <ContractItem
-                key={contract.address}
+                key={shortid.generate()}
                 contract={contracts[contract]}
               />
             ))}
