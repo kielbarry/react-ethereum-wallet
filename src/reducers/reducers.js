@@ -74,12 +74,13 @@ const reducers = (state = initialState, action) => {
             contractConstants: state.ObservedContracts[
               action.payload.contractAddress
             ].contractConstants.map((item, ind) => {
-              if (parseInt(action.payload.index, 10) === ind) {
+              if (item.name === action.payload.name) {
                 return {
                   ...item,
-                  outputs: action.payload.value,
+                  outputs: [...action.payload.value],
                 };
               }
+              return item;
             }),
           },
         },

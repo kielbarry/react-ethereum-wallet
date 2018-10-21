@@ -116,8 +116,6 @@ export class SingleContractView extends Component {
               );
       });
 
-      console.log(method.outputs);
-
       // TODO: NOT UPDATING STATE
       this.props.updateInitialContractMethodOutputs({
         contractAddress: contract.address,
