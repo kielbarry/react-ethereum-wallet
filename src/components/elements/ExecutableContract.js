@@ -13,6 +13,7 @@ export class ExecutableContract extends Component {
     this.state = this.props;
     this.chooseFunction = this.chooseFunction.bind(this);
     this.chooseWallet = this.chooseWallet.bind(this);
+    this.executeContractFunction = this.executeContractFunction.bind(this);
 
     // this.props.selectedFunction.executingWallet
     //   ? null
@@ -70,6 +71,11 @@ export class ExecutableContract extends Component {
       name: 'executingWallet',
       value: e.target.value,
     });
+  }
+
+  executeContractFunction(e) {
+    console.log('in executeContractFunction', e);
+    console.log(this.props.selectedFunction);
   }
 
   renderExecuteFunctions() {
@@ -131,7 +137,12 @@ export class ExecutableContract extends Component {
             hash="toBeReplaced"
           />
         </div>
-        <button className="dapp-block-button execute">Execute</button>
+        <button
+          className="dapp-block-button execute"
+          onClick={e => this.executeContractFunction(e)}
+        >
+          Execute
+        </button>
       </div>
     );
   }

@@ -20,7 +20,6 @@ export class Inputs extends Component {
   }
 
   renderAddress(input) {
-    console.log('here in renderAddress');
     return (
       <React.Fragment>
         <input
@@ -35,7 +34,6 @@ export class Inputs extends Component {
     );
   }
   renderBool(input) {
-    console.log('here in renderBool');
     return (
       <React.Fragment>
         <input
@@ -50,7 +48,6 @@ export class Inputs extends Component {
     );
   }
   renderBytes(input) {
-    console.log('here in renderBytes');
     return (
       <React.Fragment>
         <input
@@ -66,7 +63,6 @@ export class Inputs extends Component {
     );
   }
   renderInt(input) {
-    console.log('here in renderInt');
     return (
       <React.Fragment>
         <input
@@ -82,7 +78,6 @@ export class Inputs extends Component {
     );
   }
   renderJson(input) {
-    console.log('here in renderJson');
     return (
       <React.Fragment>
         <textarea
@@ -101,7 +96,6 @@ export class Inputs extends Component {
     );
   }
   renderString(input) {
-    console.log('here in renderString');
     return (
       <React.Fragment>
         <input
@@ -116,7 +110,6 @@ export class Inputs extends Component {
     );
   }
   renderUint(input) {
-    console.log('here in renderUint');
     return (
       <React.Fragment>
         <input
@@ -134,14 +127,11 @@ export class Inputs extends Component {
   }
 
   render() {
-    // let type = this.props.input.type;
     let input = {
       ...this.props.data,
       index: this.props.index,
     };
     let type = this.props.data.type.match(/[a-z]+/i)[0];
-    console.log(input);
-    console.log(type);
     return (
       <React.Fragment>
         {type === 'address'

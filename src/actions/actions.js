@@ -8,32 +8,12 @@ const web3 = new Web3(
   'https://mainnet.infura.io/v3/2e1f7de617754b72a8a61bef3f7de966'
 );
 
-// export async function instantiateContract(){
-//    const testFunction = t => {
-//     return {
-//       type: actionTypes.SOMETHING,
-//       payload: t,
-//     };
-//   };
-//   return async function testFunction(dispatch) {
-//     const request = await web3.eth.call({
-//       to: '0xE41d2489571d322189246DaFA5ebDe1F4699F498'.replace(' ', ''),
-//       data: '0x70a08231000000000000000000000000' + '0x5F5F62E56620b94e406EA59F0bA3E9929e3B67a4'.substring(2).replace(' ', ''),
-//     })
-
-//     return request.then(
-//       response => console.log,
-//       err => console.log
-//     );
-//   }
-// }
-
-// export const updateInitialContractMethodOutputs = outputs => dispatch => {
-//   dispatch({
-//     type: actionTypes.UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS,
-//     payload: outputs,
-//   });
-// };
+export const updateInitialContractMethodOutputs = outputs => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS,
+    payload: outputs,
+  });
+};
 
 export const updateFunctionInput = input => dispatch => {
   dispatch({

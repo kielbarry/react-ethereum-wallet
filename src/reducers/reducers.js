@@ -58,29 +58,32 @@ const reducers = (state = initialState, action) => {
     // console.log('here in reducers', action.payload);
     console.log(action.payload);
     // contractAddress: contract.address,
-    //     name: method.name,
-    //     index: index,
-    //     value: method.outputs,
-    //     location: contractConstants,
+    // name: method.name,
+    // index: index,
+    // value: method.outputs,
+    // location: contractConstants,
   }
   switch (action.type) {
-    // case 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS':
-    //   return {
-    //     ...state,
-    //     ObservedContracts: {
-    //       ...state.ObservedContracts,
-    //       [action.payload.contractAddress]: {
-    //         ...state.ObservedContracts[action.payload.contractAddress],
-    //         [action.payload.location]: [
-    //           ...state.ObservedContracts[action.payload.contractAddress][action.payload.location],
-    //           [action.payload.index]: {
-    //             ...state.ObservedContracts[action.payload.contractAddress][action.payload.location][action.payload.index],
-    //             outputs: [action.payload.value]
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   };
+    case 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS':
+      return {
+        ...state,
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          [action.payload.contractAddress]: {
+            ...state.ObservedContracts[action.payload.contractAddress],
+            contractConstants: state.ObservedContracts[
+              action.payload.contractAddress
+            ].contractConstants.map((item, ind) => {
+              if (parseInt(action.payload.index, 10) === ind) {
+                return {
+                  ...item,
+                  outputs: action.payload.value,
+                };
+              }
+            }),
+          },
+        },
+      };
     case 'UPDATE_FUNCTION_INPUT':
       return {
         ...state,

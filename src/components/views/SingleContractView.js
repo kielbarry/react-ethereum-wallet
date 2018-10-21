@@ -115,14 +115,17 @@ export class SingleContractView extends Component {
                 (output, i) => (method.outputs[i].value = res[i])
               );
       });
+
+      console.log(method.outputs);
+
       // TODO: NOT UPDATING STATE
-      // this.props.updateInitialContractMethodOutputs({
-      //   contractAddress: contract.address,
-      //   name: method.name,
-      //   index: index,
-      //   value: method.outputs,
-      //   location: contractConstants,
-      // })
+      this.props.updateInitialContractMethodOutputs({
+        contractAddress: contract.address,
+        name: method.name,
+        index: index,
+        value: method.outputs,
+        // location: contractConstants,
+      });
     });
 
     //TODO indicate block range
