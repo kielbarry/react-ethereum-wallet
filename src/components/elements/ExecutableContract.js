@@ -161,15 +161,37 @@ export class ExecutableContract extends Component {
                     <tr key={shortid.generate()}>
                       <td>
                         <h3>{Helpers.unCamelCaseToSentence(func.name)}</h3>
+                        {func.inputs.length > 0
+                          ? func.inputs.map((input, index) => (
+                              <React.Fragment>
+                                <h4>
+                                  <span className="dapp-punctuation">_</span>
+                                  {input.name}
+                                  &nbsp;
+                                  <em>-&nbsp; {input.type}</em>
+                                </h4>
+                                <Inputs data={input} index={index} />
+                              </React.Fragment>
+                            ))
+                          : null}
                       </td>
                     </tr>
                     <tr key={shortid.generate()}>
                       <td>
                         <dl className={'constant-' + func.name + ' dapp-zebra'}>
-                          <dd className="output">
-                            {Helpers.unCamelCaseToSentence(func.name)}
-                            <br />
-                          </dd>
+                          {func.outputs.map(output => (
+                            <React.Fragment>
+                              {output.name !== '' ? (
+                                <dt>
+                                  {Helpers.unCamelCaseToSentence(output.name)}
+                                </dt>
+                              ) : null}
+                              <dd className="output">
+                                {output.value}
+                                <br />
+                              </dd>
+                            </React.Fragment>
+                          ))}
                         </dl>
                       </td>
                     </tr>
