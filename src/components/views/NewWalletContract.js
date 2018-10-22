@@ -74,7 +74,7 @@ class NewWalletContract extends Component {
       break;
     }
     this.state.reducers.DeployContractForm['MainOwnerAddress'] = defaultWallet;
-    console.log(this.state.reducers.DeployContractForm['MainOwnerAddress']);
+    this.state.reducers.DeployContractForm.multiSigContract.owners[0] = defaultWallet;
   }
 
   selectWallet(e) {
@@ -116,10 +116,7 @@ class NewWalletContract extends Component {
         break;
       case 'multisigSigneesAddresses':
         obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
-        console.log(obj);
-        console.log(buttonValue);
         obj.owners[e.target.getAttribute('id').split('-')[0]] = buttonValue;
-        console.log(obj);
         this.props.updateDeployContractForm(obj);
         break;
       case 'multisigSigneesRequired':
@@ -159,10 +156,10 @@ class NewWalletContract extends Component {
   }
 
   renderMultiSigOwners() {
-    let {
-      ownerCount,
-      owners,
-    } = this.props.reducers.DeployContractForm.multiSigContract;
+    let dcf = this.props.reducers.DeployContractForm;
+    let { ownerCount, owners } = dcf.multiSigContract;
+    let dc;
+    console.log(dcf);
     return (
       <React.Fragment>
         {[...Array(ownerCount).keys()].map((num, index) => (
@@ -174,7 +171,14 @@ class NewWalletContract extends Component {
             name="multisigSigneesAddresses"
             label="Owner address"
             className="dapp-address-input owners"
-            value={owners[index]}
+            value={
+              index === 0
+                ? dcf.MainOwnerAddress
+                : typeof owners[index] == 'undefined'
+                  ? ''
+                  : owners[index]
+            }
+            disabled={index === 0}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -236,6 +240,7 @@ class NewWalletContract extends Component {
 
   createContract(e) {
     let dcf = this.props.reducers.DeployContractForm;
+    let msContract = dcf.multiSigContract;
     let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     // hardcoded bytecode
     let code = WalletInterfaceItems.walletStubABI;
@@ -246,38 +251,53 @@ class NewWalletContract extends Component {
       return;
     }
 
-    if (dcf.multisigChecked === false) {
-      contract
-        .deploy({
-          data: code,
-          arguments: [
-            [dcf.MainOwnerAddress.toLowerCase()], // owner
-            1, // require signature count,
+    let options = {
+      data: code,
+      arguments: '',
+      from: dcf.MainOwnerAddress.toLowerCase(),
+    };
+
+    dcf.multisigChecked === false
+      ? (options.arguments = [
+          [dcf.MainOwnerAddress.toLowerCase()], // owner
+          1, // require signature count,
+          ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
+        ])
+      : (options.arguments = [
+          msContract.owners,
+          msContract.confirmationAddressesRequired || 1,
+          msContract.dailyLimitAmount ||
             ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-          ],
-        })
-        .send({
-          from: dcf.MainOwnerAddress,
-          gas: 3000000,
-        })
-        .on('error', err => {
-          console.warn('error deploying contract', err);
-          this.props.displayGlobalNotification({
-            display: true,
-            type: 'error',
-            msg: err.message,
-          });
-        })
-        .on('transactionHash', console.log)
-        .on('receipt', console.log)
-        .on('confirmation', (confirmationNumber, receipt) => {
-          console.log(confirmationNumber);
-          console.log(receipt);
-        })
-        .then(newContractInstance => {
-          console.log(newContractInstance); // instance with the new contract address
+        ]);
+
+    console.log(options);
+
+    contract
+      .deploy({
+        data: code,
+        arguments: options.arguments,
+      })
+      .send({
+        from: dcf.MainOwnerAddress.toLowerCase(),
+        gas: 3000000,
+      })
+      .on('error', err => {
+        console.warn('error deploying contract', err);
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'error',
+          msg: err.message,
         });
-    }
+      })
+      .on('transactionHash', console.log)
+      .on('receipt', console.log)
+      .on('confirmation', (confirmationNumber, receipt) => {
+        console.log(confirmationNumber);
+        console.log(receipt);
+      })
+      .then(newContractInstance => {
+        console.log(newContractInstance); // instance with the new contract address
+      });
   }
 
   render() {
