@@ -101,6 +101,7 @@ class NewWalletContract extends Component {
     let buttonValue = e.target.value;
     let name = e.target.name;
     let obj = {};
+    console.log(buttonValue, name);
     switch (name) {
       case 'ContractToDeployRadio':
         obj = { ...this.props.reducers.DeployContractForm };
@@ -108,9 +109,17 @@ class NewWalletContract extends Component {
         obj[buttonValue] = true;
         this.props.updateDCFRadio(obj);
         break;
-      case 'multisigSignees':
+      case 'multisigSigneesCount':
         obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
         obj.ownerCount = buttonValue;
+        this.props.updateDeployContractForm(obj);
+        break;
+      case 'multisigSigneesAddresses':
+        obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
+        console.log(obj);
+        console.log(buttonValue);
+        obj.owners[e.target.getAttribute('id').split('-')[0]] = buttonValue;
+        console.log(obj);
         this.props.updateDeployContractForm(obj);
         break;
       case 'multisigSigneesRequired':
@@ -124,8 +133,9 @@ class NewWalletContract extends Component {
         this.props.updateDeployContractForm(obj);
         break;
       case 'WalletContractName':
-        obj = { ...this.props.reducers.DeployContractForm };
+        obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
         obj.WalletContractName = buttonValue;
+        console.log(obj);
         this.props.updateDeployContractForm(obj);
         break;
       case 'MainOwnerAddress':
@@ -149,15 +159,22 @@ class NewWalletContract extends Component {
   }
 
   renderMultiSigOwners() {
-    let acc = this.props.reducers.DeployContractForm.multiSigContract
-      .ownerCount;
+    let {
+      ownerCount,
+      owners,
+    } = this.props.reducers.DeployContractForm.multiSigContract;
     return (
       <React.Fragment>
-        {[...Array(acc).keys()].map(num => (
+        {[...Array(ownerCount).keys()].map((num, index) => (
           <TextField
             key={shortid.generate()}
+            id={index + '-multiSigAddress'}
+            onChange={e => this.handleChange(e)}
+            data-name="multisigSigneesAddresses"
+            name="multisigSigneesAddresses"
             label="Owner address"
             className="dapp-address-input owners"
+            value={owners[index]}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -218,72 +235,18 @@ class NewWalletContract extends Component {
   }
 
   createContract(e) {
-    //TODO: reference gist by frozeman
-    // https://gist.github.com/frozeman/655a9325a93ac198416e
-
     let dcf = this.props.reducers.DeployContractForm;
-    console.log('in createContract', this.props.reducers.DeployContractForm);
-    console.log(e);
     let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
-
     // hardcoded bytecode
     let code = WalletInterfaceItems.walletStubABI;
-    console.log('here is the code', code);
-
+    // hardcoded JSON interface
     let jsonInterface = WalletInterfaceItems.walletInterface;
-
-    console.log('here is the walletInterface', jsonInterface);
-
-    //TODO: first iteration for single owner
     let contract = new web3.eth.Contract(jsonInterface);
-    console.log('the contract', contract);
-
     if (!web3) {
       return;
     }
 
     if (dcf.multisigChecked === false) {
-      let options = {
-        from: dcf.MainOwnerAddress,
-        data: code,
-        arguments: [],
-        gas: 3000000,
-      };
-      // console.log(contract.deploy(options).send({
-      //   from:dcf.MainOwnerAddress,
-      //   gas:3000000
-      // }))
-      // contract.deploy(options)
-      //  .send({
-      //      from: dcf.MainOwnerAddress,
-      //      gas: 1500000
-      //  }, (err, txHash) => {
-      //      console.log('send:', err, txHash);
-      //  })
-      //  .on('error', (err) => {
-      //      console.log('error:', err);
-      //  })
-      //  .on('transactionHash', (err) => {
-      //      console.log('transactionHash:', err);
-      //  })
-      //  .on('receipt', (receipt) => {
-      //      console.log('receipt:', receipt);
-      //  });
-
-      // contract.deploy({
-      //   data: code,
-      // })
-      // .send({
-      //   from: dcf.MainOwnerAddress,
-      //   gas: 4000000,
-      //   gasPrice: '30000000000000',
-      // })
-      // .then((instance) => {
-      //   console.log('instance', instance);
-      // });
-
-      console.log(dcf);
-      console.log(ethereumConfig);
       contract
         .deploy({
           data: code,
@@ -321,8 +284,6 @@ class NewWalletContract extends Component {
     const { classes } = this.props;
     const { DeployContractForm } = this.props.reducers;
     let dcf = this.props.reducers.DeployContractForm;
-    console.log('here is dcf', dcf);
-    console.log('here is dcf.MainOwnerAddress', dcf.MainOwnerAddress);
     return (
       <React.Fragment>
         <FormControl component="fieldset" className={classes.formControl}>
@@ -395,9 +356,9 @@ class NewWalletContract extends Component {
                     This is a joint account controlled by &nbsp;
                     <TextField
                       select
-                      data-name="multisigSignees"
+                      data-name="multisigSigneesCount"
                       className="inline-form"
-                      name="multisigSignees"
+                      name="multisigSigneesCount"
                       multiline
                       // className={classes.textField}
                       value={DeployContractForm.multiSigContract.ownerCount}
