@@ -26,7 +26,10 @@ import SecurityIcon from '../elements/SecurityIcon.js';
 import shortid from 'shortid';
 import * as Utils from '../../utils/utils.js';
 
-import { WalletInterfaceItems } from '../../constants/InitConstants.js';
+import {
+  WalletInterfaceItems,
+  ethereumConfig,
+} from '../../constants/InitConstants.js';
 
 const styles = theme => ({
   radioRoot: {
@@ -280,20 +283,28 @@ class NewWalletContract extends Component {
       // });
 
       console.log(dcf);
+      console.log(ethereumConfig);
       contract
         .deploy({
           data: code,
           arguments: [
-            dcf.MainOwnerAddress, // owner
+            [dcf.MainOwnerAddress.toLowerCase()], // owner
             1, // require signature count,
-            100000000000000000000000000, // ethereum configs daily limit
+            ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
           ],
         })
         .send({
           from: dcf.MainOwnerAddress,
           gas: 3000000,
         })
-        .on('error', console.log)
+        .on('error', err => {
+          console.warn('error deploying contract', err);
+          this.props.displayGlobalNotification({
+            display: true,
+            type: 'error',
+            msg: err.message,
+          });
+        })
         .on('transactionHash', console.log)
         .on('receipt', console.log)
         .on('confirmation', (confirmationNumber, receipt) => {
