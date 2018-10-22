@@ -81,7 +81,7 @@ class AccountView extends Component {
         {this.props.reducers.Transactions ? (
           <LatestTransactions transactions={this.props.reducers.Transactions} />
         ) : (
-          <div>No transactions found...</div>
+          <div>No transactions found.</div>
         )}
       </div>
     );

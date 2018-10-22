@@ -18,16 +18,11 @@ export class SingleContractView extends Component {
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
     this.displayEventModal = this.displayEventModal.bind(this);
-    this.chooseFunction = this.chooseFunction.bind(this);
     this.setState({ showContractFunctions: true });
   }
 
   componentDidMount() {
     this.setState({ displaySU: false });
-  }
-
-  componentWillUnmount() {
-    console.log('unmounting');
   }
 
   toggleSU() {
@@ -51,7 +46,7 @@ export class SingleContractView extends Component {
     this.props.displayModal('displayEventInfo');
   }
 
-  /**
+  /*
   Watches custom events
 
   @param {Object} contract the account object with .jsonInterface
@@ -90,8 +85,6 @@ export class SingleContractView extends Component {
       name: 'contractConstants',
     });
     // END
-    console.log(contractConstants);
-    // TODO: NOT UPDATING STATE
     contractConstants.map((method, index) => {
       let args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
@@ -115,19 +108,17 @@ export class SingleContractView extends Component {
                 (output, i) => (method.outputs[i].value = res[i])
               );
       });
-
-      // TODO: NOT UPDATING STATE
       this.props.updateInitialContractMethodOutputs({
         contractAddress: contract.address,
         name: method.name,
         index: index,
         value: method.outputs,
-        // location: contractConstants,
       });
     });
 
     //TODO indicate block range
     let subscription = contractInstance.events.allEvents({});
+
     contractInstance.getPastEvents('allEvents', (error, logs) => {
       if (!error && logs.length > 0) {
         logs.map(log => {
@@ -155,121 +146,9 @@ export class SingleContractView extends Component {
     });
   }
 
-  renderFunctionInputs() {
-    let contract = this.props.reducers.selectedContract.contract;
-    let functions = this.props.reducers.ObservedContracts[contract.address]
-      .contractFunctions;
-
-    let inputs = this.props.reducers.selectedFunction.inputs;
-    // .inputs
-    console.log(inputs);
-    return (
-      <React.Fragment>
-        {inputs !== undefined
-          ? inputs.map(input => {
-              <React.Fragment>
-                <h4>
-                  {Helpers.toSentence(input.name)}><em>- {input.type}</em>
-                </h4>
-                <input
-                  type="number"
-                  step="1"
-                  placeholder="-123"
-                  name="elements_input_int"
-                />
-              </React.Fragment>;
-            })
-          : null}
-      </React.Fragment>
-    );
-  }
-
-  chooseFunction(e) {
-    let contract = this.props.reducers.selectedContract.contract;
-    let functions = this.props.reducers.ObservedContracts[contract.address];
-    let func = functions.contractFunctions[e.target.selectedIndex - 1];
-    if (func.name === e.target.value) {
-      func['contractAddress'] = contract.address;
-      this.props.updateSelectedFunction(func);
-    } else {
-      //TODO: global
-    }
-  }
-
-  renderExecuteFunctions() {
-    let contract = this.props.reducers.selectedContract.contract;
-    let functions = this.props.reducers.ObservedContracts[contract.address]
-      .contractFunctions;
-    return (
-      <div className="col col-4 mobile-full contract-functions">
-        <h2>Write to contract</h2>
-        <h4>Select Function</h4>
-        <select
-          className="select-contract-function"
-          name="select-contract-function"
-          onChange={e => this.chooseFunction(e)}
-        >
-          <option disabled="">Pick a function</option>
-          {functions
-            ? functions.map((c, i) => (
-                <option value={c.name}>
-                  {Helpers.toSentence(c.name, true)}
-                </option>
-              ))
-            : ''}
-        </select>
-      </div>
-    );
-  }
-
   toggleContractInfo(e) {
     console.log('here intoggleContractInfo', e);
     this.setState({ showContractFunctions: !this.state.showContractFunctions });
-  }
-
-  renderContractEvents() {
-    let contract = this.props.reducers.selectedContract.contract;
-    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
-
-    return (
-      <table className="dapp-zebra transactions">
-        <tbody>
-          {logs.map(log => (
-            <tr
-              key={shortid.generate()}
-              onClick={e => {
-                this.displayEventModal(e, log);
-              }}
-              data-transaction-hash={log.transactionHash}
-              data-block-hash={log.blockHash}
-            >
-              <td
-                className="time simptip-position-right simptip-movable"
-                data-tooltip="//TODO: get timestamp"
-              >
-                <h2>{Utils.getMonthName(log.timestamp)}</h2>
-                <p>{Utils.getDate(log.timestamp)}</p>
-              </td>
-              <td className="account-name">
-                <h2>{log.event}</h2>
-                <p style={{ wordBreak: 'break-word' }}>
-                  {Object.keys(log.returnValues).map(
-                    (val, i) =>
-                      isNaN(val) ? (
-                        <React.Fragment>
-                          {val} : &nbsp;{' '}
-                          <strong> {log.returnValues[val]}</strong>
-                          <br />
-                        </React.Fragment>
-                      ) : null
-                  )}
-                </p>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
   }
 
   renderSingleContract() {
@@ -299,7 +178,6 @@ export class SingleContractView extends Component {
               {this.props.web3 && this.props.web3.web3Instance
                 ? Utils.displayPriceFormatter(this.props, contract.balance)
                 : contract.balance}
-
               {contract.balance}
             </span>
           </header>
@@ -329,10 +207,8 @@ export class SingleContractView extends Component {
           </div>
         </div>
         <ContractActionBar props={contract} />
-        {logs && logs.length ? <ExecutableContract /> : ''}
-        {logs && logs.length ? <ContractEvents /> : ''}
-        {/*{logs && logs.length > 0 ? this.renderContractFunctions() : ''}*/}
-        {/*{logs && logs.length > 0 ? this.renderContractEvents() : ''}*/}
+        {logs && logs.length ? <ExecutableContract /> : null}
+        {logs && logs.length ? <ContractEvents /> : null}
       </div>
     );
   }

@@ -57,7 +57,6 @@ export class SingleAccountView extends Component {
   }
 
   displayEventModal(e, log) {
-    // log['originalContract'] = this.props.reducers.
     log['originalContractName'] = this.props.reducers.selectedContract.contract[
       'contract-name'
     ];
@@ -81,8 +80,6 @@ export class SingleAccountView extends Component {
     } else {
       return;
     }
-
-    console.log(contract);
 
     let contractInstance = new web3.eth.Contract(
       JSON.parse(contract.jsonInterface),

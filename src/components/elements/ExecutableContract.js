@@ -43,7 +43,9 @@ export class ExecutableContract extends Component {
           ? inputs.map((input, index) => (
               <React.Fragment>
                 <h4>
-                  {Helpers.toSentence(input.name)}><em>- {input.type}</em>
+                  {Helpers.toSentence(input.name)}
+                  &nbsp;
+                  <em>- {input.type}</em>
                 </h4>
 
                 <Inputs data={input} index={index} />
@@ -82,10 +84,7 @@ export class ExecutableContract extends Component {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address]
       .contractFunctions;
-
     let wallets = this.state.reducers.Wallets;
-    console.log(wallets);
-    console.log(functions);
     return (
       <div className="col col-4 mobile-full contract-functions">
         <h2>Write to contract</h2>
@@ -179,7 +178,7 @@ export class ExecutableContract extends Component {
                     <tr key={shortid.generate()}>
                       <td>
                         <dl className={'constant-' + func.name + ' dapp-zebra'}>
-                          {func.outputs.map(output => (
+                          {func.outputs.map((output, index) => (
                             <React.Fragment>
                               {output.name !== '' ? (
                                 <dt>

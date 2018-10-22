@@ -13,7 +13,6 @@ class AccountItem extends Component {
   }
 
   openAccountPage(w) {
-    // this.props.emptySelectedContract();
     this.props.selectedWallet({
       address: this.props.address,
       number: this.props.number,

@@ -43,6 +43,7 @@ const initialState = {
       ownerCount: 3,
       confirmationAddressesRequired: 1,
       dailyLimitAmount: 10,
+      MainOwnerAddress: '',
     },
   },
   balancesAutoScanChecked: 0,

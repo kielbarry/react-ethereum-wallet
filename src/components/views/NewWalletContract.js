@@ -26,6 +26,8 @@ import SecurityIcon from '../elements/SecurityIcon.js';
 import shortid from 'shortid';
 import * as Utils from '../../utils/utils.js';
 
+import { WalletInterfaceItems } from '../../constants/InitConstants.js';
+
 const styles = theme => ({
   radioRoot: {
     display: 'flex',
@@ -61,33 +63,15 @@ class NewWalletContract extends Component {
     super(props);
     this.state = this.props;
     this.selectWallet = this.selectWallet.bind(this);
+    this.createContract = this.createContract.bind(this);
     let defaultWallet;
     let wallets = this.props.reducers.Wallets;
     for (var prop in wallets) {
       defaultWallet = prop;
       break;
     }
-
-    console.log(this.state);
-
-    this.setState(prevState => ({
-      ...prevState,
-      reducers: {
-        ...prevState.reducers,
-        DeployContractForm: {
-          ...prevState.reducers.DeployContractForm,
-          MainOwnerAddress: defaultWallet,
-        },
-      },
-    }));
-
-    // var stateObj = {...this.state.reducers.DeployContractForm}
-    // stateObj.reducers.DeployContractForm = true;
-    // this.setState({someProperty})
-
-    // let obj = { ...this.props.reducers.DeployContractForm };
-    // obj.MainOwnerAddress = defaultWallet;
-    // this.props.updateDeployContractForm(obj);
+    this.state.reducers.DeployContractForm['MainOwnerAddress'] = defaultWallet;
+    console.log(this.state.reducers.DeployContractForm['MainOwnerAddress']);
   }
 
   selectWallet(e) {
@@ -191,9 +175,6 @@ class NewWalletContract extends Component {
   renderWalletDropDown() {
     let wallets = this.props.reducers.Wallets;
     let dcf = this.props.reducers.DeployContractForm;
-    console.log(this.props.reducers.DeployContractForm);
-    console.log(this.state.reducers.DeployContractForm);
-
     return (
       <div className="col col-6 mobile-full from">
         <h3>From</h3>
@@ -202,7 +183,7 @@ class NewWalletContract extends Component {
             className="send-from"
             name="MainOwnerAddress"
             onChange={this.selectWallet}
-            value={this.props.reducers.DeployContractForm}
+            value={this.props.reducers.DeployContractForm.MainOwnerAddress}
           >
             {Object.keys(wallets).map(w => {
               let balance = wallets[w];
@@ -210,9 +191,14 @@ class NewWalletContract extends Component {
                 <React.Fragment>
                   <option key={shortid.generate()} value={w}>
                     {this.props.web3 && this.props.web3.web3Instance
-                      ? Utils.displayPriceFormatter(this.props, balance)
+                      ? Utils.displayPriceFormatter(
+                          this.props,
+                          balance,
+                          'ETHER'
+                        )
                       : balance}
-                    " - " + {w}
+                    &nbsp; - &nbsp;
+                    {w}
                   </option>
                 </React.Fragment>
               );
@@ -221,40 +207,129 @@ class NewWalletContract extends Component {
           <SecurityIcon
             type="address"
             classes="dapp-identicon dapp-small"
-            hash={this.state.DeployContractForm.MainOwnerAddress}
+            hash={this.state.reducers.DeployContractForm.MainOwnerAddress}
           />
         </div>
       </div>
     );
   }
 
-  render() {
-    // console.log(this.props)
-    console.log(this.props);
-    const { classes } = this.props;
-    const { DeployContractForm } = this.props.reducers;
-    console.log(DeployContractForm);
-    console.log(this.props);
+  createContract(e) {
+    //TODO: reference gist by frozeman
+    // https://gist.github.com/frozeman/655a9325a93ac198416e
 
     let dcf = this.props.reducers.DeployContractForm;
+    console.log('in createContract', this.props.reducers.DeployContractForm);
+    console.log(e);
+    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+
+    // hardcoded bytecode
+    let code = WalletInterfaceItems.walletStubABI;
+    console.log('here is the code', code);
+
+    let jsonInterface = WalletInterfaceItems.walletInterface;
+
+    console.log('here is the walletInterface', jsonInterface);
+
+    //TODO: first iteration for single owner
+    let contract = new web3.eth.Contract(jsonInterface);
+    console.log('the contract', contract);
+
+    if (!web3) {
+      return;
+    }
+
+    if (dcf.multisigChecked === false) {
+      let options = {
+        from: dcf.MainOwnerAddress,
+        data: code,
+        arguments: [],
+        gas: 3000000,
+      };
+      // console.log(contract.deploy(options).send({
+      //   from:dcf.MainOwnerAddress,
+      //   gas:3000000
+      // }))
+      // contract.deploy(options)
+      //  .send({
+      //      from: dcf.MainOwnerAddress,
+      //      gas: 1500000
+      //  }, (err, txHash) => {
+      //      console.log('send:', err, txHash);
+      //  })
+      //  .on('error', (err) => {
+      //      console.log('error:', err);
+      //  })
+      //  .on('transactionHash', (err) => {
+      //      console.log('transactionHash:', err);
+      //  })
+      //  .on('receipt', (receipt) => {
+      //      console.log('receipt:', receipt);
+      //  });
+
+      // contract.deploy({
+      //   data: code,
+      // })
+      // .send({
+      //   from: dcf.MainOwnerAddress,
+      //   gas: 4000000,
+      //   gasPrice: '30000000000000',
+      // })
+      // .then((instance) => {
+      //   console.log('instance', instance);
+      // });
+
+      console.log(dcf);
+      contract
+        .deploy({
+          data: code,
+          arguments: [
+            dcf.MainOwnerAddress, // owner
+            1, // require signature count,
+            100000000000000000000000000, // ethereum configs daily limit
+          ],
+        })
+        .send({
+          from: dcf.MainOwnerAddress,
+          gas: 3000000,
+        })
+        .on('error', console.log)
+        .on('transactionHash', console.log)
+        .on('receipt', console.log)
+        .on('confirmation', (confirmationNumber, receipt) => {
+          console.log(confirmationNumber);
+          console.log(receipt);
+        })
+        .then(newContractInstance => {
+          console.log(newContractInstance); // instance with the new contract address
+        });
+    }
+  }
+
+  render() {
+    const { classes } = this.props;
+    const { DeployContractForm } = this.props.reducers;
+    let dcf = this.props.reducers.DeployContractForm;
+    console.log('here is dcf', dcf);
+    console.log('here is dcf.MainOwnerAddress', dcf.MainOwnerAddress);
     return (
-      <main className="dapp-content">
-        <h1>
-          New <strong>wallet contract</strong>
-        </h1>
-        <input
-          type="text"
-          name="WalletContractName"
-          placeholder="Wallet contract name"
-          onChange={e => this.handleChange(e)}
-          autoFocus={true}
-        />
-        <h2>Select owner</h2>
+      <React.Fragment>
+        <FormControl component="fieldset" className={classes.formControl}>
+          <h1>
+            New <strong>wallet contract</strong>
+          </h1>
+          <input
+            type="text"
+            name="WalletContractName"
+            placeholder="Wallet contract name"
+            onChange={e => this.handleChange(e)}
+            autoFocus={true}
+          />
+          <h2>Select owner</h2>
 
-        {dcf && dcf.MainOwnerAddress ? this.renderWalletDropDown() : <div />}
+          {dcf && dcf.MainOwnerAddress ? this.renderWalletDropDown() : <div />}
 
-        <div className={classes.radioRoot}>
-          <FormControl component="fieldset" className={classes.formControl}>
+          <div className={classes.radioRoot}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>
             <RadioGroup
               aria-label="ContractToDeployRadio"
@@ -401,9 +476,16 @@ class NewWalletContract extends Component {
                 </div>
               </Collapse>
             </RadioGroup>
-          </FormControl>
-        </div>
-      </main>
+            <button
+              className="dapp-block-button"
+              type="submit"
+              onClick={e => this.createContract(e)}
+            >
+              Create
+            </button>
+          </div>
+        </FormControl>
+      </React.Fragment>
     );
   }
 }

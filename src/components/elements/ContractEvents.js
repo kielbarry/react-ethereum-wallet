@@ -65,8 +65,6 @@ export class ContractEvents extends Component {
       name: 'contractConstants',
     });
     // END
-    console.log(contractConstants);
-    // TODO: NOT UPDATING STATE
     contractConstants.map((method, index) => {
       let args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
