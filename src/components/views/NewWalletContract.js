@@ -238,6 +238,29 @@ class NewWalletContract extends Component {
     );
   }
 
+  validateMultipleAddress(web3, addresses) {
+    const ownerSet = new Set(addresses);
+    let arr = [...ownerSet].map(address => web3.utils.isAddress(address));
+    if (arr.includes(false)) {
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: 'Invalid address input',
+      });
+      return false;
+    }
+    if (ownerSet.length !== addresses.length) {
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'warning',
+        msg:
+          'Invalid address input - you may have used an address more than once',
+      });
+      return false;
+    }
+    return true;
+  }
+
   createContract(e) {
     let dcf = this.props.reducers.DeployContractForm;
     let msContract = dcf.multiSigContract;
@@ -270,7 +293,14 @@ class NewWalletContract extends Component {
             ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
         ]);
 
-    console.log(options);
+    let valid = false;
+    if (dcf.multisigChecked) {
+      valid = this.validateMultipleAddress(web3, msContract.owners);
+    }
+
+    if (!valid) {
+      return;
+    }
 
     contract
       .deploy({
