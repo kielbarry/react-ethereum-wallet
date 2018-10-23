@@ -28,7 +28,6 @@ export class ExecutableContract extends Component {
 
   @param {Object} contract the account object with .jsonInterface
   */
-
   renderFunctionInputs() {
     let contract = this.props.reducers.selectedContract.contract;
     let functions = this.props.reducers.ObservedContracts[contract.address]

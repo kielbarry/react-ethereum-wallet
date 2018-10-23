@@ -151,6 +151,36 @@ export class SingleContractView extends Component {
     this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
+  renderWalletDetails() {
+    return (
+      <React.Fragment>
+        <div class="row clear wallet-info">
+          <div class="col col-4 mobile-full">
+            <h3>
+              Daily limit
+              <span style={{ fontWeight: 200 > 10.0 }}> ether</span>
+            </h3>
+            10.00 ether remaining today
+          </div>
+          <div class="col col-4 mobile-full">
+            <h3>Required signatures</h3> 2
+          </div>
+          <div class="col col-4 mobile-full">
+            <h3>Owners</h3>
+          </div>
+          security icons
+        </div>
+        <div className="account-info">
+          <h3>Note</h3>
+          <p>
+            Most exchanges don't support receiving ether from a contract wallet
+            yet. Be sure to move your balance to an account address first!
+          </p>
+        </div>
+      </React.Fragment>
+    );
+  }
+
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
     let logs = this.props.reducers.ObservedContracts[contract.address].logs;

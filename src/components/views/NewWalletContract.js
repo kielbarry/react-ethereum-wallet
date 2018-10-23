@@ -296,15 +296,11 @@ class NewWalletContract extends Component {
         ]),
         (valid = this.validateMultipleAddress(web3, msContract.owners)));
 
-    // let valid = false;
-    // if (dcf.multisigChecked) {
-    //   valid = this.validateMultipleAddress(web3, msContract.owners);
-    // }
+    if (!valid) {
+      return;
+    }
 
-    // if (!valid) {
-    //   return;
-    // }
-
+    //TODO: more security checks from observewallets and account_create
     contract
       .deploy({
         data: code,
