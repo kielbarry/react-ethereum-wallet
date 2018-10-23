@@ -68,6 +68,15 @@ const reducers = (state = initialState, action) => {
     // location: contractConstants,
   }
 
+  if (action.type === 'UPDATE_WALLET_CONTRACT') {
+    console.log(action.payload);
+    console.log(
+      Object.assign({}, state.WalletContracts, {
+        [action.payload.name]: action.payload.value,
+      })
+    );
+  }
+
   if (action.type === 'DELETE_PENDING_CONTRACT') {
     console.log(action.payload);
   }
@@ -75,11 +84,9 @@ const reducers = (state = initialState, action) => {
     case 'UPDATE_WALLET_CONTRACT':
       return {
         ...state,
-        WalletContracts: Object.assign(
-          {},
-          state.WalletContracts,
-          ([action.payload.name]: action.payload.value)
-        ),
+        WalletContracts: Object.assign({}, state.WalletContracts, {
+          [action.payload.name]: action.payload.value,
+        }),
       };
     case 'DELETE_PENDING_CONTRACT':
       return {

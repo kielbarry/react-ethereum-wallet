@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import * as Actions from '../../actions/actions.js';
 
@@ -76,7 +76,6 @@ class NewWalletContract extends Component {
     }
     this.state.reducers.DeployContractForm['MainOwnerAddress'] = defaultWallet;
     this.state.reducers.DeployContractForm.multiSigContract.owners[0] = defaultWallet;
-    this.setState({ redirect: false });
   }
 
   selectWallet(e) {
@@ -269,12 +268,6 @@ class NewWalletContract extends Component {
     return true;
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/" />;
-    }
-  };
-
   createContract(e) {
     console.log('e in createContract', e);
     let dcf = this.props.reducers.DeployContractForm;
@@ -319,9 +312,9 @@ class NewWalletContract extends Component {
     console.log(options.arguments);
     console.log(dcf);
 
-    this.setState({ redirect: true });
-
     //TODO: more security checks from observewallets and account_create
+
+    this.props.history.push('/');
     contract
       .deploy({
         data: code,
@@ -364,7 +357,6 @@ class NewWalletContract extends Component {
     let dcf = this.props.reducers.DeployContractForm;
     return (
       <React.Fragment>
-        {this.renderRedirect()}
         <FormControl component="fieldset" className={classes.formControl}>
           <h1>
             New <strong>wallet contract</strong>
