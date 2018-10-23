@@ -58,28 +58,6 @@ const initialState = {
 };
 
 const reducers = (state = initialState, action) => {
-  if (action.type === 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS') {
-    // console.log('here in reducers', action.payload);
-    console.log(action.payload);
-    // contractAddress: contract.address,
-    // name: method.name,
-    // index: index,
-    // value: method.outputs,
-    // location: contractConstants,
-  }
-
-  if (action.type === 'UPDATE_WALLET_CONTRACT') {
-    console.log(action.payload);
-    console.log(
-      Object.assign({}, state.WalletContracts, {
-        [action.payload.name]: action.payload.value,
-      })
-    );
-  }
-
-  if (action.type === 'DELETE_PENDING_CONTRACT') {
-    console.log(action.payload);
-  }
   switch (action.type) {
     case 'UPDATE_WALLET_CONTRACT':
       return {
@@ -240,6 +218,14 @@ const reducers = (state = initialState, action) => {
           action.payload
         ),
       };
+    case 'UPDATE_MAIN_DCF': {
+      return {
+        ...state,
+        DeployContractForm: Object.assign({}, state.DeployContractForm, {
+          [action.payload.name]: action.payload.value,
+        }),
+      };
+    }
     case 'UPDATE_MAIN_CONTRACT_ADDRESS': {
       return {
         ...state,

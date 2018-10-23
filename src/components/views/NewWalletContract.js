@@ -133,16 +133,18 @@ class NewWalletContract extends Component {
         this.props.updateDeployContractForm(obj);
         break;
       case 'WalletContractName':
-        obj = { ...this.props.reducers.DeployContractForm.multiSigContract };
-        obj.WalletContractName = buttonValue;
-        console.log(obj);
-        this.props.updateDeployContractForm(obj);
+        this.props.updateMainDCF({ name: 'contract-name', value: buttonValue });
         break;
       case 'MainOwnerAddress':
-        obj = { ...this.props.reducers.DeployContractForm };
-        obj.MainOwnerAddress = buttonValue;
-        console.log(obj);
-        this.props.updateMainContractAddress(obj);
+        // obj = { ...this.props.reducers.DeployContractForm };
+        // obj.MainOwnerAddress = buttonValue;
+        // console.log(obj);
+        // this.props.updateMainContractAddress(obj);
+        this.props.updateMainDCF({
+          name: 'MainOwnerAddress',
+          value: buttonValue,
+        });
+
         break;
       default:
         break;
@@ -341,6 +343,7 @@ class NewWalletContract extends Component {
       })
       .on('confirmation', (confirmationNumber, receipt) => {
         receipt['confirmationNumber'] = confirmationNumber;
+        receipt['contract-name'] = dcf['contract-name'];
         this.props.updateWalletContracts({
           name: receipt.contractAddress,
           value: receipt,

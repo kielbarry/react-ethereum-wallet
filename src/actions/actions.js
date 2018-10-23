@@ -14,6 +14,11 @@ export const updateWalletContracts = contract => dispatch => {
     type: actionTypes.UPDATE_WALLET_CONTRACT,
     payload: contract,
   });
+  // TODO: data structs must match
+  // dispatch({
+  //   type: actionTypes.ADD_OBSERVED_CONTRACT,
+  //   payload: contract,
+  // });
   dispatch({
     type: actionTypes.DELETE_PENDING_CONTRACT,
     payload: contract.value.transactionHash,
@@ -234,6 +239,13 @@ export const fetchTokensForAutoScan = accounts => {
         // dispatch(receiveTokens(tokens));
       });
   };
+};
+
+export const updateMainDCF = data => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_MAIN_DCF,
+    payload: data,
+  });
 };
 
 export const updateDCFRadio = data => dispatch => {

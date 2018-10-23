@@ -4,10 +4,31 @@ import { connect } from 'react-redux';
 // import PageHeader from '../elements/PageHeaders.jsx';
 // import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
 import AccountItem from '../elements/AccountItem.js';
+import ContractItem from '../elements/ContractItem.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
 import { Link } from 'react-router-dom';
 
 class AccountView extends Component {
+  constructor(props) {
+    super(props);
+    this.makeID = this.makeID.bind(this);
+    this.makeIDInterval = setInterval(() => this.makeID(), 500);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.makeIDInterval);
+  }
+
+  // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+  makeID() {
+    var text = '';
+    var possible =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
+
   renderAccounts() {
     if (this.props.reducers.Wallets !== undefined) {
       const wallets = this.props.reducers.Wallets;
@@ -30,24 +51,53 @@ class AccountView extends Component {
   }
 
   renderWalletBoxList() {
-    if (this.props.reducers.WalletContracts !== undefined) {
-      const walletContractList = this.props.reducers.WalletContracts;
-      const icon = 'icon-wallet';
-      return (
-        <React.Fragment>
-          {Object.keys(walletContractList).map((address, i) => (
-            <AccountItem
-              key={address}
-              number={i + 1}
-              icon={icon}
-              address={address}
-              wallet={walletContractList[address]}
-              props={this.props}
-            />
-          ))}
-        </React.Fragment>
-      );
-    }
+    // if (this.props.reducers.WalletContracts !== undefined) {
+    const walletContractList = this.props.reducers.WalletContracts;
+    const icon = 'icon-eye';
+    let {
+      ContractsPendingConfirmations,
+      WalletContracts,
+    } = this.props.reducers;
+    let contracts = Object.assign(
+      {},
+      ContractsPendingConfirmations,
+      WalletContracts
+    );
+
+    return (
+      <React.Fragment>
+        {Object.keys(contracts).map((address, i) => (
+          <ContractItem
+            key={address}
+            number={i + 1}
+            icon={icon}
+            pending={
+              Object.keys(contracts[address]).length === 0 &&
+              contracts[address].constructor === Object
+                ? true
+                : false
+            }
+            contract={contracts[address]}
+            address={address}
+            // address={contracts[address].length === 0 ? address : this.makeIDInterval}
+            // address={this.makeIDInterval()}
+            // address={
+            //   Object.keys(contracts[address]).length === 0 && contracts[address].constructor === Object
+            //     ? (
+            //         this.makeID()
+            //         // setInterval(() => {
+            //         //   return this.makeID()
+            //         // }, 500)
+            //       )
+            //     : address
+            // }
+            wallet={contracts[address].length === 0 ? contracts[address] : ''}
+            props={this.props}
+          />
+        ))}
+      </React.Fragment>
+    );
+    // }
   }
 
   routeToDeployContract(e) {

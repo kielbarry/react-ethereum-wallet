@@ -10,6 +10,20 @@ class ContractItem extends Component {
   constructor(props) {
     super(props);
     this.openAccountPage = this.openAccountPage.bind(this);
+    this.makeID = this.makeID.bind(this);
+
+    this.state = {
+      fakeAddress: this.makeID(),
+    };
+    this.fakeAddressInterval = setInterval(() => {
+      this.setState({
+        fakeAddress: this.makeID(),
+      });
+    }, 50);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.fakeAddressInterval);
   }
 
   openAccountPage(e) {
@@ -41,28 +55,82 @@ class ContractItem extends Component {
     );
   }
 
+  makeID() {
+    var text = '';
+    var possible =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
+
+  renderPendingSecurityIcon() {
+    return (
+      <SecurityIcon
+        type="contractItem"
+        classes={'dapp-identicon dapp-small dapp-icon-loading'}
+        hash={this.state.fakeAddress}
+      />
+    );
+  }
+
   render() {
     let contract = this.props.contract;
-    let address = contract.address;
-    const ContractUrl = '/contract/' + address;
+    let pending = this.props.pending;
+
+    console.log(contract);
+
+    pending ? (pending = true) : (pending = false);
+
+    Object.keys(contract).length === 0 && contract.constructor === Object
+      ? (pending = true)
+      : null;
+
+    let address;
+    !pending ? (address = contract.contractAddress) : null;
+
+    let ContractUrl = '/contract/';
+    !pending ? (ContractUrl += address) : null;
+
+    !pending ? clearInterval(this.fakeAddressInterval) : null;
+
     return (
       <React.Fragment>
         <Link
           to={{ pathname: ContractUrl }}
           onClick={e => this.openAccountPage(e)}
-          className="wallet-box"
+          className={!pending ? 'wallet-box' : 'wallet-box creating wallets'}
         >
-          <SecurityIcon
-            type="contractItem"
-            classes="dapp-identicon dapp-small"
-            hash={address}
-          />
+          {!pending ? (
+            <SecurityIcon
+              type="contractItem"
+              classes={'dapp-identicon dapp-small dapp-icon-loading'}
+              hash={address}
+            />
+          ) : (
+            this.renderPendingSecurityIcon()
+          )}
           <ul className="token-list" />
           <h3 className="not-ens-name">
-            <i className="icon-doc" />
-            {contract['contract-name']}
+            <i className="icon-eye" />
+            &nbsp;
+            {!pending
+              ? contract['contract-name'] === undefined
+                ? 'UNNAMED'
+                : contract['contract-name']
+              : 'UNNAMED'}
           </h3>
-          {this.renderBalance()}
+          {!pending ? (
+            this.renderBalance()
+          ) : (
+            <React.Fragment>
+              <span className="account-balance">
+                Creating
+                <span>...</span>
+              </span>
+              <span class="account-id creating" />
+            </React.Fragment>
+          )}
           <span className="account-id">{address}</span>
         </Link>
       </React.Fragment>
