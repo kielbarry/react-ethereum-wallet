@@ -280,27 +280,30 @@ class NewWalletContract extends Component {
       from: dcf.MainOwnerAddress.toLowerCase(),
     };
 
+    let valid = false;
     dcf.multisigChecked === false
-      ? (options.arguments = [
+      ? ((options.arguments = [
           [dcf.MainOwnerAddress.toLowerCase()], // owner
           1, // require signature count,
           ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-        ])
-      : (options.arguments = [
+        ]),
+        (valid = true))
+      : ((options.arguments = [
           msContract.owners,
           msContract.confirmationAddressesRequired || 1,
           msContract.dailyLimitAmount ||
             ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-        ]);
+        ]),
+        (valid = this.validateMultipleAddress(web3, msContract.owners)));
 
-    let valid = false;
-    if (dcf.multisigChecked) {
-      valid = this.validateMultipleAddress(web3, msContract.owners);
-    }
+    // let valid = false;
+    // if (dcf.multisigChecked) {
+    //   valid = this.validateMultipleAddress(web3, msContract.owners);
+    // }
 
-    if (!valid) {
-      return;
-    }
+    // if (!valid) {
+    //   return;
+    // }
 
     contract
       .deploy({
