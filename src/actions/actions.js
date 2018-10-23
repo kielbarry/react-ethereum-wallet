@@ -9,13 +9,14 @@ const web3 = new Web3(
 );
 
 export const updateWalletContracts = contract => dispatch => {
+  console.log(contract);
   dispatch({
     type: actionTypes.UPDATE_WALLET_CONTRACT,
     payload: contract,
   });
   dispatch({
     type: actionTypes.DELETE_PENDING_CONTRACT,
-    payload: '',
+    payload: contract.value.transactionHash,
   });
 };
 

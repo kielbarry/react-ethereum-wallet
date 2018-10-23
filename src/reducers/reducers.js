@@ -67,15 +67,30 @@ const reducers = (state = initialState, action) => {
     // value: method.outputs,
     // location: contractConstants,
   }
-  if (action.type === 'UPDATE_PENDING_CONTRACTS') {
+
+  if (action.type === 'DELETE_PENDING_CONTRACT') {
     console.log(action.payload);
-    console.log(
-      Object.assign({}, state.ContractsPendingConfirmations, {
-        [action.payload.name]: action.payload.value,
-      })
-    );
   }
   switch (action.type) {
+    case 'UPDATE_WALLET_CONTRACT':
+      return {
+        ...state,
+        WalletContracts: Object.assign(
+          {},
+          state.WalletContracts,
+          ([action.payload.name]: action.payload.value)
+        ),
+      };
+    case 'DELETE_PENDING_CONTRACT':
+      return {
+        ...state,
+        ContractsPendingConfirmations: Object.assign(
+          {},
+          ...Object.entries(state.ContractsPendingConfirmations)
+            .filter(([k]) => k !== action.payload)
+            .map(([k, v]) => ({ [k]: v }))
+        ),
+      };
     case 'UPDATE_PENDING_CONTRACTS':
       return {
         ...state,
