@@ -11,6 +11,7 @@ const initialState = {
   Transactions: {},
   WalletContracts: {},
   PendingConfirmations: {},
+  ContractsPendingConfirmations: {},
   Events: {},
   Tokens: {},
   peerCount: 0,
@@ -66,7 +67,26 @@ const reducers = (state = initialState, action) => {
     // value: method.outputs,
     // location: contractConstants,
   }
+  if (action.type === 'UPDATE_PENDING_CONTRACTS') {
+    console.log(action.payload);
+    console.log(
+      Object.assign({}, state.ContractsPendingConfirmations, {
+        [action.payload.name]: action.payload.value,
+      })
+    );
+  }
   switch (action.type) {
+    case 'UPDATE_PENDING_CONTRACTS':
+      return {
+        ...state,
+        ContractsPendingConfirmations: Object.assign(
+          {},
+          state.ContractsPendingConfirmations,
+          {
+            [action.payload.name]: action.payload.value,
+          }
+        ),
+      };
     case 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS':
       return {
         ...state,
@@ -198,6 +218,16 @@ const reducers = (state = initialState, action) => {
           action.payload
         ),
       };
+    case 'UPDATE_MAIN_CONTRACT_ADDRESS': {
+      return {
+        ...state,
+        DeployContractForm: Object.assign(
+          {},
+          state.DeployContractForm,
+          action.payload
+        ),
+      };
+    }
     case 'UPDATE_DEPLOY_CONTRACT_FORM':
       return {
         ...state,

@@ -8,6 +8,24 @@ const web3 = new Web3(
   'https://mainnet.infura.io/v3/2e1f7de617754b72a8a61bef3f7de966'
 );
 
+export const updateWalletContracts = contract => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_WALLET_CONTRACT,
+    payload: contract,
+  });
+  dispatch({
+    type: actionTypes.DELETE_PENDING_CONTRACT,
+    payload: '',
+  });
+};
+
+export const updatePendingContracts = hash => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_PENDING_CONTRACTS,
+    payload: hash,
+  });
+};
+
 export const updateInitialContractMethodOutputs = outputs => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS,
@@ -220,6 +238,13 @@ export const fetchTokensForAutoScan = accounts => {
 export const updateDCFRadio = data => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_DCF_RADIO,
+    payload: data,
+  });
+};
+
+export const updateMainContractAddress = data => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_MAIN_CONTRACT_ADDRESS,
     payload: data,
   });
 };

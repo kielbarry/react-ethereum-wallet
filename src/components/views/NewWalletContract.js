@@ -81,7 +81,9 @@ class NewWalletContract extends Component {
     // TODO:validate inputs here
     let obj = { ...this.props.reducers.DeployContractForm };
     obj.MainOwnerAddress = e.target.value;
-    this.props.updateDeployContractForm(obj);
+    console.log(obj);
+    this.props.updateMainContractAddress(obj);
+    // this.props.updateDeployContractForm(obj);
   }
 
   shouldComponentUpdate(prevProps, prevState) {
@@ -138,7 +140,8 @@ class NewWalletContract extends Component {
       case 'MainOwnerAddress':
         obj = { ...this.props.reducers.DeployContractForm };
         obj.MainOwnerAddress = buttonValue;
-        this.props.updateDeployContractForm(obj);
+        console.log(obj);
+        this.props.updateMainContractAddress(obj);
         break;
       default:
         break;
@@ -242,6 +245,7 @@ class NewWalletContract extends Component {
     const ownerSet = new Set(addresses);
     let arr = [...ownerSet].map(address => web3.utils.isAddress(address));
     if (arr.includes(false)) {
+      console.warn('invalid address');
       this.props.displayGlobalNotification({
         display: true,
         type: 'error',
@@ -250,6 +254,7 @@ class NewWalletContract extends Component {
       return false;
     }
     if (ownerSet.length !== addresses.length) {
+      console.warn('invalid address');
       this.props.displayGlobalNotification({
         display: true,
         type: 'warning',
@@ -258,10 +263,12 @@ class NewWalletContract extends Component {
       });
       return false;
     }
+    console.log('valid address');
     return true;
   }
 
   createContract(e) {
+    console.log('e in createContract', e);
     let dcf = this.props.reducers.DeployContractForm;
     let msContract = dcf.multiSigContract;
     let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
@@ -299,6 +306,10 @@ class NewWalletContract extends Component {
     if (!valid) {
       return;
     }
+    console.log('past valid check');
+
+    console.log(options.arguments);
+    console.log(dcf);
 
     //TODO: more security checks from observewallets and account_create
     contract
@@ -318,14 +329,22 @@ class NewWalletContract extends Component {
           msg: err.message,
         });
       })
-      .on('transactionHash', console.log)
-      .on('receipt', console.log)
+      .on('transactionHash', transactionHash => {
+        console.log('transactionHash', transactionHash);
+        this.props.updatePendingContracts({ name: transactionHash, value: {} });
+      })
+      .on('receipt', receipt => {
+        console.log('reecipt', receipt);
+      })
       .on('confirmation', (confirmationNumber, receipt) => {
-        console.log(confirmationNumber);
-        console.log(receipt);
+        receipt['confirmationNumber'] = confirmationNumber;
+        this.props.updateWalletContracts({
+          name: receipt.contractAddress,
+          value: receipt,
+        });
       })
       .then(newContractInstance => {
-        console.log(newContractInstance); // instance with the new contract address
+        console.log('newContractInstance', newContractInstance); // instance with the new contract address
       });
   }
 
