@@ -79,18 +79,6 @@ class AccountView extends Component {
             }
             contract={contracts[address]}
             address={address}
-            // address={contracts[address].length === 0 ? address : this.makeIDInterval}
-            // address={this.makeIDInterval()}
-            // address={
-            //   Object.keys(contracts[address]).length === 0 && contracts[address].constructor === Object
-            //     ? (
-            //         this.makeID()
-            //         // setInterval(() => {
-            //         //   return this.makeID()
-            //         // }, 500)
-            //       )
-            //     : address
-            // }
             wallet={contracts[address].length === 0 ? contracts[address] : ''}
             props={this.props}
           />

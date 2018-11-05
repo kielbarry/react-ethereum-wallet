@@ -68,16 +68,22 @@ class WatchItem extends Component {
   submitFunction(e) {
     let web3;
     let contract = this.props.reducers.ContractToWatch;
-
     console.log(contract);
-
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
       let con = {};
       web3.eth.getBalance(contract.address, (err, res) => {
-        //if err global note
+        if (err) {
+          this.props.displayGlobalNotification({
+            display: true,
+            type: 'error',
+            msg: 'Error retreiving balance for the added contract',
+          });
+          return;
+        }
         contract.balance = res;
         contract['logs'] = [];
+        contract['contractAddress'] = contract.address;
         con[contract['address']] = contract;
         this.props.addObservedContract(con);
         this.props.displayGlobalNotification({
@@ -85,16 +91,7 @@ class WatchItem extends Component {
           type: 'success',
           msg: 'Added custom contract',
         });
-
-        // Object.keys(this.props.reducers.selectedContract).map(key => {
-        //   this.props.updateContractToWatch({
-        //     name: key,
-        //     value: '',
-        //   });
-        // });
       });
-    } else {
-      // TODO:trigger global notification here
     }
     this.props.closeModal('displayWatchContract');
   }

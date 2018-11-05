@@ -192,7 +192,7 @@ class App extends Component {
           <NavBar />
           <div className="dapp-flex-content">
             <main className="dapp-content">
-              <Route exact path="/account/new" component={NewWalletContract} />
+              <Route exact path="/wallet/new" component={NewWalletContract} />
               <Route path="/account/*" component={SingleAccountView} />
               <Route path="/contract/*" component={SingleContractView} />
               <Route exact path="/" component={AccountView} />

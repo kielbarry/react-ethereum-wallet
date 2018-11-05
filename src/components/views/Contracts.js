@@ -63,6 +63,7 @@ class ContractsView extends Component {
       Object.keys(obj.ObservedContracts).length !== 0
     ) {
       const contracts = this.props.reducers.ObservedContracts;
+      console.log('RENDERING OBSERVED Contracts', contracts);
       return (
         <React.Fragment>
           <div className="wallet-box-list">

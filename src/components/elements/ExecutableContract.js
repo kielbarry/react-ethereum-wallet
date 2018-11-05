@@ -58,12 +58,21 @@ export class ExecutableContract extends Component {
   chooseFunction(e) {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address];
+    if (e.target.name === 'pickFunctionDefault') {
+      this.props.updateSelectedFunction({});
+      return;
+    }
     let func = functions.contractFunctions[e.target.selectedIndex - 1];
+    console.log('here in choose function', func);
     if (func.name === e.target.value) {
       func['contractAddress'] = contract.address;
       this.props.updateSelectedFunction(func);
     } else {
       //TODO: global
+      /*
+      Transaction sent in green
+      Returned error: authentication needed: password or unlock
+      */
     }
   }
 
@@ -93,7 +102,9 @@ export class ExecutableContract extends Component {
           name="select-contract-function"
           onChange={e => this.chooseFunction(e)}
         >
-          <option disabled="">Pick a function</option>
+          <option disabled="" name="pickFunctionDefault">
+            Pick a function
+          </option>
           {functions
             ? functions.map((c, i) => (
                 <option value={c.name}>

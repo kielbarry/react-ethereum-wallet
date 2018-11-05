@@ -18,6 +18,8 @@ export class SingleContractView extends Component {
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
     this.displayEventModal = this.displayEventModal.bind(this);
+    this.executeAndWatch = this.executeAndWatch.bind(this);
+    this.executeFunctions = this.executeFunctions.bind(this);
     this.setState({ showContractFunctions: true });
   }
 
@@ -46,23 +48,23 @@ export class SingleContractView extends Component {
     this.props.displayModal('displayEventInfo');
   }
 
-  /*
-  Watches custom events
+  executeAndWatch(e, contract) {
+    this.executeFunctions(e, contract);
+    this.watchContractEvents(e, contract);
+  }
 
-  @param {Object} contract the account object with .jsonInterface
-  */
-  watchContractEvents(e, contract) {
+  executeFunctions(e, contract) {
     let web3;
     if (this.props.web3 && this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
     } else {
       return;
     }
+
     let contractInstance = new web3.eth.Contract(
       JSON.parse(contract.jsonInterface),
       contract.address
     );
-
     // should i bag this and instead of push to array, redux it and set key to function name?
     //START
     let contractFunctions = [];
@@ -115,6 +117,25 @@ export class SingleContractView extends Component {
         value: method.outputs,
       });
     });
+  }
+
+  /*
+  Watches custom events
+
+  @param {Object} contract the account object with .jsonInterface
+  */
+  watchContractEvents(e, contract) {
+    let web3;
+    if (this.props.web3 && this.props.web3.web3Instance) {
+      web3 = this.props.web3.web3Instance;
+    } else {
+      return;
+    }
+
+    let contractInstance = new web3.eth.Contract(
+      JSON.parse(contract.jsonInterface),
+      contract.address
+    );
 
     //TODO indicate block range
     let subscription = contractInstance.events.allEvents({});
@@ -183,7 +204,12 @@ export class SingleContractView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
-    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
+    let {
+      logs,
+      contractFunctions,
+      contractConstants,
+    } = this.props.reducers.ObservedContracts[contract.address];
+
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container" />
@@ -222,7 +248,8 @@ export class SingleContractView extends Component {
                 type="checkbox"
                 id="watch-events-checkbox"
                 className="toggle-watch-events"
-                onClick={e => this.watchContractEvents(e, contract)}
+                // onClick={e => this.watchContractEvents(e, contract)}
+                onClick={e => this.executeAndWatch(e, contract)}
               />
               <label htmlFor="watch-events-checkbox">
                 Watch contract events
@@ -237,7 +264,11 @@ export class SingleContractView extends Component {
           </div>
         </div>
         <ContractActionBar props={contract} />
-        {logs && logs.length ? <ExecutableContract /> : null}
+        {contractConstants &&
+        contractFunctions &&
+        (contractConstants.length || contractFunctions.length) ? (
+          <ExecutableContract />
+        ) : null}
         {logs && logs.length ? <ContractEvents /> : null}
       </div>
     );

@@ -28,11 +28,8 @@ class ContractItem extends Component {
 
   openAccountPage(e) {
     // e.preventDefault()
-
     console.log(this.props);
-
     // this.props.emptySelectedWallet('');
-
     this.props.selectedContract({
       contract: this.props.contract,
       currency: this.props.reducers.currency,
@@ -64,13 +61,37 @@ class ContractItem extends Component {
     return text;
   }
 
+  renderPendingProgress() {
+    console.log(this.props);
+    console.log(this.props.contract);
+    console.log(this.props.contract.confirmationNumber);
+    let percent = this.props.contract.confirmationNumber / 12;
+    console.log(percent);
+    return (
+      <div class="dapp-progress">
+        <div class="dapp-bar" style={{ width: { percent } + '%' }} />
+      </div>
+    );
+  }
+
   renderPendingSecurityIcon() {
     return (
-      <SecurityIcon
-        type="contractItem"
-        classes={'dapp-identicon dapp-small dapp-icon-loading'}
-        hash={this.state.fakeAddress}
-      />
+      <React.Fragment>
+        <SecurityIcon
+          type="contractItem"
+          classes={'dapp-identicon dapp-small dapp-icon-loading'}
+          hash={this.state.fakeAddress}
+        />
+      </React.Fragment>
+    );
+  }
+
+  renderPending() {
+    return (
+      <React.Fragment>
+        {this.renderPendingProgress()}
+        {this.renderPendingSecurityIcon()}
+      </React.Fragment>
     );
   }
 
@@ -108,7 +129,7 @@ class ContractItem extends Component {
               hash={address}
             />
           ) : (
-            this.renderPendingSecurityIcon()
+            this.renderPending()
           )}
           <ul className="token-list" />
           <h3 className="not-ens-name">
@@ -128,7 +149,7 @@ class ContractItem extends Component {
                 Creating
                 <span>...</span>
               </span>
-              <span class="account-id creating" />
+              <span className="account-id creating" />
             </React.Fragment>
           )}
           <span className="account-id">{address}</span>

@@ -344,10 +344,34 @@ class NewWalletContract extends Component {
       .on('confirmation', (confirmationNumber, receipt) => {
         receipt['confirmationNumber'] = confirmationNumber;
         receipt['contract-name'] = dcf['contract-name'];
+        receipt['address'] = receipt.contractAddress;
+        receipt['logs'] = [];
+        receipt['balance'] = 0;
+
         this.props.updateWalletContracts({
           name: receipt.contractAddress,
           value: receipt,
         });
+
+        // web3.eth.getBalance(receipt.contractAddress, (err, res) => {
+        //   if(err) {
+        //     this.props.displayGlobalNotification({
+        //       display: true,
+        //       type: 'error',
+        //       msg: 'Error retreiving balance for the added contract',
+        //     });
+        //     return;
+        //   }
+        //   contract.balance = res;
+        //   contract['logs'] = [];
+        //   con[contract['address']] = contract;
+        //   this.props.addObservedContract(con);
+        //   this.props.displayGlobalNotification({
+        //     display: true,
+        //     type: 'success',
+        //     msg: 'Added custom contract',
+        //   });
+        // });
       })
       .then(newContractInstance => {
         console.log('newContractInstance', newContractInstance); // instance with the new contract address
