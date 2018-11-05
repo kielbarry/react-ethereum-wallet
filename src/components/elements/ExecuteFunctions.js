@@ -88,7 +88,6 @@ export class ExecuteFunctions extends Component {
 
   renderAccountDropdown() {
     let wallets = this.state.reducers.Wallets;
-    let selectedFunction = this.state.reducers.selectedFunction;
     return (
       <React.Fragment>
         <h4> Execute from </h4>
@@ -161,12 +160,8 @@ export class ExecuteFunctions extends Component {
 
   renderFunctionInputs() {
     let contract = this.props.reducers.selectedContract.contract;
-    let functions = this.props.reducers.ObservedContracts[contract.address]
-      .contractFunctions;
-
     let selectedFunction = this.props.reducers.selectedFunction;
     let inputs = selectedFunction !== undefined ? selectedFunction.inputs : [];
-    // let inputs = this.props.reducers.selectedFunction.inputs;
     return (
       <React.Fragment>
         {inputs
