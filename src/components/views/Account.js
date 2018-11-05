@@ -109,7 +109,7 @@ class AccountView extends Component {
         <div className="wallet-box-list">{this.renderWalletBoxList()}</div>
         <div className="dapp-clear-fix" />
         <Link
-          to={{ pathname: '/account/new' }}
+          to={{ pathname: '/wallet/new' }}
           className="wallet-box create add-contract"
         >
           <div className="account-pattern">+</div>

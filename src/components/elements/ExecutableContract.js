@@ -10,7 +10,10 @@ import shortid from 'shortid';
 export class ExecutableContract extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    this.state = {
+      ...this.props,
+      executingWallet: this.props.reducers.Wallets[0],
+    };
     this.chooseFunction = this.chooseFunction.bind(this);
     this.chooseWallet = this.chooseWallet.bind(this);
     this.executeContractFunction = this.executeContractFunction.bind(this);
@@ -58,12 +61,11 @@ export class ExecutableContract extends Component {
   chooseFunction(e) {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address];
-    if (e.target.name === 'pickFunctionDefault') {
+    if (e.target.value === 'pickFunctionDefault') {
       this.props.updateSelectedFunction({});
       return;
     }
     let func = functions.contractFunctions[e.target.selectedIndex - 1];
-    console.log('here in choose function', func);
     if (func.name === e.target.value) {
       func['contractAddress'] = contract.address;
       this.props.updateSelectedFunction(func);
@@ -76,25 +78,12 @@ export class ExecutableContract extends Component {
     }
   }
 
-  chooseWallet(e) {
-    this.props.updateExecutingWallet({
-      name: 'executingWallet',
-      value: e.target.value,
-    });
-  }
-
-  executeContractFunction(e) {
-    console.log('in executeContractFunction', e);
-    console.log(this.props.selectedFunction);
-  }
-
-  renderExecuteFunctions() {
+  renderSelectFunction() {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address]
       .contractFunctions;
-    let wallets = this.state.reducers.Wallets;
     return (
-      <div className="col col-4 mobile-full contract-functions">
+      <React.Fragment>
         <h2>Write to contract</h2>
         <h4>Select Function</h4>
         <select
@@ -102,7 +91,11 @@ export class ExecutableContract extends Component {
           name="select-contract-function"
           onChange={e => this.chooseFunction(e)}
         >
-          <option disabled="" name="pickFunctionDefault">
+          <option
+            disabled=""
+            name="pickFunctionDefault"
+            value="pickFunctionDefault"
+          >
             Pick a function
           </option>
           {functions
@@ -113,13 +106,30 @@ export class ExecutableContract extends Component {
               ))
             : ''}
         </select>
-        {this.renderFunctionInputs()}
-        <hr className="dapp-clear-fix" />
+      </React.Fragment>
+    );
+  }
+
+  chooseWallet(e) {
+    this.setState({ executingWallet: e.target.value });
+    this.props.updateExecutingWallet({
+      name: 'executingWallet',
+      value: e.target.value,
+    });
+  }
+
+  renderAccountDropdown() {
+    let wallets = this.state.reducers.Wallets;
+    let selectedFunction = this.state.reducers.selectedFunction;
+    // let selectedFunction = this.props.reducers.selectedFunction
+    return (
+      <React.Fragment>
         <h4> Execute from </h4>
         <div className="dapp-select-account">
           <select
             name="dapp-select-account"
             onChange={e => this.chooseWallet(e)}
+            value={this.state.executingWallet}
           >
             {Object.keys(wallets).map(w => {
               let balance = wallets[w];
@@ -146,6 +156,49 @@ export class ExecutableContract extends Component {
             hash="toBeReplaced"
           />
         </div>
+      </React.Fragment>
+    );
+  }
+
+  executeContractFunction(e) {
+    let contractInfo = this.props.reducers.selectedContract.contract;
+    let jsonInterface = contractInfo.jsonInterface;
+    let funcName = this.props.selectedFunction.name;
+    let inputs = this.props.selectedFunction.inputs;
+    let execWallet = this.props.selectedFunction.executingWallet;
+    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+    if (!web3) {
+      return;
+    }
+
+    console.log('contract', contractInfo);
+    console.log('contract', jsonInterface);
+
+    let contract = new web3.eth.Contract(JSON.parse(jsonInterface));
+
+    console.log(inputs);
+    console.log(...inputs);
+
+    contract.methods[funcName](inputs)
+      .send({
+        from: execWallet,
+      })
+      .then((receipt, err) => {
+        if (err) console.log('err in send', err);
+        console.log('receipt in send', receipt);
+      });
+
+    console.log('in executeContractFunction', e);
+    console.log(this.props.selectedFunction);
+  }
+
+  renderExecuteFunctions() {
+    return (
+      <div className="col col-4 mobile-full contract-functions">
+        {this.renderSelectFunction()}
+        {this.renderFunctionInputs()}
+        <hr className="dapp-clear-fix" />
+        {this.renderAccountDropdown()}
         <button
           className="dapp-block-button execute"
           onClick={e => this.executeContractFunction(e)}
