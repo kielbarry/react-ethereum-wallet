@@ -11,6 +11,10 @@ export class Inputs extends Component {
   }
 
   updateFunctionInputValue(e) {
+    console.log('updateFunctionInputValue');
+    console.log(e);
+    console.log(e.target);
+    console.log(e.target.value);
     this.props.updateFunctionInput({
       name: e.target.getAttribute('name'),
       type: e.target.getAttribute('inputType'),

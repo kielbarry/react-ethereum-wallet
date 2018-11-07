@@ -1,12 +1,23 @@
 import makeBlockie from 'ethereum-blockies-base64';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { updateTransactionToSend } from '../../actions/actions.js';
 
 export const SecurityIcon = props => {
   const icon = makeBlockie(props.hash);
   let divStyle = {
     backgroundImage: 'url(' + icon + ')',
   };
+
+  function updateToTransaction(e) {
+    e.stopPropagation();
+    updateTransactionToSend({
+      name: 'to',
+      value: props.hash,
+    });
+  }
+
   return (
     <React.Fragment>
       <span
@@ -19,7 +30,11 @@ export const SecurityIcon = props => {
         <img src={icon} style={divStyle} className="identicon-pixel" alt="" />
       </span>
       {props.type === 'transactionHref' ? (
-        <Link to={{ pathname: '/send/' + props.hash }} title={props.hash}>
+        <Link
+          to={{ pathname: '/send-from/' + props.hash }}
+          title={props.hash}
+          onClick={e => updateToTransaction(e)}
+        >
           {props.hash}
         </Link>
       ) : (
@@ -29,4 +44,7 @@ export const SecurityIcon = props => {
   );
 };
 
-export default SecurityIcon;
+export default connect(
+  null,
+  { updateTransactionToSend }
+)(SecurityIcon);

@@ -72,26 +72,29 @@ class WatchItem extends Component {
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
       let con = {};
-      web3.eth.getBalance(contract.address, (err, res) => {
-        if (err) {
+      try {
+        web3.eth.getBalance(contract.address, (err, res) => {
+          if (err) console.warn(err);
+          console.log('res received', res);
+          contract.balance = res;
+          contract['logs'] = [];
+          contract['contractAddress'] = contract.address;
+          con[contract['address']] = contract;
+          this.props.addObservedContract(con);
           this.props.displayGlobalNotification({
             display: true,
-            type: 'error',
-            msg: 'Error retreiving balance for the added contract',
+            type: 'success',
+            msg: 'Added custom contract',
           });
-          return;
-        }
-        contract.balance = res;
-        contract['logs'] = [];
-        contract['contractAddress'] = contract.address;
-        con[contract['address']] = contract;
-        this.props.addObservedContract(con);
+        });
+      } catch (err) {
+        console.warn(err);
         this.props.displayGlobalNotification({
           display: true,
-          type: 'success',
-          msg: 'Added custom contract',
+          type: 'error',
+          msg: 'Error retreiving balance for the added contract',
         });
-      });
+      }
     }
     this.props.closeModal('displayWatchContract');
   }
@@ -113,12 +116,12 @@ class WatchItem extends Component {
           ))}
 
           <div className="dapp-modal-buttons">
-            <button className="cancel" onClick={() => this.cancelFunction()}>
+            <button className="cancel" onClick={e => this.cancelFunction(e)}>
               Cancel
             </button>
             <button
               className="ok dapp-primary-button"
-              onClick={() => this.submitFunction()}
+              onClick={e => this.submitFunction(e)}
             >
               OK
             </button>

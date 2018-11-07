@@ -196,7 +196,7 @@ class App extends Component {
               <Route path="/account/*" component={SingleAccountView} />
               <Route path="/contract/*" component={SingleContractView} />
               <Route exact path="/" component={AccountView} />
-              <Route exact path="/send-from" component={SendContractForm} />
+              <Route path="/send-from/*" component={SendContractForm} />
               <Route exact path="/contracts" component={ContractsView} />
               <MistAlertBubble />
             </main>

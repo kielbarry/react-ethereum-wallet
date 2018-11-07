@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SecurityIcon from '../elements/SecurityIcon.js';
 import Inputs from '../elements/inputs/Inputs.js';
+import WalletDropdown from './WalletDropdown.js';
 import * as Utils from '../../utils/utils.js';
 import * as Helpers from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
@@ -88,41 +89,15 @@ export class ExecuteFunctions extends Component {
 
   renderAccountDropdown() {
     let wallets = this.state.reducers.Wallets;
+    let dropdownConfig = {
+      component: 'ExecuteFunctions',
+      selectClassName: '',
+      selectName: 'dapp-select-account',
+    };
     return (
-      <React.Fragment>
-        <h4> Execute from </h4>
-        <div className="dapp-select-account">
-          <select
-            name="dapp-select-account"
-            onChange={e => this.chooseWallet(e)}
-            value={this.state.executingWallet}
-          >
-            {Object.keys(wallets).map(w => {
-              let balance = wallets[w];
-              return (
-                <React.Fragment>
-                  <option key={shortid.generate()} value={w}>
-                    {this.props.web3 && this.props.web3.web3Instance
-                      ? Utils.displayPriceFormatter(
-                          this.props,
-                          balance,
-                          'ETHER'
-                        )
-                      : balance}
-                    &nbsp; - &nbsp;
-                    {w}
-                  </option>
-                </React.Fragment>
-              );
-            })}
-          </select>
-          <SecurityIcon
-            type="address"
-            classes="dapp-identicon dapp-small"
-            hash="toBeReplaced"
-          />
-        </div>
-      </React.Fragment>
+      <div className="dapp-select-account">
+        <WalletDropdown dropdownConfig={dropdownConfig} />
+      </div>
     );
   }
 
@@ -140,6 +115,7 @@ export class ExecuteFunctions extends Component {
           onChange={e => this.chooseFunction(e)}
         >
           <option
+            key={shortid.generate()}
             disabled=""
             name="pickFunctionDefault"
             value="pickFunctionDefault"
@@ -148,7 +124,7 @@ export class ExecuteFunctions extends Component {
           </option>
           {functions
             ? functions.map((c, i) => (
-                <option value={c.name}>
+                <option key={shortid.generate()} value={c.name}>
                   {Helpers.toSentence(c.name, true)}
                 </option>
               ))
@@ -182,7 +158,9 @@ export class ExecuteFunctions extends Component {
   }
 
   renderIsExecutable() {
-    let executable = this.props.reducers.selectedFunction;
+    let executable = this.props.reducers.selectedFunction
+      ? this.props.reducers.selectedFunction
+      : {};
     let bool =
       Object.keys(executable).length === 0 && executable.constructor === Object;
     return (
@@ -190,6 +168,7 @@ export class ExecuteFunctions extends Component {
         {!bool ? (
           <React.Fragment>
             <hr className="dapp-clear-fix" />
+            <h4> Execute from </h4>
             {this.renderAccountDropdown()}
             <button
               className="dapp-block-button execute"

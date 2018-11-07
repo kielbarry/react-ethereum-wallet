@@ -16,6 +16,10 @@ export class ExecuteConstants extends Component {
     let contract = this.state.reducers.selectedContract.contract;
     let constants = this.state.reducers.ObservedContracts[contract.address]
       .contractConstants;
+    console.log(
+      'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+      constants
+    );
     return (
       <div className="col col-8 mobile-full contract-info">
         <h2>Read from contract</h2>
@@ -53,7 +57,18 @@ export class ExecuteConstants extends Component {
                                 </dt>
                               ) : null}
                               <dd className="output">
-                                {output.value}
+                                {output.type === 'address' &&
+                                output.value !== '' ? (
+                                  <span className="address dapp-shorten-text not-ens-name">
+                                    <SecurityIcon
+                                      type="transactionHref"
+                                      classes={'dapp-identicon dapp-tiny'}
+                                      hash={output.value}
+                                    />
+                                  </span>
+                                ) : (
+                                  output.value
+                                )}
                                 <br />
                               </dd>
                             </React.Fragment>

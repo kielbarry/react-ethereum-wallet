@@ -62,6 +62,17 @@ Sort method for accounts and wallets to sort by balance
 // };
 
 /**
+Sort method for accounts and wallets to sort by balance and remove empty addresses;
+
+@method sortByBalance
+**/
+export function sortByBalance(wallets) {
+  return wallets
+    .filter(wallet => wallet.balance != 0)
+    .sort((a, b) => b.balance - a.balance);
+}
+
+/**
 Return an account you own, from a list of accounts
 
 @method getOwnedAccountFrom

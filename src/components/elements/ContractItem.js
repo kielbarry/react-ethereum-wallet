@@ -68,8 +68,8 @@ class ContractItem extends Component {
     let percent = this.props.contract.confirmationNumber / 12;
     console.log(percent);
     return (
-      <div class="dapp-progress">
-        <div class="dapp-bar" style={{ width: { percent } + '%' }} />
+      <div className="dapp-progress">
+        <div className="dapp-bar" style={{ width: { percent } + '%' }} />
       </div>
     );
   }
@@ -98,8 +98,6 @@ class ContractItem extends Component {
   render() {
     let contract = this.props.contract;
     let pending = this.props.pending;
-
-    console.log(contract);
 
     pending ? (pending = true) : (pending = false);
 
