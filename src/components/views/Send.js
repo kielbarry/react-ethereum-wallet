@@ -199,6 +199,7 @@ class SendContractForm extends Component {
   }
 
   renderFromToRow() {
+    let tx = this.props.reducers.TransactionToSend;
     return (
       <div className="row clear from-to">
         {this.renderWalletDropDown()}
@@ -211,6 +212,7 @@ class SendContractForm extends Component {
               placeholder="0x000000.."
               className="to"
               autoFocus={true}
+              value={tx.to}
               onKeyUp={e => this.handleOnKeyUp(e)}
             />
           </div>

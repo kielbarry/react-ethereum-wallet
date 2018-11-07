@@ -11,15 +11,145 @@ export class ExecuteConstants extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
+    this.executeInput = this.executeInput.bind(this);
   }
+
+  executeInput(e, input, func) {
+    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+    if (!web3) {
+      return;
+    }
+
+    let index = e.target.getAttribute('index');
+    let value = e.target.value;
+
+    const BN = web3.utils.BN;
+    let contractInfo = this.state.reducers.selectedContract.contract;
+
+    let jsonInterface = contractInfo.jsonInterface;
+    let funcName = func.name;
+
+    func.inputs[index].value = value;
+    console.log(...func.inputs);
+
+    let inputs = func.inputs.map(inp => {
+      return inp.type.includes('int')
+        ? new BN(web3.utils.toWei(inp.value.replace(',', '.')))
+        : inp.value;
+    });
+
+    let contract = new web3.eth.Contract(JSON.parse(jsonInterface));
+    contract.options.address = contractInfo.contractAddress;
+
+    try {
+      contract.methods[funcName](...inputs)
+        .call()
+        .then((err, res) => {
+          err ? console.warn(err) : console.log('here is res', res);
+        });
+    } catch (err) {
+      console.error(err);
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: 'errarrrrr',
+      });
+    }
+  }
+
+  renderFunctionInputs(func) {
+    return (
+      <tr key={shortid.generate()}>
+        <td>
+          <h3>{Helpers.unCamelCaseToSentence(func.name)}</h3>
+          {func.inputs.length > 0
+            ? func.inputs.map((input, index) => (
+                <React.Fragment>
+                  <h4>
+                    <span className="dapp-punctuation">_</span>
+                    {input.name}
+                    &nbsp;
+                    <em>-&nbsp; {input.type}</em>
+                  </h4>
+                  <Inputs
+                    data={input}
+                    index={index}
+                    onChange={e => this.executeInput(e, input, func)}
+                  />
+                </React.Fragment>
+              ))
+            : null}
+        </td>
+      </tr>
+    );
+  }
+
+  renderOutputType(output) {
+    return (
+      <dd className="output">
+        {output.type === 'address'
+          ? this.renderAddress(output)
+          : output.type === 'bool'
+            ? this.renderBool(output)
+            : output.value}
+      </dd>
+    );
+  }
+
+  renderAddress(output) {
+    return (
+      <span className="address dapp-shorten-text not-ens-name">
+        <SecurityIcon
+          type="transactionHref"
+          classes={'dapp-identicon dapp-tiny'}
+          hash={output.value !== '' ? output.value : '0x'}
+        />
+      </span>
+    );
+  }
+
+  renderBool(output) {
+    let bool = output.value === true;
+    let text = bool ? 'YES ' : 'NO ';
+    let icon = bool ? 'icon-check' : 'icon-ban';
+    return (
+      <React.Fragment>
+        {text}
+        <em>
+          <span class={'icon ' + icon} />
+        </em>
+      </React.Fragment>
+    );
+  }
+
+  renderFunctionOutputs(func) {
+    return (
+      <tr key={shortid.generate()}>
+        <td>
+          <dl className={'constant-' + func.name + ' dapp-zebra'}>
+            {func.outputs.map((output, index) => (
+              <React.Fragment>
+                {output.name !== '' ? (
+                  <dt>{Helpers.unCamelCaseToSentence(output.name)}</dt>
+                ) : null}
+
+                {this.renderOutputType(output)}
+              </React.Fragment>
+            ))}
+          </dl>
+        </td>
+      </tr>
+    );
+  }
+
   render() {
     let contract = this.state.reducers.selectedContract.contract;
     let constants = this.state.reducers.ObservedContracts[contract.address]
       .contractConstants;
-    console.log(
-      'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      constants
-    );
+    // console.log(
+    //   'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    //   constants
+    // );
     return (
       <div className="col col-8 mobile-full contract-info">
         <h2>Read from contract</h2>
@@ -28,54 +158,8 @@ export class ExecuteConstants extends Component {
             {constants
               ? constants.map(func => (
                   <React.Fragment>
-                    <tr key={shortid.generate()}>
-                      <td>
-                        <h3>{Helpers.unCamelCaseToSentence(func.name)}</h3>
-                        {func.inputs.length > 0
-                          ? func.inputs.map((input, index) => (
-                              <React.Fragment>
-                                <h4>
-                                  <span className="dapp-punctuation">_</span>
-                                  {input.name}
-                                  &nbsp;
-                                  <em>-&nbsp; {input.type}</em>
-                                </h4>
-                                <Inputs data={input} index={index} />
-                              </React.Fragment>
-                            ))
-                          : null}
-                      </td>
-                    </tr>
-                    <tr key={shortid.generate()}>
-                      <td>
-                        <dl className={'constant-' + func.name + ' dapp-zebra'}>
-                          {func.outputs.map((output, index) => (
-                            <React.Fragment>
-                              {output.name !== '' ? (
-                                <dt>
-                                  {Helpers.unCamelCaseToSentence(output.name)}
-                                </dt>
-                              ) : null}
-                              <dd className="output">
-                                {output.type === 'address' &&
-                                output.value !== '' ? (
-                                  <span className="address dapp-shorten-text not-ens-name">
-                                    <SecurityIcon
-                                      type="transactionHref"
-                                      classes={'dapp-identicon dapp-tiny'}
-                                      hash={output.value}
-                                    />
-                                  </span>
-                                ) : (
-                                  output.value
-                                )}
-                                <br />
-                              </dd>
-                            </React.Fragment>
-                          ))}
-                        </dl>
-                      </td>
-                    </tr>
+                    {this.renderFunctionInputs(func)}
+                    {this.renderFunctionOutputs(func)}
                   </React.Fragment>
                 ))
               : ''}

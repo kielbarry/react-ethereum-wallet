@@ -7,27 +7,13 @@ import * as Helpers from '../../../utils/helperFunctions.js';
 export class Inputs extends Component {
   constructor(props) {
     super(props);
-    this.updateFunctionInputValue = this.updateFunctionInputValue.bind(this);
-  }
-
-  updateFunctionInputValue(e) {
-    console.log('updateFunctionInputValue');
-    console.log(e);
-    console.log(e.target);
-    console.log(e.target.value);
-    this.props.updateFunctionInput({
-      name: e.target.getAttribute('name'),
-      type: e.target.getAttribute('inputType'),
-      index: e.target.getAttribute('index'),
-      value: e.target.value,
-    });
   }
 
   renderAddress(input) {
     return (
       <React.Fragment>
         <input
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           placeholder="0x123456..."
           className=" abi-input"
@@ -42,7 +28,7 @@ export class Inputs extends Component {
       <React.Fragment>
         <input
           type="checkbox"
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           name={input.name}
           inputType={input.type}
@@ -58,7 +44,7 @@ export class Inputs extends Component {
           type="text"
           pattern="^(0x)?[0-9a-fA-F]+$"
           placeholder="0x1234af..."
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           name={input.name}
           inputType={input.type}
@@ -73,7 +59,7 @@ export class Inputs extends Component {
           type="number"
           step="1"
           placeholder="-123"
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           name={input.name}
           inputType={input.type}
@@ -89,7 +75,7 @@ export class Inputs extends Component {
           cols="20"
           rows="5"
           placeholder="['my text', 12345, '0x...']"
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           name={input.name}
           inputType={input.type}
@@ -105,7 +91,7 @@ export class Inputs extends Component {
         <input
           type="text"
           placeholder="MyString"
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           name={input.name}
           inputType={input.type}
@@ -121,7 +107,7 @@ export class Inputs extends Component {
           step="1"
           min="0"
           placeholder="1234"
-          onChange={e => this.updateFunctionInputValue(e)}
+          onChange={this.props.onChange}
           index={input.index}
           name={input.name}
           inputType={input.type}
@@ -135,6 +121,9 @@ export class Inputs extends Component {
       ...this.props.data,
       index: this.props.index,
     };
+
+    // console.log(this.props)
+
     let type = this.props.data.type.match(/[a-z]+/i)[0];
     return (
       <React.Fragment>

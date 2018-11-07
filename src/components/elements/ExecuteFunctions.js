@@ -83,7 +83,12 @@ export class ExecuteFunctions extends Component {
           console.log('receipt', receipt);
         });
     } catch (err) {
-      console.log('err in catch', err);
+      console.warn(err);
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: err,
+      });
     }
   }
 
