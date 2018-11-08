@@ -16,7 +16,7 @@ const Web3Initializer = (state = null, action) => {
       ProviderNetwork = 'https://' + config.selectedNetwork + '.infura.io/';
     }
   }
-  return ProviderNetwork !== '' ? new Web3(provider) : null;
+  return ProviderNetwork !== '' ? new Web3(ProviderNetwork) : null;
 };
 
 export default Web3Initializer;
