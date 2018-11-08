@@ -27,8 +27,6 @@ const blacklist = createBlacklistFilter('reducers', [
   'reducers.SelectedEvent',
 ]);
 
-console.log(blacklist);
-
 const persistConfig = {
   key: 'root',
   storage,

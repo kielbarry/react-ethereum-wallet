@@ -7,6 +7,21 @@ import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
 
+import compose from 'recompose/compose';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  keyIcon: {
+    width: '3%',
+    display: 'inline-block',
+    WebkitTransform: 'rotate(45deg)',
+    MozTransform: 'rotate(45deg)',
+    MsTransform: 'rotate(45deg)',
+    OTransform: 'rotate(45deg)',
+    transform: 'rotate(45deg)',
+  },
+});
+
 export class WalletDropdown extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +87,7 @@ export class WalletDropdown extends Component {
   render() {
     let wallets = this.state.Wallets;
     let config = this.state.dropdownConfig;
+    const { classes } = this.props;
     return (
       <React.Fragment>
         <select
@@ -93,7 +109,13 @@ export class WalletDropdown extends Component {
             let type = wallets[w].addressType;
             return (
               <option key={shortid.generate()} value={address}>
-                {type === 'walletAddress' ? '🔑 ' : null}
+                {/*{type === 'walletAddress' ? '🔑 ' : null} */}
+                {type === 'walletAddress' ? (
+                  <img
+                    src="key-of-vintage-design.svg"
+                    className={classes.keyIcon}
+                  />
+                ) : null}
                 {this.props.web3 && this.props.web3.web3Instance
                   ? Number(
                       Utils.displayPriceFormatter(this.props, balance, 'ETHER')
@@ -118,7 +140,15 @@ const mapStateToProps = state => ({
   ...state,
 });
 
-export default connect(
-  mapStateToProps,
-  { ...Actions }
+// export default connect(
+//   mapStateToProps,
+//   { ...Actions }
+// )(WalletDropdown);
+
+export default compose(
+  withStyles(styles, { name: 'WalletDropdown' }),
+  connect(
+    mapStateToProps,
+    { ...Actions }
+  )
 )(WalletDropdown);

@@ -316,7 +316,7 @@ class NewWalletContract extends Component {
 
     //TODO: more security checks from observewallets and account_create
 
-    this.props.history.push('/');
+    this.props.history.push('/accounts');
     contract
       .deploy({
         data: code,

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import Menu from '@material-ui/core/Menu';
@@ -16,6 +18,15 @@ import FormLabel from '@material-ui/core/FormLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
+
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import DeleteIcon from '@material-ui/icons/Delete';
+import NotInterestedSharp from '@material-ui/icons/NotInterestedSharp';
+import OfflineBoltSharp from '@material-ui/icons/OfflineBoltSharp';
+import Bluetooth from '@material-ui/icons/Bluetooth';
+
+import * as Actions from '../../actions/actions.js';
 
 let iconList = [
   'infura-icon.jpeg',
@@ -65,6 +76,19 @@ const styles = theme => ({
     stroke: theme.palette.divider,
     strokeWidth: 1,
   },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
 });
 
 class LandingPage extends Component {
@@ -98,8 +122,11 @@ class LandingPage extends Component {
           type: 'PoW',
         },
         Rinkeby: {
-          disabled() {
-            return this.selectedProvider === 'Parity';
+          // disabled() {
+          //   return this.selectedProvider === 'Parity';
+          // },
+          get disabled() {
+            return this.aselectedProvider === 'Parity';
           },
           type: 'PoA / Clique',
         },
@@ -108,26 +135,38 @@ class LandingPage extends Component {
           type: 'PoW',
         },
         Kovan: {
-          disabled() {
-            return this.selectedProvider === 'Geth';
+          // disabled() {
+          //   return this.selectedProvider === 'Geth';
+          // },
+          get disabled() {
+            return this.aselectedProvider === 'Geth';
           },
           type: 'PoA / Clique',
         },
         Sokol: {
-          disabled() {
-            return this.selectedProvider !== 'Parity';
+          // disabled() {
+          //   return this.selectedProvider !== 'Parity';
+          // },
+          get disabled() {
+            return this.aselectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
         },
         Görli: {
-          disabled() {
-            return this.selectedProvider !== 'Parity';
+          // disabled() {
+          //   return this.selectedProvider !== 'Parity';
+          // },
+          get disabled() {
+            return this.aselectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
         },
         INFURAnet: {
-          disabled() {
-            return this.selectedProvider !== 'Infura';
+          // disabled() {
+          //   return this.selectedProvider !== 'Infura';
+          // },
+          get disabled() {
+            return this.aselectedProvider !== 'Infura';
           },
           type: 'PoA / Clique',
         },
@@ -141,13 +180,13 @@ class LandingPage extends Component {
       this.setState({ selectedProvider: e.target.value });
     if (type === 'network') this.setState({ selectedNetwork: e.target.value });
     if (type === 'port') this.setState({ selectedPort: e.target.value });
-    console.log(typeof this.state.selectedPort);
   }
 
   renderIntroduction() {
+    const { classes } = this.props;
     return (
       <div className="introduction container">
-        <h1>Welcome</h1>
+        <h1>Welcome to your Ethereum Browser Wallet.</h1>
         <div>
           <p>
             To use this dApp, you will need to connect to the Ethereum network.
@@ -221,7 +260,7 @@ class LandingPage extends Component {
         <FormControl required className={classes.formControl}>
           <TextField
             name="port"
-            label="Number"
+            label="Port Number"
             value={this.state.selectedPort}
             onChange={e => this.itemSelected(e)}
             type="number"
@@ -267,7 +306,7 @@ class LandingPage extends Component {
               return (
                 <option
                   key={shortid.generate()}
-                  disabled={networks[nw].disabled}
+                  // disabled={networks[nw].disabled}
                 >
                   {nw}
                 </option>
@@ -301,6 +340,49 @@ class LandingPage extends Component {
     );
   }
 
+  resetForm(e) {
+    this.setState({
+      selectedNetwork: '',
+      selectedProvider: '',
+      selectedPort: '',
+      init: true,
+    });
+  }
+
+  setProviderConfig(e) {
+    this.props.setEthereumProviderConfig({
+      selectedProvider: this.state.selectedProvider,
+      selectedPort: this.state.selectedPort,
+      selectedNetwork: this.state.selectedNetwork,
+    });
+  }
+
+  renderButtons() {
+    const { classes } = this.props;
+    return (
+      <div className="container buttonContainer">
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={e => this.resetForm(e)}
+        >
+          Reset Form
+          <NotInterestedSharp className={classes.rightIcon} />
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={e => this.setProviderConfig(e)}
+        >
+          Connect to Ethereum
+          <OfflineBoltSharp className={classes.rightIcon} />
+        </Button>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -311,13 +393,20 @@ class LandingPage extends Component {
           ? this.renderSelectPort()
           : null}
         {this.renderNetwork()}
+        {this.renderButtons()}
       </div>
     );
   }
 }
 
-// export default LandingPage;
+// export default compose(withStyles(styles, { name: 'LandingPage' }))(
+//   LandingPage
+// );
 
-export default compose(withStyles(styles, { name: 'LandingPage' }))(
-  LandingPage
-);
+export default compose(
+  withStyles(styles, { name: 'LandingPage' }),
+  connect(
+    null,
+    { ...Actions }
+  )
+)(LandingPage);

@@ -8,6 +8,8 @@ import ContractItem from '../elements/ContractItem.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
 import { Link } from 'react-router-dom';
 
+import web3test from '../../web3/Web3Initializer.js';
+
 class AccountView extends Component {
   constructor(props) {
     super(props);

@@ -8,6 +8,14 @@ const web3 = new Web3(
   'https://mainnet.infura.io/v3/2e1f7de617754b72a8a61bef3f7de966'
 );
 
+export const setEthereumProviderConfig = data => dispatch => {
+  console.log('here is the data fromt he click', data);
+  dispatch({
+    type: actionTypes.SET_ETHEREUM_PROVIDER_CONFIG,
+    payload: data,
+  });
+};
+
 export const updateWalletContracts = contract => dispatch => {
   console.log(contract);
   dispatch({
