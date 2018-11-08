@@ -38,8 +38,27 @@ export class ExecuteConstants extends Component {
         : inp.value;
     });
 
-    let contract = new web3.eth.Contract(JSON.parse(jsonInterface));
-    contract.options.address = contractInfo.contractAddress;
+    let contract = new web3.eth.Contract(
+      JSON.parse(jsonInterface),
+      contractInfo.contractAddress
+    );
+
+    // Couldn't decode bool from ABI
+    // reliably recreate it?
+    // can maybe make a PR
+
+    // dot test on test net for ENS
+    // get ens address
+    // resolver contract is only on the mainnet
+    // http://docs.ens.domains/en/latest/introduction.html
+
+    // breakout readme for open fashion
+    // gear for easy dev / easy getting started for contributions
+    // there will be more eyeballs soon
+
+    contract.options['address'] = contractInfo.contractAddress;
+    console.log(contractInfo);
+    console.log(contract.options);
 
     try {
       contract.methods[funcName](...inputs)
@@ -116,7 +135,7 @@ export class ExecuteConstants extends Component {
       <React.Fragment>
         {text}
         <em>
-          <span class={'icon ' + icon} />
+          <span className={'icon ' + icon} />
         </em>
       </React.Fragment>
     );

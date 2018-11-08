@@ -12,6 +12,7 @@ import * as Utils from './utils/utils.js';
 import * as WalletUtils from './utils/WalletUtils.js';
 
 // views
+import LandingPage from './components/views/LandingPage.js';
 import AccountView from './components/views/Account.js';
 import SingleAccountView from './components/views/SingleAccountView.js';
 import SingleContractView from './components/views/SingleContractView.js';
@@ -189,16 +190,25 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          <Route exact path="/" component={LandingPage} />
+          {/*}
+
+            if web3 connected, display rest
+    
+          */}
+          {/*}
           <NavBar />
           <div className="dapp-flex-content">
             <main className="dapp-content">
+              
+              <Route exact path="/accounts" component={AccountView} />
               <Route exact path="/wallet/new" component={NewWalletContract} />
               <Route path="/account/*" component={SingleAccountView} />
               <Route path="/contract/*" component={SingleContractView} />
-              <Route exact path="/" component={AccountView} />
               <Route path="/send-from/*" component={SendContractForm} />
               <Route exact path="/contracts" component={ContractsView} />
               <MistAlertBubble />
+              
             </main>
           </div>
           <ToastContainer
@@ -238,7 +248,7 @@ class App extends Component {
             JSONInterface={this.props.reducers.JSONInterface}
             display={JsonInterface}
           />
-
+          */}
           {/*<NoConnection connection={this.props.web3} />*/}
         </div>
       </BrowserRouter>

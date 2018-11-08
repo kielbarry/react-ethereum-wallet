@@ -27,7 +27,8 @@ export const vulnerableWallets = {
 export const NavFields = {
   Wallet: {
     type: 'link',
-    href: '/',
+    // href: '/',
+    href: '/accounts',
     liClass: 'wallet-nav-li',
     icon: 'icon-wallet',
     displayText: 'Wallets',
@@ -69,7 +70,8 @@ export const NavFields = {
 export const DefaultNavFields = [
   {
     type: 'link',
-    href: '/',
+    // href: '/',
+    href: '/accounts',
     liClass: 'wallet-nav-li',
     icon: 'icon-wallet',
     displayText: 'Wallets',
