@@ -9,7 +9,6 @@ const web3 = new Web3(
 );
 
 export const setEthereumProviderConfig = data => dispatch => {
-  console.log('here is the data fromt he click', data);
   dispatch({
     type: actionTypes.SET_ETHEREUM_PROVIDER_CONFIG,
     payload: data,

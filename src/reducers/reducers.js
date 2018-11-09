@@ -55,10 +55,16 @@ const initialState = {
   qrCode: '',
   JSONInterface: '',
   SelectedFunction: {},
+  Web3Initializer: {},
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_ETHEREUM_PROVIDER_CONFIG':
+      return {
+        ...state,
+        Web3Initializer: action.payload,
+      };
     case 'UPDATE_WALLET_CONTRACT':
       return {
         ...state,

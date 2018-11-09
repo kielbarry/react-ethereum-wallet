@@ -18,6 +18,8 @@ import NavBar from './components/Navbar';
 import './stylesheets/mergedstyles.css';
 import './App.css';
 
+import Web3Initializer from './web3/Web3Initializer.js';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -29,11 +31,11 @@ class App extends Component {
       15000
     );
 
-    // this.props.fetchEthGasStationStats();
-    // this.GasInterval = setInterval(
-    //   () => this.props.fetchEthGasStationStats(),
-    //   15000
-    // );
+    this.props.fetchEthGasStationStats();
+    this.GasInterval = setInterval(
+      () => this.props.fetchEthGasStationStats(),
+      15000
+    );
     this.props.closeModal('displayEventInfo');
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
@@ -71,6 +73,18 @@ class App extends Component {
         }
       }
     }, 1000);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.reducers.Web3Initializer !== this.props.reducers.Web3Initializer
+    ) {
+      // console.log(prevProps.reducers.Web3Initializer)
+      // console.log(this.props.reducers.Web3Initializer)
+      console.log(Web3Initializer);
+      // console.log(Web3Initializer.init)
+      console.log(Web3Initializer.init());
+    }
   }
 
   getCryptoComparePrices() {

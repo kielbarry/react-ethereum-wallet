@@ -1,35 +1,90 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { store } from '../store/store.js';
 import Web3 from 'web3';
 
-const Web3Initializer = (state = null, action) => {
-  // let web3 = new Web3();
-  console.log(
-    'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-  );
-  let ProviderNetwork = '';
-  if (action.type === 'SET_ETHEREUM_PROVIDER_CONFIG') {
-    let config = action.payload;
+let ethereumConnection = null;
+
+export default class Web3Initializer {
+  static init() {
+    let config = store.getState().reducers.Web3Initializer;
+    let ProviderNetwork = '';
+
+    console.log('ethereumConnection', ethereumConnection);
+    if (ethereumConnection === null) {
+      // new Promise((resolve, reject) => {
+      //  return resolve(new Web3("ws://localhost:8546"))
+      // }).then(console.log)
+
+      // console.log(eth)
+
+      // console.log("ethereumConnection", ethereumConnection)
+      ethereumConnection = new Web3('ws://localhost:8546');
+      // // .setAllowedOrigins("*")
+      console.log('ethereumConnection', ethereumConnection);
+      ethereumConnection.eth.isSyncing().then(console.log);
+      console.log(ethereumConnection._provider.connected);
+      return ethereumConnection;
+    }
+
     console.log('here is config', config);
     let prov = config.selectedProvider.toLowerCase();
     if (prov === 'geth' || prov === 'parity') {
-      ProviderNetwork = 'ws://127.0.0.1:' + config.port;
+      ProviderNetwork = 'ws://127.0.0.1:' + config.selectedPort;
     }
     if (prov.toLowerCase() === 'metamask') {
     }
     if (prov.toLowerCase() === 'infura') {
-      ProviderNetwork = 'https://' + config.selectedNetwork + '.infura.io/';
+      ProviderNetwork =
+        'wss://' + config.selectedNetwork.toLowerCase() + '.infura.io/ws';
     }
-  }
 
-  console.log('ProviderNetwork', ProviderNetwork);
-  let web3 = ProviderNetwork !== '' ? new Web3(ProviderNetwork) : null;
-  console.log(web3);
-  console.log(web3.eth.isSyncing());
-  if (web3.eth.isSyncing()) {
-    this.props.history.push('/accounts');
-    store.dispatch(action.payload);
-    return web3;
+    return ProviderNetwork;
+    // return new Web3('ws://127.0.0.1:8545')
   }
-};
+}
 
-export default Web3Initializer;
+// const Web3Initializer = () => {
+//   // let web3 = new Web3();
+//   console.log(
+//     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+//   );
+//   console.log("here is the store", store)
+
+// //   const web3Reducer = (state = null, action) => {
+// //   if (action.type === 'WEB3_INITIALIZED') {
+// //     return { ...state, web3Instance: action.payload.web3Instance };
+// //   }
+// //   return state;
+// // };
+
+// // export default web3Reducer;
+// let ProviderNetwork = '';
+// if (action.type === 'SET_ETHEREUM_PROVIDER_CONFIG') {
+//   let config = action.payload;
+//   return { ...state, web3Config: action.payload }
+//   console.log('here is config', config);
+//   let prov = config.selectedProvider.toLowerCase();
+//   if (prov === 'geth' || prov === 'parity') {
+//     ProviderNetwork = 'ws://127.0.0.1:' + config.selectedPort;
+//   }
+//   if (prov.toLowerCase() === 'metamask') {
+//   }
+//   if (prov.toLowerCase() === 'infura') {
+//     ProviderNetwork = 'https://' + config.selectedNetwork + '.infura.io/';
+//   }
+// } else {
+//   //   return state;
+//   // }
+//   // console.log('ProviderNetwork', ProviderNetwork);
+//   // let web3 = ProviderNetwork !== '' ? new Web3(ProviderNetwork) : null;
+//   // console.log(web3);
+//   // console.log(web3.eth.isSyncing());
+//   // if (web3.eth.isSyncing()) {
+//   //   this.props.history.push('/accounts');
+//   //   store.dispatch(action.payload);
+//   //   return web3;
+//   // }
+// };
+
+// export default Web3Initializer;

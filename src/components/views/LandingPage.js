@@ -1,49 +1,37 @@
 import React, { Component } from 'react';
 import compose from 'recompose/compose';
+import { connect } from 'react-redux';
+
+import * as MetamaskModel from 'metamask-logo';
+
 import {
   withStyles,
   MuiThemeProvider,
   createMuiTheme,
 } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import SecurityIcon from '../elements/SecurityIcon.js';
 import shortid from 'shortid';
 
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import DeleteIcon from '@material-ui/icons/Delete';
 import NotInterestedSharp from '@material-ui/icons/NotInterestedSharp';
 import OfflineBoltSharp from '@material-ui/icons/OfflineBoltSharp';
-import Bluetooth from '@material-ui/icons/Bluetooth';
 
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import SettingsSharp from '@material-ui/icons/SettingsSharp';
+
+import Paper from '@material-ui/core/Paper';
+import Slide from '@material-ui/core/Slide';
 
 import green from '@material-ui/core/colors/green';
 
 import * as Actions from '../../actions/actions.js';
-
-let iconList = [
-  'infura-icon.jpeg',
-  'metamask-icon.svg',
-  'mist-150x150.png',
-  'parity-signer.svg',
-];
 
 const styles = theme => ({
   root: {
@@ -81,6 +69,8 @@ const styles = theme => ({
     noHeight: 0,
   },
   paper: {
+    zIndex: 1,
+    position: 'relative',
     margin: theme.spacing.unit,
   },
   svg: {
@@ -123,6 +113,7 @@ const theme = createMuiTheme({
 class LandingPage extends Component {
   constructor(props) {
     super(props);
+    console.log(MetamaskModel);
     this.state = {
       selectedProvider: '',
       selectedPort: '',
@@ -215,12 +206,6 @@ class LandingPage extends Component {
     if (type === 'port') this.setState({ selectedPort: e.target.value });
   }
 
-  // <Tooltip title="Change Network">
-  //   <IconButton aria-label="Delete">
-  //     <SettingsSharp />
-  //   </IconButton>
-  // </Tooltip>
-
   renderIntroduction() {
     const { classes } = this.props;
     return (
@@ -259,12 +244,20 @@ class LandingPage extends Component {
               Beginner
               <ul className={classes.ul}>
                 <li>
-                  <a href="https://metamask.io/" target="_blank">
+                  <a
+                    href="https://metamask.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Metamask
                   </a>
                 </li>
                 <li>
-                  <a href="https://infura.io/" target="_blank">
+                  <a
+                    href="https://infura.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Infura
                   </a>
                 </li>
@@ -277,6 +270,7 @@ class LandingPage extends Component {
                   <a
                     href="https://truffleframework.com/docs/ganache/quickstart"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Ganache
                   </a>
@@ -290,6 +284,7 @@ class LandingPage extends Component {
                   <a
                     href="https://github.com/ethereum/go-ethereum/releases"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Geth
                   </a>
@@ -298,6 +293,7 @@ class LandingPage extends Component {
                   <a
                     href="https://github.com/paritytech/parity-ethereum/releases"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Parity
                   </a>
@@ -311,11 +307,20 @@ class LandingPage extends Component {
   }
 
   renderImage() {
+    let prov = this.state.selectedProvider;
     return (
-      <img
-        style={{ height: '50px', width: '50px', margin: 'auto' }}
-        src={this.state.providers[this.state.selectedProvider].image}
-      />
+      <Slide
+        direction="up"
+        in={this.state.selectedProvider !== ''}
+        mountOnEnter
+        unmountOnExit
+      >
+        <img
+          style={{ height: '50px', width: '50px', margin: 'auto' }}
+          src={prov !== '' ? this.state.providers[prov].image : ''}
+          alt=""
+        />
+      </Slide>
     );
   }
 
@@ -335,7 +340,7 @@ class LandingPage extends Component {
             name="provider"
             style={{ margin: 'auto', textAlign: 'center' }}
           >
-            <option value="Select a provider" />
+            <option defaultValue="Select a provider" value="" />
             {Object.keys(providers).map(prov => {
               return (
                 <option
@@ -349,98 +354,103 @@ class LandingPage extends Component {
           </Select>
           <FormHelperText>Required</FormHelperText>
         </FormControl>
-        <div className={classes.column}>
-          {this.state.selectedProvider !== '' ? this.renderImage() : null}
-        </div>
+        {this.renderImage()}
       </div>
     );
   }
 
   renderSelectPort() {
     const { classes } = this.props;
+    let prov = this.state.selectedProvider;
     return (
-      <div className={'select-port container ' + classes.container}>
-        <div className={classes.column}>Please select your port:</div>
-        <FormControl required className={classes.formControl}>
-          <TextField
-            name="port"
-            label="Port Number"
-            value={this.state.selectedPort}
-            onChange={e => this.itemSelected(e)}
-            type="number"
-            className={classes.select}
-          />
-        </FormControl>
-        <div className={classes.column}>
-          {this.state.selectedPort === '' ? null : this.state.selectedPort ===
-            '8546' || this.state.selectedPort === '8545' ? (
-            <div>
-              This is the
-              <strong>
-                <span style={{ color: 'Peru' }}> default port </span>
-              </strong>
-              for Geth or Parity. Consider configuring your node with a
-              different port.
-            </div>
-          ) : (
-            <span className="icon-like" style={{ color: 'green' }} />
-          )}
+      <Collapse in={prov === 'Geth' || prov === 'Parity' || prov === 'Ganache'}>
+        <div className={'select-port container ' + classes.container}>
+          <div className={classes.column}>Please select your port:</div>
+          <FormControl required className={classes.formControl}>
+            <TextField
+              name="port"
+              label="Port Number"
+              value={this.state.selectedPort}
+              onChange={e => this.itemSelected(e)}
+              type="number"
+              className={classes.select}
+            />
+          </FormControl>
+          <div className={classes.column}>
+            {this.state.selectedPort === '' ? null : this.state.selectedPort ===
+              '8546' || this.state.selectedPort === '8545' ? (
+              <div>
+                This is the
+                <strong>
+                  <span style={{ color: 'Peru' }}> default port </span>
+                </strong>
+                for Geth or Parity. Consider configuring your node with a
+                different port.
+              </div>
+            ) : (
+              <span className="icon-like" style={{ color: 'green' }} />
+            )}
+          </div>
         </div>
-      </div>
+      </Collapse>
     );
   }
 
   renderNetwork() {
     const { classes } = this.props;
     let networks = this.state.networks;
+    let prov = this.state.selectedProvider;
+    let port = this.state.selectedPort;
     return (
-      <div className={'select-network container ' + classes.container}>
-        <div className={classes.column}>Please select your network:</div>
-        <FormControl required className={classes.formControl}>
-          <InputLabel htmlFor="network-required">Network</InputLabel>
-          <Select
-            native
-            className={classes.select}
-            value={this.state.selectedNetwork}
-            onChange={e => this.itemSelected(e)}
-            name="network"
-          >
-            <option value="Select a network" />
-            {Object.keys(networks).map(nw => {
-              return (
-                <option
-                  key={shortid.generate()}
-                  // disabled={networks[nw].disabled}
-                >
-                  {nw}
-                </option>
-              );
-            })}
-          </Select>
-          <FormHelperText>Required</FormHelperText>
-        </FormControl>
-        <div className={classes.column}>
-          {this.state.selectedNetwork === '' ? null : this.state
-            .selectedNetwork !== 'MainNet' ? (
-            <div>
-              This is a{' '}
-              <strong>
-                <span style={{ color: 'Peru' }}>TEST NET</span>
-              </strong>
-              . Ether or token balances have
-              <em> no real world value.</em>
-            </div>
-          ) : (
-            <div>
-              Ethereum{' '}
-              <strong>
-                <span style={{ color: 'green' }}>MAIN NET</span>
-              </strong>
-              . Balances here represent real-world, monetary value
-            </div>
-          )}
+      <Collapse in={prov === 'Metamask' || prov === 'Infura' || port !== ''}>
+        <div className={'select-network container ' + classes.container}>
+          <div className={classes.column}>Please select your network:</div>
+          <FormControl required className={classes.formControl}>
+            <InputLabel htmlFor="network-required">Network</InputLabel>
+            <Select
+              native
+              className={classes.select}
+              value={this.state.selectedNetwork}
+              onChange={e => this.itemSelected(e)}
+              name="network"
+            >
+              <option defaultValue="Select a network" value="" />
+              {Object.keys(networks).map(nw => {
+                return (
+                  <option
+                    key={shortid.generate()}
+                    // disabled={networks[nw].disabled}
+                  >
+                    {nw}
+                  </option>
+                );
+              })}
+            </Select>
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
+          <div className={classes.column}>
+            {this.state.selectedNetwork === '' ? null : this.state
+              .selectedNetwork !== 'MainNet' ? (
+              <div>
+                This is a{' '}
+                <strong>
+                  <span style={{ color: 'Peru' }}>TEST NET</span>
+                </strong>
+                . Ether or token balances have
+                <em> no real world value.</em>
+              </div>
+            ) : (
+              <div>
+                Ethereum{' '}
+                <strong>
+                  <span style={{ color: 'green' }}>MAIN NET</span>
+                </strong>
+                . Balances here represent real-world, monetary value
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </Collapse>
     );
   }
 
@@ -494,11 +504,7 @@ class LandingPage extends Component {
       <div>
         {this.renderIntroduction()}
         {this.renderProvider()}
-        {this.state.selectedProvider === 'Geth' ||
-        this.state.selectedProvider === 'Parity' ||
-        this.state.selectedProvider === 'Ganache'
-          ? this.renderSelectPort()
-          : null}
+        {this.renderSelectPort()}
         {this.renderNetwork()}
         {this.renderButtons()}
       </div>

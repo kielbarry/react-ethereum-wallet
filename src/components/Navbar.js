@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
 import SU from './elements/SelectableUnit.js';
 import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
@@ -32,8 +34,11 @@ class NavBar extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (typeof prevProps.blockHeader.number === undefined) return;
-    if (prevProps.blockHeader.number !== this.props.blockHeader.number) {
+    if (typeof prevProps.reducers.blockHeader.number === undefined) return;
+    if (
+      prevProps.reducers.blockHeader.number !==
+      this.props.reducers.blockHeader.number
+    ) {
       clearInterval(this.interval);
       let time = 0;
       this.interval = setInterval(() => {
@@ -86,11 +91,6 @@ class NavBar extends Component {
   }
 
   redirectToSettings(e) {
-    console.log(e);
-    console.log(this);
-    console.log(this.state);
-
-    console.log(this.props);
     this.props.history.push('/');
   }
 
@@ -99,18 +99,18 @@ class NavBar extends Component {
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
         <span className={field.firstClass}>
-          {this.props.web3 && this.props.web3.web3Instance ? (
+          {this.props.reducers.web3 && this.props.reducers.web3.web3Instance ? (
             <NumberFormat
               value={Utils.displayPriceFormatter(
                 this.props,
-                this.props.totalBalance
+                this.props.reducers.totalBalance
               )}
               displayType={'text'}
               thousandSeparator={true}
             />
           ) : (
             <NumberFormat
-              value={this.props.totalBalance}
+              value={this.props.reducers.totalBalance}
               displayType={'text'}
               thousandSeparator={true}
             />
@@ -122,7 +122,7 @@ class NavBar extends Component {
               data-value="ether"
               onClick={() => this.toggleSU()}
             >
-              {this.props.currency}
+              {this.props.reducers.currency}
             </button>
             <SU displaySU={this.state.displaySU} />
           </span>
@@ -146,13 +146,13 @@ class NavBar extends Component {
           </Tooltip>
           <i className={field.firstIcon} />
           <span style={inlineStyle} className={field.secondClass}>
-            {this.props.peerCount}
+            {this.props.reducers.peerCount}
             &nbsp;
             {field.firstText}
           </span>
           &nbsp; &nbsp;| &nbsp; &nbsp;
           <i className={field.secondIcon} />
-          <span>&nbsp; {this.props.blockHeader.number}</span>
+          <span>&nbsp; {this.props.reducers.blockHeader.number}</span>
           <i className={field.thirdIcon} style={inlineStyle} />
           <span className={field.secondClass}>&nbsp; {this.state.time}</span>
         </li>
@@ -168,7 +168,6 @@ class NavBar extends Component {
       'dapp-small': this.state.small,
       sticky: this.state.sticky,
     });
-
     return (
       <header className={newStyles}>
         <nav>
@@ -187,12 +186,12 @@ class NavBar extends Component {
 
 const mapStateToProps = state => ({
   ...state,
-  timeSinceLastBlock: state.reducers.timeSinceLastBlock,
-  peerCount: state.reducers.peerCount,
-  peerCountIntervalId: state.reducers.peerCountIntervalId,
-  totalBalance: state.reducers.totalBalance,
-  blockHeader: state.reducers.blockHeader,
-  currency: state.reducers.currency,
+  // timeSinceLastBlock: state.reducers.timeSinceLastBlock,
+  // peerCount: state.reducers.peerCount,
+  // peerCountIntervalId: state.reducers.peerCountIntervalId,
+  // totalBalance: state.reducers.totalBalance,
+  // blockHeader: state.reducers.blockHeader,
+  // currency: state.reducers.currency,
 });
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps)(withRouter(NavBar));
