@@ -4,6 +4,12 @@ import SU from './elements/SelectableUnit.js';
 import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
 import { NavFields } from '../constants/FieldConstants.js';
+
+import Icon from '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import SettingsSharp from '@material-ui/icons/SettingsSharp';
+import IconButton from '@material-ui/core/IconButton';
+
 import * as Utils from '../utils/utils.js';
 
 import NumberFormat from 'react-number-format';
@@ -119,19 +125,29 @@ class NavBar extends Component {
   renderNetworkHeader(field) {
     const inlineStyle = { marginLeft: '10px' };
     return (
-      <li className={field.liClass}>
-        <i className={field.firstIcon} />
-        <span style={inlineStyle} className={field.secondClass}>
-          {this.props.peerCount}
-          &nbsp;
-          {field.firstText}
-        </span>
-        &nbsp; &nbsp;| &nbsp; &nbsp;
-        <i className={field.secondIcon} />
-        <span>&nbsp; {this.props.blockHeader.number}</span>
-        <i className={field.thirdIcon} style={inlineStyle} />
-        <span className={field.secondClass}>&nbsp; {this.state.time}</span>
-      </li>
+      <React.Fragment>
+        <li className={field.liClass}>
+          <Tooltip title="Change Network">
+            <IconButton
+              aria-label="Delete"
+              onClick={e => this.props.history.push('/')}
+            >
+              <SettingsSharp />
+            </IconButton>
+          </Tooltip>
+          <i className={field.firstIcon} />
+          <span style={inlineStyle} className={field.secondClass}>
+            {this.props.peerCount}
+            &nbsp;
+            {field.firstText}
+          </span>
+          &nbsp; &nbsp;| &nbsp; &nbsp;
+          <i className={field.secondIcon} />
+          <span>&nbsp; {this.props.blockHeader.number}</span>
+          <i className={field.thirdIcon} style={inlineStyle} />
+          <span className={field.secondClass}>&nbsp; {this.state.time}</span>
+        </li>
+      </React.Fragment>
     );
   }
 

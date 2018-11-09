@@ -44,10 +44,13 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.getCCP = this.getCCP.bind(this);
+    this.getCryptoComparePrices = this.getCryptoComparePrices.bind(this);
 
-    this.getCCP();
-    this.CCInterval = setInterval(() => this.getCCP(), 15000);
+    this.getCryptoComparePrices();
+    this.CryptoCompareInterval = setInterval(
+      () => this.getCryptoComparePrices(),
+      15000
+    );
 
     // this.props.fetchEthGasStationStats();
     // this.GasInterval = setInterval(
@@ -59,25 +62,41 @@ class App extends Component {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
         let web3 = this.props.web3.web3Instance;
-        Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
-        Utils.getAccounts(
-          web3,
-          this.props.setWallets,
-          this.props.updateTotalBalance
-        );
-        Utils.getNewBlockHeaders(
-          web3,
-          this.props.updateBlockHeader,
-          this.props.updatePeerCount
-        );
-        this.props.createInitWalletContract(
-          WalletUtils.initWalletContact(web3)
-        );
+        try {
+          Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
+        } catch (err) {
+          console.error('network check not available');
+        }
+        try {
+          Utils.getAccounts(
+            web3,
+            this.props.setWallets,
+            this.props.updateTotalBalance
+          );
+        } catch (err) {
+          console.error('error', err);
+        }
+        try {
+          Utils.getNewBlockHeaders(
+            web3,
+            this.props.updateBlockHeader,
+            this.props.updatePeerCount
+          );
+        } catch (err) {
+          console.error('error', err);
+        }
+        try {
+          this.props.createInitWalletContract(
+            WalletUtils.initWalletContact(web3)
+          );
+        } catch (err) {
+          console.error('error', err);
+        }
       }
     }, 1000);
   }
 
-  getCCP() {
+  getCryptoComparePrices() {
     Utils.getCryptoComparePrices().then(exchangeRates => {
       this.props.updateEtherPrices(exchangeRates);
     });
@@ -93,7 +112,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.CCInterval);
+    clearInterval(this.CryptoCompareInterval);
     clearInterval(this.GasInterval);
   }
 
@@ -151,7 +170,23 @@ class App extends Component {
       : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
   }
 
-  render() {
+  renderViews() {
+    return (
+      <div className="dapp-flex-content">
+        <main className="dapp-content">
+          <Route exact path="/accounts" component={AccountView} />
+          <Route exact path="/wallet/new" component={NewWalletContract} />
+          <Route path="/account/*" component={SingleAccountView} />
+          <Route path="/contract/*" component={SingleContractView} />
+          <Route path="/send-from/*" component={SendContractForm} />
+          <Route exact path="/contracts" component={ContractsView} />
+          <MistAlertBubble />
+        </main>
+      </div>
+    );
+  }
+
+  renderModals() {
     let modals = this.props.reducers.modals;
     let watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,
@@ -188,68 +223,62 @@ class App extends Component {
     // let qrHash = this.props.reducers.SelectedTransaction ? this.props.reducers.SelectedTransaction.adress : ''
 
     return (
+      <React.Fragment>
+        {/*}
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange
+          draggable
+          pauseOnHover
+        />
+
+        <DeleteToken
+          token={this.props.reducers.TokenToDelete}
+          display={deleteToken}
+        />
+
+        {this.props.reducers.SelectedTransaction ? (
+          <TransactionInfo
+            display={viewTransaction}
+            transaction={this.props.reducers.SelectedTransaction}
+          />
+        ) : null}
+        {/*}
+        <EventInfo
+          display={viewEventInfo}
+          event={this.props.reducers.SelectedEvent}
+        />
+      */}
+        <WatchToken display={watchToken} />
+        <WatchContract display={watchContract} />
+        <SendTransaction display={sendTransaction} />
+        <QRCode hash={this.props.reducers.qrCode} display={qrCode} />
+        <JSONInterface
+          JSONInterface={this.props.reducers.JSONInterface}
+          display={JsonInterface}
+        />
+        */}
+        {/*<NoConnection connection={this.props.web3} />*/}
+      </React.Fragment>
+    );
+  }
+
+  render() {
+    return (
       <BrowserRouter>
         <div className="App">
           <Route exact path="/" component={LandingPage} />
           {/*}
-
             if web3 connected, display rest
-    
           */}
-          {/*}
           <NavBar />
-          <div className="dapp-flex-content">
-            <main className="dapp-content">
-              
-              <Route exact path="/accounts" component={AccountView} />
-              <Route exact path="/wallet/new" component={NewWalletContract} />
-              <Route path="/account/*" component={SingleAccountView} />
-              <Route path="/contract/*" component={SingleContractView} />
-              <Route path="/send-from/*" component={SendContractForm} />
-              <Route exact path="/contracts" component={ContractsView} />
-              <MistAlertBubble />
-              
-            </main>
-          </div>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnVisibilityChange
-            draggable
-            pauseOnHover
-          />
-
-          <DeleteToken
-            token={this.props.reducers.TokenToDelete}
-            display={deleteToken}
-          />
-
-          {this.props.reducers.SelectedTransaction ? (
-            <TransactionInfo
-              display={viewTransaction}
-              transaction={this.props.reducers.SelectedTransaction}
-            />
-          ) : null}
-          {/*}
-          <EventInfo
-            display={viewEventInfo}
-            event={this.props.reducers.SelectedEvent}
-          />
-        */}
-          <WatchToken display={watchToken} />
-          <WatchContract display={watchContract} />
-          <SendTransaction display={sendTransaction} />
-          <QRCode hash={this.props.reducers.qrCode} display={qrCode} />
-          <JSONInterface
-            JSONInterface={this.props.reducers.JSONInterface}
-            display={JsonInterface}
-          />
-          */}
-          {/*<NoConnection connection={this.props.web3} />*/}
+          {this.renderViews()}
+          {this.renderModals()}
         </div>
       </BrowserRouter>
     );

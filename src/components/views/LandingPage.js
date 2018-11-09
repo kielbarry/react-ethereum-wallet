@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import {
+  withStyles,
+  MuiThemeProvider,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import Collapse from '@material-ui/core/Collapse';
@@ -26,6 +30,12 @@ import NotInterestedSharp from '@material-ui/icons/NotInterestedSharp';
 import OfflineBoltSharp from '@material-ui/icons/OfflineBoltSharp';
 import Bluetooth from '@material-ui/icons/Bluetooth';
 
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import SettingsSharp from '@material-ui/icons/SettingsSharp';
+
+import green from '@material-ui/core/colors/green';
+
 import * as Actions from '../../actions/actions.js';
 
 let iconList = [
@@ -41,12 +51,18 @@ const styles = theme => ({
     flexWrap: 'wrap',
     column: true,
   },
+  container: {
+    paddingLeft: '0px',
+  },
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 120,
     display: 'inline-block',
     verticalAlign: 'middle',
     paddingRight: '30px',
+    marginLeft: '0px',
+    marginRight: '0px',
+    width: '25%',
   },
   select: {
     margin: 'auto',
@@ -89,6 +105,19 @@ const styles = theme => ({
   rightIcon: {
     marginLeft: theme.spacing.unit,
   },
+  ul: {
+    listStyleType: 'none',
+    paddingLeft: '0px',
+  },
+});
+
+const theme = createMuiTheme({
+  palette: {
+    secondary: green,
+  },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 class LandingPage extends Component {
@@ -114,6 +143,10 @@ class LandingPage extends Component {
         Infura: {
           disabled: false,
           image: 'infura-icon.jpeg',
+        },
+        Ganache: {
+          disabled: false,
+          image: 'ganache-icon.png',
         },
       },
       networks: {
@@ -182,10 +215,26 @@ class LandingPage extends Component {
     if (type === 'port') this.setState({ selectedPort: e.target.value });
   }
 
+  // <Tooltip title="Change Network">
+  //   <IconButton aria-label="Delete">
+  //     <SettingsSharp />
+  //   </IconButton>
+  // </Tooltip>
+
   renderIntroduction() {
     const { classes } = this.props;
     return (
-      <div className="introduction container">
+      <div className={'introduction container ' + classes.container}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={e => this.props.history.push('/accounts')}
+        >
+          Dev Button -> Go to Accounts
+          <NotInterestedSharp className={classes.rightIcon} />
+        </Button>
+
         <h1>Welcome to your Ethereum Browser Wallet.</h1>
         <div>
           <p>
@@ -201,6 +250,61 @@ class LandingPage extends Component {
             <strong>not be at risk of losing Ether or Tokens</strong> as you
             will not be connected to an account or wallet.
           </p>
+          <p>
+            If you are unfamiliar with any of these networks, you can learn more
+            about connecting to the network by following these links:
+          </p>
+          <div className="links">
+            <div className={classes.column}>
+              Beginner
+              <ul className={classes.ul}>
+                <li>
+                  <a href="https://metamask.io/" target="_blank">
+                    Metamask
+                  </a>
+                </li>
+                <li>
+                  <a href="https://infura.io/" target="_blank">
+                    Infura
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className={classes.column}>
+              Medium
+              <ul className={classes.ul}>
+                <li>
+                  <a
+                    href="https://truffleframework.com/docs/ganache/quickstart"
+                    target="_blank"
+                  >
+                    Ganache
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className={classes.column}>
+              Advanced
+              <ul className={classes.ul}>
+                <li>
+                  <a
+                    href="https://github.com/ethereum/go-ethereum/releases"
+                    target="_blank"
+                  >
+                    Geth
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/paritytech/parity-ethereum/releases"
+                    target="_blank"
+                  >
+                    Parity
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -219,7 +323,7 @@ class LandingPage extends Component {
     const { classes } = this.props;
     let providers = this.state.providers;
     return (
-      <div className="select-provider container">
+      <div className={'select-provider container ' + classes.container}>
         <div className={classes.column}>Please select your provider:</div>
         <FormControl required className={classes.formControl}>
           <InputLabel htmlFor="provider-required">Provider</InputLabel>
@@ -255,7 +359,7 @@ class LandingPage extends Component {
   renderSelectPort() {
     const { classes } = this.props;
     return (
-      <div className="select-port container">
+      <div className={'select-port container ' + classes.container}>
         <div className={classes.column}>Please select your port:</div>
         <FormControl required className={classes.formControl}>
           <TextField
@@ -290,7 +394,7 @@ class LandingPage extends Component {
     const { classes } = this.props;
     let networks = this.state.networks;
     return (
-      <div className="select-network container">
+      <div className={'select-network container ' + classes.container}>
         <div className={classes.column}>Please select your network:</div>
         <FormControl required className={classes.formControl}>
           <InputLabel htmlFor="network-required">Network</InputLabel>
@@ -321,7 +425,7 @@ class LandingPage extends Component {
             <div>
               This is a{' '}
               <strong>
-                <span style={{ color: 'Peru' }}>TESTNET</span>
+                <span style={{ color: 'Peru' }}>TEST NET</span>
               </strong>
               . Ether or token balances have
               <em> no real world value.</em>
@@ -360,25 +464,27 @@ class LandingPage extends Component {
   renderButtons() {
     const { classes } = this.props;
     return (
-      <div className="container buttonContainer">
+      <div className={'container buttonContainer ' + classes.container}>
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           className={classes.button}
           onClick={e => this.resetForm(e)}
         >
           Reset Form
           <NotInterestedSharp className={classes.rightIcon} />
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={e => this.setProviderConfig(e)}
-        >
-          Connect to Ethereum
-          <OfflineBoltSharp className={classes.rightIcon} />
-        </Button>
+        <MuiThemeProvider theme={theme}>
+          <Button
+            variant="contained"
+            color="secondary"
+            // className={classes.button}
+            onClick={e => this.setProviderConfig(e)}
+          >
+            Connect to Ethereum
+            <OfflineBoltSharp className={classes.rightIcon} />
+          </Button>
+        </MuiThemeProvider>
       </div>
     );
   }
@@ -389,7 +495,8 @@ class LandingPage extends Component {
         {this.renderIntroduction()}
         {this.renderProvider()}
         {this.state.selectedProvider === 'Geth' ||
-        this.state.selectedProvider === 'Parity'
+        this.state.selectedProvider === 'Parity' ||
+        this.state.selectedProvider === 'Ganache'
           ? this.renderSelectPort()
           : null}
         {this.renderNetwork()}
@@ -398,10 +505,6 @@ class LandingPage extends Component {
     );
   }
 }
-
-// export default compose(withStyles(styles, { name: 'LandingPage' }))(
-//   LandingPage
-// );
 
 export default compose(
   withStyles(styles, { name: 'LandingPage' }),
