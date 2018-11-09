@@ -85,6 +85,15 @@ class NavBar extends Component {
       : this.setState({ displaySU: true });
   }
 
+  redirectToSettings(e) {
+    console.log(e);
+    console.log(this);
+    console.log(this.state);
+
+    console.log(this.props);
+    this.props.history.push('/');
+  }
+
   renderBalanceHeader(field) {
     return (
       <li className={field.liClass}>
@@ -130,7 +139,7 @@ class NavBar extends Component {
           <Tooltip title="Change Network">
             <IconButton
               aria-label="Delete"
-              onClick={e => this.props.history.push('/')}
+              onClick={e => this.redirectToSettings(e)}
             >
               <SettingsSharp />
             </IconButton>
@@ -178,7 +187,6 @@ class NavBar extends Component {
 
 const mapStateToProps = state => ({
   ...state,
-
   timeSinceLastBlock: state.reducers.timeSinceLastBlock,
   peerCount: state.reducers.peerCount,
   peerCountIntervalId: state.reducers.peerCountIntervalId,
