@@ -66,6 +66,13 @@ class AccountView extends Component {
       WalletContracts
     );
 
+    console.log(contracts);
+
+    Object.keys(contracts).map((address, i) => {
+      console.log(address);
+      console.log(contracts[address]);
+    });
+
     return (
       <React.Fragment>
         {Object.keys(contracts).map((address, i) => (

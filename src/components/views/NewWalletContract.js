@@ -347,6 +347,9 @@ class NewWalletContract extends Component {
         receipt['address'] = receipt.contractAddress;
         receipt['logs'] = [];
         receipt['balance'] = 0;
+        receipt['deployedWalletContract'] = true;
+
+        console.log(receipt);
 
         this.props.updateWalletContracts({
           name: receipt.contractAddress,

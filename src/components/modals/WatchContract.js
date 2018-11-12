@@ -80,6 +80,23 @@ class WatchItem extends Component {
           contract['logs'] = [];
           contract['contractAddress'] = contract.address;
           con[contract['address']] = contract;
+
+          let {
+            ContractsPendingConfirmations,
+            WalletContracts,
+          } = this.props.reducers;
+          let deployedWalletContracts = Object.assign(
+            {},
+            ContractsPendingConfirmations,
+            WalletContracts
+          );
+
+          console.log('here in watch COntracts', deployedWalletContracts);
+
+          contract['deployedWalletContract'] = Object.keys(
+            deployedWalletContracts
+          ).includes(contract.address);
+
           this.props.addObservedContract(con);
           this.props.displayGlobalNotification({
             display: true,

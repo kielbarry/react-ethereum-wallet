@@ -29,6 +29,7 @@ class ContractItem extends Component {
   openAccountPage(e) {
     // e.preventDefault()
     console.log(this.props);
+    console.log(this.props.contract);
     // this.props.emptySelectedWallet('');
     this.props.selectedContract({
       contract: this.props.contract,
@@ -98,6 +99,8 @@ class ContractItem extends Component {
   render() {
     let contract = this.props.contract;
     let pending = this.props.pending;
+
+    console.log(contract);
 
     pending ? (pending = true) : (pending = false);
 

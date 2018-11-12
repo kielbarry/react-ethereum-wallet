@@ -20,6 +20,9 @@ export class SingleContractView extends Component {
       requiredSignatures: '',
       ownersList: '',
     };
+    this.redirectToOwnersSingleView = this.redirectToOwnersSingleView.bind(
+      this
+    );
     this.updateWalletDetails = this.updateWalletDetails.bind(this);
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
@@ -208,24 +211,35 @@ export class SingleContractView extends Component {
       if (err) console.log('err', err);
       if (res) console.log('res', res);
     });
+    contractInstance.methods['m_required']().call((err, res) => {
+      if (err) console.log('err', err);
+      if (res) console.log('res', res);
+    });
     // how to get a current list of owners from the contract?
+  }
+
+  redirectToOwnersSingleView(e) {
+    console.log(e);
+    // determine if address if for account or contract
+    // gather info from wallet or contract redux state objects
+    // aciont for updateSelectedContract or updateSelectedWallet
   }
 
   renderWalletDetails() {
     return (
       <React.Fragment>
-        <div class="row clear wallet-info">
-          <div class="col col-4 mobile-full">
+        <div className="row clear wallet-info">
+          <div className="col col-4 mobile-full">
             <h3>
               Daily limit
               <span style={{ fontWeight: 200 > 10.0 }}> ether</span>
             </h3>
             10.00 ether remaining today
           </div>
-          <div class="col col-4 mobile-full">
+          <div className="col col-4 mobile-full">
             <h3>Required signatures</h3> 2
           </div>
-          <div class="col col-4 mobile-full">
+          <div className="col col-4 mobile-full">
             <h3>Owners</h3>
           </div>
           security icons
@@ -243,6 +257,10 @@ export class SingleContractView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
+    console.log('here is the contract', contract);
+
+    // contract.deployedWalletContract
+    //   ?
     let {
       logs,
       contractFunctions,
@@ -285,7 +303,7 @@ export class SingleContractView extends Component {
           <table className="token-list dapp-zebra">
             <tbody />
           </table>
-          {this.renderWalletDetails()}
+          {contract.deployedWalletContract ? this.renderWalletDetails() : null}
         </div>
         <ContractActionBar props={contract} />
         {contractConstants &&
