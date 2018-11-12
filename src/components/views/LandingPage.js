@@ -146,10 +146,11 @@ class LandingPage extends Component {
           type: 'PoW',
         },
         Rinkeby: {
-          // disabled() {
-          //   return this.selectedProvider === 'Parity';
-          // },
+          set provider(prov) {
+            this.selectedProvider = prov;
+          },
           get disabled() {
+            console.log(this);
             return this.selectedProvider === 'Parity';
           },
           type: 'PoA / Clique',
@@ -159,37 +160,41 @@ class LandingPage extends Component {
           type: 'PoW',
         },
         Kovan: {
-          // disabled() {
-          //   return this.selectedProvider === 'Geth';
-          // },
+          set provider(prov) {
+            this.selectedProvider = prov;
+          },
           get disabled() {
+            console.log(this);
             return this.selectedProvider === 'Geth';
           },
           type: 'PoA / Clique',
         },
         Sokol: {
-          // disabled() {
-          //   return this.selectedProvider !== 'Parity';
-          // },
+          set provider(prov) {
+            this.selectedProvider = prov;
+          },
           get disabled() {
+            console.log(this);
             return this.selectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
         },
         Görli: {
-          // disabled() {
-          //   return this.selectedProvider !== 'Parity';
-          // },
+          set provider(prov) {
+            this.selectedProvider = prov;
+          },
           get disabled() {
+            console.log(this);
             return this.selectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
         },
         INFURAnet: {
-          // disabled() {
-          //   return this.selectedProvider !== 'Infura';
-          // },
+          set provider(prov) {
+            this.selectedProvider = prov;
+          },
           get disabled() {
+            console.log(this);
             return this.selectedProvider !== 'Infura';
           },
           type: 'PoA / Clique',
@@ -400,11 +405,6 @@ class LandingPage extends Component {
     let networks = this.state.networks;
     let prov = this.state.selectedProvider;
     let port = this.state.selectedPort;
-
-    Object.keys(networks).map(network => {
-      console.log(network);
-      // console.log(networks[network].get('disabled'))
-    });
     return (
       <Collapse in={prov === 'Metamask' || prov === 'Infura' || port !== ''}>
         <div className={'select-network container ' + classes.container}>
@@ -420,6 +420,7 @@ class LandingPage extends Component {
             >
               <option defaultValue="Select a network" value="" />
               {Object.keys(networks).map(nw => {
+                networks[nw].provider = prov;
                 return (
                   <option
                     key={shortid.generate()}
