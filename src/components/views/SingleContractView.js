@@ -14,7 +14,13 @@ import shortid from 'shortid';
 export class SingleContractView extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    this.state = {
+      ...this.props,
+      dailyEtherLimit: '',
+      requiredSignatures: '',
+      ownersList: '',
+    };
+    this.updateWalletDetails = this.updateWalletDetails.bind(this);
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
     this.displayEventModal = this.displayEventModal.bind(this);
@@ -172,6 +178,39 @@ export class SingleContractView extends Component {
     this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
+  updateWalletDetails() {
+    let web3;
+    if (this.props.web3 && this.props.web3.web3Instance) {
+      web3 = this.props.web3.web3Instance;
+    } else {
+      return;
+    }
+
+    //is contract
+    //     web3.eth.getCode("0xa5Acc472597C1e1651270da9081Cc5a0b38258E3")
+    // if no "0x"
+    // if no and ganache "0x0"
+    let contract = this.props.reducers.selectedContract.contract;
+    let contractInstance = new web3.eth.Contract(
+      JSON.parse(contract.jsonInterface),
+      contract.address
+    );
+
+    //m_dailyLimit
+    //m_numOwners
+    // _owners
+
+    contractInstance.methods['m_dailyLimit']().call((err, res) => {
+      if (err) console.log('err', err);
+      if (res) console.log('res', res);
+    });
+    contractInstance.methods['m_numOwners']().call((err, res) => {
+      if (err) console.log('err', err);
+      if (res) console.log('res', res);
+    });
+    // how to get a current list of owners from the contract?
+  }
+
   renderWalletDetails() {
     return (
       <React.Fragment>
@@ -246,6 +285,7 @@ export class SingleContractView extends Component {
           <table className="token-list dapp-zebra">
             <tbody />
           </table>
+          {this.renderWalletDetails()}
         </div>
         <ContractActionBar props={contract} />
         {contractConstants &&
