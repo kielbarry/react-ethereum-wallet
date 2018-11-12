@@ -212,7 +212,13 @@ export class SingleContractView extends Component {
 
     return (
       <div className="dapp-container accounts-page">
-        <div className="dapp-sticky-bar dapp-container" />
+        <div className="dapp-sticky-bar dapp-container">
+          <SecurityIcon
+            type="singleAccountView"
+            classes="dapp-identicon"
+            hash={contract.address}
+          />
+        </div>
         <div className="accounts-page-summary">
           <SecurityIcon
             type="singleAccountView"
@@ -240,28 +246,6 @@ export class SingleContractView extends Component {
           <table className="token-list dapp-zebra">
             <tbody />
           </table>
-          <div className="accounts-transactions">
-            <h2>Latest events</h2>
-            <br />
-            <div>
-              <input
-                type="checkbox"
-                id="watch-events-checkbox"
-                className="toggle-watch-events"
-                // onClick={e => this.watchContractEvents(e, contract)}
-                onClick={e => this.executeAndWatch(e, contract)}
-              />
-              <label htmlFor="watch-events-checkbox">
-                Watch contract events
-              </label>
-            </div>
-            <br />
-            <input
-              type="text"
-              className="filter-transactions"
-              placeholder="Filter events"
-            />
-          </div>
         </div>
         <ContractActionBar props={contract} />
         {contractConstants &&
@@ -270,6 +254,26 @@ export class SingleContractView extends Component {
           <ExecutableContract />
         ) : null}
         {logs && logs.length ? <ContractEvents /> : null}
+        <div className="accounts-transactions">
+          <h2>Latest events</h2>
+          <br />
+          <div>
+            <input
+              type="checkbox"
+              id="watch-events-checkbox"
+              className="toggle-watch-events"
+              // onClick={e => this.watchContractEvents(e, contract)}
+              onClick={e => this.executeAndWatch(e, contract)}
+            />
+            <label htmlFor="watch-events-checkbox">Watch contract events</label>
+          </div>
+          <br />
+          <input
+            type="text"
+            className="filter-transactions"
+            placeholder="Filter events"
+          />
+        </div>
       </div>
     );
   }

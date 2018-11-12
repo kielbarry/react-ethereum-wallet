@@ -479,7 +479,6 @@ class LandingPage extends Component {
         {this.renderIntroduction()}
         {this.renderProvider()}
         {this.renderSelectPort()}
-
         {this.state.selectedProvider !== '' ? this.renderNetwork() : null}
         {this.renderButtons()}
       </div>
