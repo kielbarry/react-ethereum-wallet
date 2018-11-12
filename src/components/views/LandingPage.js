@@ -122,22 +122,27 @@ class LandingPage extends Component {
         Geth: {
           disabled: false,
           image: 'mist-150x150.png',
+          link: 'https://github.com/ethereum/go-ethereum/releases',
         },
         Parity: {
           disabled: false,
           image: 'parity-signer.svg',
+          link: 'https://github.com/paritytech/parity-ethereum/releases',
         },
         Metamask: {
           disabled: false,
           image: 'metamask-icon.svg',
+          link: 'https://metamask.io/',
         },
         Infura: {
           disabled: false,
           image: 'infura-icon.jpeg',
+          link: 'https://infura.io/',
         },
         Ganache: {
           disabled: false,
           image: 'ganache-icon.png',
+          link: 'https://truffleframework.com/docs/ganache/quickstart',
         },
       },
       networks: {
@@ -150,7 +155,6 @@ class LandingPage extends Component {
             this.selectedProvider = prov;
           },
           get disabled() {
-            console.log(this);
             return this.selectedProvider === 'Parity';
           },
           type: 'PoA / Clique',
@@ -164,7 +168,6 @@ class LandingPage extends Component {
             this.selectedProvider = prov;
           },
           get disabled() {
-            console.log(this);
             return this.selectedProvider === 'Geth';
           },
           type: 'PoA / Clique',
@@ -174,7 +177,6 @@ class LandingPage extends Component {
             this.selectedProvider = prov;
           },
           get disabled() {
-            console.log(this);
             return this.selectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
@@ -184,7 +186,6 @@ class LandingPage extends Component {
             this.selectedProvider = prov;
           },
           get disabled() {
-            console.log(this);
             return this.selectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
@@ -194,7 +195,6 @@ class LandingPage extends Component {
             this.selectedProvider = prov;
           },
           get disabled() {
-            console.log(this);
             return this.selectedProvider !== 'Infura';
           },
           type: 'PoA / Clique',
@@ -209,6 +209,17 @@ class LandingPage extends Component {
       this.setState({ selectedProvider: e.target.value });
     if (type === 'network') this.setState({ selectedNetwork: e.target.value });
     if (type === 'port') this.setState({ selectedPort: e.target.value });
+  }
+
+  renderLink(name) {
+    let provInfo = this.state.providers[name];
+    return (
+      <li>
+        <a href={provInfo.link} target="_blank" rel="noopener noreferrer">
+          {name}
+        </a>
+      </li>
+    );
   }
 
   renderIntroduction() {
@@ -247,61 +258,19 @@ class LandingPage extends Component {
             <div className={classes.column}>
               Beginner
               <ul className={classes.ul}>
-                <li>
-                  <a
-                    href="https://metamask.io/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Metamask
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://infura.io/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Infura
-                  </a>
-                </li>
+                {this.renderLink('Metamask')}
+                {this.renderLink('Infura')}
               </ul>
             </div>
             <div className={classes.column}>
               Medium
-              <ul className={classes.ul}>
-                <li>
-                  <a
-                    href="https://truffleframework.com/docs/ganache/quickstart"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ganache
-                  </a>
-                </li>
-              </ul>
+              <ul className={classes.ul}>{this.renderLink('Ganache')}</ul>
             </div>
             <div className={classes.column}>
               Advanced
               <ul className={classes.ul}>
-                <li>
-                  <a
-                    href="https://github.com/ethereum/go-ethereum/releases"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Geth
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/paritytech/parity-ethereum/releases"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Parity
-                  </a>
-                </li>
+                {this.renderLink('Geth')}
+                {this.renderLink('Parity')}
               </ul>
             </div>
           </div>
