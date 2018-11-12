@@ -256,7 +256,7 @@ class NewWalletContract extends Component {
       });
       return false;
     }
-    if (ownerSet.length !== addresses.length) {
+    if (addresses.length !== ownerSet.size) {
       console.warn('invalid address');
       this.props.displayGlobalNotification({
         display: true,

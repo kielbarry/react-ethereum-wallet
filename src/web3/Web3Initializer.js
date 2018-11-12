@@ -12,24 +12,26 @@ export default class Web3Initializer {
 
     console.log('ethereumConnection', ethereumConnection);
     if (ethereumConnection === null) {
-      // new Promise((resolve, reject) => {
-      //  return resolve(new Web3("ws://localhost:8546"))
-      // }).then(console.log)
+      return new Promise((resolve, reject) => {
+        return resolve(new Web3('ws://localhost:8546'));
+      }).then((err, res) => {
+        if (err) console.warn('yes here is err', err);
+        if (res) console.log('here is res', res);
+      });
 
       // console.log(eth)
 
       // console.log("ethereumConnection", ethereumConnection)
-      ethereumConnection = new Web3('ws://localhost:8546');
-      // // .setAllowedOrigins("*")
-      console.log('ethereumConnection', ethereumConnection);
-      ethereumConnection.eth.isSyncing().then(console.log);
-      console.log(ethereumConnection._provider.connected);
-      return ethereumConnection;
+      // ethereumConnection = new Web3('ws://localhost:8546');
+      // console.log('ethereumConnection', ethereumConnection);
+      // ethereumConnection.eth.isSyncing().then(console.log);
+      // console.log(ethereumConnection._provider.connected);
+      // return ethereumConnection;
     }
 
     console.log('here is config', config);
     let prov = config.selectedProvider.toLowerCase();
-    if (prov === 'geth' || prov === 'parity') {
+    if (prov === 'geth' || prov === 'parity' || prov === 'ganache') {
       ProviderNetwork = 'ws://127.0.0.1:' + config.selectedPort;
     }
     if (prov.toLowerCase() === 'metamask') {

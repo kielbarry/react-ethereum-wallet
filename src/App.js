@@ -108,7 +108,7 @@ class App extends Component {
           */}
           <NavBar />
           <ViewContainer />
-          {/*<ModalContainer />*/}
+          <ModalContainer />
         </div>
       </BrowserRouter>
     );

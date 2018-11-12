@@ -75,7 +75,7 @@ class App extends Component {
       : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
   }
 
-  renderModals() {
+  render() {
     let modals = this.props.reducers.modals;
     let watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,

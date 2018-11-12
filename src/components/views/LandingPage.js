@@ -150,7 +150,7 @@ class LandingPage extends Component {
           //   return this.selectedProvider === 'Parity';
           // },
           get disabled() {
-            return this.aselectedProvider === 'Parity';
+            return this.selectedProvider === 'Parity';
           },
           type: 'PoA / Clique',
         },
@@ -163,7 +163,7 @@ class LandingPage extends Component {
           //   return this.selectedProvider === 'Geth';
           // },
           get disabled() {
-            return this.aselectedProvider === 'Geth';
+            return this.selectedProvider === 'Geth';
           },
           type: 'PoA / Clique',
         },
@@ -172,7 +172,7 @@ class LandingPage extends Component {
           //   return this.selectedProvider !== 'Parity';
           // },
           get disabled() {
-            return this.aselectedProvider !== 'Parity';
+            return this.selectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
         },
@@ -181,7 +181,7 @@ class LandingPage extends Component {
           //   return this.selectedProvider !== 'Parity';
           // },
           get disabled() {
-            return this.aselectedProvider !== 'Parity';
+            return this.selectedProvider !== 'Parity';
           },
           type: 'PoA / Clique',
         },
@@ -190,7 +190,7 @@ class LandingPage extends Component {
           //   return this.selectedProvider !== 'Infura';
           // },
           get disabled() {
-            return this.aselectedProvider !== 'Infura';
+            return this.selectedProvider !== 'Infura';
           },
           type: 'PoA / Clique',
         },
@@ -219,7 +219,6 @@ class LandingPage extends Component {
           Dev Button -> Go to Accounts
           <NotInterestedSharp className={classes.rightIcon} />
         </Button>
-
         <h1>Welcome to your Ethereum Browser Wallet.</h1>
         <div>
           <p>
@@ -401,6 +400,11 @@ class LandingPage extends Component {
     let networks = this.state.networks;
     let prov = this.state.selectedProvider;
     let port = this.state.selectedPort;
+
+    Object.keys(networks).map(network => {
+      console.log(network);
+      // console.log(networks[network].get('disabled'))
+    });
     return (
       <Collapse in={prov === 'Metamask' || prov === 'Infura' || port !== ''}>
         <div className={'select-network container ' + classes.container}>
@@ -419,7 +423,7 @@ class LandingPage extends Component {
                 return (
                   <option
                     key={shortid.generate()}
-                    // disabled={networks[nw].disabled}
+                    disabled={networks[nw].disabled}
                   >
                     {nw}
                   </option>
@@ -505,7 +509,8 @@ class LandingPage extends Component {
         {this.renderIntroduction()}
         {this.renderProvider()}
         {this.renderSelectPort()}
-        {this.renderNetwork()}
+
+        {this.state.selectedProvider !== '' ? this.renderNetwork() : null}
         {this.renderButtons()}
       </div>
     );
