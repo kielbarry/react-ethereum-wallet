@@ -113,7 +113,6 @@ const theme = createMuiTheme({
 class LandingPage extends Component {
   constructor(props) {
     super(props);
-    console.log(MetamaskModel);
     this.state = {
       selectedProvider: '',
       selectedPort: '',

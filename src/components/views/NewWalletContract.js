@@ -233,8 +233,6 @@ class NewWalletContract extends Component {
   renderMultiSigOwners() {
     let dcf = this.props.reducers.DeployContractForm;
     let { ownerCount, owners } = dcf.multiSigContract;
-    let dc;
-    console.log(dcf);
     return (
       <React.Fragment>
         {[...Array(ownerCount).keys()].map((num, index) => (
@@ -260,7 +258,13 @@ class NewWalletContract extends Component {
                   <SecurityIcon
                     type="address"
                     classes="dapp-identicon dapp-small"
-                    hash={this.makeID()}
+                    hash={
+                      index === 0
+                        ? dcf.MainOwnerAddress
+                        : typeof owners[index] == 'undefined'
+                          ? this.makeID()
+                          : owners[index]
+                    }
                   />
                 </InputAdornment>
               ),

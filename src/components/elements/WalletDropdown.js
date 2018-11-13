@@ -54,12 +54,22 @@ export class WalletDropdown extends Component {
       name: 'MainOwnerAddress',
       value: this.state.fromWallet,
     });
+    let msc = this.props.reducers.DeployContractForm.multiSigContract;
+    let owners = this.props.reducers.DeployContractForm.multiSigContract.owners;
+    owners[0] = this.state.fromWallet;
+    let obj = {
+      ...this.props.reducers.DeployContractForm.multiSigContract,
+      MainOwnerAddress: this.state.fromWallet,
+      owners,
+    };
+    this.props.updateDeployContractForm(obj);
     this.chooseWallet = this.chooseWallet.bind(this);
   }
 
   chooseWallet(e) {
+    console.log(this.state.dropdownConfig);
     this.setState({ fromWallet: e.target.value });
-    if (this.state.dropdownConfig === 'Send') {
+    if (this.state.dropdownConfig.component === 'Send') {
       this.props.updateTransactionToSend({
         name: e.target.getAttribute('name'),
         value: e.target.value,
@@ -67,15 +77,27 @@ export class WalletDropdown extends Component {
       return;
     }
 
-    if (this.state.dropdownConfig === 'DeployContractForm') {
+    if (this.state.dropdownConfig.component === 'DeployContractForm') {
+      console.log('yes here in', this.props.reducers.DeployContractForm);
       this.props.updateMainDCF({
         name: 'MainOwnerAddress',
         value: e.target.value,
       });
+
+      let msc = this.props.reducers.DeployContractForm.multiSigContract;
+      let owners = this.props.reducers.DeployContractForm.multiSigContract
+        .owners;
+      owners[0] = e.target.value;
+      let obj = {
+        ...this.props.reducers.DeployContractForm.multiSigContract,
+        MainOwnerAddress: e.target.value,
+        owners,
+      };
+      this.props.updateDeployContractForm(obj);
       return;
     }
 
-    if (this.state.dropdownConfig === 'ExecuteFunctions') {
+    if (this.state.dropdownConfig.component === 'ExecuteFunctions') {
       this.props.updateExecutingWallet({
         name: 'executingWallet',
         value: e.target.value,
