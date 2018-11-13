@@ -70,11 +70,7 @@ class ContractItem extends Component {
   }
 
   renderPendingProgress() {
-    console.log(this.props);
-    console.log(this.props.contract);
-    console.log(this.props.contract.confirmationNumber);
     let percent = this.props.contract.confirmationNumber / 12;
-    console.log(percent);
     return (
       <div className="dapp-progress">
         <div className="dapp-bar" style={{ width: { percent } + '%' }} />

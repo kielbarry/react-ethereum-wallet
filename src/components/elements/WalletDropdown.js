@@ -31,7 +31,8 @@ export class WalletDropdown extends Component {
           return {
             address,
             addressType: 'walletAddress',
-            balance: this.props.reducers.Wallets[address],
+            // balance: this.props.reducers.Wallets[address],
+            ...this.props.reducers.Wallets[address],
           };
         })
         .concat(

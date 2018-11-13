@@ -163,7 +163,7 @@ class SendContractForm extends Component {
             value={this.state.fromWallet}
           >
             {Object.keys(wallets).map(w => {
-              let balance = wallets[w];
+              let balance = wallets[w].balance;
               return (
                 <React.Fragment>
                   <option key={shortid.generate()} value={w}>
@@ -212,7 +212,7 @@ class SendContractForm extends Component {
               placeholder="0x000000.."
               className="to"
               autoFocus={true}
-              value={tx.to}
+              value={tx.to ? tx.to : ''}
               onKeyUp={e => this.handleOnKeyUp(e)}
             />
           </div>
@@ -297,14 +297,14 @@ class SendContractForm extends Component {
                 ? ' ' +
                   Utils.displayPriceFormatter(
                     this.props,
-                    wallets[this.state.fromWallet]
+                    wallets[this.state.fromWallet].balance
                   ) +
                   ' ' +
                   this.props.reducers.currency +
                   ' (' +
                   Utils.displayPriceFormatter(
                     this.props,
-                    wallets[this.state.fromWallet],
+                    wallets[this.state.fromWallet].balance,
                     'ETHER'
                   ) +
                   'ETHER)'
