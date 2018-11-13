@@ -75,14 +75,14 @@ class App extends Component {
     }, 1000);
   }
 
-  componentDidMount() {
-    console.log('this.props', this.props);
-    console.log('this.props', this.props.history);
-    console.log('context', this.context);
-    if (performance.navigation.TYPE_RELOAD === 1) {
-      this.context.history.push('/accounts');
-    }
-  }
+  // componentDidMount() {
+  //   console.log('this.props', this.props);
+  //   console.log('this.props', this.props.history);
+  //   console.log('context', this.context);
+  //   if (performance.navigation.TYPE_RELOAD === 1) {
+  //     this.context.history.push('/accounts');
+  //   }
+  // }
 
   componentDidUpdate(prevProps, prevState) {
     if (

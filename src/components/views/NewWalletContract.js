@@ -275,48 +275,6 @@ class NewWalletContract extends Component {
     );
   }
 
-  renderWalletDropDown() {
-    let wallets = this.props.reducers.Wallets;
-    let dcf = this.props.reducers.DeployContractForm;
-    return (
-      <div className="col col-6 mobile-full from">
-        <h3>From</h3>
-        <div className="dapp-select-account send-from">
-          <select
-            className="send-from"
-            name="MainOwnerAddress"
-            onChange={this.selectWallet}
-            value={this.props.reducers.DeployContractForm.MainOwnerAddress}
-          >
-            {Object.keys(wallets).map(w => {
-              let balance = wallets[w].balance;
-              return (
-                <React.Fragment>
-                  <option key={shortid.generate()} value={w}>
-                    {this.props.web3 && this.props.web3.web3Instance
-                      ? Utils.displayPriceFormatter(
-                          this.props,
-                          balance,
-                          'ETHER'
-                        )
-                      : balance}
-                    &nbsp; - &nbsp;
-                    {w}
-                  </option>
-                </React.Fragment>
-              );
-            })}
-          </select>
-          <SecurityIcon
-            type="address"
-            classes="dapp-identicon dapp-small"
-            hash={this.state.reducers.DeployContractForm.MainOwnerAddress}
-          />
-        </div>
-      </div>
-    );
-  }
-
   validateMultipleAddress(web3, addresses) {
     const ownerSet = new Set(addresses);
     let arr = [...ownerSet].map(address => web3.utils.isAddress(address));
@@ -339,7 +297,6 @@ class NewWalletContract extends Component {
       });
       return false;
     }
-    console.log('valid address');
     return true;
   }
 
@@ -472,9 +429,6 @@ class NewWalletContract extends Component {
     const { classes } = this.props;
     const { DeployContractForm } = this.props.reducers;
     let dcf = this.props.reducers.DeployContractForm;
-
-    // value={this.props.reducers.DeployContractForm.MainOwnerAddress}
-
     let dropdownConfig = {
       component: 'DeployContractForm',
       selectClassName: 'send-from',
@@ -494,16 +448,12 @@ class NewWalletContract extends Component {
             autoFocus={true}
           />
           <h2>Select owner</h2>
-
-          {/*dcf && dcf.MainOwnerAddress ? this.renderWalletDropDown() : <div />*/}
-
           <div className="col col-6 mobile-full from">
             <h3>From</h3>
             <div className="dapp-select-account send-from">
               <WalletDropdown dropdownConfig={dropdownConfig} />
             </div>
           </div>
-
           <div className={classes.radioRoot}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>
             <RadioGroup
