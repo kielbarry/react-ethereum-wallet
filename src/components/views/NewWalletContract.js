@@ -24,6 +24,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import SecurityIcon from '../elements/SecurityIcon.js';
+import WalletDropdown from '../elements/WalletDropdown.js';
 import shortid from 'shortid';
 import * as Utils from '../../utils/utils.js';
 
@@ -83,8 +84,11 @@ class NewWalletContract extends Component {
     // TODO:validate inputs here
     let obj = { ...this.props.reducers.DeployContractForm };
     obj.MainOwnerAddress = e.target.value;
-    console.log(obj);
-    this.props.updateMainContractAddress(obj);
+    // this.props.updateMainContractAddress(obj);
+    this.props.updateMainContractAddress({
+      name: 'MainOwnerAddress',
+      value: e.target.value,
+    });
     // this.props.updateDeployContractForm(obj);
   }
 
@@ -395,8 +399,6 @@ class NewWalletContract extends Component {
     console.log(dcf);
 
     //TODO: more security checks from observewallets and account_create
-
-    this.props.history.push('/accounts');
     contract
       .deploy({
         data: code,
@@ -417,6 +419,7 @@ class NewWalletContract extends Component {
       .on('transactionHash', transactionHash => {
         console.log('transactionHash', transactionHash);
         this.props.updatePendingContracts({ name: transactionHash, value: {} });
+        this.props.history.push('/accounts');
       })
       .on('receipt', receipt => {
         console.log('reecipt', receipt);
@@ -465,6 +468,14 @@ class NewWalletContract extends Component {
     const { classes } = this.props;
     const { DeployContractForm } = this.props.reducers;
     let dcf = this.props.reducers.DeployContractForm;
+
+    // value={this.props.reducers.DeployContractForm.MainOwnerAddress}
+
+    let dropdownConfig = {
+      component: 'DeployContractForm',
+      selectClassName: 'send-from',
+      selectName: 'MainOwnerAddress',
+    };
     return (
       <React.Fragment>
         <FormControl component="fieldset" className={classes.formControl}>
@@ -480,7 +491,14 @@ class NewWalletContract extends Component {
           />
           <h2>Select owner</h2>
 
-          {dcf && dcf.MainOwnerAddress ? this.renderWalletDropDown() : <div />}
+          {/*dcf && dcf.MainOwnerAddress ? this.renderWalletDropDown() : <div />*/}
+
+          <div className="col col-6 mobile-full from">
+            <h3>From</h3>
+            <div className="dapp-select-account send-from">
+              <WalletDropdown dropdownConfig={dropdownConfig} />
+            </div>
+          </div>
 
           <div className={classes.radioRoot}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>

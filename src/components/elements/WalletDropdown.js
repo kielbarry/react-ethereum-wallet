@@ -29,10 +29,9 @@ export class WalletDropdown extends Component {
       Object.keys(this.props.reducers.Wallets)
         .map(address => {
           return {
+            ...this.props.reducers.Wallets[address],
             address,
             addressType: 'walletAddress',
-            // balance: this.props.reducers.Wallets[address],
-            ...this.props.reducers.Wallets[address],
           };
         })
         .concat(
@@ -51,38 +50,37 @@ export class WalletDropdown extends Component {
       fromWallet: WalletsCombined[0].address,
       dropdownConfig: this.props.dropdownConfig,
     };
+    this.props.updateMainDCF({
+      name: 'MainOwnerAddress',
+      value: this.state.fromWallet,
+    });
     this.chooseWallet = this.chooseWallet.bind(this);
-    this.selectWallet = this.selectWallet.bind(this);
   }
 
   chooseWallet(e) {
-    console.log('e.target in chooseWallet', e.target);
-    console.log('e.target in chooseWallet', e.target.value);
-    this.setState({ executingWallet: e.target.value });
-    this.props.updateExecutingWallet({
-      name: 'executingWallet',
-      value: e.target.value,
-    });
-  }
-
-  // TODO: FROM SEND VIEW
-  selectWallet(e) {
     this.setState({ fromWallet: e.target.value });
-    // TODO:validate inputs here
-    this.props.updateTransactionToSend({
-      name: e.target.getAttribute('name'),
-      value: e.target.value,
-    });
-  }
+    if (this.state.dropdownConfig === 'Send') {
+      this.props.updateTransactionToSend({
+        name: e.target.getAttribute('name'),
+        value: e.target.value,
+      });
+      return;
+    }
 
-  // TODO: FROM DEPLOY CONTRACT FORM
-  selectWallet(e) {
-    // TODO:validate inputs here
-    let obj = { ...this.props.reducers.DeployContractForm };
-    obj.MainOwnerAddress = e.target.value;
-    console.log(obj);
-    this.props.updateMainContractAddress(obj);
-    // this.props.updateDeployContractForm(obj);
+    if (this.state.dropdownConfig === 'DeployContractForm') {
+      this.props.updateMainDCF({
+        name: 'MainOwnerAddress',
+        value: e.target.value,
+      });
+      return;
+    }
+
+    if (this.state.dropdownConfig === 'ExecuteFunctions') {
+      this.props.updateExecutingWallet({
+        name: 'executingWallet',
+        value: e.target.value,
+      });
+    }
   }
 
   render() {
@@ -92,37 +90,25 @@ export class WalletDropdown extends Component {
     return (
       <React.Fragment>
         <select
-          // Send view settings
-          // className="send-from"
-          // name="from"
-
-          // DCF settings
-          // className="send-from"
-          // name="MainOwnerAddress"
           className={config.selectClassName}
           name={config.selectName}
           onChange={e => this.chooseWallet(e)}
-          value={this.state.executingWallet}
+          value={this.state.fromWallet}
         >
-          {Object.keys(wallets).map(w => {
-            let balance = wallets[w].balance;
-            let address = wallets[w].address;
-            let type = wallets[w].addressType;
+          {wallets.map(w => {
             return (
-              <option key={shortid.generate()} value={address}>
-                {/*{type === 'walletAddress' ? '🔑 ' : null} */}
-                {type === 'walletAddress' ? (
-                  <img
-                    src="key-of-vintage-design.svg"
-                    className={classes.keyIcon}
-                  />
-                ) : null}
+              <option key={shortid.generate()} value={w.address}>
+                {w.addressType === 'walletAddress' ? '🔑 ' : null}
                 {this.props.web3 && this.props.web3.web3Instance
                   ? Number(
-                      Utils.displayPriceFormatter(this.props, balance, 'ETHER')
+                      Utils.displayPriceFormatter(
+                        this.props,
+                        w.balance,
+                        'ETHER'
+                      )
                     ).toFixed(2)
-                  : Number(balance).toFixed(2)}
-                &nbsp; - &nbsp; 'ETHER'
+                  : Number(w.balance).toFixed(2)}
+                &nbsp; - &nbsp; ETHER
               </option>
             );
           })}
@@ -140,11 +126,6 @@ export class WalletDropdown extends Component {
 const mapStateToProps = state => ({
   ...state,
 });
-
-// export default connect(
-//   mapStateToProps,
-//   { ...Actions }
-// )(WalletDropdown);
 
 export default compose(
   withStyles(styles, { name: 'WalletDropdown' }),

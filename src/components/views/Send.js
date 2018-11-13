@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 
 import SecurityIcon from '../elements/SecurityIcon.js';
+import WalletDropdown from '../elements/WalletDropdown.js';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
@@ -32,7 +33,6 @@ class SendContractForm extends Component {
     };
 
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
-    this.selectWallet = this.selectWallet.bind(this);
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.changeGas = this.changeGas.bind(this);
     this.estimateGas = this.estimateGas.bind(this);
@@ -131,15 +131,6 @@ class SendContractForm extends Component {
     });
   }
 
-  selectWallet(e) {
-    this.setState({ fromWallet: e.target.value });
-    // TODO:validate inputs here
-    this.props.updateTransactionToSend({
-      name: e.target.getAttribute('name'),
-      value: e.target.value,
-    });
-  }
-
   toggleCheckbox(e) {
     this.props.updateTransactionToSend({
       name: 'value',
@@ -150,48 +141,11 @@ class SendContractForm extends Component {
     this.setState({ checkbox: !this.state.checkbox });
   }
 
-  renderWalletDropDown() {
-    let wallets = this.props.reducers.Wallets;
-    return (
-      <div className="col col-6 mobile-full from">
-        <h3>From</h3>
-        <div className="dapp-select-account send-from">
-          <select
-            className="send-from"
-            name="from"
-            onChange={this.selectWallet}
-            value={this.state.fromWallet}
-          >
-            {Object.keys(wallets).map(w => {
-              let balance = wallets[w].balance;
-              return (
-                <React.Fragment>
-                  <option key={shortid.generate()} value={w}>
-                    {this.props.web3 && this.props.web3.web3Instance
-                      ? Utils.displayPriceFormatter(this.props, balance)
-                      : balance}
-                    " - " + {w}
-                  </option>
-                </React.Fragment>
-              );
-            })}
-          </select>
-          <SecurityIcon
-            type="address"
-            classes="dapp-identicon dapp-small"
-            hash={this.state.fromWallet}
-          />
-        </div>
-      </div>
-    );
-  }
-
   handleSwitch = name => event => {
     this.setState({ [name]: event.target.checked });
   };
 
   toggleFee(e) {
-    console.log(e);
     this.setState({ standardFee: !this.state.standardFee });
     this.props.reducers.GasStats !== {} && this.state.standardFee
       ? this.changeGas(this.props.reducers.GasStats.safeLow)
@@ -200,9 +154,19 @@ class SendContractForm extends Component {
 
   renderFromToRow() {
     let tx = this.props.reducers.TransactionToSend;
+    let dropdownConfig = {
+      component: 'Send',
+      selectClassName: 'send-from',
+      selectName: 'from',
+    };
     return (
       <div className="row clear from-to">
-        {this.renderWalletDropDown()}
+        <div className="col col-6 mobile-full from">
+          <h3>From</h3>
+          <div className="dapp-select-account send-from">
+            <WalletDropdown dropdownConfig={dropdownConfig} />
+          </div>
+        </div>
         <div className="col col-6 mobile-full">
           <h3>To</h3>
           <div className="dapp-address-input">
