@@ -40,7 +40,8 @@ const initialState = {
   DeployContractForm: {
     simpleChecked: true,
     multisigChecked: false,
-    importwalletChecked: false,
+    importWalletChecked: false,
+    importWalletAddress: '',
     multiSigContract: {
       ownerCount: 3,
       confirmationAddressesRequired: 1,

@@ -113,7 +113,6 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        {/*}
         <ToastContainer
           position="bottom-right"
           autoClose={5000}
@@ -125,6 +124,7 @@ class App extends Component {
           draggable
           pauseOnHover
         />
+        {/*}
 
         <DeleteToken
           token={this.props.reducers.TokenToDelete}

@@ -60,7 +60,7 @@ const styles = theme => ({
   },
 });
 
-let dcfRadio = ['simpleChecked', 'multisigChecked', 'importwalletChecked'];
+let dcfRadio = ['simpleChecked', 'multisigChecked', 'importWalletChecked'];
 
 class NewWalletContract extends Component {
   constructor(props) {
@@ -68,6 +68,7 @@ class NewWalletContract extends Component {
     this.state = this.props;
     this.selectWallet = this.selectWallet.bind(this);
     this.createContract = this.createContract.bind(this);
+    this.checkIfImportableWallet = this.checkIfImportableWallet.bind(this);
     let defaultWallet;
     let wallets = this.props.reducers.Wallets;
     for (var prop in wallets) {
@@ -98,6 +99,69 @@ class NewWalletContract extends Component {
       return true;
     }
     return false;
+  }
+
+  checkIfImportableWallet(e) {
+    let dcf = this.props.reducers.DeployContractForm;
+    let address = dcf.importWalletAddress;
+    let web3;
+    if (this.props.web3 && this.props.web3.web3Instance) {
+      web3 = this.props.web3.web3Instance;
+    } else {
+      return;
+    }
+
+    if (!web3.utils.isAddress(address)) {
+      console.log('inside not address');
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: 'Invalid address input',
+      });
+      this.props.updateMainDCF({ name: 'importWalletAddress', value: '' });
+      return false;
+    }
+
+    let pendingConf = this.props.reducers.ContractsPendingConfirmations;
+    let wc = this.props.reducers.WalletContracts;
+    let walletContracts = Object.assign({}, pendingConf, wc);
+    if (Object.keys(walletContracts).includes(address)) {
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'warning',
+        msg:
+          'You are already following this wallet, or it is pending confirmation.',
+      });
+      this.props.updateMainDCF({ name: 'importWalletAddress', value: '' });
+      return false;
+    }
+
+    let originalABI = WalletInterfaceItems.walletStubABI;
+    return web3.eth.getCode(address).then((err, res) => {
+      if (err) {
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'error',
+          msg:
+            err === '0x' || err === '0x0'
+              ? "A contract doesn't exist at this address"
+              : err,
+        });
+        this.props.updateMainDCF({ name: 'importWalletAddress', value: '' });
+        return false;
+      }
+      if (originalABI !== res) {
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'error',
+          msg:
+            'This address does not reference a contract identical to the wallets this form deploys, and cannot be imported',
+        });
+        this.props.updateMainDCF({ name: 'importWalletAddress', value: '' });
+        return false;
+      }
+      return true;
+    });
   }
 
   handleChange = e => {
@@ -136,15 +200,16 @@ class NewWalletContract extends Component {
         this.props.updateMainDCF({ name: 'contract-name', value: buttonValue });
         break;
       case 'MainOwnerAddress':
-        // obj = { ...this.props.reducers.DeployContractForm };
-        // obj.MainOwnerAddress = buttonValue;
-        // console.log(obj);
-        // this.props.updateMainContractAddress(obj);
         this.props.updateMainDCF({
           name: 'MainOwnerAddress',
           value: buttonValue,
         });
-
+        break;
+      case 'importWalletAddress':
+        this.props.updateMainDCF({
+          name: 'importWalletAddress',
+          value: buttonValue,
+        });
         break;
       default:
         break;
@@ -271,11 +336,25 @@ class NewWalletContract extends Component {
   }
 
   createContract(e) {
+    // this.checkIfImportableWallet(e)
+
     console.log('e in createContract', e);
     let dcf = this.props.reducers.DeployContractForm;
+    console.log(dcf);
+
+    if (dcf.importWalletChecked) {
+      let bool = this.checkIfImportableWallet(e);
+      console.log(bool);
+      return;
+      // if(!bool) return;
+    }
+    return;
+
     let msContract = dcf.multiSigContract;
     let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     // hardcoded bytecode
+    // same for imported wallet - there is a web3 check to make the
+    // code at the given address is identical to the walletStubABI
     let code = WalletInterfaceItems.walletStubABI;
     // hardcoded JSON interface
     let jsonInterface = WalletInterfaceItems.walletInterface;
@@ -525,17 +604,17 @@ class NewWalletContract extends Component {
                 </div>
               </Collapse>
               <FormControlLabel
-                value="importwalletChecked"
+                value="importWalletChecked"
                 control={
                   <Radio
-                    checked={DeployContractForm.importwalletChecked}
+                    checked={DeployContractForm.importWalletChecked}
                     color="primary"
                   />
                 }
                 label="IMPORT WALLET"
                 name="accountType"
               />
-              <Collapse in={DeployContractForm.importwalletChecked}>
+              <Collapse in={DeployContractForm.importWalletChecked}>
                 <div className="indented-box">
                   <br />
                   <div className="dapp-address-input">
@@ -543,6 +622,13 @@ class NewWalletContract extends Component {
                       type="text"
                       placeholder="Wallet address"
                       className="import"
+                      name="importWalletAddress"
+                      value={
+                        DeployContractForm.importWalletAddress !== ''
+                          ? DeployContractForm.importWalletAddress
+                          : ''
+                      }
+                      onChange={e => this.handleChange(e)}
                     />
                   </div>
                   <p className="invalid" />
