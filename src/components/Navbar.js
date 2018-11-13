@@ -99,7 +99,7 @@ class NavBar extends Component {
       <li className={field.liClass}>
         <h3>{field.firstText}</h3>
         <span className={field.firstClass}>
-          {this.props.reducers.web3 && this.props.reducers.web3.web3Instance ? (
+          {this.props.web3 && this.props.web3.web3Instance ? (
             <NumberFormat
               value={Utils.displayPriceFormatter(
                 this.props,
@@ -186,12 +186,12 @@ class NavBar extends Component {
 
 const mapStateToProps = state => ({
   ...state,
-  // timeSinceLastBlock: state.reducers.timeSinceLastBlock,
-  // peerCount: state.reducers.peerCount,
-  // peerCountIntervalId: state.reducers.peerCountIntervalId,
-  // totalBalance: state.reducers.totalBalance,
-  // blockHeader: state.reducers.blockHeader,
-  // currency: state.reducers.currency,
+  timeSinceLastBlock: state.reducers.timeSinceLastBlock,
+  peerCount: state.reducers.peerCount,
+  peerCountIntervalId: state.reducers.peerCountIntervalId,
+  totalBalance: state.reducers.totalBalance,
+  blockHeader: state.reducers.blockHeader,
+  currency: state.reducers.currency,
 });
 
 export default connect(mapStateToProps)(withRouter(NavBar));

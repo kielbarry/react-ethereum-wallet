@@ -5,6 +5,7 @@ import { selectedContract } from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
+import NumberFormat from 'react-number-format';
 
 class ContractItem extends Component {
   constructor(props) {
@@ -27,10 +28,6 @@ class ContractItem extends Component {
   }
 
   openAccountPage(e) {
-    // e.preventDefault()
-    console.log(this.props);
-    console.log(this.props.contract);
-    // this.props.emptySelectedWallet('');
     this.props.selectedContract({
       contract: this.props.contract,
       currency: this.props.reducers.currency,
@@ -43,12 +40,22 @@ class ContractItem extends Component {
     let contract = this.props.contract;
     return (
       <React.Fragment>
-        <span className="account-balance">
-          {this.props.web3 && this.props.web3.web3Instance
-            ? Utils.displayPriceFormatter(this.props, contract.balance)
-            : contract.balance}
-          <span> {this.props.reducers.currency} </span>
-        </span>
+        {this.props.web3 && this.props.web3.web3Instance ? (
+          <NumberFormat
+            className="account-balance"
+            value={Utils.displayPriceFormatter(this.props, contract.balance)}
+            displayType={'text'}
+            thousandSeparator={true}
+          />
+        ) : (
+          <NumberFormat
+            className="account-balance"
+            value={contract.balance}
+            displayType={'text'}
+            thousandSeparator={true}
+          />
+        )}
+        <span> {this.props.reducers.currency} </span>
       </React.Fragment>
     );
   }
@@ -100,7 +107,7 @@ class ContractItem extends Component {
     let contract = this.props.contract;
     let pending = this.props.pending;
 
-    console.log(contract);
+    // console.log(contract);
 
     pending ? (pending = true) : (pending = false);
 

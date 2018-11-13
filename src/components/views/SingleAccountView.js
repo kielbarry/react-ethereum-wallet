@@ -104,8 +104,8 @@ export class SingleAccountView extends Component {
             <div className="clear" />
             <span className="account-balance">
               {this.props.web3 && this.props.web3.web3Instance
-                ? Utils.displayPriceFormatter(this.props, sw.wallet)
-                : sw.wallet}
+                ? Utils.displayPriceFormatter(this.props, sw.wallet.balance)
+                : sw.wallet.balance}
               <span className="inline-form" name="unit">
                 <button
                   type="button"

@@ -46,15 +46,15 @@ class App extends Component {
         } catch (err) {
           console.error('network check not available');
         }
-        try {
-          Utils.getAccounts(
-            web3,
-            this.props.setWallets,
-            this.props.updateTotalBalance
-          );
-        } catch (err) {
-          console.error('error', err);
-        }
+        // try {
+        Utils.getAccounts(
+          web3,
+          this.props.setWallets,
+          this.props.updateTotalBalance
+        );
+        // } catch (err) {
+        //   console.error('error', err);
+        // }
         try {
           Utils.getNewBlockHeaders(
             web3,

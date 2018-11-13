@@ -429,12 +429,31 @@ const reducers = (state = initialState, action) => {
         ...state,
         totalBalance: action.payload,
       };
+    // case 'SET_WALLETS':
+    //   return {
+    //     ...state,
+    //     Wallets: Object.assign({}, state.Wallets, {
+    //       [action.payload.account]: action.payload.balance,
+    //     }),
+    //   };
+    // Wallets: {
+    //       ...state.Wallets,
+    //       [action.payload.account]: {
+    //         ...state.Wallets[action.payload.account],
+    //         balance: action.balance,
+    //       },
+    //     },
+
     case 'SET_WALLETS':
       return {
         ...state,
-        Wallets: Object.assign({}, state.Wallets, {
-          [action.payload.account]: action.payload.balance,
-        }),
+        Wallets: {
+          ...state.Wallets,
+          [action.payload.account]: {
+            ...state.Wallets[action.payload.account],
+            balance: action.payload.balance,
+          },
+        },
       };
     case 'UPDATE_PROVIDER':
       return {

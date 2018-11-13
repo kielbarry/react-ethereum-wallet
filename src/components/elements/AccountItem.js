@@ -5,6 +5,7 @@ import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
+import NumberFormat from 'react-number-format';
 
 class AccountItem extends Component {
   constructor(props) {
@@ -26,12 +27,25 @@ class AccountItem extends Component {
     let wallet = this.props.wallet;
     return (
       <React.Fragment>
-        <span className="account-balance">
-          {this.props.props.web3 && this.props.props.web3.web3Instance
-            ? Utils.displayPriceFormatter(this.props.props, wallet)
-            : wallet}
-          <span> {this.props.props.reducers.currency} </span>
-        </span>
+        {this.props.props.web3 && this.props.props.web3.web3Instance ? (
+          <NumberFormat
+            className="account-balance"
+            value={Utils.displayPriceFormatter(
+              this.props.props,
+              wallet.balance
+            )}
+            displayType={'text'}
+            thousandSeparator={true}
+          />
+        ) : (
+          <NumberFormat
+            className="account-balance"
+            value={wallet.balance}
+            displayType={'text'}
+            thousandSeparator={true}
+          />
+        )}
+        <span> {this.props.props.reducers.currency} </span>
       </React.Fragment>
     );
   }

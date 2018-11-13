@@ -281,7 +281,7 @@ class NewWalletContract extends Component {
             value={this.props.reducers.DeployContractForm.MainOwnerAddress}
           >
             {Object.keys(wallets).map(w => {
-              let balance = wallets[w];
+              let balance = wallets[w].balance;
               return (
                 <React.Fragment>
                   <option key={shortid.generate()} value={w}>
@@ -342,13 +342,14 @@ class NewWalletContract extends Component {
     let dcf = this.props.reducers.DeployContractForm;
     console.log(dcf);
 
-    if (dcf.importWalletChecked) {
-      let bool = this.checkIfImportableWallet(e);
-      console.log(bool);
-      return;
-      // if(!bool) return;
-    }
-    return;
+    // TODO: finish up import wallet
+    // if (dcf.importWalletChecked) {
+    //   let bool = this.checkIfImportableWallet(e);
+    //   console.log(bool);
+    //   return;
+    //   // if(!bool) return;
+    // }
+    // return;
 
     let msContract = dcf.multiSigContract;
     let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
