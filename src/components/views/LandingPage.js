@@ -120,61 +120,7 @@ class LandingPage extends Component {
       selectedPort: '',
       selectedNetwork: '',
       providers: Constants.providerConstants,
-      networks: {
-        MainNet: {
-          disabled: false,
-          type: 'PoW',
-        },
-        Rinkeby: {
-          set provider(prov) {
-            this.selectedProvider = prov;
-          },
-          get disabled() {
-            return this.selectedProvider === 'Parity';
-          },
-          type: 'PoA / Clique',
-        },
-        Ropsten: {
-          disabled: false,
-          type: 'PoW',
-        },
-        Kovan: {
-          set provider(prov) {
-            this.selectedProvider = prov;
-          },
-          get disabled() {
-            return this.selectedProvider === 'Geth';
-          },
-          type: 'PoA / Clique',
-        },
-        Sokol: {
-          set provider(prov) {
-            this.selectedProvider = prov;
-          },
-          get disabled() {
-            return this.selectedProvider !== 'Parity';
-          },
-          type: 'PoA / Clique',
-        },
-        Görli: {
-          set provider(prov) {
-            this.selectedProvider = prov;
-          },
-          get disabled() {
-            return this.selectedProvider !== 'Parity';
-          },
-          type: 'PoA / Clique',
-        },
-        INFURAnet: {
-          set provider(prov) {
-            this.selectedProvider = prov;
-          },
-          get disabled() {
-            return this.selectedProvider !== 'Infura';
-          },
-          type: 'PoA / Clique',
-        },
-      },
+      networks: Constants.networks,
     };
   }
 
@@ -186,6 +132,7 @@ class LandingPage extends Component {
     if (type === 'port') this.setState({ selectedPort: e.target.value });
   }
 
+  // snapshotted
   renderLink(name) {
     let provInfo = this.state.providers[name];
     return (

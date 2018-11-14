@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import PageHeader from '../elements/PageHeaders.jsx';
-// import { AccountPageHeader } from '../../constants/FieldConstants.jsx';
 import AccountItem from '../elements/AccountItem.js';
 import ContractItem from '../elements/ContractItem.js';
 import LatestTransactions from '../elements/LatestTransactions.js';
@@ -13,22 +11,15 @@ import web3test from '../../web3/Web3Initializer.js';
 class AccountView extends Component {
   constructor(props) {
     super(props);
-    this.makeID = this.makeID.bind(this);
-    this.makeIDInterval = setInterval(() => this.makeID(), 500);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.makeIDInterval);
-  }
-
-  // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-  makeID() {
-    var text = '';
-    var possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
+  // snapshotted
+  renderTitle() {
+    return (
+      <h1>
+        <strong>Accounts</strong> Overview
+      </h1>
+    );
   }
 
   renderAccounts() {
@@ -52,8 +43,22 @@ class AccountView extends Component {
     }
   }
 
+  // snapshotted
+  renderWalletDescription() {
+    return (
+      <React.Fragment>
+        <h2>Wallet Contracts</h2>
+        <p>
+          These contracts are stored on the blockchain and can hold and secure
+          Ether. They can have multiple accounts as owners and keep a full log
+          of all transactions.
+        </p>
+        <div className="dapp-clear-fix" />
+      </React.Fragment>
+    );
+  }
+
   renderWalletBoxList() {
-    // if (this.props.reducers.WalletContracts !== undefined) {
     const walletContractList = this.props.reducers.WalletContracts;
     const icon = 'icon-eye';
     let {
@@ -65,58 +70,36 @@ class AccountView extends Component {
       ContractsPendingConfirmations,
       WalletContracts
     );
-
-    // console.log(contracts);
-
-    // Object.keys(contracts).map((address, i) => {
-    //   console.log(address);
-    //   console.log(contracts[address]);
-    // });
-
     return (
       <React.Fragment>
-        {Object.keys(contracts).map((address, i) => (
-          <ContractItem
-            key={address}
-            number={i + 1}
-            icon={icon}
-            pending={
-              Object.keys(contracts[address]).length === 0 &&
-              contracts[address].constructor === Object
-                ? true
-                : false
-            }
-            contract={contracts[address]}
-            address={address}
-            wallet={contracts[address].length === 0 ? contracts[address] : ''}
-            props={this.props}
-          />
-        ))}
+        <div className="wallet-box-list">
+          {Object.keys(contracts).map((address, i) => (
+            <ContractItem
+              key={address}
+              number={i + 1}
+              icon={icon}
+              pending={
+                Object.keys(contracts[address]).length === 0 &&
+                contracts[address].constructor === Object
+                  ? true
+                  : false
+              }
+              contract={contracts[address]}
+              address={address}
+              wallet={contracts[address].length === 0 ? contracts[address] : ''}
+              props={this.props}
+            />
+          ))}
+        </div>
+        <div className="dapp-clear-fix" />
       </React.Fragment>
     );
-    // }
   }
 
-  routeToDeployContract(e) {
-    console.log('here in routeToDeployContract', e);
-  }
-
-  render() {
+  // snapshooted
+  renderWalletLink() {
     return (
-      <div className="dapp-container account-page">
-        <h1>
-          <strong>Accounts</strong> Overview
-        </h1>
-        {this.renderAccounts()}
-        <h2>Wallet Contracts</h2>
-        <p>
-          These contracts are stored on the blockchain and can hold and secure
-          Ether. They can have multiple accounts as owners and keep a full log
-          of all transactions.
-        </p>
-        <div className="dapp-clear-fix" />
-        <div className="wallet-box-list">{this.renderWalletBoxList()}</div>
-        <div className="dapp-clear-fix" />
+      <React.Fragment>
         <Link
           to={{ pathname: '/wallet/new' }}
           className="wallet-box create add-contract"
@@ -125,6 +108,18 @@ class AccountView extends Component {
           <h3>ADD WALLET CONTRACT</h3>
         </Link>
         <div className="dapp-clear-fix" />
+      </React.Fragment>
+    );
+  }
+
+  render() {
+    return (
+      <div className="dapp-container account-page">
+        {this.renderTitle()}
+        {this.renderAccounts()}
+        {this.renderWalletDescription()}
+        {this.renderWalletBoxList()}
+        {this.renderWalletLink()}
         {this.props.reducers.Transactions ? (
           <LatestTransactions transactions={this.props.reducers.Transactions} />
         ) : (

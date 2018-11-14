@@ -25,3 +25,59 @@ export const providerConstants = {
     link: 'https://truffleframework.com/docs/ganache/quickstart',
   },
 };
+
+export const networks = {
+  MainNet: {
+    disabled: false,
+    type: 'PoW',
+  },
+  Rinkeby: {
+    set provider(prov) {
+      this.selectedProvider = prov;
+    },
+    get disabled() {
+      return this.selectedProvider === 'Parity';
+    },
+    type: 'PoA / Clique',
+  },
+  Ropsten: {
+    disabled: false,
+    type: 'PoW',
+  },
+  Kovan: {
+    set provider(prov) {
+      this.selectedProvider = prov;
+    },
+    get disabled() {
+      return this.selectedProvider === 'Geth';
+    },
+    type: 'PoA / Clique',
+  },
+  Sokol: {
+    set provider(prov) {
+      this.selectedProvider = prov;
+    },
+    get disabled() {
+      return this.selectedProvider !== 'Parity';
+    },
+    type: 'PoA / Clique',
+  },
+  Görli: {
+    set provider(prov) {
+      this.selectedProvider = prov;
+    },
+    get disabled() {
+      return this.selectedProvider !== 'Parity';
+    },
+    type: 'PoA / Clique',
+  },
+  INFURAnet: {
+    set provider(prov) {
+      this.selectedProvider = prov;
+    },
+    get disabled() {
+      return this.selectedProvider !== 'Infura';
+    },
+    type: 'PoA / Clique',
+  },
+};
