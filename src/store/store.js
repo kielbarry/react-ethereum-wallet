@@ -58,4 +58,4 @@ export const persistor = persistStore(store, {
   transforms: [blacklist],
 });
 
-persistor.purge();
+// persistor.purge();

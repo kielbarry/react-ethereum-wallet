@@ -11,6 +11,32 @@ export const provConfigAction = [
   },
 ];
 
+export const updatedSelectedFunctionInput = {
+  constant: false,
+  inputs: [
+    {
+      name: '_addr',
+      type: 'address',
+    },
+  ],
+  name: 'isOwner',
+  outputs: [
+    {
+      name: '',
+      type: 'bool',
+    },
+  ],
+  type: 'function',
+  contractAddress: '0x11a8e225e740F283601cC0E8e0f8D56740896B54',
+};
+
+export const updatedSelectedFunctionAction = [
+  {
+    type: 'UPDATE_SELECTED_FUNCTION',
+    payload: updatedSelectedFunctionInput,
+  },
+];
+
 export const addTransactionInput = {
   hash: 0x1554c5f6831425d37468fdc41bb034a6227af17fc018788f9f54d6179da579f1,
   value: {

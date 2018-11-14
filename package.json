@@ -45,6 +45,7 @@
     "react-scripts": "1.1.4",
     "react-style": "^0.5.5",
     "react-style-proptype": "^3.2.2",
+    "react-test-renderer": "^16.6.3",
     "react-toastify": "^4.4.0",
     "react-toggle-button": "^2.2.0",
     "recompose": "^0.30.0",

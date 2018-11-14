@@ -1,7 +1,5 @@
 import * as Actions from './actions.js';
-import * as Constants from '../constants/TestConstants.js';
-
-import { assert } from 'chai';
+import * as Constants from '../constants/ActionsTestConstants.js';
 
 import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
@@ -54,6 +52,19 @@ describe('actions', () => {
 
   // // TODO: updateSelectedFunction
   // // UPDATE_SELECTED_FUNCTION
+  it('should create action for updating a selected function', async () => {
+    const store = mockStore({ selectedFunction: {} });
+    await store.dispatch(
+      Actions.updateSelectedFunction(Constants.updatedSelectedFunctionInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updatedSelectedFunctionAction[index]
+      );
+    });
+  });
   // // TODO: updateJSON
   // // UPDATE_JSON_INTERFACE
   // // TODO: updateQRCode

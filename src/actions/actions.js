@@ -513,7 +513,6 @@ export const updatePeerCount = PeerCount => dispatch => {
 };
 
 export const updateCurrency = ({ CurrencyUnit }) => dispatch => {
-  console.log(CurrencyUnit);
   dispatch({
     type: actionTypes.UPDATE_CURRENCY_UNIT,
     payload: CurrencyUnit,

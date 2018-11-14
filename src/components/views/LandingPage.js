@@ -33,6 +33,8 @@ import green from '@material-ui/core/colors/green';
 
 import * as Actions from '../../actions/actions.js';
 
+import * as Constants from './LandingPageTestConstants.js';
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -117,33 +119,7 @@ class LandingPage extends Component {
       selectedProvider: '',
       selectedPort: '',
       selectedNetwork: '',
-      providers: {
-        Geth: {
-          disabled: false,
-          image: 'mist-150x150.png',
-          link: 'https://github.com/ethereum/go-ethereum/releases',
-        },
-        Parity: {
-          disabled: false,
-          image: 'parity-signer.svg',
-          link: 'https://github.com/paritytech/parity-ethereum/releases',
-        },
-        Metamask: {
-          disabled: false,
-          image: 'metamask-icon.svg',
-          link: 'https://metamask.io/',
-        },
-        Infura: {
-          disabled: false,
-          image: 'infura-icon.jpeg',
-          link: 'https://infura.io/',
-        },
-        Ganache: {
-          disabled: false,
-          image: 'ganache-icon.png',
-          link: 'https://truffleframework.com/docs/ganache/quickstart',
-        },
-      },
+      providers: Constants.providerConstants,
       networks: {
         MainNet: {
           disabled: false,
