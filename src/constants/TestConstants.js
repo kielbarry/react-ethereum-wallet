@@ -1,28 +1,49 @@
-export const provConfigAction = {
-  type: 'SET_ETHEREUM_PROVIDER_CONFIG',
-  payload: {
-    selectedProvider: 'Geth',
-    selectedPort: '8546',
-    selectedNetwork: 'MainNet',
-  },
-};
 export const provConfigInput = {
   selectedProvider: 'Geth',
   selectedPort: '8546',
   selectedNetwork: 'MainNet',
 };
 
-export const pendingContractsAction = {
-  type: 'UPDATE_PENDING_CONTRACTS',
+export const provConfigAction = {
+  type: 'SET_ETHEREUM_PROVIDER_CONFIG',
+  payload: provConfigInput,
+};
+
+export const addTransactionInput = {
+  hash: 0x1554c5f6831425d37468fdc41bb034a6227af17fc018788f9f54d6179da579f1,
+  value: {
+    from: '0x65B42142606a9D46d05ea5205Ad4b610A9130e92',
+    value: '1000000000000000000',
+    gasPrice: 23000000000,
+    to: '0x9cA862100a77B316e1d20B9553Cf73e5a89fB281',
+    estimatedGas: 3763821,
+    dateSent: new Date(),
+    confirmationNumber: 'Pending',
+  },
+};
+
+export const addTransactionAction = {
+  type: 'ADD_TRANSACTION',
+  payload: addTransactionInput,
+};
+
+export const displayGlobalNotifactionInput = {
+  display: true,
+  type: 'error',
+  msg: 'Invalid address input',
+};
+
+export const displayGlobalNotifactionAction = {
+  type: 'DISPLAY_GLOBAL_NOTIFICATION',
+  payload: displayGlobalNotifactionInput,
 };
 
 export const pendingContractsInput = {
   type: 'UPDATE_PENDING_CONTRACTS',
 };
 
-export const addObservedTokenAction = {
-  type: 'ADD_OBSERVED_TOKEN',
-  payload: addObservedTokenInput,
+export const pendingContractsAction = {
+  type: 'UPDATE_PENDING_CONTRACTS',
 };
 
 export const addObservedTokenInput = {
@@ -32,23 +53,40 @@ export const addObservedTokenInput = {
   division: '18',
 };
 
+export const addObservedTokenAction = {
+  type: 'ADD_OBSERVED_TOKEN',
+  payload: addObservedTokenInput,
+};
+
+export const addObservedContractInput = [
+  {
+    constant: true,
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', type: 'string' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+
+export const addObservedContractAction = {
+  type: 'ADD_OBSERVED_CONTRACT',
+  payload: addObservedContractInput,
+};
+
+export const undisplayModalInput = 'modalToUndisplay';
+
 export const undisplayModalAction = {
   type: 'CLOSE_MODAL',
   payload: undisplayModalInput,
 };
 
-export const undisplayModalInput = 'modalToUndisplay';
+export const displayModalInput = 'modalToDisplay';
 
 export const displayModalAction = {
   type: 'DISPLAY_MODAL',
   payload: displayModalInput,
-};
-
-export const displayModalInput = 'modalToDisplay';
-
-export const updateExchangeRatesAction = {
-  type: 'UPDATE_EXCHANGE_RATES',
-  payload: updateExchangeRatesInput,
 };
 
 export const updateExchangeRatesInput = {
@@ -59,9 +97,9 @@ export const updateExchangeRatesInput = {
   brl: 784.88,
 };
 
-export const updateSelectedWalletAction = {
-  type: 'SET_SELECTED_WALLET',
-  payload: updateSelectedWalletInput,
+export const updateExchangeRatesAction = {
+  type: 'UPDATE_EXCHANGE_RATES',
+  payload: updateExchangeRatesInput,
 };
 
 export const updateSelectedWalletInput = {
@@ -71,16 +109,16 @@ export const updateSelectedWalletInput = {
   addressType: 'account',
 };
 
-export const updateTotalBalanceAction = {
-  types: 'UPDATE_TOTAL_BALANCE',
-  payload: updateTotalBalanceInput,
+export const updateSelectedWalletAction = {
+  type: 'SET_SELECTED_WALLET',
+  payload: updateSelectedWalletInput,
 };
 
 export const updateTotalBalanceInput = 1000000000000000000;
 
-export const setWalletsAction = {
-  type: 'SET_WALLETS',
-  payload: setWalletsInput,
+export const updateTotalBalanceAction = {
+  types: 'UPDATE_TOTAL_BALANCE',
+  payload: updateTotalBalanceInput,
 };
 
 export const setWalletsInput = {
@@ -92,16 +130,16 @@ export const setWalletsInput = {
   },
 };
 
-export const updateProviderAction = {
-  type: 'UPDATE_PROVIDER',
-  payload: updateProviderInput,
+export const setWalletsAction = {
+  type: 'SET_WALLETS',
+  payload: setWalletsInput,
 };
 
 export const updateProviderInput = 'Geth';
 
-export const updateBlockHeaderAction = {
-  type: 'UPDATE_BLOCKHEADER',
-  payload: updateBlockHeaderInput,
+export const updateProviderAction = {
+  type: 'UPDATE_PROVIDER',
+  payload: updateProviderInput,
 };
 
 export const updateBlockHeaderInput = {
@@ -111,23 +149,28 @@ export const updateBlockHeaderInput = {
   timestamp: 1542199355,
 };
 
+export const updateBlockHeaderAction = {
+  type: 'UPDATE_BLOCKHEADER',
+  payload: updateBlockHeaderInput,
+};
+
+export const updatePeercountInput = 25;
+
 export const updatePeercountAction = {
   type: 'UPDATE_PEERCOUNT',
   payload: updatePeercountInput,
 };
 
-export const updatePeercountInput = 25;
+export const updateCurrencyInput = 'ETHER';
 
 export const updateCurrencyAction = {
   type: 'UPDATE_CURRENCY_UNIT',
   payload: updateCurrencyInput,
 };
 
-export const updateCurrencyInput = 'ETHER';
+export const connectedNetworkInput = 'rinkeby';
 
 export const connectedNetworkAction = {
   type: 'UPDATE_CONNECTED_NETWORK',
   payload: connectedNetworkInput,
 };
-
-export const connectedNetworkInput = 'rinkeby';

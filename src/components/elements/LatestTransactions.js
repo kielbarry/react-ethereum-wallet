@@ -130,8 +130,8 @@ class LatestTransactions extends Component {
           <tbody>
             {Object.keys(transactions).map(txHash => (
               <React.Fragment>
-                {this.renderTableRow(txHash)}
-                {this.renderProgressBar(txHash)}
+                {this.renderTableRow(transactions[txHash])}
+                {this.renderProgressBar(transactions[txHash])}
               </React.Fragment>
             ))}
           </tbody>

@@ -40,6 +40,8 @@ class SendTransactionModal extends Component {
     let tx = this.props.reducers.TransactionToSend;
     let date = new Date();
 
+    console.log(tx);
+
     web3.eth
       .sendTransaction({
         from: tx.from,
@@ -60,6 +62,7 @@ class SendTransactionModal extends Component {
         this.props.clearTransactionToSend();
       })
       .on('receipt', receipt => {
+        console.log('the receipt', receipt);
         this.props.updateTransaction({
           name: [receipt.transactionHash],
           value: receipt,
@@ -67,6 +70,7 @@ class SendTransactionModal extends Component {
       })
       .on('confirmation', (confirmationNumber, receipt) => {
         let cn = confirmationNumber;
+        console.log('the cn', cn);
         this.props.updateTransactionConfirmation({
           name: [receipt.transactionHash],
           value: cn,

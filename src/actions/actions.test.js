@@ -1,20 +1,37 @@
 import * as Actions from './actions.js';
-import * as Constants from '../src/TestConstants.js';
+import * as Constants from '../constants/TestConstants.js';
+
+import fetchMock from 'fetch-mock';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 describe('actions', () => {
+  afterEach(() => {
+    fetchMock.restore();
+  });
+
   it('should create action for setEthereumProviderConfig', () => {
-    expect(
-      Actions.setEthereumProviderConfig(Constants.provConfigInput)
-    ).toEqual(Constants.provConfigAction);
+    const store = mockStore({ Web3Initializer: {} });
+
+    return store
+      .dispatch(Actions.setEthereumProviderConfig(Constants.provConfigInput))
+      .then(() => {
+        // return of async actions
+        expect(store.getActions()).toEqual(Constants.provConfigAction);
+      });
   });
 
   //TODO: updateWalletContracts
 
-  //TODO: updatePendingContracts
-  // it('should create action for updatePendingContracts', () => {
-  //   expect(Actions.updatePendingContracts(Constants.provConfigInput))
-  //   .toEqual(Constants.provConfigAction);
-  // });
+  // TODO: updatePendingContracts
+  it('should create action for updatePendingContracts', () => {
+    expect(Actions.updatePendingContracts(Constants.provConfigInput)).toEqual(
+      Constants.provConfigAction
+    );
+  });
 
   it('should create action for setting wallets', () => {
     expect(Actions.setWallets(Constants.setWalletsInput)).toEqual(
@@ -64,10 +81,18 @@ describe('actions', () => {
   // UPDATE_TRANSACTION_CONFIRMATION
   // TODO: updateTransaction
   // UPDATE_TRANSACTION
-  // TODO: addTransaction
-  // ADD_TRANSACTION
-  // TODO: displayGlobalNotification
-  // DISPLAY_GLOBAL_NOTIFICATION
+
+  it('should create action for adding a tx to a list', () => {
+    expect(Actions.addTransaction(Constants.addTransactionInput)).toEqual(
+      Constants.addTransactionAction
+    );
+  });
+
+  it('should create action for displaying a toast notification', () => {
+    expect(
+      Actions.displayGlobalNotification(Constants.displayGlobalNotifactionInput)
+    ).toEqual(Constants.displayGlobalNotifactionAction);
+  });
 
   // TODO: updateTransactionToSend
   // UPDATE_TRANSACTION_TO_SEND
@@ -92,8 +117,13 @@ describe('actions', () => {
   // CANCEL_TOKEN_TO_WATCH
   // TODO: updateTokenToWatch
   // UPDATE_TOKEN_TO_WATCH
-  // TODO: addObservedContract
-  // ADD_OBSERVED_CONTRACT
+
+  it('should create action for observing a contract', () => {
+    expect(
+      Actions.addObservedContract(Constants.pendingContractsInput)
+    ).toEqual(Constants.pendingContractsAction);
+  });
+
   // TODO: cancelContractToWatch
   // CANCEL_CONTRACT_TO_WATCH
 

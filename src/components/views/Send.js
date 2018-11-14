@@ -176,7 +176,7 @@ class SendContractForm extends Component {
               placeholder="0x000000.."
               className="to"
               autoFocus={true}
-              value={tx.to ? tx.to : ''}
+              // value={tx.to}
               onKeyUp={e => this.handleOnKeyUp(e)}
             />
           </div>

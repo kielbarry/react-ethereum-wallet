@@ -15,6 +15,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "ethereum-blockies-base64": "^1.0.2",
     "ethereum-qr-code": "^0.3.0",
+    "fetch-mock": "^7.2.5",
     "geopattern": "^1.2.3",
     "helmet": "^3.13.0",
     "i18n-react": "^0.6.4",
@@ -49,6 +50,7 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
+    "redux-mock-store": "^1.5.3",
     "redux-persist": "^5.10.0",
     "redux-persist-transform-filter": "0.0.18",
     "redux-thunk": "^2.3.0",
@@ -62,7 +64,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@ const web3 = new Web3(
 );
 
 export const setEthereumProviderConfig = data => dispatch => {
-  dispatch({
+  return dispatch({
     type: actionTypes.SET_ETHEREUM_PROVIDER_CONFIG,
     payload: data,
   });
