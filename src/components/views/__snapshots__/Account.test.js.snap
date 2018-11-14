@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`title html renders title 1`] = `
+<h1>
+  <strong>
+    Accounts
+  </strong>
+   Overview
+</h1>
+`;
+
+exports[`wallet html renders wallet description 1`] = `
+Array [
+  <h2>
+    Wallet Contracts
+</h2>,
+  <p>
+    These contracts are stored on the blockchain and can hold and secure Ether. They can have multiple accounts as owners and keep a full log of all transactions.
+</p>,
+  <div
+    className="dapp-clear-fix"
+/>,
+]
+`;
