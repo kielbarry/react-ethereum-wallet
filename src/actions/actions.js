@@ -9,7 +9,7 @@ const web3 = new Web3(
 );
 
 export const setEthereumProviderConfig = data => dispatch => {
-  return dispatch({
+  dispatch({
     type: actionTypes.SET_ETHEREUM_PROVIDER_CONFIG,
     payload: data,
   });
@@ -513,6 +513,7 @@ export const updatePeerCount = PeerCount => dispatch => {
 };
 
 export const updateCurrency = ({ CurrencyUnit }) => dispatch => {
+  console.log(CurrencyUnit);
   dispatch({
     type: actionTypes.UPDATE_CURRENCY_UNIT,
     payload: CurrencyUnit,
