@@ -360,6 +360,7 @@ class NewWalletContract extends Component {
     console.log(dcf);
 
     //TODO: more security checks from observewallets and account_create
+    this.props.history.push('/accounts');
     contract
       .deploy({
         data: code,
@@ -380,7 +381,6 @@ class NewWalletContract extends Component {
       .on('transactionHash', transactionHash => {
         console.log('transactionHash', transactionHash);
         this.props.updatePendingContracts({ name: transactionHash, value: {} });
-        this.props.history.push('/accounts');
       })
       .on('receipt', receipt => {
         console.log('reecipt', receipt);

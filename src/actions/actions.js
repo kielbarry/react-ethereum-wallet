@@ -521,7 +521,7 @@ export const updateCurrency = ({ CurrencyUnit }) => dispatch => {
 
 export const updateConnectedNetwork = network => dispatch => {
   dispatch({
-    type: 'UPDATE_CONNECTED_NETWORK',
+    type: actionTypes.UPDATE_CONNECTED_NETWORK,
     payload: network,
   });
 };

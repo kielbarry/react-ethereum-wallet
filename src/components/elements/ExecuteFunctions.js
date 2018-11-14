@@ -153,7 +153,6 @@ export class ExecuteFunctions extends Component {
                   &nbsp;
                   <em>- {input.type}</em>
                 </h4>
-
                 <Inputs data={input} index={index} />
               </React.Fragment>
             ))

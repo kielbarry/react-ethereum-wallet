@@ -78,7 +78,6 @@ export class WalletDropdown extends Component {
     }
 
     if (this.state.dropdownConfig.component === 'DeployContractForm') {
-      console.log('yes here in', this.props.reducers.DeployContractForm);
       this.props.updateMainDCF({
         name: 'MainOwnerAddress',
         value: e.target.value,
