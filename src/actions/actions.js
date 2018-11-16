@@ -16,7 +16,6 @@ export const setEthereumProviderConfig = data => dispatch => {
 };
 
 export const updateWalletContracts = contract => dispatch => {
-  console.log(contract);
   dispatch({
     type: actionTypes.UPDATE_WALLET_CONTRACT,
     payload: contract,
@@ -82,7 +81,6 @@ export const updateQRCode = address => dispatch => {
 };
 
 export const updateSelectedEvent = event => dispatch => {
-  console.log('event/log in updateSelectedEvent', event);
   dispatch({
     type: actionTypes.UPDATE_SELECTED_EVENT,
     payload: event,

@@ -74,8 +74,7 @@ describe('actions', () => {
       );
     });
   });
-  // // TODO: updateQRCode
-  // // UPDATE_QR_CODE
+
   it('should create action for displaying QR code', async () => {
     const store = mockStore({ qrCode: '' });
     await store.dispatch(Actions.updateQRCode(Constants.updateQrCodeInput));
@@ -85,25 +84,96 @@ describe('actions', () => {
       expect(actions[index]).toEqual(Constants.updateQrCodeAction[index]);
     });
   });
-  // // TODO: updateSelectedEvent
-  // // UPDATE_SELECTED_EVENT
+
+  it('should create action for selecting event', async () => {
+    const store = mockStore({});
+    await store.dispatch(
+      Actions.updateSelectedEvent(Constants.updateSelectedEventInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updateSelectedEventAction[index]
+      );
+    });
+  });
   // // TODO: addContractFunctions
   // // ADD_CONTRACT_FUNCTIONS
   // // TODO: addContractConstants
   // // ADD_CONTRACT_CONSTANTS
-  // // TODO: updateContractLog
-  // // UPDATE_PAST_CONTRACT_LOGS
-  // // TODO: addPastContractLogs
-  // // ADD_PAST_CONTRACT_LOGS
+
+  it('should create action for updating logs', async () => {
+    const store = mockStore({
+      ObservedContracts: {
+        '0x0000000000000000000000000000000000000000': { logs: [] },
+      },
+    });
+    await store.dispatch(
+      Actions.updateContractLog(Constants.updatePastContractLogsInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updatePastContractLogsAction[index]
+      );
+    });
+  });
+
+  it('should create action for adding logs', async () => {
+    const store = mockStore({
+      ObservedContracts: {
+        '0x0000000000000000000000000000000000000000': { logs: [] },
+      },
+    });
+    await store.dispatch(
+      Actions.addPastContractLogs(Constants.addPastContractLogsInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.addPastContractLogsAction[index]
+      );
+    });
+  });
   // // TODO: fetchTokensForAutoScan
   // // multiple dispatch
 
   // // TODO: updateMainDCF
   // // UPDATE_MAIN_DCF
-  // // TODO: updateDCFRadio
-  // // UPDATE_DCF_RADIO
+
+  it('should create action for updating dcf radio', async () => {
+    const store = mockStore({ DeployContractForm: {} });
+    await store.dispatch(Actions.updateDCFRadio(Constants.updateDCFRadioInput));
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(Constants.updateDCFRadioAction[index]);
+    });
+  });
+
   // // TODO: updateMainContractAddress
   // // UPDATE_MAIN_CONTRACT_ADDRESS
+  it('should create action for main dcf contract address', async () => {
+    const store = mockStore({
+      DeployContractForm: {
+        MainOwnerAddress: '',
+        multiSigContract: { MainOwnerAddress: '' },
+      },
+    });
+    await store.dispatch(
+      Actions.updateMainContractAddress(Constants.updateDCFMainAddressInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updateDCFMainAddressAction[index]
+      );
+    });
+  });
   // // TODO: updateDeployContractForm
   // // UPDATE_DEPLOY_CONTRACT_FORM
   // // TODO: updateSelectedTransaction

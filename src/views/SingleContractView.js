@@ -61,6 +61,8 @@ export class SingleContractView extends Component {
   }
 
   executeAndWatch(e, contract) {
+    console.log(e);
+    console.log(contract);
     this.executeFunctions(e, contract);
     this.watchContractEvents(e, contract);
   }
@@ -112,16 +114,38 @@ export class SingleContractView extends Component {
         }
         return input.value;
       });
-      contractInstance.methods[method.name](...args).call((err, res) => {
-        err
-          ? ((method.outputs[0].value = ''),
-            console.warn('error in contract call', err))
-          : method.outputs.length === 1
-          ? (method.outputs[0].value = res)
-          : method.outputs.map(
-              (output, i) => (method.outputs[i].value = res[i])
-            );
-      });
+
+      console.log(
+        'method: ',
+        method,
+        ' Args: ',
+        ...args,
+        ' name: ',
+        method.name
+      );
+
+      try {
+        contractInstance.methods[method.name](...args).call((err, res) => {
+          err
+            ? ((method.outputs[0].value = ''),
+              console.warn('error in contract call', err))
+            : method.outputs.length === 1
+            ? (method.outputs[0].value = res)
+            : method.outputs.map(
+                (output, i) => (method.outputs[i].value = res[i])
+              );
+        });
+      } catch (err) {
+        console.warn(
+          'method: ',
+          method,
+          ' Args: ',
+          ...args,
+          ' name: ',
+          method.name
+        );
+        console.warn(err);
+      }
       this.props.updateInitialContractMethodOutputs({
         contractAddress: contract.address,
         name: method.name,
@@ -184,6 +208,7 @@ export class SingleContractView extends Component {
     this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
+  // TODO: unused, but is for deployed wallet contracts
   updateWalletDetails() {
     let web3;
     if (this.props.web3 && this.props.web3.web3Instance) {
@@ -260,8 +285,6 @@ export class SingleContractView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
-    console.log('here is the contract', contract);
-
     // contract.deployedWalletContract
     //   ?
     let {
@@ -323,7 +346,6 @@ export class SingleContractView extends Component {
               type="checkbox"
               id="watch-events-checkbox"
               className="toggle-watch-events"
-              // onClick={e => this.watchContractEvents(e, contract)}
               onClick={e => this.executeAndWatch(e, contract)}
             />
             <label htmlFor="watch-events-checkbox">Watch contract events</label>

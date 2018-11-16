@@ -57,6 +57,168 @@ export const updateQrCodeAction = [
   },
 ];
 
+export const updateSelectedEventInput = [
+  {
+    address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+    blockNumber: 6715977,
+    transactionHash:
+      '0xbc9267d277216f5d4f86471930606cb4ba0a8e8fd3de42288405702bd921f25b',
+    transactionIndex: 14,
+    blockHash:
+      '0x8380054fd40ff7d38c556e4138d4b691b32ad71541abd4455a594a7a4eb3ea12',
+    logIndex: 2,
+    removed: false,
+    id: 'log_3016bfa0',
+    returnValues: {
+      '0': '0x0000000000000000000000000000000000000000',
+      '1': '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+      '2': '1187527',
+      from: '0x0000000000000000000000000000000000000000',
+      to: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+      tokenId: '1187527',
+    },
+    event: 'Transfer',
+    signature:
+      '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+    raw: {
+      data:
+        '0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006012c8cf97bead5deae237070f9587f8e7a266d0000000000000000000000000000000000000000000000000000000000121ec7',
+      topics: [
+        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+      ],
+    },
+    timestamp: '2018-11-16T15:35:20.000Z',
+    originalContractName: 'cryptokitties',
+    originalContractAddress: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+  },
+];
+
+export const updateSelectedEventAction = [
+  {
+    type: 'UPDATE_SELECTED_EVENT',
+    payload: updateSelectedEventInput,
+  },
+];
+
+export const updatePastContractLogsInput = {
+  address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+  blockNumber: 6715977,
+  transactionHash:
+    '0xbc9267d277216f5d4f86471930606cb4ba0a8e8fd3de42288405702bd921f25b',
+  transactionIndex: 14,
+  blockHash:
+    '0x8380054fd40ff7d38c556e4138d4b691b32ad71541abd4455a594a7a4eb3ea12',
+  logIndex: 1,
+  removed: false,
+  id: 'log_af89799c',
+  returnValues: {
+    '0': '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+    '1': '1187527',
+    '2': '0',
+    '3': '0',
+    '4':
+      '721721688703249183577140237600328673412502101259981582285362175270850564',
+    owner: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+    kittyId: '1187527',
+    matronId: '0',
+    sireId: '0',
+    genes:
+      '721721688703249183577140237600328673412502101259981582285362175270850564',
+  },
+  event: 'Birth',
+  signature:
+    '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
+  raw: {
+    data:
+      '0x00000000000000000000000006012c8cf97bead5deae237070f9587f8e7a266d0000000000000000000000000000000000000000000000000000000000121ec7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000689225304c6800e438ed5ad045a4a808da64b169521cb5358a0284d21004',
+    topics: [
+      '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
+    ],
+  },
+  timestamp: '2018-11-16T15:35:20.000Z',
+};
+
+export const updatePastContractLogsAction = [
+  {
+    type: 'UPDATE_PAST_CONTRACT_LOGS',
+    payload: updatePastContractLogsInput,
+  },
+];
+
+export const addPastContractLogsInput = [
+  {
+    address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+    blockNumber: 6715977,
+    transactionHash:
+      '0xbc9267d277216f5d4f86471930606cb4ba0a8e8fd3de42288405702bd921f25b',
+    transactionIndex: 14,
+    blockHash:
+      '0x8380054fd40ff7d38c556e4138d4b691b32ad71541abd4455a594a7a4eb3ea12',
+    logIndex: 1,
+    removed: false,
+    id: 'log_af89799c',
+    returnValues: {
+      '0': '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+      '1': '1187527',
+      '2': '0',
+      '3': '0',
+      '4':
+        '721721688703249183577140237600328673412502101259981582285362175270850564',
+      owner: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+      kittyId: '1187527',
+      matronId: '0',
+      sireId: '0',
+      genes:
+        '721721688703249183577140237600328673412502101259981582285362175270850564',
+    },
+    event: 'Birth',
+    signature:
+      '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
+    raw: {
+      data:
+        '0x00000000000000000000000006012c8cf97bead5deae237070f9587f8e7a266d0000000000000000000000000000000000000000000000000000000000121ec7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000689225304c6800e438ed5ad045a4a808da64b169521cb5358a0284d21004',
+      topics: [
+        '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
+      ],
+    },
+    timestamp: '2018-11-16T15:35:20.000Z',
+  },
+];
+
+export const addPastContractLogsAction = [
+  {
+    type: 'ADD_PAST_CONTRACT_LOGS',
+    payload: addPastContractLogsInput,
+  },
+];
+
+export const updateDCFRadioInput = {
+  simpleChecked: true,
+  multisigChecked: false,
+  importWalletChecked: false,
+};
+
+export const updateDCFRadioAction = [
+  {
+    type: 'UPDATE_DCF_RADIO',
+    payload: updateDCFRadioInput,
+  },
+];
+
+export const updateDCFMainAddressInput = {
+  MainOwnerAddress: '0x0000000000000000000000000000000000000000',
+  multiSigContract: {
+    MainOwnerAddress: '0x0000000000000000000000000000000000000000',
+  },
+};
+
+export const updateDCFMainAddressAction = [
+  {
+    type: 'UPDATE_MAIN_CONTRACT_ADDRESS',
+    payload: updateDCFMainAddressInput,
+  },
+];
+
 export const addTransactionInput = {
   hash: 0x1554c5f6831425d37468fdc41bb034a6227af17fc018788f9f54d6179da579f1,
   value: {
