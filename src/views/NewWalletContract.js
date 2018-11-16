@@ -2,36 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
-
-import * as Actions from '../../actions/actions.js';
-
 import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
-// import Switch from '@material-ui/core/Switch';
-// import Paper from '@material-ui/core/Paper';
-// import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-// import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import SecurityIcon from '../elements/SecurityIcon.js';
-import WalletDropdown from '../elements/WalletDropdown.js';
+import SecurityIcon from '../components/elements/SecurityIcon.js';
+import WalletDropdown from '../components/elements/WalletDropdown.js';
 import shortid from 'shortid';
-import * as Utils from '../../utils/utils.js';
+import * as Utils from '../utils/utils.js';
+import * as Actions from '../actions/actions.js';
 
 import {
   WalletInterfaceItems,
   ethereumConfig,
-} from '../../constants/InitConstants.js';
+} from '../constants/InitConstants.js';
 
 const styles = theme => ({
   radioRoot: {
@@ -60,6 +53,33 @@ const styles = theme => ({
     strokeWidth: 1,
   },
 });
+
+const Title = () => {
+  return (
+    <h1>
+      New <strong>wallet contract</strong>
+    </h1>
+  );
+};
+
+const SelectOwner = () => {
+  const dropdownConfig = {
+    component: 'DeployContractForm',
+    selectClassName: 'send-from',
+    selectName: 'MainOwnerAddress',
+  };
+  return (
+    <React.Fragment>
+      <h2>Select owner</h2>
+      <div className="col col-6 mobile-full from">
+        <h3>From</h3>
+        <div className="dapp-select-account send-from">
+          <WalletDropdown dropdownConfig={dropdownConfig} />
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
 
 let dcfRadio = ['simpleChecked', 'multisigChecked', 'importWalletChecked'];
 
@@ -248,8 +268,8 @@ class NewWalletContract extends Component {
               index === 0
                 ? dcf.MainOwnerAddress
                 : typeof owners[index] == 'undefined'
-                  ? ''
-                  : owners[index]
+                ? ''
+                : owners[index]
             }
             disabled={index === 0}
             InputProps={{
@@ -262,8 +282,8 @@ class NewWalletContract extends Component {
                       index === 0
                         ? dcf.MainOwnerAddress
                         : typeof owners[index] == 'undefined'
-                          ? this.makeID()
-                          : owners[index]
+                        ? this.makeID()
+                        : owners[index]
                     }
                   />
                 </InputAdornment>
@@ -429,17 +449,10 @@ class NewWalletContract extends Component {
     const { classes } = this.props;
     const { DeployContractForm } = this.props.reducers;
     let dcf = this.props.reducers.DeployContractForm;
-    let dropdownConfig = {
-      component: 'DeployContractForm',
-      selectClassName: 'send-from',
-      selectName: 'MainOwnerAddress',
-    };
     return (
       <React.Fragment>
         <FormControl component="fieldset" className={classes.formControl}>
-          <h1>
-            New <strong>wallet contract</strong>
-          </h1>
+          <Title />
           <input
             type="text"
             name="WalletContractName"
@@ -447,13 +460,7 @@ class NewWalletContract extends Component {
             onChange={e => this.handleChange(e)}
             autoFocus={true}
           />
-          <h2>Select owner</h2>
-          <div className="col col-6 mobile-full from">
-            <h3>From</h3>
-            <div className="dapp-select-account send-from">
-              <WalletDropdown dropdownConfig={dropdownConfig} />
-            </div>
-          </div>
+          <SelectOwner />
           <div className={classes.radioRoot}>
             <FormLabel component="legend">Wallet Contract Type</FormLabel>
             <RadioGroup

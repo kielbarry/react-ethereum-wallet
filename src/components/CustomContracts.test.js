@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { ContractSectionList } from '../../constants/FieldConstants.js';
+import { ContractSectionList } from '../constants/FieldConstants.js';
 
 describe('custom contracts html', () => {
   const CC = ContractSectionList.CustomContracts;
@@ -23,7 +23,7 @@ describe('custom contracts html', () => {
         <React.Fragment>
           <button
             className={CC.buttonClass}
-            onClick={() => this.props.displayModal('displayWatchContract')}
+            onClick={{ modals: { displayWatchContract: true } }}
           >
             <div className="account-pattern">+</div>
             <h3>{CC.buttonDescription}</h3>
@@ -41,7 +41,7 @@ describe('custom contracts html', () => {
         <React.Fragment>
           <button
             className={CC.buttonClass}
-            onClick={() => this.props.displayModal('displayWatchContract')}
+            onClick={{ modals: { displayWatchContract: true } }}
           >
             <div className="account-pattern">+</div>
             <h3>{CC.buttonDescription}</h3>

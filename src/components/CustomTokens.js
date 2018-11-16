@@ -5,6 +5,7 @@ import TokenBox from './elements/TokenBox.js';
 import { ContractSectionList } from './../constants/FieldConstants.js';
 import * as Actions from './../actions/actions.js';
 
+// snapshotted
 const TokenDescription = () => {
   let CT = ContractSectionList.CustomTokens;
   return (
@@ -29,22 +30,7 @@ class CustomTokens extends Component {
     return false;
   }
 
-  renderWatchContractButton() {
-    let CC = ContractSectionList.CustomContracts;
-    return (
-      <React.Fragment>
-        <button
-          className={CC.buttonClass}
-          onClick={() => this.props.displayModal('displayWatchContract')}
-        >
-          <div className="account-pattern">+</div>
-          <h3>{CC.buttonDescription}</h3>
-        </button>
-        <div className="dapp-clear-fix" />
-      </React.Fragment>
-    );
-  }
-
+  // snapshotted
   renderObservedTokens() {
     let obj = this.props.reducers;
     if (
@@ -64,6 +50,7 @@ class CustomTokens extends Component {
     }
   }
 
+  // snapshotted
   renderAddTokenButton() {
     let CT = ContractSectionList.CustomTokens;
     return (
@@ -94,6 +81,7 @@ class CustomTokens extends Component {
     this.props.fetchTokensForAutoScan(addresses);
   }
 
+  // snapshotted
   renderAutoScan() {
     return (
       <React.Fragment>
@@ -114,6 +102,7 @@ class CustomTokens extends Component {
     );
   }
 
+  // not snapshotted
   render() {
     return (
       <div className="contracts-view-custom-tokens">

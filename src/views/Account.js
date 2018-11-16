@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import AccountItem from '../elements/AccountItem.js';
-import ContractItem from '../elements/ContractItem.js';
-import LatestTransactions from '../elements/LatestTransactions.js';
+import AccountItem from '../components/elements/AccountItem.js';
+import ContractItem from '../components/elements/ContractItem.js';
+import LatestTransactions from '../components/elements/LatestTransactions.js';
 import { Link } from 'react-router-dom';
 
-import web3test from '../../web3/Web3Initializer.js';
+import web3test from '../web3/Web3Initializer.js';
 
-import Addresses from '../Addresses.js';
-import DeployedWallets from '../DeployedWallets.js';
+import Addresses from '../components/Addresses.js';
+import DeployedWallets from '../components/DeployedWallets.js';
 
 // snapshotted
 const Title = () => {

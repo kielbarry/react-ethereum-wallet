@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import CustomContracts from '../CustomContracts.js';
-import CustomTokens from '../CustomTokens.js';
+import CustomContracts from '../components/CustomContracts.js';
+import CustomTokens from '../components/CustomTokens.js';
 
 const Title = () => {
   return (

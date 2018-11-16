@@ -18,7 +18,7 @@ class AccountItem extends Component {
       address: this.props.address,
       number: this.props.number,
       wallet: this.props.wallet,
-      currency: this.props.props.reducers.currency,
+      currency: this.props.reducers.currency,
       addressType: 'account',
     });
   }
@@ -27,13 +27,10 @@ class AccountItem extends Component {
     let wallet = this.props.wallet;
     return (
       <React.Fragment>
-        {this.props.props.web3 && this.props.props.web3.web3Instance ? (
+        {this.props.web3 && this.props.web3.web3Instance ? (
           <NumberFormat
             className="account-balance"
-            value={Utils.displayPriceFormatter(
-              this.props.props,
-              wallet.balance
-            )}
+            value={Utils.displayPriceFormatter(this.props, wallet.balance)}
             displayType={'text'}
             thousandSeparator={true}
           />
@@ -45,7 +42,7 @@ class AccountItem extends Component {
             thousandSeparator={true}
           />
         )}
-        <span> {this.props.props.reducers.currency} </span>
+        <span> {this.props.reducers.currency} </span>
       </React.Fragment>
     );
   }
@@ -79,7 +76,11 @@ class AccountItem extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return state;
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { selectedWallet, ...Actions }
 )(AccountItem);

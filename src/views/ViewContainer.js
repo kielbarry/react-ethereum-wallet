@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 // views
 import AccountView from './Account.js';
+
 import SingleAccountView from './SingleAccountView.js';
 import SingleContractView from './SingleContractView.js';
 import ContractsView from './Contracts.js';
@@ -19,8 +20,8 @@ class ViewContainer extends Component {
       <div className="dapp-flex-content">
         <main className="dapp-content">
           <Route exact path="/accounts" component={AccountView} />
-          <Route exact path="/wallet/new" component={NewWalletContract} />
           <Route path="/account/*" component={SingleAccountView} />
+          <Route exact path="/wallet/new" component={NewWalletContract} />
           <Route path="/contract/*" component={SingleContractView} />
           <Route path="/send-from*" component={SendContractForm} />
           <Route exact path="/contracts" component={ContractsView} />

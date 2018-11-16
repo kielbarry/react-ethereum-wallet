@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SU from '../elements/SelectableUnit.js';
-import ContractActionBar from '../elements/ContractActionBar.js';
-import ExecutableContract from '../elements/ExecutableContract.js';
-import ContractEvents from '../elements/ContractEvents.js';
-import NotFound from './NotFound.js';
-import SecurityIcon from '../elements/SecurityIcon.js';
-import * as Utils from '../../utils/utils.js';
-import * as Helpers from '../../utils/helperFunctions.js';
-import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
+
+import SU from '../components/elements/SelectableUnit.js';
+import ContractActionBar from '../components/elements/ContractActionBar.js';
+import ExecutableContract from '../components/elements/ExecutableContract.js';
+import ContractEvents from '../components/elements/ContractEvents.js';
+import SecurityIcon from '../components/elements/SecurityIcon.js';
+
+import * as Utils from '../utils/utils.js';
+import * as Helpers from '../utils/helperFunctions.js';
+import * as Actions from '../actions/actions.js';
+
+import NotFound from './NotFound.js';
 
 export class SingleContractView extends Component {
   constructor(props) {
@@ -114,10 +117,10 @@ export class SingleContractView extends Component {
           ? ((method.outputs[0].value = ''),
             console.warn('error in contract call', err))
           : method.outputs.length === 1
-            ? (method.outputs[0].value = res)
-            : method.outputs.map(
-                (output, i) => (method.outputs[i].value = res[i])
-              );
+          ? (method.outputs[0].value = res)
+          : method.outputs.map(
+              (output, i) => (method.outputs[i].value = res[i])
+            );
       });
       this.props.updateInitialContractMethodOutputs({
         contractAddress: contract.address,

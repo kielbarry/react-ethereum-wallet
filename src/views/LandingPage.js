@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import shortid from 'shortid';
 
 import * as MetamaskModel from 'metamask-logo';
 
@@ -12,27 +13,19 @@ import {
 
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
-import shortid from 'shortid';
-
 import FormControl from '@material-ui/core/FormControl';
-
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
-
 import Button from '@material-ui/core/Button';
 import NotInterestedSharp from '@material-ui/icons/NotInterestedSharp';
 import OfflineBoltSharp from '@material-ui/icons/OfflineBoltSharp';
-
 import IconButton from '@material-ui/core/IconButton';
-
 import Paper from '@material-ui/core/Paper';
 import Slide from '@material-ui/core/Slide';
-
 import green from '@material-ui/core/colors/green';
 
-import * as Actions from '../../actions/actions.js';
-
+import * as Actions from '../actions/actions.js';
 import * as Constants from './LandingPageTestConstants.js';
 
 const styles = theme => ({
@@ -273,7 +266,7 @@ class LandingPage extends Component {
           </FormControl>
           <div className={classes.column}>
             {this.state.selectedPort === '' ? null : this.state.selectedPort ===
-              '8546' || this.state.selectedPort === '8545' ? (
+                '8546' || this.state.selectedPort === '8545' ? (
               <div>
                 This is the
                 <strong>
@@ -326,7 +319,7 @@ class LandingPage extends Component {
           </FormControl>
           <div className={classes.column}>
             {this.state.selectedNetwork === '' ? null : this.state
-              .selectedNetwork !== 'MainNet' ? (
+                .selectedNetwork !== 'MainNet' ? (
               <div>
                 This is a{' '}
                 <strong>

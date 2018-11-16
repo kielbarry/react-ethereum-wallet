@@ -1,14 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`title html renders title 1`] = `
-<h1>
-  <strong>
-    Accounts
-  </strong>
-   Overview
-</h1>
-`;
-
 exports[`wallet html renders wallet description 1`] = `
 Array [
   <h2>
