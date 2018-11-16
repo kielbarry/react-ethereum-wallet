@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`contract events renders date td 1`] = `
+<td
+  className="time simptip-position-right simptip-movable"
+  data-tooltip="//TODO: get timestamp"
+>
+  <h2>
+    Nov
+  </h2>
+  <p>
+    16
+  </p>
+</td>
+`;

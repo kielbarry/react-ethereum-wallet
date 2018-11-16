@@ -6,6 +6,38 @@ import * as Helpers from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
 
+const DateFormat = props => {
+  return (
+    <td
+      className="time simptip-position-right simptip-movable"
+      data-tooltip="//TODO: get timestamp"
+    >
+      <h2>{Utils.getMonthName(props.log.timestamp)}</h2>
+      <p>{Utils.getDate(props.log.timestamp)}</p>
+    </td>
+  );
+};
+
+const LogValue = props => {
+  return (
+    <p key={shortid.generate()} style={{ wordBreak: 'break-word' }}>
+      {props.val} : &nbsp; <strong> {props.log.returnValues[props.val]}</strong>
+      <br />
+    </p>
+  );
+};
+
+const Event = props => {
+  return (
+    <td className="account-name">
+      <h2>{props.log.event}</h2>
+      {Object.keys(props.log.returnValues).map((val, i) =>
+        isNaN(val) ? <LogValue log={props.log} val={val} /> : null
+      )}
+    </td>
+  );
+};
+
 export class ContractEvents extends Component {
   constructor(props) {
     super(props);
@@ -83,10 +115,10 @@ export class ContractEvents extends Component {
           ? ((method.outputs[0].value = ''),
             console.warn('error in contract call', err))
           : method.outputs.length === 1
-            ? (method.outputs[0].value = res)
-            : method.outputs.map(
-                (output, i) => (method.outputs[i].value = res[i])
-              );
+          ? (method.outputs[0].value = res)
+          : method.outputs.map(
+              (output, i) => (method.outputs[i].value = res[i])
+            );
       });
       // TODO: NOT UPDATING STATE
       // this.props.updateInitialContractMethodOutputs({
@@ -142,28 +174,8 @@ export class ContractEvents extends Component {
               data-transaction-hash={log.transactionHash}
               data-block-hash={log.blockHash}
             >
-              <td
-                className="time simptip-position-right simptip-movable"
-                data-tooltip="//TODO: get timestamp"
-              >
-                <h2>{Utils.getMonthName(log.timestamp)}</h2>
-                <p>{Utils.getDate(log.timestamp)}</p>
-              </td>
-              <td className="account-name">
-                <h2>{log.event}</h2>
-                {Object.keys(log.returnValues).map(
-                  (val, i) =>
-                    isNaN(val) ? (
-                      <p
-                        key={shortid.generate()}
-                        style={{ wordBreak: 'break-word' }}
-                      >
-                        {val} : &nbsp; <strong> {log.returnValues[val]}</strong>
-                        <br />
-                      </p>
-                    ) : null
-                )}
-              </td>
+              <DateFormat log={log} />
+              <Event log={log} />
             </tr>
           ))}
         </tbody>

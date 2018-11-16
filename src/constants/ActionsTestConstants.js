@@ -37,6 +37,26 @@ export const updatedSelectedFunctionAction = [
   },
 ];
 
+export const updateJsonInterfaceInput = [
+  { constant: false, inputs: [{ name: '_owner', type: 'address' }] },
+];
+
+export const updateJsonInterfaceAction = [
+  {
+    type: 'UPDATE_JSON_INTERFACE',
+    payload: updateJsonInterfaceInput,
+  },
+];
+
+export const updateQrCodeInput = '0x0000000000000000000000000000000000000000';
+
+export const updateQrCodeAction = [
+  {
+    type: 'UPDATE_QR_CODE',
+    payload: updateQrCodeInput,
+  },
+];
+
 export const addTransactionInput = {
   hash: 0x1554c5f6831425d37468fdc41bb034a6227af17fc018788f9f54d6179da579f1,
   value: {

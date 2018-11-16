@@ -47,8 +47,6 @@ describe('actions', () => {
   // // TODO: updateExecutingWallet
   // // UPDATE_EXECUTING_WALLET
 
-  // // TODO: updateSelectedFunction
-  // // UPDATE_SELECTED_FUNCTION
   it('should create action for updating a selected function', async () => {
     const store = mockStore({ selectedFunction: {} });
     await store.dispatch(
@@ -62,10 +60,31 @@ describe('actions', () => {
       );
     });
   });
-  // // TODO: updateJSON
-  // // UPDATE_JSON_INTERFACE
+
+  it('should create action for displaying JSON interface', async () => {
+    const store = mockStore({ JSONInterface: '' });
+    await store.dispatch(
+      Actions.updateJSON(Constants.updateJsonInterfaceInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updateJsonInterfaceAction[index]
+      );
+    });
+  });
   // // TODO: updateQRCode
   // // UPDATE_QR_CODE
+  it('should create action for displaying QR code', async () => {
+    const store = mockStore({ qrCode: '' });
+    await store.dispatch(Actions.updateQRCode(Constants.updateQrCodeInput));
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(Constants.updateQrCodeAction[index]);
+    });
+  });
   // // TODO: updateSelectedEvent
   // // UPDATE_SELECTED_EVENT
   // // TODO: addContractFunctions
