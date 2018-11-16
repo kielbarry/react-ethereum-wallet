@@ -5,9 +5,6 @@ import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-// snapshot testing?
-// prints out an ast copy?
-
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 

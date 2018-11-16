@@ -76,6 +76,7 @@ export class ExecuteConstants extends Component {
     }
   }
 
+  // snapshotted
   renderFunctionInputs(func) {
     return (
       <tr key={shortid.generate()}>
@@ -103,18 +104,20 @@ export class ExecuteConstants extends Component {
     );
   }
 
+  //snapshotted
   renderOutputType(output) {
     return (
       <dd className="output">
         {output.type === 'address'
           ? this.renderAddress(output)
           : output.type === 'bool'
-            ? this.renderBool(output)
-            : output.value}
+          ? this.renderBool(output)
+          : output.value}
       </dd>
     );
   }
 
+  // snapshotted
   renderAddress(output) {
     return (
       <span className="address dapp-shorten-text not-ens-name">
@@ -127,6 +130,7 @@ export class ExecuteConstants extends Component {
     );
   }
 
+  // snapshotted
   renderBool(output) {
     let bool = output.value === true;
     let text = bool ? 'YES ' : 'NO ';
@@ -141,6 +145,7 @@ export class ExecuteConstants extends Component {
     );
   }
 
+  // snapshotted
   renderFunctionOutputs(func) {
     return (
       <tr key={shortid.generate()}>
@@ -161,14 +166,11 @@ export class ExecuteConstants extends Component {
     );
   }
 
+  // TODO: snapshot
   render() {
     let contract = this.state.reducers.selectedContract.contract;
     let constants = this.state.reducers.ObservedContracts[contract.address]
       .contractConstants;
-    // console.log(
-    //   'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-    //   constants
-    // );
     return (
       <div className="col col-8 mobile-full contract-info">
         <h2>Read from contract</h2>

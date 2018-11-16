@@ -15,10 +15,10 @@ describe('account information', () => {
     fetchMock.restore();
   });
 
-  let address = '0x0000000000000000000000000000000000000000';
-  let etherScanAddress = 'https://etherscan.io/address/' + address;
-  let transferEtherAddress = '/send/' + address;
-  let changellyAddress =
+  const address = '0x0000000000000000000000000000000000000000';
+  const etherScanAddress = 'https://etherscan.io/address/' + address;
+  const transferEtherAddress = '/send/' + address;
+  const changellyAddress =
     'https://changelly.com/widget/v1?auth=email&amp;from=USD&amp;to=ETH&amp;merchant_id=47f87f7cddda&amp;address=' +
     address +
     '&amp;amount=1&amp;ref_id=e25c5a2e8719&amp;color=02a8f3';

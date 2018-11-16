@@ -102,6 +102,7 @@ class ContractItem extends Component {
   }
 
   renderName() {
+    let contract = this.props.contract;
     let pending = this.props.pending;
     pending ? (pending = true) : (pending = false);
     return (

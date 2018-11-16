@@ -6,8 +6,6 @@ import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 

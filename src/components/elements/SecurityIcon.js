@@ -1,7 +1,7 @@
-import makeBlockie from 'ethereum-blockies-base64';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import makeBlockie from 'ethereum-blockies-base64';
 import { updateTransactionToSend } from '../../actions/actions.js';
 
 export const SecurityIcon = props => {
