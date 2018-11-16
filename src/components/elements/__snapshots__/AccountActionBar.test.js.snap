@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`account information renders account action bar 1`] = `
+<aside
+  className="dapp-actionbar"
+>
+  <nav>
+    <ul>
+      <li>
+        <a
+          href="/send/0x0000000000000000000000000000000000000000"
+          title="0x0000000000000000000000000000000000000000"
+        >
+          <i
+            className="icon-arrow-down"
+          />
+          Transfer Ether & Tokens
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://changelly.com/widget/v1?auth=email&amp;from=USD&amp;to=ETH&amp;merchant_id=47f87f7cddda&amp;address=0x0000000000000000000000000000000000000000&amp;amount=1&amp;ref_id=e25c5a2e8719&amp;color=02a8f3"
+          target="noopener noreferrer _blank"
+        >
+          <i
+            className="icon-ethereum"
+          />
+          Buy ether
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://etherscan.io/address/0x0000000000000000000000000000000000000000"
+          target="noopener noreferrer _blank"
+        >
+          <i
+            className="icon-info"
+          />
+          View on Etherscan
+        </a>
+      </li>
+      <li
+        onClick={[Function]}
+      >
+        <button
+          className="copy-to-clipboard-button"
+          onClick={[Function]}
+        >
+          <i
+            className="icon-docs"
+          />
+          Copy address
+        </button>
+      </li>
+      <li>
+        <button
+          className="qrcode-button"
+          onClick={
+            Object {
+              "modals": Object {
+                "displayQRCode": true,
+              },
+            }
+          }
+        >
+          <i
+            className="icon-camera"
+          />
+          Show QR-Code
+        </button>
+      </li>
+    </ul>
+  </nav>
+</aside>
+`;
