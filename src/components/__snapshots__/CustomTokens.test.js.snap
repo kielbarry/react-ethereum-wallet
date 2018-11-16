@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom contracts html renders auto scan 1`] = `
+Array [
+  <button
+    className="wallet-box create token-auto-scan"
+    title="Automatically scan for balances of popular tokens on your accounts."
+>
+    <div
+        className="account-pattern"
+    >
+        <div
+            className="icon icon-target"
+        />
+    </div>
+    <h3>
+        Auto-Scan
+    </h3>
+</button>,
+  <div
+    className="dapp-clear-fix"
+/>,
+]
+`;
+
+exports[`custom contracts html renders token box 1`] = `
+<button
+  className="wallet-box create add-token"
+  onClick={
+    Object {
+      "modals": Object {
+        "displayWatchToken": true,
+      },
+    }
+  }
+  style={
+    Object {
+      "float": "left",
+    }
+  }
+>
+  <div
+    className="account-pattern"
+  >
+    +
+  </div>
+  <h3>
+    WATCH CUSTOM TOKEN
+  </h3>
+</button>
+`;
+
+exports[`custom contracts html renders token description 1`] = `
+Array [
+  <h2>
+    Custom Tokens
+</h2>,
+  <p>
+    Tokens are currencies and other fungibles built on the Ethereum platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifying this example of a custom token contract or learning more about Ethereum Tokens.
+</p>,
+  <div
+    className="dapp-clear-fix"
+/>,
+]
+`;

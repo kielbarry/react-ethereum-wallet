@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`account information renders title 1`] = `
+Array [
+  <h1>
+    <span>
+        Account
+    </span>
+    <em
+        className="edit-name"
+    >
+        Account
+    </em>
+    <i
+        className="edit-icon icon-pencil"
+    />
+</h1>,
+  <h2
+    className="copyable-address"
+>
+    <i
+        className="icon-key"
+        title="Account"
+    />
+    <span>
+        0x0000000000000000000000000000000000000000
+    </span>
+</h2>,
+  <div
+    className="clear"
+/>,
+]
+`;
+
 exports[`title html renders title 1`] = `
 Array [
   <h1>

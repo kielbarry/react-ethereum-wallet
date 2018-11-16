@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom contracts html renders contract description 1`] = `
+Array [
+  <h2>
+    Custom Contracts
+</h2>,
+  <p>
+    To watch and interact with a contract already deployed on the blockchain, you need to know its address and the description of its interface in JSON format.
+</p>,
+  <div
+    className="dapp-clear-fix"
+/>,
+]
+`;
+
+exports[`custom contracts html renders watch contract button 1`] = `
+Array [
+  <button
+    className="wallet-box create add-contract"
+    onClick={
+        Object {
+            "modals": Object {
+              "displayWatchContract": true,
+            },
+          }
+    }
+>
+    <div
+        className="account-pattern"
+    >
+        +
+    </div>
+    <h3>
+        WATCH CONTRACT
+    </h3>
+</button>,
+  <div
+    className="dapp-clear-fix"
+/>,
+]
+`;
+
+exports[`custom contracts html renders watch contract button 2`] = `
+Array [
+  <button
+    className="wallet-box create add-contract"
+    onClick={
+        Object {
+            "modals": Object {
+              "displayWatchContract": true,
+            },
+          }
+    }
+>
+    <div
+        className="account-pattern"
+    >
+        +
+    </div>
+    <h3>
+        WATCH CONTRACT
+    </h3>
+</button>,
+  <div
+    className="dapp-clear-fix"
+/>,
+]
+`;
