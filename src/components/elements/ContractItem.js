@@ -36,6 +36,7 @@ class ContractItem extends Component {
     });
   }
 
+  //snapshotted
   renderBalance() {
     let contract = this.props.contract;
     return (
@@ -69,6 +70,7 @@ class ContractItem extends Component {
     return text;
   }
 
+  //snapshotted
   renderPendingProgress() {
     let percent = this.props.contract.confirmationNumber / 12;
     return (
@@ -95,6 +97,37 @@ class ContractItem extends Component {
       <React.Fragment>
         {this.renderPendingProgress()}
         {this.renderPendingSecurityIcon()}
+      </React.Fragment>
+    );
+  }
+
+  renderName() {
+    let pending = this.props.pending;
+    pending ? (pending = true) : (pending = false);
+    return (
+      <React.Fragment>
+        <ul className="token-list" />
+        <h3 className="not-ens-name">
+          <i className="icon-eye" />
+          &nbsp;
+          {!pending
+            ? contract['contract-name'] === undefined
+              ? 'UNNAMED'
+              : contract['contract-name']
+            : 'UNNAMED'}
+        </h3>
+      </React.Fragment>
+    );
+  }
+
+  renderCreating() {
+    return (
+      <React.Fragment>
+        <span className="account-balance">
+          Creating
+          <span>...</span>
+        </span>
+        <span className="account-id creating" />
       </React.Fragment>
     );
   }
@@ -135,27 +168,8 @@ class ContractItem extends Component {
           ) : (
             this.renderPending()
           )}
-          <ul className="token-list" />
-          <h3 className="not-ens-name">
-            <i className="icon-eye" />
-            &nbsp;
-            {!pending
-              ? contract['contract-name'] === undefined
-                ? 'UNNAMED'
-                : contract['contract-name']
-              : 'UNNAMED'}
-          </h3>
-          {!pending ? (
-            this.renderBalance()
-          ) : (
-            <React.Fragment>
-              <span className="account-balance">
-                Creating
-                <span>...</span>
-              </span>
-              <span className="account-id creating" />
-            </React.Fragment>
-          )}
+          {this.renderName()}
+          {!pending ? this.renderBalance() : this.renderCreating()}
           <span className="account-id">{address}</span>
         </Link>
       </React.Fragment>

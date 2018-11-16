@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`account information renders contract action bar 1`] = `
+<aside
+  className="dapp-actionbar"
+>
+  <nav>
+    <ul>
+      <li>
+        <a
+          href="/send/0x0000000000000000000000000000000000000000"
+          title="0x0000000000000000000000000000000000000000"
+        >
+          <i
+            className="icon-arrow-down"
+          />
+          Transfer Ether & Tokens
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://etherscan.io/address/0x0000000000000000000000000000000000000000"
+          target="noopener noreferrer _blank"
+        >
+          <i
+            className="icon-info"
+          />
+          View on Etherscan
+        </a>
+      </li>
+      <li
+        onClick={[Function]}
+      >
+        <button
+          className="copy-to-clipboard-button"
+          onClick={[Function]}
+        >
+          <i
+            className="icon-docs"
+          />
+          Copy address
+        </button>
+      </li>
+      <li>
+        <button
+          className="qrcode-button"
+          onClick={
+            Object {
+              "modals": Object {
+                "displayQRCode": true,
+              },
+            }
+          }
+        >
+          <i
+            className="icon-camera"
+          />
+          Show QR-Code
+        </button>
+      </li>
+      <li>
+        <button
+          className="interface-button"
+          onClick={
+            Object {
+              "modals": Object {
+                "displayJSONInterface": true,
+              },
+            }
+          }
+        >
+          <i
+            className="icon-settings"
+          />
+          Show Interface
+        </button>
+      </li>
+    </ul>
+  </nav>
+</aside>
+`;

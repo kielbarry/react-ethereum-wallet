@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders contract action bar renders contract balance 1`] = `
+Array [
+  <span
+    className="account-balance"
+>
+    0
+</span>,
+  <span>
+     'ETHER' 
+</span>,
+]
+`;
+
+exports[`renders contract action bar renders contract name 1`] = `
+Array [
+  <ul
+    className="token-list"
+/>,
+  <h3
+    className="not-ens-name"
+>
+    <i
+        className="icon-eye"
+    />
+      Contract Name
+</h3>,
+]
+`;
+
+exports[`renders contract action bar renders creating loader 1`] = `
+Array [
+  <span
+    className="account-balance"
+>
+    Creating
+    <span>
+        ...
+    </span>
+</span>,
+  <span
+    className="account-id creating"
+/>,
+]
+`;
+
+exports[`renders contract action bar renders progress 1`] = `
+<div
+  className="dapp-progress"
+>
+  <div
+    className="dapp-bar"
+    style={
+      Object {
+        "width": "50%",
+      }
+    }
+  />
+</div>
+`;
