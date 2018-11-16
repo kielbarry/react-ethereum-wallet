@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders executable functions renders executable function 1`] = `
+Array [
+  <hr
+    className="dapp-clear-fix"
+/>,
+  <h4>
+     Execute from 
+</h4>,
+  <button
+    className="dapp-block-button execute"
+    onClick={[Function]}
+>
+    Execute
+</button>,
+]
+`;
+
+exports[`renders executable functions renders function inputs 1`] = `
+Array [
+  <h4>
+    Function Name  
+    <em>
+        - 
+        address
+    </em>
+</h4>,
+  <input
+    className=" abi-input"
+    index={0}
+    inputType="address"
+    name="_owner"
+    onChange={undefined}
+    placeholder="0x123456..."
+/>,
+]
+`;
+
+exports[`renders executable functions renders options with functions 1`] = `
+Array [
+  <h2>
+    Write to contract
+</h2>,
+  <h4>
+    Select Function
+</h4>,
+  <select
+    className="select-contract-function"
+    name="select-contract-function"
+    onChange={[Function]}
+>
+    <option
+        disabled=""
+        name="pickFunctionDefault"
+        value="pickFunctionDefault"
+    >
+        Pick a function
+    </option>
+    <option
+        value="Function Name"
+    >
+        Function Name
+    </option>
+</select>,
+]
+`;
+
+exports[`renders executable functions renders options with functions 2`] = `
+Array [
+  <h2>
+    Write to contract
+</h2>,
+  <h4>
+    Select Function
+</h4>,
+  <select
+    className="select-contract-function"
+    name="select-contract-function"
+    onChange={[Function]}
+>
+    <option
+        disabled=""
+        name="pickFunctionDefault"
+        value="pickFunctionDefault"
+    >
+        Pick a function
+    </option>
+</select>,
+]
+`;
+
+exports[`renders executable functions renders wallet dropdown 1`] = `
+<div
+  className="dapp-select-account"
+/>
+`;
+
+exports[`renders executable functions renders whole component 1`] = `
+<div
+  className="col col-4 mobile-full contract-functions"
+/>
+`;

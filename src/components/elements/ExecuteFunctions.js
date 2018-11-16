@@ -106,6 +106,7 @@ export class ExecuteFunctions extends Component {
     );
   }
 
+  // snapshotted
   renderSelectFunction() {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address]
@@ -139,6 +140,7 @@ export class ExecuteFunctions extends Component {
     );
   }
 
+  // snapshotted
   renderFunctionInputs() {
     let contract = this.props.reducers.selectedContract.contract;
     let selectedFunction = this.props.reducers.selectedFunction;

@@ -25,6 +25,7 @@ class LatestTransactions extends Component {
     );
   }
 
+  // snapshotted
   renderDateInfo(tx) {
     return (
       <td
@@ -37,6 +38,7 @@ class LatestTransactions extends Component {
     );
   }
 
+  // snapshotted
   renderTransactionType(tx) {
     return (
       <td className="account-name">
@@ -62,6 +64,7 @@ class LatestTransactions extends Component {
     );
   }
 
+  // snapshotted
   renderTransactionInfo(tx) {
     return (
       <td className="info">
@@ -72,6 +75,7 @@ class LatestTransactions extends Component {
     );
   }
 
+  // snapshotted
   renderTransactionAmount(tx) {
     return (
       <td className="transaction-amount minus">
@@ -92,6 +96,7 @@ class LatestTransactions extends Component {
     );
   }
 
+  //TODO: snapshot
   renderTableRow(tx) {
     return (
       <tr
@@ -115,6 +120,7 @@ class LatestTransactions extends Component {
     );
   }
 
+  //TODO: snapshot
   render() {
     let transactions = this.props.reducers.Transactions;
     return (
