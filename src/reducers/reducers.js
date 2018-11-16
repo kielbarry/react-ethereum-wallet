@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
   displayAlertMessage: false,
   alertKey: 'alert_20171104-hidden',
   peerCountIntervalId: null,
@@ -59,7 +59,7 @@ const initialState = {
   Web3Initializer: {},
 };
 
-const reducers = (state = initialState, action) => {
+export const reducers = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_ETHEREUM_PROVIDER_CONFIG':
       return {
