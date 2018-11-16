@@ -176,12 +176,47 @@ describe('actions', () => {
   });
   // // TODO: updateDeployContractForm
   // // UPDATE_DEPLOY_CONTRACT_FORM
-  // // TODO: updateSelectedTransaction
-  // // UPDATE_SELECTED_TRANSACTION
+
+  it('should create action for updating selected transaction', async () => {
+    const store = mockStore({ SelectedTransaction: {} });
+    await store.dispatch(
+      Actions.updateSelectedTransaction(
+        Constants.updateSelectedTransactionsInput
+      )
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updateSelectedTransactionsAction[index]
+      );
+    });
+  });
   // // TODO: clearTransactionToSend
   // // CLEAR_TRANSACTION_TO_SEND
   // // TODO: updateTransactionConfirmation
   // // UPDATE_TRANSACTION_CONFIRMATION
+  it('should create action for updating tx confirmation number', async () => {
+    const store = mockStore({
+      Transactions: {
+        '0x0000000000000000000000000000000000000000': {
+          confirmationNumber: '',
+        },
+      },
+    });
+    await store.dispatch(
+      Actions.updateTransactionConfirmation(
+        Constants.updateTransactionConfirmationNumberInput
+      )
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updateTransactionConfirmationNumberAction[index]
+      );
+    });
+  });
   // // TODO: updateTransaction
   // // UPDATE_TRANSACTION
 

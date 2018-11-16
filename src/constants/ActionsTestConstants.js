@@ -219,6 +219,50 @@ export const updateDCFMainAddressAction = [
   },
 ];
 
+export const updateSelectedTransactionsInput = {
+  from: '0x65b42142606a9d46d05ea5205ad4b610a9130e92',
+  gasPrice: 31000000000,
+  value: '1000000000000000000',
+  to: '0x9ca862100a77b316e1d20b9553cf73e5a89fb281',
+  estimatedGas: 21000,
+  dateSent: 0,
+  confirmationNumber: 2,
+  blockHash:
+    '0xd91c38ad0c91f164f48520b8bc4dd5e97c93511305a3d676cdbe69719634c6fa',
+  blockNumber: 3350519,
+  contractAddress: null,
+  cumulativeGasUsed: 2984167,
+  gasUsed: 21000,
+  logs: [],
+  logsBloom:
+    '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  status: true,
+  transactionHash:
+    '0x115712b5a2fa444cf92103483ed9f4834381b2ed5e8f2a672b48442ce5e4c27e',
+  transactionIndex: 3,
+};
+
+export const updateSelectedTransactionsAction = [
+  {
+    type: 'UPDATE_SELECTED_TRANSACTION',
+    payload: updateSelectedTransactionsInput,
+  },
+];
+
+export const updateTransactionConfirmationNumberInput = [
+  {
+    name: '0x0000000000000000000000000000000000000000',
+    value: 3,
+  },
+];
+
+export const updateTransactionConfirmationNumberAction = [
+  {
+    type: 'UPDATE_TRANSACTION_CONFIRMATION',
+    payload: updateTransactionConfirmationNumberInput,
+  },
+];
+
 export const addTransactionInput = {
   hash: 0x1554c5f6831425d37468fdc41bb034a6227af17fc018788f9f54d6179da579f1,
   value: {
