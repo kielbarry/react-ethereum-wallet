@@ -252,21 +252,52 @@ describe('actions', () => {
   // // EMPTY_SELECTED_CONTRACT
   // // TODO: selectedContract
   // // SET_SELECTED_CONTRACT
+  it('should create action for selecting a contract', async () => {
+    const store = mockStore({ modals: {} });
+    await store.dispatch(
+      Actions.selectedContract(Constants.setSelectedContractInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.setSelectedContractAction[index]
+      );
+    });
+  });
   // // TODO: tokenToDelete
   // // SET_TOKEN_TO_DELETE
   // // TODO: deleteToken
   // // DELETE_TOKEN
-  // // TODO: addObservedToken
-  // // ADD_OBSERVED_TOKEN
-  // it('should create action for observing a token', () => {
-  //   expect(Actions.addObservedToken(Constants.addObservedTokenInput)).toEqual(
-  //     Constants.addObservedTokenAction
-  //   );
-  // });
+  it('should create action for observing a token', async () => {
+    const store = mockStore({ modals: {} });
+    await store.dispatch(
+      Actions.addObservedToken(Constants.addObservedTokenInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(Constants.addObservedTokenAction[index]);
+    });
+  });
   // // TODO: cancelTokenToWatch
   // // CANCEL_TOKEN_TO_WATCH
   // // TODO: updateTokenToWatch
   // // UPDATE_TOKEN_TO_WATCH
+
+  it('should create action for observing a contract', async () => {
+    const store = mockStore({ ObservedContracts: {} });
+    await store.dispatch(
+      Actions.addObservedContract(Constants.addObservedContractInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.addObservedContractAction[index]
+      );
+    });
+  });
 
   // it('should create action for observing a contract', async () => {
   //   const store = mockStore({ ObservedContracts: {} });
@@ -337,10 +368,6 @@ describe('actions', () => {
       );
     });
   });
-
-  // // TODO: updateDisplayValue
-  // // can be deleted?
-  // // UPDATE_DISPLAY_VALUE
 
   it('should create action for updating total balance', async () => {
     const store = mockStore({ totalBalance: '' });

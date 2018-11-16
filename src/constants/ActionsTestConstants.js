@@ -308,6 +308,33 @@ export const pendingContractsAction = [
   },
 ];
 
+export const setSelectedContractInput = [
+  {
+    contract: {
+      jsonInterface:
+        '[ { "constant": true, "inputs": [ { "name": "_interfaceID", "type": "bytes4" } ]}]',
+      address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+      'contract-name': 'cryptokitties',
+      balance: '241212889412113592079',
+      logs: [],
+      contractAddress: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+      deployedWalletContract: false,
+      contractFunctions: [],
+      contractConstants: [],
+    },
+    currency: 'ETHER',
+    exchangeRates: {},
+    addressType: 'contract',
+  },
+];
+
+export const setSelectedContractAction = [
+  {
+    type: 'SET_SELECTED_CONTRACT',
+    payload: setSelectedContractInput,
+  },
+];
+
 export const addObservedTokenInput = {
   address: '0xE41d2489571d322189246DaFA5ebDe1F4699F498',
   name: 'ZRX',
@@ -322,15 +349,13 @@ export const addObservedTokenAction = [
   },
 ];
 
-export const addObservedContractInput = {
-  constant: true,
-  inputs: [],
-  name: 'name',
-  outputs: [{ name: '', type: 'string' }],
-  payable: false,
-  stateMutability: 'view',
-  type: 'function',
-};
+export const addObservedContractInput = [
+  {
+    address: 'asdf',
+    'contract-name': 'asdfasd',
+    jsonInterface: '123123',
+  },
+];
 
 export const addObservedContractAction = [
   {
