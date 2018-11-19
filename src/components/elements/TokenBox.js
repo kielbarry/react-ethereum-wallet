@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { displayModal, tokenToDelete } from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 
-function deleteTokenModal() {
+function deleteTokenModal(props) {
   tokenToDelete(props.token.name);
   displayModal('displayDeleteToken');
 }
@@ -22,7 +22,7 @@ export const TokenBox = props => {
         hash={token.address}
       />
       <h3>{token.name}</h3>
-      <button className="delete-token" onClick={deleteTokenModal}>
+      <button className="delete-token" onClick={() => deleteTokenModal(props)}>
         <i className="icon-trash" />
       </button>
       <span className="account-balance">
@@ -33,6 +33,8 @@ export const TokenBox = props => {
     </div>
   );
 };
+
+export default TokenBox;
 
 // export class TokenBox extends Component {
 //   constructor(props) {

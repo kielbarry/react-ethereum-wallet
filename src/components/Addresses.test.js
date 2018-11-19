@@ -20,16 +20,14 @@ describe('Addresses html', () => {
   it('renders account item', () => {
     const props = {
       currency: 'ETHER',
-      reducers: {
-        currency: 'ETHER',
-      },
+      // reducers: {
+      //   currency: 'ETHER',
+      // },
       web3: {
         web3Instance: new Web3(),
       },
     };
     const store = mockStore(props);
-    console.log(props);
-    console.log(props);
     const tree = renderer
       .create(
         <StaticRouter context={{}}>
