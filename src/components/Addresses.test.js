@@ -20,9 +20,6 @@ describe('Addresses html', () => {
   it('renders account item', () => {
     const props = {
       currency: 'ETHER',
-      // reducers: {
-      //   currency: 'ETHER',
-      // },
       web3: {
         web3Instance: new Web3(),
       },

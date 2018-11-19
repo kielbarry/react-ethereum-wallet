@@ -13,16 +13,18 @@ function openAccountPage(w, props) {
     address: props.address,
     number: props.number,
     wallet: props.wallet,
-    currency: props.reducers.currency,
+    currency: props.currency,
     addressType: 'account',
   });
 }
 
 export const AccountItem = props => {
+  props = Object.assign({}, props, props.props);
   let wallet = props.wallet;
   let address = props.address;
   let number = props.number;
   const AccountURL = '/account/' + address;
+
   return (
     <Link
       to={{ pathname: AccountURL }}
@@ -42,7 +44,11 @@ export const AccountItem = props => {
       {props.web3 && props.web3.web3Instance ? (
         <NumberFormat
           className="account-balance"
-          value={Utils.displayPriceFormatter(props, wallet.balance)}
+          value={Utils.displayPriceFormatter(
+            props,
+            wallet.balance,
+            props.currency
+          )}
           displayType={'text'}
           thousandSeparator={true}
         />
@@ -54,7 +60,7 @@ export const AccountItem = props => {
           thousandSeparator={true}
         />
       )}
-      <span> {props.reducers.currency} </span>
+      <span> {props.currency} </span>
       <span className="account-id">{address}</span>
     </Link>
   );

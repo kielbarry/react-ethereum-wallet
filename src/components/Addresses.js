@@ -16,6 +16,8 @@ class Addresses extends Component {
               icon={icon}
               address={address}
               wallet={wallets[address]}
+              currency={this.props.reducers.currency}
+              web3={this.props.web3}
               props={this.props}
             />
           ))}
