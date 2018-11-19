@@ -1,4 +1,9 @@
 export const providerConstants = {
+  // Bluetooth: {
+  //   disabled: false,
+  //   image: 'mist-150x150.png',
+  //   link: '',
+  // },
   Geth: {
     disabled: false,
     image: 'mist-150x150.png',

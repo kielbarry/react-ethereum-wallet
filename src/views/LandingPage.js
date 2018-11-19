@@ -28,6 +28,8 @@ import green from '@material-ui/core/colors/green';
 import * as Actions from '../actions/actions.js';
 import * as Constants from './LandingPageTestConstants.js';
 
+// import * as bluetooth from 'node-bluetooth'
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -115,6 +117,9 @@ class LandingPage extends Component {
       providers: Constants.providerConstants,
       networks: Constants.networks,
     };
+
+    // const device = new bluetooth.DeviceINQ();
+    // device.listPairedDevices(console.log);
   }
 
   itemSelected(e) {
@@ -123,6 +128,27 @@ class LandingPage extends Component {
       this.setState({ selectedProvider: e.target.value });
     if (type === 'network') this.setState({ selectedNetwork: e.target.value });
     if (type === 'port') this.setState({ selectedPort: e.target.value });
+    // if(e.target.value === 'Bluetooth'){
+    //   navigator.bluetooth.requestDevice(
+    //   {acceptAllDevices: true,optionalServices: ['battery_service']}
+    //   // {
+    //   //   filters: [{
+    //   //     services: [0x1234, 0x12345678, '99999999-0000-1000-8000-00805f9b34fb']
+    //   //   }]
+    //   // }
+    //   )
+    //   .then(device => {
+    //     console.log(device)
+    //     console.log(device.name)
+    //     console.log(device.name === "Kiel's iPhone")
+    //     if(device.name !== "Kiel's iPhone") return
+    //     // return device.gatt.connect();
+    //   })
+    //   .then(server => {
+    //     console.log(server)
+    //   })
+    //   .catch(error => { console.log(error)})
+    // }
   }
 
   // snapshotted

@@ -7,7 +7,7 @@ import * as Actions from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
 import NumberFormat from 'react-number-format';
 
-class AccountItem extends Component {
+export class AccountItem extends Component {
   constructor(props) {
     super(props);
     this.openAccountPage = this.openAccountPage.bind(this);

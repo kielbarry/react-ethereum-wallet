@@ -165,37 +165,6 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  it('should handle the UPDATE_PAST_CONTRACT_LOGS action', () => {
-    const action = Constants.updatePastContractLogsAction[0];
-    const expectedState = {
-      ...state,
-      ObservedContracts: {
-        ...state.ObservedContracts,
-        [action.payload.address]: {
-          ...state.ObservedContracts[action.payload.address],
-          logs: [
-            ...state.ObservedContracts[action.payload.address]['logs'],
-            action.payload,
-          ],
-        },
-      },
-    };
-
-    assert.deepEqual(reducers(initialState, action), expectedState);
-  });
-
-  // it('should handle the ADD_PAST_CONTRACT_LOGS action', () => {
-  //   const action = {
-  //     type: 'ADD_PAST_CONTRACT_LOGS',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
-
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
-
   // it('should handle the UPDATE_BALANCE_CHECKED action', () => {
   //   const action = {
   //     type: 'UPDATE_BALANCE_CHECKED',
@@ -220,17 +189,19 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_DCF_RADIO action', () => {
-  //   const action = {
-  //     type: 'UPDATE_DCF_RADIO',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_DCF_RADIO action', () => {
+    const action = Constants.updateDCFRadioAction[0];
+    const expectedState = {
+      ...state,
+      DeployContractForm: Object.assign(
+        {},
+        state.DeployContractForm,
+        action.payload
+      ),
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the UPDATE_MAIN_DCF action', () => {
   //   const action = {
@@ -244,17 +215,19 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_MAIN_CONTRACT_ADDRESS action', () => {
-  //   const action = {
-  //     type: 'UPDATE_MAIN_CONTRACT_ADDRESS',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_MAIN_CONTRACT_ADDRESS action', () => {
+    const action = Constants.updateDCFMainAddressAction[0];
+    const expectedState = {
+      ...state,
+      DeployContractForm: Object.assign(
+        {},
+        state.DeployContractForm,
+        action.payload
+      ),
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the UPDATE_DEPLOY_CONTRACT_FORM action', () => {
   //   const action = {
@@ -268,17 +241,15 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_SELECTED_TRANSACTION action', () => {
-  //   const action = {
-  //     type: 'UPDATE_SELECTED_TRANSACTION',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_SELECTED_TRANSACTION action', () => {
+    const action = Constants.updateSelectedTransactionsAction[0];
+    const expectedState = {
+      ...state,
+      SelectedTransaction: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the CLEAR_TRANSACTION_TO_SEND action', () => {
   //   const action = {
@@ -292,17 +263,20 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_TRANSACTION_CONFIRMATION action', () => {
-  //   const action = {
-  //     type: 'UPDATE_TRANSACTION_CONFIRMATION',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
-
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+  it('should handle the UPDATE_TRANSACTION_CONFIRMATION action', () => {
+    const action = Constants.updateTransactionConfirmationNumberAction[0];
+    const expectedState = {
+      ...state,
+      Transactions: {
+        ...state.Transactions,
+        [action.payload.name]: {
+          ...state.Transactions[action.payload.name],
+          confirmationNumber: action.payload.value,
+        },
+      },
+    };
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the UPDATE_TRANSACTION action', () => {
   //   const action = {
@@ -316,29 +290,30 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the ADD_TRANSACTION action', () => {
-  //   const action = {
-  //     type: 'ADD_TRANSACTION',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the ADD_TRANSACTION action', () => {
+    const action = Constants.addTransactionAction[0];
+    const expectedState = {
+      ...state,
+      Transactions: Object.assign({}, state.Transactions, {
+        [action.payload.hash]: action.payload.value,
+      }),
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the DISPLAY_GLOBAL_NOTIFICATION action', () => {
-  //   const action = {
-  //     type: 'DISPLAY_GLOBAL_NOTIFICATION',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
-
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+  it('should handle the DISPLAY_GLOBAL_NOTIFICATION action', () => {
+    const action = Constants.displayGlobalNotifactionAction[0];
+    const expectedState = {
+      ...state,
+      globalNotification: Object.assign(
+        {},
+        state.globalNotification,
+        action.payload
+      ),
+    };
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the UPDATE_TRANSACTION_TO_SEND action', () => {
   //   const action = {
@@ -388,17 +363,15 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the SET_SELECTED_CONTRACT action', () => {
-  //   const action = {
-  //     type: 'SET_SELECTED_CONTRACT',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the SET_SELECTED_CONTRACT action', () => {
+    const action = Constants.setSelectedContractAction[0];
+    const expectedState = {
+      ...state,
+      selectedContract: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the SET_TOKEN_TO_DELETE action', () => {
   //   const action = {
@@ -424,17 +397,17 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the ADD_OBSERVED_TOKEN action', () => {
-  //   const action = {
-  //     type: 'ADD_OBSERVED_TOKEN',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the ADD_OBSERVED_TOKEN action', () => {
+    const action = Constants.addObservedTokenAction[0];
+    const expectedState = {
+      ...state,
+      ObservedTokens: Object.assign({}, state.ObservedTokens, {
+        [action.payload.name]: action.payload.value,
+      }),
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the CANCEL_TOKEN_TO_WATCH action', () => {
   //   const action = {
@@ -460,18 +433,6 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the ADD_OBSERVED_CONTRACT action', () => {
-  //   const action = {
-  //     type: 'ADD_OBSERVED_CONTRACT',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
-
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
-
   // it('should handle the CANCEL_CONTRACT_TO_WATCH action', () => {
   //   const action = {
   //     type: 'CANCEL_CONTRACT_TO_WATCH',
@@ -484,38 +445,43 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_CONTRACT_TO_WATCH action', () => {
-  //   const action = {
-  //     type: 'UPDATE_CONTRACT_TO_WATCH',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_CONTRACT_TO_WATCH action', () => {
+    const action = Constants.updateContractToWatchAction[0];
+    const expectedState = {
+      ...state,
+      ContractToWatch: Object.assign({}, state.ContractToWatch, {
+        [action.payload.name]: action.payload.value,
+      }),
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the CLOSE_MODAL action', () => {
-  //   const action = {
-  //     type: 'CLOSE_MODAL',
-  //     payload: { appVersion: '1.0.0' },
+  //   const action = Constants.undisplayModalAction[0]
+  //   console.log(action)
+  //   const expectedState = {
+  //     ...state,
+  //     modals: Object.assign({}, ...state.modals, {
+  //       [action.payload]: false,
+  //     }),
   //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+
+  //   console.log(expectedState)
 
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
   // it('should handle the DISPLAY_MODAL action', () => {
-  //   const action = {
-  //     type: 'DISPLAY_MODAL',
-  //     payload: { appVersion: '1.0.0' },
+  //   const action = Constants.displayModalAction[0]
+  //   const expectedState = {
+  //     ...state,
+  //     modals: Object.assign({}, ...state.modals, {
+  //       [action.payload]: true,
+  //     }),
   //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+
+  //   console.log(expectedState)
 
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
@@ -532,17 +498,15 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_EXCHANGE_RATES action', () => {
-  //   const action = {
-  //     type: 'UPDATE_EXCHANGE_RATES',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_EXCHANGE_RATES action', () => {
+    const action = Constants.updateExchangeRatesAction[0];
+    const expectedState = {
+      ...state,
+      exchangeRates: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the UPDATE_ETHER_PRICES action', () => {
   //   const action = {
@@ -568,17 +532,15 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the SET_SELECTED_WALLET action', () => {
-  //   const action = {
-  //     type: 'SET_SELECTED_WALLET',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the SET_SELECTED_WALLET action', () => {
+    const action = Constants.updateSelectedWalletAction[0];
+    const expectedState = {
+      ...state,
+      selectedWallet: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
   // it('should handle the UPDATE_DISPLAY_VALUE action', () => {
   //   const action = {
@@ -592,87 +554,136 @@ describe('reducers', () => {
   //   assert.deepEqual(reducers(initialState, action), expectedState);
   // });
 
-  // it('should handle the UPDATE_TOTAL_BALANCE action', () => {
-  //   const action = {
-  //     type: 'UPDATE_TOTAL_BALANCE',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_TOTAL_BALANCE action', () => {
+    const action = Constants.updateTotalBalanceAction[0];
+    const expectedState = {
+      ...state,
+      totalBalance: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the SET_WALLETS action', () => {
-  //   const action = {
-  //     type: 'SET_WALLETS',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the SET_WALLETS action', () => {
+    const action = Constants.setWalletsAction[0];
+    const expectedState = {
+      ...state,
+      Wallets: {
+        ...state.Wallets,
+        [action.payload.account]: {
+          ...state.Wallets[action.payload.account],
+          balance: action.payload.balance,
+        },
+      },
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the UPDATE_PROVIDER action', () => {
-  //   const action = {
-  //     type: 'UPDATE_PROVIDER',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_PROVIDER action', () => {
+    const action = Constants.updateProviderAction[0];
+    const expectedState = {
+      ...state,
+      provider: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the UPDATE_BLOCKHEADER action', () => {
-  //   const action = {
-  //     type: 'UPDATE_BLOCKHEADER',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_BLOCKHEADER action', () => {
+    const action = Constants.updateBlockHeaderAction[0];
+    const expectedState = {
+      ...state,
+      blockHeader: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the UPDATE_PEERCOUNT action', () => {
-  //   const action = {
-  //     type: 'UPDATE_PEERCOUNT',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_PEERCOUNT action', () => {
+    const action = Constants.updatePeercountAction[0];
+    const expectedState = {
+      ...state,
+      peerCount: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the UPDATE_CURRENCY_UNIT action', () => {
-  //   const action = {
-  //     type: 'UPDATE_CURRENCY_UNIT',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_CURRENCY_UNIT action', () => {
+    const action = Constants.updateCurrencyAction[0];
+    const expectedState = {
+      ...state,
+      currency: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
 
-  // it('should handle the UPDATE_CONNECTED_NETWORK action', () => {
-  //   const action = {
-  //     type: 'UPDATE_CONNECTED_NETWORK',
-  //     payload: { appVersion: '1.0.0' },
-  //   };
-  //   const expectedState = Object.assign({}, initialState, {
-  //     appVersion: '1.0.0',
-  //   });
+  it('should handle the UPDATE_CONNECTED_NETWORK action', () => {
+    const action = Constants.connectedNetworkAction[0];
+    const expectedState = {
+      ...state,
+      network: action.payload,
+    };
 
-  //   assert.deepEqual(reducers(initialState, action), expectedState);
-  // });
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
+});
+
+describe('observeContacts reducers', () => {
+  let state = initialState;
+
+  it('should handle the ADD_OBSERVED_CONTRACT action', () => {
+    const action = Constants.addObservedContractAction[0];
+    const expectedState = {
+      ...state,
+      ObservedContracts: Object.assign(
+        {},
+        state.ObservedContracts,
+        action.payload
+      ),
+    };
+
+    // note updating the state
+    state = expectedState;
+    assert.deepEqual(reducers(initialState, action), expectedState);
+  });
+
+  it('should handle the ADD_PAST_CONTRACT_LOGS action', () => {
+    const action = Constants.addPastContractLogsAction[0];
+    const expectedState = {
+      ...state,
+      ObservedContracts: {
+        ...state.ObservedContracts,
+        [action.payload.address]: {
+          ...state.ObservedContracts[action.payload.address],
+          logs: action.payload,
+        },
+      },
+    };
+
+    // note state and not initial state
+    assert.deepEqual(reducers(state, action), expectedState);
+  });
+
+  it('should handle the UPDATE_PAST_CONTRACT_LOGS action', () => {
+    const action = Constants.updatePastContractLogsAction[0];
+    const expectedState = {
+      ...state,
+      ObservedContracts: {
+        ...state.ObservedContracts,
+        [action.payload.address]: {
+          ...state.ObservedContracts[action.payload.address],
+          logs: [
+            ...state.ObservedContracts[action.payload.address]['logs'],
+            action.payload,
+          ],
+        },
+      },
+    };
+
+    // note state and not initial state
+    assert.deepEqual(reducers(state, action), expectedState);
+  });
 });

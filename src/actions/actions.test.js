@@ -246,12 +246,11 @@ describe('actions', () => {
 
   // // TODO: updateTransactionToSend
   // // UPDATE_TRANSACTION_TO_SEND
+
   // // TODO: fetchEthGasStationStats
 
   // // TODO: emptySelectedContract
   // // EMPTY_SELECTED_CONTRACT
-  // // TODO: selectedContract
-  // // SET_SELECTED_CONTRACT
   it('should create action for selecting a contract', async () => {
     const store = mockStore({ modals: {} });
     await store.dispatch(
@@ -314,6 +313,20 @@ describe('actions', () => {
 
   // // TODO: updateContractToWatch
   // // UPDATE_CONTRACT_TO_WATCH
+
+  it('should create action for updating contract to watch', async () => {
+    const store = mockStore({ modals: {} });
+    await store.dispatch(
+      Actions.updateContractToWatch(Constants.updateContractToWatchInput)
+    );
+    const actions = store.getActions();
+    expect(actions.length).toEqual(1);
+    [...Array(actions.length).keys()].map((_, index) => {
+      expect(actions[index]).toEqual(
+        Constants.updateContractToWatchAction[index]
+      );
+    });
+  });
 
   it('should create action for hiding a modal', async () => {
     const store = mockStore({ modals: {} });

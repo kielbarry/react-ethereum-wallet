@@ -101,7 +101,7 @@ export const updateSelectedEventAction = [
 ];
 
 export const updatePastContractLogsInput = {
-  address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+  address: '0x0000000000000000000000000000000000000000',
   blockNumber: 6715977,
   transactionHash:
     '0xbc9267d277216f5d4f86471930606cb4ba0a8e8fd3de42288405702bd921f25b',
@@ -145,45 +145,43 @@ export const updatePastContractLogsAction = [
   },
 ];
 
-export const addPastContractLogsInput = [
-  {
-    address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
-    blockNumber: 6715977,
-    transactionHash:
-      '0xbc9267d277216f5d4f86471930606cb4ba0a8e8fd3de42288405702bd921f25b',
-    transactionIndex: 14,
-    blockHash:
-      '0x8380054fd40ff7d38c556e4138d4b691b32ad71541abd4455a594a7a4eb3ea12',
-    logIndex: 1,
-    removed: false,
-    id: 'log_af89799c',
-    returnValues: {
-      '0': '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
-      '1': '1187527',
-      '2': '0',
-      '3': '0',
-      '4':
-        '721721688703249183577140237600328673412502101259981582285362175270850564',
-      owner: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
-      kittyId: '1187527',
-      matronId: '0',
-      sireId: '0',
-      genes:
-        '721721688703249183577140237600328673412502101259981582285362175270850564',
-    },
-    event: 'Birth',
-    signature:
-      '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
-    raw: {
-      data:
-        '0x00000000000000000000000006012c8cf97bead5deae237070f9587f8e7a266d0000000000000000000000000000000000000000000000000000000000121ec7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000689225304c6800e438ed5ad045a4a808da64b169521cb5358a0284d21004',
-      topics: [
-        '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
-      ],
-    },
-    timestamp: '2018-11-16T15:35:20.000Z',
+export const addPastContractLogsInput = {
+  address: '0x0000000000000000000000000000000000000000',
+  blockNumber: 6715977,
+  transactionHash:
+    '0xbc9267d277216f5d4f86471930606cb4ba0a8e8fd3de42288405702bd921f25b',
+  transactionIndex: 14,
+  blockHash:
+    '0x8380054fd40ff7d38c556e4138d4b691b32ad71541abd4455a594a7a4eb3ea12',
+  logIndex: 1,
+  removed: false,
+  id: 'log_af89799c',
+  returnValues: {
+    '0': '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+    '1': '1187527',
+    '2': '0',
+    '3': '0',
+    '4':
+      '721721688703249183577140237600328673412502101259981582285362175270850564',
+    owner: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
+    kittyId: '1187527',
+    matronId: '0',
+    sireId: '0',
+    genes:
+      '721721688703249183577140237600328673412502101259981582285362175270850564',
   },
-];
+  event: 'Birth',
+  signature:
+    '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
+  raw: {
+    data:
+      '0x00000000000000000000000006012c8cf97bead5deae237070f9587f8e7a266d0000000000000000000000000000000000000000000000000000000000121ec7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000689225304c6800e438ed5ad045a4a808da64b169521cb5358a0284d21004',
+    topics: [
+      '0x0a5311bd2a6608f08a180df2ee7c5946819a649b204b554bb8e39825b2c50ad5',
+    ],
+  },
+  timestamp: '2018-11-16T15:35:20.000Z',
+};
 
 export const addPastContractLogsAction = [
   {
@@ -349,18 +347,36 @@ export const addObservedTokenAction = [
   },
 ];
 
-export const addObservedContractInput = [
-  {
-    address: 'asdf',
+export const addObservedContractInput = {
+  '0x0000000000000000000000000000000000000000': {
+    address: '0x0000000000000000000000000000000000000000',
     'contract-name': 'asdfasd',
-    jsonInterface: '123123',
+    jsonInterface:
+      '[ { "constant": true, "inputs": [ { "name": "_interfaceID", "type": "bytes4" } ]}]',
+    balance: 0,
+    contractAddress: '0x0000000000000000000000000000000000000000',
+    logs: [],
   },
-];
+};
 
 export const addObservedContractAction = [
   {
     type: 'ADD_OBSERVED_CONTRACT',
     payload: addObservedContractInput,
+  },
+];
+
+export const updateContractToWatchInput = {
+  address: '0x0000000000000000000000000000000000000000',
+  'contract-name': 'contract name',
+  jsonInterface:
+    '[ { "constant": true, "inputs": [ { "name": "_interfaceID", "type": "bytes4" } ]}]',
+};
+
+export const updateContractToWatchAction = [
+  {
+    type: 'UPDATE_CONTRACT_TO_WATCH',
+    payload: updateContractToWatchInput,
   },
 ];
 
