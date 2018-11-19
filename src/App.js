@@ -22,7 +22,7 @@ import './App.css';
 
 import Web3Initializer from './web3/Web3Initializer.js';
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.getCryptoComparePrices = this.getCryptoComparePrices.bind(this);

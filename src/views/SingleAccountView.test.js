@@ -8,14 +8,14 @@ import thunk from 'redux-thunk';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-import SecurityIcon from '../components/elements/SecurityIcon.js';
+import { SecurityIcon } from '../components/elements/SecurityIcon.js';
 
 describe('title html', () => {
   afterEach(() => {
     fetchMock.restore();
   });
 
-  it('renders title', () => {
+  it('renders sticky header', () => {
     const tree = renderer
       .create(
         <div className="dapp-sticky-bar dapp-container">
@@ -32,7 +32,7 @@ describe('title html', () => {
 });
 
 describe('account information', () => {
-  it('renders title', () => {
+  it('renders account card', () => {
     const tree = renderer
       .create(
         <React.Fragment>
@@ -54,15 +54,20 @@ describe('account information', () => {
 });
 
 describe('renders sticky container', () => {
-  it('renders title', () => {
+  it('renders account description', () => {
     const tree = renderer
       .create(
-        <div className="dapp-sticky-bar dapp-container">
-          <SecurityIcon
-            type="singleAccountView"
-            classes="dapp-identicon"
-            hash={'0x0000000000000000000000000000000000000000'}
-          />
+        <div className="account-info">
+          <h3>NOTE </h3>
+          <p>
+            Accounts can't display incoming transactions, but can receive, hold
+            and send Ether. To see incoming transactions create a wallet
+            contract to store ether.
+          </p>
+          <p>
+            If your balance doesn't seem updated, make sure that you are in sync
+            with the network.
+          </p>
         </div>
       )
       .toJSON();

@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { ContractSectionList } from '../constants/FieldConstants.js';
-import TokenBox from './elements/TokenBox.js';
+import { TokenBox } from './elements/TokenBox.js';
 
 describe('custom contracts html', () => {
   const CT = ContractSectionList.CustomTokens;
