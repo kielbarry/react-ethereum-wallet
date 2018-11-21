@@ -81,15 +81,15 @@ export class ExecuteConstants extends Component {
     return (
       <tr key={shortid.generate()}>
         <td>
-          <h3>{Helpers.unCamelCaseToSentence(func.name)}</h3>
+          <h3>{Helpers.toSentence(func.name)}</h3>
           {func.inputs.length > 0
             ? func.inputs.map((input, index) => (
                 <React.Fragment>
                   <h4>
                     <span className="dapp-punctuation">_</span>
-                    {input.name}
+                    {Helpers.toSentence(input.name)}
                     &nbsp;
-                    <em>-&nbsp; {input.type}</em>
+                    <em>- {input.type}</em>
                   </h4>
                   <Inputs
                     data={input}
@@ -154,7 +154,7 @@ export class ExecuteConstants extends Component {
             {func.outputs.map((output, index) => (
               <React.Fragment>
                 {output.name !== '' ? (
-                  <dt>{Helpers.unCamelCaseToSentence(output.name)}</dt>
+                  <dt>{Helpers.toSentence(output.name)}</dt>
                 ) : null}
 
                 {this.renderOutputType(output)}

@@ -9,16 +9,16 @@ Global template helpers
 /**
 A simple template helper to log objects in the console.
 **/
-export function debub(object) {
+export function debug(object) {
   console.log(object);
-);
+}
 
 /**
 Check if in mist
 **/
 export function isMist() {
   return window.mistMode === undefined && window.mist !== undefined;
-});
+}
 
 /**
 Check if in mist and in mist mode
@@ -26,14 +26,14 @@ Check if in mist and in mist mode
 export function isWalletMode() {
   // also show network info in normal browsers
   return window.mistMode === 'wallet' || window.mist === undefined;
-});
+}
 
 /**
 Check if wallet was loaded from browser other than Mist
 **/
 export function isBrowserMode() {
   return window.mist === undefined;
-});
+}
 
 /**
 Check if currency unit is an ether unit
@@ -48,7 +48,7 @@ export function isEtherUnit() {
   //   unit === 'gbp' ||
   //   unit === 'brl'
   // );
-});
+}
 
 /**
 Check if wallet has vulnerabilities
@@ -98,14 +98,14 @@ Return the current unit
 //TODO
 export function unit() {
   return EthTools.getUnit();
-});
+}
 
 /**
 Return the latest block
 **/
 export async function latestBlock(web3) {
-  return web3.eth.getBlock('latest')
-});
+  return web3.eth.getBlock('latest');
+}
 
 /**
 Returns a list of accounts and wallets sorted by balance
@@ -144,7 +144,7 @@ Returns a list of accounts and wallets sorted by balance
 Check if the given wallet is a watch only wallet, by checking if we are one of owners in the wallet.
 **/
 // TODO
-Template.registerHelper('isWatchOnly', Helpers.isWatchOnly);
+// Template.registerHelper('isWatchOnly', Helpers.isWatchOnly);
 
 /**
 Return the right wallet icon
@@ -232,9 +232,10 @@ Formats address to a CaseChecksum
 @return {String} checksumAddress    The returned, checksummed address
 **/
 export function toChecksumAddress(web3, address) {
-  return (typeof address === 'string' || value instanceof String)
-     ? web3.utils.toChecksumAddress(address) : '';
-});
+  return typeof address === 'string' || address instanceof String
+    ? web3.utils.toChecksumAddress(address)
+    : '';
+}
 
 /**
 Takes a camelcase and shows it with spaces

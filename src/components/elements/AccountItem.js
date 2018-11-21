@@ -44,11 +44,7 @@ export const AccountItem = props => {
       {props.web3 && props.web3.web3Instance ? (
         <NumberFormat
           className="account-balance"
-          value={Utils.displayPriceFormatter(
-            props,
-            wallet.balance,
-            props.currency
-          )}
+          value={Utils.displayPriceFormatter(props, wallet.balance)}
           displayType={'text'}
           thousandSeparator={true}
         />

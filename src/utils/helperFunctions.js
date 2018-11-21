@@ -453,8 +453,11 @@ Adds the input value from a form field to the inputs array
  * Add space between camelCase text
  */
 export function unCamelCaseToSentence(str) {
+  console.log(str);
   str = str.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])(([^a-z0-9_]))/gi, '$1 $2');
+  console.log(str);
   str = str.toLowerCase().replace(/^\w|\s\w/g, upperCase);
+  console.log(str);
   return str;
 }
 
@@ -472,20 +475,43 @@ Takes a camelcase and shows it with spaces
 @param {string} camelCase    A name in CamelCase or snake_case format
 @return {string} sentence    The same name, sanitized, with spaces
 **/
-export function toSentence(inputString, noHTML) {
-  if (typeof inputString === undefined) {
-    return false;
-  } else {
-    inputString = inputString.replace(/[^a-z0-9_]/gi, '');
-    noHTML === true
-      ? inputString.replace(/([A-Z]+|[0-9]+)/g, ' $1').trim()
-      : inputString
-          .replace(/([A-Z]+|[0-9]+)/g, ' $1')
-          .trim()
-          // eslint-disable-next-line
-          .replace(/([\_])/g, '<span class="dapp-punctuation">$1</span>');
-    return inputString;
-  }
+// export function toSentence(inputString, noHTML) {
+//   console.log(inputString)
+//   if (typeof inputString === undefined) {
+//     return false;
+//   } else {
+//     inputString = inputString.replace(/[^a-z0-9_]/gi, '');
+//     console.log(inputString)
+//     noHTML === true
+//       ? inputString.replace(/([A-Z]+|[0-9]+)/g, ' $1').trim()
+//       : inputString
+//           .replace(/([A-Z]+|[0-9]+)/g, ' $1')
+//           .trim()
+//           // eslint-disable-next-line
+//           .replace(/([\_])/g, '<span class="dapp-punctuation">$1</span>');
+//     console.log(inputString)
+//     return inputString;
+//   }
+// }
+
+/**
+@method toSentence
+@param {string} camelCase    A name in CamelCase or snake_case format
+@return {string} sentence    The same name, sanitized, with spaces
+**/
+export function toSentence(str) {
+  str = str
+    .replace(/[^a-z0-9_]/gi, '')
+    .replace(/_+/g, ' ')
+    .replace(/([A-Z]+|[0-9]+)/g, ' $1')
+    .trim()
+    .toLowerCase();
+
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function formatTokenCount(value, decimals) {
+  return Number((value /= Math.pow(10, decimals))).toString();
 }
 
 /**

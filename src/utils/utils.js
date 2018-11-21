@@ -126,6 +126,13 @@ export function getMonthName(string) {
   return monthNames[d.getMonth()];
 }
 
+export function toNotWei(totalBalance, currency) {
+  let web3 = new Web3();
+  return currency === 'FINNEY'
+    ? web3.utils.fromWei(totalBalance, 'finney')
+    : web3.utils.fromWei(totalBalance, 'ether');
+}
+
 export function displayPriceFormatter(props, balance, currencyOverride) {
   if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
   let web3 = props.web3.web3Instance;
@@ -133,19 +140,18 @@ export function displayPriceFormatter(props, balance, currencyOverride) {
   let totalBalance = balance.toString();
   let exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;
-  let displayPrice;
-  if (currency === 'FINNEY') {
-    displayPrice = web3.utils.fromWei(totalBalance, 'finney');
-  } else {
-    displayPrice = web3.utils.fromWei(totalBalance, 'ether');
-    if (currency !== 'ETHER') {
-      displayPrice = Number(
-        Math.round(
-          displayPrice * exchangeRates[currency.toLowerCase()] + 'e2'
-        ) + 'e-2'
-      );
-    }
+  let displayPrice = toNotWei(totalBalance, currency);
+  // if (currency === 'FINNEY') {
+  //   displayPrice = web3.utils.fromWei(totalBalance, 'finney');
+  // } else {
+  //   displayPrice = web3.utils.fromWei(totalBalance, 'ether');
+  if (!['ETHER', 'FINNEY'].includes(currency)) {
+    displayPrice = Number(
+      Math.round(displayPrice * exchangeRates[currency.toLowerCase()] + 'e2') +
+        'e-2'
+    );
   }
+  // }
   return displayPrice;
 }
 
@@ -179,17 +185,18 @@ export async function getCryptoComparePrices() {
       return err;
     });
 }
+
+export function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+}
 /**
 Created random 32 byte string
 
 @method random32Bytes
 */
 export function random32Bytes() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
   let randomBytes;
   for (var i = 0; i < 16; i++) randomBytes += s4();
   return randomBytes;
