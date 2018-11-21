@@ -59,6 +59,13 @@ export const updateExecutingWallet = address => dispatch => {
   });
 };
 
+export const emptySelectedFunction = func => dispatch => {
+  dispatch({
+    type: actionTypes.EMPTY_SELECTED_FUNCTION,
+    payload: func,
+  });
+};
+
 export const updateSelectedFunction = func => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_SELECTED_FUNCTION,

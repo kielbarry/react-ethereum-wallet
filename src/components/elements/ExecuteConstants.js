@@ -84,7 +84,7 @@ export class ExecuteConstants extends Component {
           <h3>{Helpers.toSentence(func.name)}</h3>
           {func.inputs.length > 0
             ? func.inputs.map((input, index) => (
-                <React.Fragment>
+                <React.Fragment key={shortid.generate()}>
                   <h4>
                     <span className="dapp-punctuation">_</span>
                     {Helpers.toSentence(input.name)}

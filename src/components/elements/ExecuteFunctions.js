@@ -14,6 +14,7 @@ export class ExecuteFunctions extends Component {
     this.state = {
       ...this.props,
       executingWallet: this.props.reducers.Wallets[0],
+      // chosenFunction: 'Pick A Function'
     };
     this.chooseFunction = this.chooseFunction.bind(this);
     this.chooseWallet = this.chooseWallet.bind(this);
@@ -23,13 +24,18 @@ export class ExecuteFunctions extends Component {
   chooseFunction(e) {
     let contract = this.state.reducers.selectedContract.contract;
     let functions = this.state.reducers.ObservedContracts[contract.address];
+    console.log(e.target);
+    console.log(e.target.value);
     if (e.target.value === 'pickFunctionDefault') {
-      this.props.updateSelectedFunction({});
+      this.setState({ chosenFunction: 'Pick A Function' });
+      this.props.emptySelectedFunction({});
       return;
     }
     let func = functions.contractFunctions[e.target.selectedIndex - 1];
+    console.log(func);
     if (func.name === e.target.value) {
       func['contractAddress'] = contract.address;
+      this.setState({ chosenFunction: e.target.value });
       this.props.updateSelectedFunction(func);
     } else {
       //TODO: global
@@ -119,11 +125,26 @@ export class ExecuteFunctions extends Component {
           className="select-contract-function"
           name="select-contract-function"
           onChange={e => this.chooseFunction(e)}
+          defaultValue="Pick A Function"
+          value={this.state.chosenFunction}
         >
+          {/*
           <option
             key={shortid.generate()}
             disabled=""
             name="pickFunctionDefault"
+            defaultValue='Pick A Function'
+            value={this.state.chosenFunction}
+            // value={this.props.selectedFunction.name}
+          >
+            Pick a function
+          </option>
+        */}
+          <option
+            key={shortid.generate()}
+            disabled=""
+            name="pickFunctionDefault"
+            defaultValue="Pick A Function"
             value="pickFunctionDefault"
           >
             Pick a function
@@ -149,7 +170,7 @@ export class ExecuteFunctions extends Component {
       <React.Fragment>
         {inputs
           ? inputs.map((input, index) => (
-              <React.Fragment>
+              <React.Fragment key={shortid.generate()}>
                 <h4>
                   {Helpers.toSentence(input.name)}
                   &nbsp;

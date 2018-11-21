@@ -140,18 +140,20 @@ export function displayPriceFormatter(props, balance, currencyOverride) {
   let totalBalance = balance.toString();
   let exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;
-  let displayPrice = toNotWei(totalBalance, currency);
-  // if (currency === 'FINNEY') {
-  //   displayPrice = web3.utils.fromWei(totalBalance, 'finney');
-  // } else {
-  //   displayPrice = web3.utils.fromWei(totalBalance, 'ether');
-  if (!['ETHER', 'FINNEY'].includes(currency)) {
-    displayPrice = Number(
-      Math.round(displayPrice * exchangeRates[currency.toLowerCase()] + 'e2') +
-        'e-2'
-    );
+  let displayPrice;
+  // = toNotWei(totalBalance, currency);
+  if (currency === 'FINNEY') {
+    displayPrice = newWeb3.utils.fromWei(totalBalance, 'finney');
+  } else {
+    displayPrice = newWeb3.utils.fromWei(totalBalance, 'ether');
+    if (currency !== 'ETHER') {
+      displayPrice = Number(
+        Math.round(
+          displayPrice * exchangeRates[currency.toLowerCase()] + 'e2'
+        ) + 'e-2'
+      );
+    }
   }
-  // }
   return displayPrice;
 }
 
@@ -236,13 +238,6 @@ export function nameProvider(prov) {
 export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/web3.js/issues/494');
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
-  // web3.eth.accounts.wallet.add().then(resp =>console.log(resp));
-  // web3.eth.personal.newAccount(function(err, resp){
-  //   console.log(err)
-  //   console.log(resp)
-  // })
-  // web3.eth.accounts.create(this.random32Bytes()).then(console.log)
-  // web3.personal.newAccount()
 }
 
 export function getAccounts(web3, cb1, cb2) {

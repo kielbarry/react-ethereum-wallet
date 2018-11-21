@@ -138,6 +138,11 @@ export const reducers = (state = initialState, action) => {
           [action.payload.name]: action.payload.value,
         }),
       };
+    case 'EMPTY_SELECTED_FUNCTION':
+      return {
+        ...state,
+        selectedFunction: Object.assign({}, {}),
+      };
     case 'UPDATE_SELECTED_FUNCTION':
       return {
         ...state,
