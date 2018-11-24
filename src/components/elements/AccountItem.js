@@ -107,8 +107,10 @@ export class AccountItem extends Component {
           .balanceOf(walletAddress)
           .call()
           .then(result => {
+            if (result == 0) {
+              return;
+            }
             console.log(result);
-
             let tokenResult = ObservedTokens[tokenAddress];
             tokenResult['balance'] = result;
 
@@ -149,18 +151,33 @@ export class AccountItem extends Component {
       this.getTokenBalanceForAddress(untrackedTokens);
     }
 
+    let tokens = tokenCheck;
+
+    console.log(tokens);
+
     return (
       <ul className="token-list">
-        <li
-          data-tooltip="StellarCoin (19,988,900,000.000000000000000000 XLMC)"
-          className="simptip-position-right simptip-movable"
-        >
-          <SecurityIcon
-            type="accountItem"
-            classes="dapp-identicon dapp-small"
-            hash="asdfasdfas"
-          />
-        </li>
+        {tokens === undefined
+          ? null
+          : Object.keys(tokens).map(token => (
+              <li
+                data-tooltip={
+                  tokens[token].name +
+                  ' (' +
+                  tokens[token].balance +
+                  ' ' +
+                  tokens[token].symbol +
+                  ')'
+                }
+                className="simptip-position-right simptip-movable"
+              >
+                <SecurityIcon
+                  type="accountItem"
+                  classes="dapp-identicon dapp-tiny"
+                  hash={tokens[token].address}
+                />
+              </li>
+            ))}
       </ul>
     );
   }
