@@ -23,7 +23,7 @@ class ViewContainer extends Component {
           <Route path="/account/*" component={SingleAccountView} />
           <Route exact path="/wallet/new" component={NewWalletContract} />
           <Route path="/contract/*" component={SingleContractView} />
-          <Route path="/send-from*" component={SendContractForm} />
+          <Route path="/send-*" component={SendContractForm} />
           <Route exact path="/contracts" component={ContractsView} />
         </main>
       </div>
