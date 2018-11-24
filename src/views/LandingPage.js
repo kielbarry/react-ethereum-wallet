@@ -20,8 +20,6 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import NotInterestedSharp from '@material-ui/icons/NotInterestedSharp';
 import OfflineBoltSharp from '@material-ui/icons/OfflineBoltSharp';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
 import Slide from '@material-ui/core/Slide';
 import green from '@material-ui/core/colors/green';
 

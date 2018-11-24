@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import AccountItem from '../components/elements/AccountItem.js';
-import ContractItem from '../components/elements/ContractItem.js';
 import LatestTransactions from '../components/elements/LatestTransactions.js';
-import { Link } from 'react-router-dom';
-
-import web3test from '../web3/Web3Initializer.js';
 
 import Addresses from '../components/Addresses.js';
 import DeployedWallets from '../components/DeployedWallets.js';
@@ -21,10 +16,6 @@ const Title = () => {
 };
 
 class AccountView extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="dapp-container account-page">

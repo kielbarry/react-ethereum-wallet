@@ -22,7 +22,7 @@ class DeleteToken extends Component {
   }
 
   deleteToken(e) {
-    this.props.deleteToken(this.props.token);
+    this.props.deleteToken(this.props.token.address);
     this.props.closeModal('displayDeleteToken');
   }
 
@@ -33,8 +33,8 @@ class DeleteToken extends Component {
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container" style={divStyle}>
           <p>
-            Do you want to remove the token <strong>{this.props.token}</strong>{' '}
-            from your list?
+            Do you want to remove the token{' '}
+            <strong>{this.props.token.name}</strong> from your list?
           </p>
           <div className="dapp-modal-buttons">
             <button className="cancel" onClick={e => this.cancelFunction(e)}>

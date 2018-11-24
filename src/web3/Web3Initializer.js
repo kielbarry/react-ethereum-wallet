@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { store } from '../store/store.js';
 import Web3 from 'web3';
 

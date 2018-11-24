@@ -11,10 +11,6 @@ import SendContractForm from './Send.js';
 import NewWalletContract from './NewWalletContract.js';
 
 class ViewContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="dapp-flex-content">
@@ -23,7 +19,7 @@ class ViewContainer extends Component {
           <Route path="/account/*" component={SingleAccountView} />
           <Route exact path="/wallet/new" component={NewWalletContract} />
           <Route path="/contract/*" component={SingleContractView} />
-          <Route path="/send-from*" component={SendContractForm} />
+          <Route path="/send-*" component={SendContractForm} />
           <Route exact path="/contracts" component={ContractsView} />
         </main>
       </div>

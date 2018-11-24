@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import shortid from 'shortid';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import SecurityIcon from '../components/elements/SecurityIcon.js';
 import WalletDropdown from '../components/elements/WalletDropdown.js';
+
+import RadioTokenSelect from '../components/elements/RadioTokenSelect.js';
 
 import * as Actions from '../actions/actions.js';
 import * as Utils from '../utils/utils.js';

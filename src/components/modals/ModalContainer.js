@@ -19,10 +19,6 @@ import EventInfo from './EventInfo.js';
 import JSONInterface from './JSONInterface.js';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     window.addEventListener('blur', e =>
       document.body.classList.add('app-blur')

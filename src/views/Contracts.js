@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import CustomContracts from '../components/CustomContracts.js';
 import CustomTokens from '../components/CustomTokens.js';
