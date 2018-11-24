@@ -8,6 +8,7 @@ import SU from '../components/elements/SelectableUnit.js';
 import AccountActionBar from '../components/elements/AccountActionBar.js';
 import LatestTransactions from '../components/elements/LatestTransactions.js';
 import SecurityIcon from '../components/elements/SecurityIcon.js';
+import TokenList from '../components/TokenList.js';
 
 // views
 import NotFound from './NotFound.js';
@@ -56,8 +57,10 @@ export const AccountDescription = () => {
         store ether.
       </p>
       <p>
-        If your balance doesn't seem updated, make sure that you are in sync
-        with the network.
+        <strong>
+          If your balance doesn't seem updated, make sure that you are in sync
+          with the network.
+        </strong>
       </p>
     </div>
   );
@@ -150,6 +153,7 @@ export class SingleAccountView extends Component {
           <header>
             <AccountDetails sw={sw} />
             {this.renderBalance()}
+            {sw.wallet.tokens ? <TokenList /> : null}
             <AccountDescription />
           </header>
         </div>

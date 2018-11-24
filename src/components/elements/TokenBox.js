@@ -72,12 +72,12 @@ export class TokenBox extends Component {
   }
 
   getTotalBalance() {
-    console.log('in getTotalBalance');
+    // console.log('in getTotalBalance');
     let wallets = this.props.reducers.Wallets;
     let walletContracts = this.props.reducers.WalletContracts;
 
-    console.log(' here in wallets', wallets);
-    console.log(' here in walletContracts', walletContracts);
+    // console.log(' here in wallets', wallets);
+    // console.log(' here in walletContracts', walletContracts);
 
     let web3 = this.props.web3.web3Instance;
     let TokenContract = new web3.eth.Contract(tokenInterface);

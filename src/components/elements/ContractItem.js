@@ -7,6 +7,8 @@ import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
 
+import TokenListForItems from './TokenListForItems.js';
+
 class ContractItem extends Component {
   constructor(props) {
     super(props);
@@ -107,7 +109,10 @@ class ContractItem extends Component {
     pending ? (pending = true) : (pending = false);
     return (
       <React.Fragment>
-        <ul className="token-list" />
+        <TokenListForItems
+          addressType="WalletContracts"
+          address={contract.contractAddress}
+        />
         <h3 className="not-ens-name">
           <i className="icon-eye" />
           &nbsp;
@@ -136,8 +141,6 @@ class ContractItem extends Component {
   render() {
     let contract = this.props.contract;
     let pending = this.props.pending;
-
-    // console.log(contract);
 
     pending ? (pending = true) : (pending = false);
 

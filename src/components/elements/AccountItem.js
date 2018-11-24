@@ -10,6 +10,8 @@ import NumberFormat from 'react-number-format';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
+import TokenListForItems from './TokenListForItems.js';
+
 // const openAccountPage = (w, props) => {
 //   console.log(this)
 //   console.log(props)
@@ -153,8 +155,6 @@ export class AccountItem extends Component {
 
     let tokens = tokenCheck;
 
-    console.log(tokens);
-
     return (
       <ul className="token-list">
         {tokens === undefined
@@ -222,7 +222,13 @@ export class AccountItem extends Component {
             classes="dapp-identicon dapp-small"
             hash={this.props.address}
           />
-          {this.renderTokens()}
+          {/*}
+            {this.renderTokens()}
+          */}
+          <TokenListForItems
+            addressType="Wallets"
+            address={this.props.address}
+          />
           <h3 className="not-ens-name">
             <i className={this.props.icon} title="Account" />
             Account {number}

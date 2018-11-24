@@ -1,23 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import SecurityIcon from './elements/SecurityIcon';
 
-class TokenList extends Component {
+import shortid from 'shortid';
+
+export class TokenList extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
+    console.log('ASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDF', this.props);
+
+    let sw = this.props.reducers.selectedWallet;
+    let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    let sendUrl = sw.address + '/';
+
     return (
       <table className="token-list dapp-zebra">
         <tbody>
-          <td>
-            <SecurityIcon />
-            <strong>CoinName</strong>
-          </td>
-          <td>CoinAmount</td>
-          <td>
-            <a href="/send-token/0x65b42142606a9d46d05ea5205ad4b610a9130e92/0x2c92e68178c6fad7e72e1c3bd49bdc30c69652fb">
-              <i class="icon-arrow-up" />
-              Send
-            </a>
-          </td>
+          {Object.keys(tokens).map(token => (
+            <tr key={shortid.generate()}>
+              <td>
+                <SecurityIcon
+                  type="accountItem"
+                  classes="dapp-identicon dapp-tiny"
+                  hash={tokens[token].address}
+                />
+                <strong>{tokens[token].name}</strong>
+              </td>
+              <td>
+                {tokens[token].balance}
+                &nbsp;
+                {tokens[token].symbol}
+              </td>
+              <td>
+                <Link
+                  to={{ pathname: '/send-token/' + sendUrl + token }}
+                  title="sendUrlForToken"
+                >
+                  <i className="icon-arrow-up">&nbsp;</i>
+                  Send
+                </Link>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     );
@@ -28,4 +57,4 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default connect(mapStateToProps)(Addresses);
+export default connect(mapStateToProps)(TokenList);

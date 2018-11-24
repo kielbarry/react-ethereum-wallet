@@ -4,6 +4,7 @@ import AccountItem from './elements/AccountItem.js';
 
 export class Addresses extends Component {
   render() {
+    console.log('here in addresses');
     if (this.props.reducers.Wallets !== undefined) {
       const wallets = this.props.reducers.Wallets;
       const icon = 'icon-key';
