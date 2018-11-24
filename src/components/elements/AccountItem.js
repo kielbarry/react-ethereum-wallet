@@ -8,6 +8,8 @@ import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 import NumberFormat from 'react-number-format';
 
+import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
+
 // const openAccountPage = (w, props) => {
 //   console.log(this)
 //   console.log(props)
@@ -87,6 +89,82 @@ export class AccountItem extends Component {
     });
   }
 
+  getTokenBalanceForAddress(untrackedTokens) {
+    let walletAddress = this.props.address;
+    let ObservedTokens = this.props.reducers.ObservedTokens;
+
+    if (!this.props.web3 || !this.props.web3.web3Instance) {
+      return;
+    }
+
+    untrackedTokens.map(tokenAddress => {
+      let web3 = this.props.web3.web3Instance;
+      let TokenContract = new web3.eth.Contract(tokenInterface);
+      TokenContract.options.address = tokenAddress;
+
+      try {
+        TokenContract.methods
+          .balanceOf(walletAddress)
+          .call()
+          .then(result => {
+            console.log(result);
+
+            let tokenResult = ObservedTokens[tokenAddress];
+            tokenResult['balance'] = result;
+
+            this.props.updateAccountTokenBalance({
+              account: walletAddress,
+              value: tokenResult,
+              tokenAddress: tokenAddress,
+            });
+          });
+      } catch (err) {
+        console.warn('Err :', err);
+        this.props.displayGlobalNotification({
+          display: true,
+          type: 'error',
+          msg: err.message,
+        });
+      }
+    });
+  }
+
+  renderTokens() {
+    let address = this.props.address;
+
+    let currentObservedTokens = new Set(
+      Object.keys(this.props.reducers.ObservedTokens)
+    );
+    let tokenCheck = this.props.reducers.Wallets[address].tokens;
+    let currentWalletsTokens = tokenCheck ? tokenCheck : [];
+
+    if (
+      currentObservedTokens !== undefined &&
+      currentWalletsTokens !== undefined
+    ) {
+      let trackedTokens = new Set(Object.keys(currentWalletsTokens));
+      let untrackedTokens = Array.from(
+        new Set([...currentObservedTokens].filter(x => !trackedTokens.has(x)))
+      );
+      this.getTokenBalanceForAddress(untrackedTokens);
+    }
+
+    return (
+      <ul className="token-list">
+        <li
+          data-tooltip="StellarCoin (19,988,900,000.000000000000000000 XLMC)"
+          className="simptip-position-right simptip-movable"
+        >
+          <SecurityIcon
+            type="accountItem"
+            classes="dapp-identicon dapp-small"
+            hash="asdfasdfas"
+          />
+        </li>
+      </ul>
+    );
+  }
+
   renderBalance() {
     let wallet = this.props.wallet;
     return (
@@ -127,7 +205,7 @@ export class AccountItem extends Component {
             classes="dapp-identicon dapp-small"
             hash={this.props.address}
           />
-          <ul className="token-list" />
+          {this.renderTokens()}
           <h3 className="not-ens-name">
             <i className={this.props.icon} title="Account" />
             Account {number}

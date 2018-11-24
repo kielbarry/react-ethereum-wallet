@@ -61,6 +61,20 @@ export const initialState = {
 
 export const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'UPDATE_ACCOUNT_TOKEN_BALANCE':
+      return {
+        ...state,
+        Wallets: {
+          ...state.Wallets,
+          [action.payload.account]: {
+            ...state.Wallets[action.payload.account],
+            tokens: {
+              ...state.Wallets[action.payload.account]['tokens'],
+              [action.payload.tokenAddress]: action.payload.value,
+            },
+          },
+        },
+      };
     case 'SET_ETHEREUM_PROVIDER_CONFIG':
       return {
         ...state,
@@ -346,10 +360,11 @@ export const reducers = (state = initialState, action) => {
         TokenToDelete: '',
       };
     case 'ADD_OBSERVED_TOKEN':
+      // overwrites if already existed
       return {
         ...state,
         ObservedTokens: Object.assign({}, state.ObservedTokens, {
-          [action.payload.name]: action.payload.value,
+          [action.payload.address]: action.payload.value,
         }),
       };
     case 'CANCEL_TOKEN_TO_WATCH':

@@ -87,7 +87,6 @@ class WatchToken extends Component {
   }
 
   getTokenContractInfo(address) {
-    console.log('in getTokenContractInfo', address);
     let web3 = this.props.web3.web3Instance;
     let TokenContract = new web3.eth.Contract(tokenInterface);
     TokenContract.options.address = address;
@@ -105,17 +104,12 @@ class WatchToken extends Component {
   }
 
   handleOnKeyUp(e) {
-    console.log(this.state);
-
     //TODO: this is getting called twice when using copy/paste with keyboard shortcuts
 
     // TODO:validate inputs here
 
     let name = e.target.getAttribute('name');
     let value = e.target.value;
-
-    console.log('name', name);
-    console.log('value', value);
 
     let web3 = this.props.web3.web3Instance;
     // TODO: checks coin symbol against MEW list?
@@ -148,8 +142,6 @@ class WatchToken extends Component {
       name: name,
       value: e.target.value,
     });
-
-    console.log(this.state);
   }
 
   cancelFunction(e) {
@@ -187,7 +179,7 @@ class WatchToken extends Component {
           let tokenAmt = web3.utils.toBN(result);
           // if (!tokenAmt.isZero()) {
           this.props.addObservedToken({
-            name: token.name,
+            address: token.address,
             value: Object.assign({}, token, {
               amount: web3.utils.fromWei(tokenAmt, 'ether'),
             }),

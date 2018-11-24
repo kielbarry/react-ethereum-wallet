@@ -100,7 +100,7 @@ export class TokenBox extends Component {
   }
 
   deleteTokenModal(e) {
-    this.props.tokenToDelete(this.props.token.name);
+    this.props.tokenToDelete(this.props.token);
     this.props.displayModal('displayDeleteToken');
   }
 

@@ -13,6 +13,9 @@ describe('actions', () => {
     fetchMock.restore();
   });
 
+  //TODO: UPDATE_ACCOUNT_TOKEN_BALANCE
+  // updateAccountTokenBalance
+
   it('should create action for setEthereumProviderConfig', async () => {
     const store = mockStore({ Web3Initializer: {} });
     await store.dispatch(
