@@ -2,7 +2,7 @@
 
 // Token Interface
 
-var tokenInterface = [
+export const tokenInterface = [
   {
     type: 'function',
     name: 'name',
@@ -159,4 +159,4 @@ var tokenInterface = [
   },
 ];
 
-TokenContract = new web3.eth.Contract(tokenInterface);
+// TokenContract = new web3.eth.Contract(tokenInterface);

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
+
 import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
 
@@ -37,6 +39,17 @@ const listInputs = [
 class WatchToken extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      symbol: '',
+      name: '',
+      decimals: '',
+      address: '',
+      balance: '',
+    };
+
+    this.invokeContractMethod = this.invokeContractMethod.bind(this);
+    this.getTokenContractInfo = this.getTokenContractInfo.bind(this);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
     this.cancelFunction = this.cancelFunction.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
@@ -49,10 +62,80 @@ class WatchToken extends Component {
     return false;
   }
 
-  handleOnKeyUp(e) {
-    // TODO:validate inputs here
+  invokeContractMethod(TokenContract, variableMethodName) {
+    try {
+      TokenContract.methods[variableMethodName]()
+        .call()
+        .then(result => {
+          console.log('result', result);
+          this.setState({ [variableMethodName]: result });
+          this.props.updateTokenToWatch({
+            name: variableMethodName,
+            value: result,
+          });
+        });
+    } catch (err) {
+      console.warn('Err :', err);
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: err.message,
+      });
+    }
+  }
+
+  getTokenContractInfo(address) {
+    let web3 = this.props.web3.web3Instance;
+    let TokenContract = new web3.eth.Contract(tokenInterface);
+    TokenContract.options.address = address;
+
+    this.setState({ address: address });
     this.props.updateTokenToWatch({
-      name: e.target.getAttribute('name'),
+      name: 'address',
+      value: address,
+    });
+
+    this.invokeContractMethod(TokenContract, 'symbol');
+    this.invokeContractMethod(TokenContract, 'name');
+    this.invokeContractMethod(TokenContract, 'decimals');
+  }
+
+  handleOnKeyUp(e) {
+    //TODO: this is getting called twice when using copy/paste with keyboard shortcuts
+
+    // TODO:validate inputs here
+
+    let name = e.target.getAttribute('name');
+    let value = e.target.value;
+
+    let web3 = this.props.web3.web3Instance;
+    // TODO: checks coin symbol against MEW list?
+    // var l = e.currentTarget.value.length;
+    // if (!tokenAddress && l > 2 && l < 6) {
+    //   e.currentTarget.value += '.thetoken.eth';
+    //   e.currentTarget.setSelectionRange(l, l + 13);
+    // }
+
+    // if (
+    //   !tokenAddress ||
+    //   (template.data &&
+    //     template.data.address &&
+    //     template.data.address == tokenAddress)
+    // )
+    //   return;
+
+    if (name === 'address' && value.length === 42) {
+      let isAddress = web3.utils.isAddress(value);
+      let toCheckSum = web3.utils.toChecksumAddress(value);
+      let isCheckSummed = web3.utils.checkAddressChecksum(toCheckSum);
+      if (isAddress && isCheckSummed) {
+        this.getTokenContractInfo(value);
+        return;
+      }
+    }
+
+    this.props.updateTokenToWatch({
+      name: name,
       value: e.target.value,
     });
   }
@@ -135,7 +218,7 @@ class WatchToken extends Component {
             type="number"
             min="0"
             step="1"
-            name="division"
+            name="decimals"
             placeholder="2"
             className="decimals"
             onChange={e => this.handleOnKeyUp(e)}
@@ -147,7 +230,7 @@ class WatchToken extends Component {
             <button className="delete-token">
               <i className="icon-trash" />
             </button>
-            <span className="account-balance">
+            <span name="balance" className="account-balance">
               0.00000000
               <span> </span>
             </span>
@@ -170,6 +253,7 @@ class WatchToken extends Component {
     );
   }
 }
+
 const mapStateToProps = state => {
   return state;
 };
