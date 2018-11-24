@@ -1,86 +1,169 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { displayModal, tokenToDelete } from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 
-function deleteTokenModal(props) {
-  tokenToDelete(props.token.name);
-  displayModal('displayDeleteToken');
-}
+import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
-export const TokenBox = props => {
-  var GeoPattern = require('geopattern');
-  var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-  let iconStyle = { backgroundImage: pattern.toDataUrl() };
-  let token = props.token;
+import { makeID } from '../../utils/helperFunctions.js';
 
-  return (
-    <div className="wallet-box tokens" style={iconStyle}>
-      <SecurityIcon
-        type="tokenBox"
-        classes="dapp-identicon dapp-small"
-        hash={token.address}
-      />
-      <h3>{token.name}</h3>
-      <button className="delete-token" onClick={() => deleteTokenModal(props)}>
-        <i className="icon-trash" />
-      </button>
+// function deleteTokenModal(props) {
+//   console.log("props here in deleteTokenModal", props )
+//   this.tokenToDelete(props.token.name);
+//   this.displayModal('displayDeleteToken');
+// }
+
+// export const TokenBox = props => {
+//   var GeoPattern = require('geopattern');
+//   var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
+//   let iconStyle = { backgroundImage: pattern.toDataUrl() };
+//   let token = props.token;
+
+//   return (
+//     <div className="wallet-box tokens" style={iconStyle}>
+//       <SecurityIcon
+//         type="tokenBox"
+//         classes="dapp-identicon dapp-small"
+//         hash={token.address}
+//       />
+//       <h3>{token.name}</h3>
+//       <button className="delete-token" onClick={() => deleteTokenModal(props)}>
+//         <i className="icon-trash" />
+//       </button>
+//       <span className="account-balance">
+//         {token.balance}
+//         <span>{token.symbol}</span>
+//       </span>
+//       <span className="account-id">{token.address}</span>
+//     </div>
+//   );
+// };
+
+// export default TokenBox;
+
+export class TokenBox extends Component {
+  constructor(props) {
+    super(props);
+    this.invokeContractMethod = this.invokeContractMethod.bind(this);
+    this.getTotalBalance = this.getTotalBalance.bind(this);
+    this.deleteTokenModal = this.deleteTokenModal.bind(this);
+  }
+
+  invokeContractMethod(TokenContract, variableMethodName, address) {
+    try {
+      TokenContract.methods[variableMethodName](address)
+        .call()
+        .then(result => {
+          console.log('result', result);
+          // this.setState({ [variableMethodName]: result });
+          // this.props.updateTokenToWatch({
+          //   name: variableMethodName,
+          //   value: result,
+          // });
+        });
+    } catch (err) {
+      console.warn('Err :', err);
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: err.message,
+      });
+    }
+  }
+
+  getTotalBalance() {
+    console.log('in getTotalBalance');
+    let wallets = this.props.reducers.Wallets;
+    let walletContracts = this.props.reducers.WalletContracts;
+
+    console.log(' here in wallets', wallets);
+    console.log(' here in walletContracts', walletContracts);
+
+    let web3 = this.props.web3.web3Instance;
+    let TokenContract = new web3.eth.Contract(tokenInterface);
+
+    // Object.keys(wallets).map(address => {
+    //   TokenContract.options.address = address
+    //   this.invokeContractMethod(TokenContract, 'balanceOf', address)
+    // })
+
+    //TODO: delete, this is just for testing
+    //contract address
+    TokenContract.options.address =
+      '0x57b8eec126c44408da88b3c580f9a019b5cbcb46';
+    //address for balance
+    this.invokeContractMethod(
+      TokenContract,
+      'balanceOf',
+      '0x60160E29cc7F310892a197f2f13A0D81c2d864df'
+    );
+  }
+
+  deleteTokenModal(e) {
+    this.props.tokenToDelete(this.props.token.name);
+    this.props.displayModal('displayDeleteToken');
+  }
+
+  renderBalance() {
+    let token = this.props.token;
+    return (
       <span className="account-balance">
         {token.balance}
         <span>{token.symbol}</span>
       </span>
-      <span className="account-id">{token.address}</span>
-    </div>
-  );
+    );
+  }
+
+  render() {
+    console.log(this.props);
+
+    var GeoPattern = require('geopattern');
+    var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
+    let iconStyle = { backgroundImage: pattern.toDataUrl() };
+    let token = this.props.token;
+
+    console.log(this.props.reducers.ObservedTokens.includes(token.address));
+
+    //TODO: WIP
+    // if(
+    //   token !== {} &&
+    //   token.address !== '' &&
+    //   !this.props.reducers.ObservedTokens.includes(token.address)
+    //   ) {
+
+    //   console.log("about to invoke getTotalBalance")
+    //   this.getTotalBalance()
+    // }
+
+    let address =
+      token === {} || token.address === '' ? makeID() : token.address;
+
+    return (
+      <div className="wallet-box tokens" style={iconStyle}>
+        <SecurityIcon
+          type="tokenBox"
+          classes="dapp-identicon dapp-small"
+          hash={address}
+        />
+        <h3>{token.name}</h3>
+        <button
+          className="delete-token"
+          onClick={e => this.deleteTokenModal(e)}
+        >
+          <i className="icon-trash" />
+        </button>
+        {this.renderBalance()}
+        <span className="account-id">{address}</span>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return state;
 };
 
-export default TokenBox;
-
-// export class TokenBox extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.deleteTokenModal = this.deleteTokenModal.bind(this);
-//   }
-
-//   deleteTokenModal(e) {
-//     this.props.tokenToDelete(this.props.token.name);
-//     this.props.displayModal('displayDeleteToken');
-//   }
-
-//   render() {
-//     var GeoPattern = require('geopattern');
-//     var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-//     let iconStyle = { backgroundImage: pattern.toDataUrl() };
-//     let token = this.props.token;
-//     return (
-//       <div className="wallet-box tokens" style={iconStyle}>
-//         <SecurityIcon
-//           type="tokenBox"
-//           classes="dapp-identicon dapp-small"
-//           hash={token.address}
-//         />
-//         <h3>{token.name}</h3>
-//         <button
-//           className="delete-token"
-//           onClick={e => this.deleteTokenModal(e)}
-//         >
-//           <i className="icon-trash" />
-//         </button>
-//         <span className="account-balance">
-//           {token.balance}
-//           <span>{token.symbol}</span>
-//         </span>
-//         <span className="account-id">{token.address}</span>
-//       </div>
-//     );
-//   }
-// }
-
-// const mapStateToProps = state => {
-//   return state;
-// };
-
-// export default connect(
-//   mapStateToProps,
-//   { displayModal, tokenToDelete }
-// )(TokenBox);
+export default connect(
+  mapStateToProps,
+  { displayModal, tokenToDelete }
+)(TokenBox);

@@ -124,12 +124,11 @@ class App extends Component {
           draggable
           pauseOnHover
         />
-        {/*}
-
         <DeleteToken
           token={this.props.reducers.TokenToDelete}
           display={deleteToken}
         />
+        {/*}
 
         {this.props.reducers.SelectedTransaction ? (
           <TransactionInfo

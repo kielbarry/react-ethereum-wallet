@@ -3,50 +3,52 @@ import { connect } from 'react-redux';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
+import TokenBox from '../elements/TokenBox.js';
+
 import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
 
-const listInputs = [
-  {
-    title: 'Token Contract Address',
-    divClass: 'dapp-address-input',
-    editor: 'input',
-    type: 'text',
-    name: 'address',
-    placeholder: '0x000000',
-    className: 'token-address',
-  },
-  {
-    title: 'Token name',
-    divClass: 'dapp-token-name-input',
-    editor: 'input',
-    type: 'string',
-    name: 'name',
-    placeholder: 'Token name',
-    className: 'name',
-  },
-  {
-    title: 'Token symbol',
-    divClass: 'dapp-token-symbol-input',
-    editor: 'input',
-    type: 'string',
-    name: 'symbol',
-    placeholder: 'Token symbol',
-    className: 'symbol',
-  },
-];
+// const listInputs = [
+//   {
+//     title: 'Token Contract Address',
+//     divClass: 'dapp-address-input',
+//     editor: 'input',
+//     type: 'text',
+//     name: 'address',
+//     placeholder: '0x000000',
+//     className: 'token-address',
+//   },
+//   {
+//     title: 'Token name',
+//     divClass: 'dapp-token-name-input',
+//     editor: 'input',
+//     type: 'string',
+//     name: 'name',
+//     placeholder: 'Token name',
+//     className: 'name',
+//   },
+//   {
+//     title: 'Token symbol',
+//     divClass: 'dapp-token-symbol-input',
+//     editor: 'input',
+//     type: 'string',
+//     name: 'symbol',
+//     placeholder: 'Token symbol',
+//     className: 'symbol',
+//   },
+// ];
 
 class WatchToken extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      symbol: '',
-      name: '',
-      decimals: '',
+    this.state = Object.assign({}, this.props, {
       address: '',
+      name: '',
+      symbol: '',
+      decimals: '',
       balance: '',
-    };
+    });
 
     this.invokeContractMethod = this.invokeContractMethod.bind(this);
     this.getTokenContractInfo = this.getTokenContractInfo.bind(this);
@@ -55,12 +57,12 @@ class WatchToken extends Component {
     this.submitFunction = this.submitFunction.bind(this);
   }
 
-  shouldComponentUpdate(prevProps, prevState) {
-    if (this.props.display !== prevProps.display) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   if (this.props.display !== prevProps.display) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   invokeContractMethod(TokenContract, variableMethodName) {
     try {
@@ -85,6 +87,7 @@ class WatchToken extends Component {
   }
 
   getTokenContractInfo(address) {
+    console.log('in getTokenContractInfo', address);
     let web3 = this.props.web3.web3Instance;
     let TokenContract = new web3.eth.Contract(tokenInterface);
     TokenContract.options.address = address;
@@ -98,15 +101,21 @@ class WatchToken extends Component {
     this.invokeContractMethod(TokenContract, 'symbol');
     this.invokeContractMethod(TokenContract, 'name');
     this.invokeContractMethod(TokenContract, 'decimals');
+    // this.invokeContractMethod(TokenContract, 'balanceOf');
   }
 
   handleOnKeyUp(e) {
+    console.log(this.state);
+
     //TODO: this is getting called twice when using copy/paste with keyboard shortcuts
 
     // TODO:validate inputs here
 
     let name = e.target.getAttribute('name');
     let value = e.target.value;
+
+    console.log('name', name);
+    console.log('value', value);
 
     let web3 = this.props.web3.web3Instance;
     // TODO: checks coin symbol against MEW list?
@@ -134,10 +143,13 @@ class WatchToken extends Component {
       }
     }
 
+    this.setState({ [name]: value });
     this.props.updateTokenToWatch({
       name: name,
       value: e.target.value,
     });
+
+    console.log(this.state);
   }
 
   cancelFunction(e) {
@@ -200,11 +212,14 @@ class WatchToken extends Component {
 
     let iconStyle = { backgroundImage: pattern.toDataUrl() };
 
+    let TokenToWatch = this.props.reducers.TokenToWatch;
+
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container modals-add-token">
           <h1>Add Token</h1>
 
+          {/*
           {listInputs.map((field, i) => (
             <TestInputItem
               key={`token-field-${i}`}
@@ -212,6 +227,42 @@ class WatchToken extends Component {
               onKeyUp={e => this.handleOnKeyUp(e)}
             />
           ))}
+        */}
+          <h3>Token Contract Address</h3>
+          <div className="dapp-address-input">
+            <input
+              type="text"
+              name="address"
+              placeholder="0x000000"
+              className="token-address"
+              onChange={e => this.handleOnKeyUp(e)}
+              value={this.state.address}
+            />
+          </div>
+
+          <h3>Token name</h3>
+          <div className="dapp-token-name-input">
+            <input
+              type="string"
+              name="name"
+              placeholder="Token name"
+              className="name"
+              onChange={e => this.handleOnKeyUp(e)}
+              value={this.state.name}
+            />
+          </div>
+
+          <h3>Token symbol</h3>
+          <div className="dapp-token-symbol-input">
+            <input
+              type="string"
+              name="symbol"
+              placeholder="Token symbol"
+              className="symbol"
+              onChange={e => this.handleOnKeyUp(e)}
+              value={this.state.symbol}
+            />
+          </div>
 
           <h3>Decimals places of smallest unit</h3>
           <input
@@ -222,20 +273,26 @@ class WatchToken extends Component {
             placeholder="2"
             className="decimals"
             onChange={e => this.handleOnKeyUp(e)}
+            value={this.state.decimals}
           />
           <br />
           <h3>Preview</h3>
+
+          {/*<TokenBox key={TokenToWatch.address} token={TokenToWatch} />
+
+          {/*
           <button className="wallet-box tokens" style={iconStyle}>
-            {/*<h3></h3> */}
+            // <h3></h3> 
             <button className="delete-token">
               <i className="icon-trash" />
             </button>
             <span name="balance" className="account-balance">
-              0.00000000
+              {this.state.balance}
               <span> </span>
             </span>
             <span className="account-id" />
           </button>
+          */}
 
           <div className="dapp-modal-buttons">
             <button className="cancel" onClick={() => this.cancelFunction()}>
