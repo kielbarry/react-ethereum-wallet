@@ -175,6 +175,8 @@ class WatchToken extends Component {
       // if(this.props.reducers.Tokens.includes(address)) {
       // }
 
+      // TODO 0x70a08231000000000000000000000000 is the data for BALANCEoF
+      // needs to pass an ACCOUNT ADDRESS and not the contract address
       web3.eth
         .call({
           to: address.replace(' ', ''), // contract address

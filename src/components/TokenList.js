@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SecurityIcon from '';
+import SecurityIcon from './elements/SecurityIcon';
 
 class TokenList extends Component {
   render() {

@@ -122,7 +122,10 @@ export class TokenBox extends Component {
     let iconStyle = { backgroundImage: pattern.toDataUrl() };
     let token = this.props.token;
 
-    console.log(this.props.reducers.ObservedTokens.includes(token.address));
+    console.log(this.props.reducers.ObservedTokens);
+    console.log(
+      Object.keys(this.props.reducers.ObservedTokens).includes(token.address)
+    );
 
     //TODO: WIP
     // if(

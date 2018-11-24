@@ -194,6 +194,8 @@ export const fetchTokensForAutoScan = accounts => {
                       'ether'
                     );
 
+                    // TODO along with the rest of this action.
+                    // not token name, changing/changed to token address
                     // if (!tokenAmt.isZero()) {
                     dispatch(
                       addObservedToken({
