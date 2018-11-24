@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SecurityIcon from '../elements/SecurityIcon.js';
 import Inputs from '../elements/inputs/Inputs.js';
-import * as Utils from '../../utils/utils.js';
 import * as Helpers from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';

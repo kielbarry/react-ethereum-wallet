@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-modal';
 import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';

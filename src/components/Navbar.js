@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
 import { NavFields } from '../constants/FieldConstants.js';
 
-import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import SettingsSharp from '@material-ui/icons/SettingsSharp';
 import IconButton from '@material-ui/core/IconButton';

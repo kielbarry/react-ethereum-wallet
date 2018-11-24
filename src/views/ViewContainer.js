@@ -11,10 +11,6 @@ import SendContractForm from './Send.js';
 import NewWalletContract from './NewWalletContract.js';
 
 class ViewContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="dapp-flex-content">

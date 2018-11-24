@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../../actions/actions.js';
-import * as Utils from '../../../utils/utils.js';
-import * as Helpers from '../../../utils/helperFunctions.js';
 
 export class Inputs extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderAddress(input) {
     return (
       <React.Fragment>
@@ -71,7 +65,6 @@ export class Inputs extends Component {
     return (
       <React.Fragment>
         <textarea
-          name="elements_input_json"
           cols="20"
           rows="5"
           placeholder="['my text', 12345, '0x...']"
@@ -121,27 +114,24 @@ export class Inputs extends Component {
       ...this.props.data,
       index: this.props.index,
     };
-
-    // console.log(this.props)
-
     let type = this.props.data.type.match(/[a-z]+/i)[0];
     return (
       <React.Fragment>
         {type === 'address'
           ? this.renderAddress(input)
           : type === 'bool'
-            ? this.renderBool(input)
-            : type === 'bytes'
-              ? this.renderBytes(input)
-              : type === 'int'
-                ? this.renderInt(input)
-                : type === 'json'
-                  ? this.renderJson(input)
-                  : type === 'string'
-                    ? this.renderString(input)
-                    : type === 'uint'
-                      ? this.renderUint(input)
-                      : null}
+          ? this.renderBool(input)
+          : type === 'bytes'
+          ? this.renderBytes(input)
+          : type === 'int'
+          ? this.renderInt(input)
+          : type === 'json'
+          ? this.renderJson(input)
+          : type === 'string'
+          ? this.renderString(input)
+          : type === 'uint'
+          ? this.renderUint(input)
+          : null}
       </React.Fragment>
     );
   }

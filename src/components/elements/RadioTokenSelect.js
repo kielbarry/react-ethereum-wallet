@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 
 export class RadioTokenSelect extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     console.log(this.props);
+    let sw = this.props.reducers.selectedWallet;
     let tokens = this.props.reducers.selectedWallet.wallet.tokens;
     return (
       <ul>
@@ -50,5 +46,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { selectedWallet, ...Actions }
+  { ...Actions }
 )(RadioTokenSelect);

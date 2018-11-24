@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import shortid from 'shortid';
 
 // components
 import SU from '../components/elements/SelectableUnit.js';
@@ -15,7 +13,6 @@ import NotFound from './NotFound.js';
 
 // utils and actions
 import * as Utils from '../utils/utils.js';
-import * as Helpers from '../utils/helperFunctions.js';
 import * as Actions from '../actions/actions.js';
 
 export const StickyHeader = ({ sw }) => {
@@ -74,11 +71,8 @@ export class SingleAccountView extends Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
-    // ('.dapp-sticky-bar').addClass('sticky');
-  }
-
-  componentDidMount() {
     this.setState({ displaySU: false });
+    // ('.dapp-sticky-bar').addClass('sticky');
   }
 
   componentWillUnmount() {

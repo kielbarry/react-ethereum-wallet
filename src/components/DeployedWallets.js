@@ -36,12 +36,7 @@ const WalletLink = () => {
 };
 
 class DeployedWallets extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderWalletBoxList() {
-    const walletContractList = this.props.reducers.WalletContracts;
     const icon = 'icon-eye';
     let {
       ContractsPendingConfirmations,

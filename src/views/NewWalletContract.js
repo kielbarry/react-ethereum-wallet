@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -18,7 +17,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SecurityIcon from '../components/elements/SecurityIcon.js';
 import WalletDropdown from '../components/elements/WalletDropdown.js';
 import shortid from 'shortid';
-import * as Utils from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
 import {

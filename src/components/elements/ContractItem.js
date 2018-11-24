@@ -144,16 +144,20 @@ class ContractItem extends Component {
 
     pending ? (pending = true) : (pending = false);
 
+    // eslint-disable-next-line
     Object.keys(contract).length === 0 && contract.constructor === Object
       ? (pending = true)
       : null;
 
     let address;
+    // eslint-disable-next-line
     !pending ? (address = contract.contractAddress) : null;
 
     let ContractUrl = '/contract/';
+    // eslint-disable-next-line
     !pending ? (ContractUrl += address) : null;
 
+    // eslint-disable-next-line
     !pending ? clearInterval(this.fakeAddressInterval) : null;
 
     return (

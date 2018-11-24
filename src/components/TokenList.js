@@ -7,14 +7,9 @@ import SecurityIcon from './elements/SecurityIcon';
 import shortid from 'shortid';
 
 export class TokenList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    console.log('ASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDF', this.props);
-
     let sw = this.props.reducers.selectedWallet;
+    //TODO: what if selected contract
     let tokens = this.props.reducers.selectedWallet.wallet.tokens;
     let sendUrl = sw.address + '/';
 

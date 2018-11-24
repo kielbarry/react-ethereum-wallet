@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import shortid from 'shortid';
 
 import SU from '../components/elements/SelectableUnit.js';
 import ContractActionBar from '../components/elements/ContractActionBar.js';
@@ -9,7 +8,6 @@ import ContractEvents from '../components/elements/ContractEvents.js';
 import SecurityIcon from '../components/elements/SecurityIcon.js';
 
 import * as Utils from '../utils/utils.js';
-import * as Helpers from '../utils/helperFunctions.js';
 import * as Actions from '../actions/actions.js';
 
 import NotFound from './NotFound.js';
