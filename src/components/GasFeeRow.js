@@ -5,20 +5,15 @@ import { connect } from 'react-redux';
 import { updateTransactionToSend } from '../actions/actions.js';
 import { floatToTime } from '../utils/utils.js';
 
-class GasFeeRow extends Component {
+export class GasFeeRow extends Component {
   constructor(props) {
+    //TODO need to init gas
+    //TODO where was estimate gas being called?!
+
     super(props);
-    console.log(this.props);
-    // this.state = this.props
     this.state = {
       standardFee: false,
-      // GasStats: this.props.reducers.GasStats,
-      // TransactionToSend: this.props.reducers.TransactionToSend,
     };
-
-    console.log(this.props);
-    console.log(this.state);
-
     this.changeGas = this.changeGas.bind(this);
     this.estimateGas = this.estimateGas.bind(this);
     this.toggleFee = this.toggleFee.bind(this);
@@ -52,12 +47,8 @@ class GasFeeRow extends Component {
   }
 
   toggleFee(e) {
-    console.log('standardFee props', this.props.standardFee);
-    console.log('!standardFee props', !this.props.standardFee);
-    console.log('!standardFee state', this.state.standardFee);
-    console.log('!standardFee state', !this.state.standardFee);
     this.setState({ standardFee: !this.state.standardFee });
-    this.props.GasStats !== {} && this.state.standardFee
+    this.props.GasStats !== {} && !this.state.standardFee
       ? this.changeGas(this.props.GasStats.safeLow)
       : this.changeGas(this.props.GasStats.fastest);
   }
@@ -97,8 +88,6 @@ class GasFeeRow extends Component {
   }
 
   render() {
-    console.log(this.props);
-    console.log(this.state);
     return (
       <div className="row clear">
         {this.renderFeePriority()}
@@ -110,18 +99,10 @@ class GasFeeRow extends Component {
 }
 
 const mapStateToProps = state => ({
-  // return state;
-  // standardFee: state.standardFee,
   GasStats: state.reducers.GasStats,
   TransactionToSend: state.reducers.TransactionToSend,
   web3: state.web3,
 });
-
-// const mapStateToProps = state => ({
-//   // ...state,
-//   // GasStats: state.GasStats,
-//   // TransactionToSend: state.TransactionToSend
-// });
 
 export default connect(
   mapStateToProps,
