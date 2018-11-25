@@ -4,23 +4,55 @@ import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 
 export class RadioTokenSelect extends Component {
+  constructor(props) {
+    super(props);
+    this.chooseToken = this.chooseToken.bind(this);
+  }
+
+  chooseToken(e) {
+    console.log(e);
+
+    console.log(e.target);
+    console.log(e.target.value);
+
+    let tokens = this.props.tokens;
+
+    // console.log('props', this.props);
+    // console.log('tokens', this.props.tokens);
+    // console.log('wallet', this.props.wallet);
+    if (e.target.value === 'ether') {
+      this.props.updateTokenToSend({
+        sendToken: false,
+        tokenToSend: {},
+      });
+    } else {
+      this.props.updateTokenToSend({
+        sendToken: true,
+        tokenToSend: Object.assign({}, tokens[e.target.value]),
+      });
+    }
+  }
+
   render() {
-    console.log('props', this.props);
-    console.log('tokens', this.props.tokens);
-    console.log('wallet', this.props.wallet);
-    // let sw = this.props.reducers.selectedWallet;
-    // let tokens = this.props.reducers.selectedWallet.wallet.tokens;
     let tokens = this.props.tokens;
     let wallet = this.props.wallet;
 
     return (
       <ul className="select-token">
-        <li>
-          <input type="radio" id="ether" value="ether" name="choose-token" />
+        <li onClick={e => this.chooseToken(e)}>
+          <input
+            type="radio"
+            id="ether"
+            value="ether"
+            name="choose-token"
+            onClick={e => {
+              this.chooseToken(e);
+            }}
+          />
           <label for="ether">
-            <span class="ether-symbol">Ξ</span>
-            <span class="token-name">ETHER</span>
-            <span class="balance">TODO</span>
+            <span className="ether-symbol">Ξ</span>
+            <span className="token-name">ETHER</span>
+            <span className="balance">TODO</span>
           </label>
         </li>
         {tokens
@@ -31,6 +63,9 @@ export class RadioTokenSelect extends Component {
                   id={'token-' + tokens[token].address}
                   value={tokens[token].address}
                   name="choose-token"
+                  onClick={e => {
+                    this.chooseToken(e);
+                  }}
                 />
                 <label for={'token-' + tokens[token].address}>
                   <SecurityIcon
@@ -38,8 +73,8 @@ export class RadioTokenSelect extends Component {
                     classes="dapp-identicon dapp-tiny"
                     hash={token}
                   />
-                  <span class="token-name">{tokens[token].name}</span>
-                  <span class="balance">
+                  <span className="token-name">{tokens[token].name}</span>
+                  <span className="balance">
                     {tokens[token].balance}
                     &nbsp;
                     {tokens[token].symbol}

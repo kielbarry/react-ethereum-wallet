@@ -285,7 +285,7 @@ class SendContractForm extends Component {
 
     let tokens = wallets[wallet].tokens;
 
-    console.log(wallet);
+    // console.log(wallet);
     // console.log(tokens)
     return (
       <div className="col col-6 mobile-full">

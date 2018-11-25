@@ -8,6 +8,13 @@ const web3 = new Web3(
   'https://mainnet.infura.io/v3/2e1f7de617754b72a8a61bef3f7de966'
 );
 
+export const updateTokenToSend = tokenData => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_TOKEN_TO_SEND,
+    payload: tokenData,
+  });
+};
+
 export const updateAccountTokenBalance = token => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_ACCOUNT_TOKEN_BALANCE,

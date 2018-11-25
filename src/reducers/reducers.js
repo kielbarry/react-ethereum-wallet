@@ -60,7 +60,19 @@ export const initialState = {
 };
 
 export const reducers = (state = initialState, action) => {
+  if (action.type === 'UPDATE_TOKEN_TO_SEND') {
+    console.log(action.payload);
+  }
   switch (action.type) {
+    case 'UPDATE_TOKEN_TO_SEND':
+      return {
+        ...state,
+        TransactionToSend: {
+          ...state.TransactionToSend,
+          sendToken: action.payload.sendToken,
+          tokenToSend: action.payload.tokenToSend,
+        },
+      };
     case 'UPDATE_ACCOUNT_TOKEN_BALANCE':
       return {
         ...state,
