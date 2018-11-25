@@ -22,6 +22,8 @@ const Title = () => {
 };
 
 class SendContractForm extends Component {
+  //TODO replace fromWallet with the from field from reducer TransactionToSend
+
   constructor(props) {
     super(props);
     let defaultWallet;
@@ -278,32 +280,43 @@ class SendContractForm extends Component {
 
   renderEtherValue() {
     let wallets = this.props.reducers.Wallets;
+    // let wallet = this.state.fromWallet
+    let wallet = this.props.reducers.TransactionToSend.from;
+
+    let tokens = wallets[wallet].tokens;
+
+    console.log(wallet);
+    // console.log(tokens)
     return (
       <div className="col col-6 mobile-full">
         <br />
         <br />
-        <div className="token-ether">
-          <span className="ether-symbol">Ξ</span>
-          <span className="token-name">ETHER</span>
-          <span className="balance">
-            {this.props.web3 && this.props.web3.web3Instance
-              ? ' ' +
-                Utils.displayPriceFormatter(
-                  this.props,
-                  wallets[this.state.fromWallet].balance
-                ) +
-                ' ' +
-                this.props.reducers.currency +
-                ' (' +
-                Utils.displayPriceFormatter(
-                  this.props,
-                  wallets[this.state.fromWallet].balance,
-                  'ETHER'
-                ) +
-                'ETHER)'
-              : '5,538.38 USD (26.41223000001 ETHER)'}
-          </span>
-        </div>
+        {tokens ? (
+          <RadioTokenSelect wallet={wallet} tokens={tokens} />
+        ) : (
+          <div className="token-ether">
+            <span className="ether-symbol">Ξ</span>
+            <span className="token-name">ETHER</span>
+            <span className="balance">
+              {this.props.web3 && this.props.web3.web3Instance
+                ? ' ' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    wallets[this.state.fromWallet].balance
+                  ) +
+                  ' ' +
+                  this.props.reducers.currency +
+                  ' (' +
+                  Utils.displayPriceFormatter(
+                    this.props,
+                    wallets[this.state.fromWallet].balance,
+                    'ETHER'
+                  ) +
+                  'ETHER)'
+                : '5,538.38 USD (26.41223000001 ETHER)'}
+            </span>
+          </div>
+        )}
       </div>
     );
   }

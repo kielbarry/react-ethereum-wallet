@@ -5,11 +5,24 @@ import { SecurityIcon } from './SecurityIcon.js';
 
 export class RadioTokenSelect extends Component {
   render() {
-    console.log(this.props);
-    let sw = this.props.reducers.selectedWallet;
-    let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    console.log('props', this.props);
+    console.log('tokens', this.props.tokens);
+    console.log('wallet', this.props.wallet);
+    // let sw = this.props.reducers.selectedWallet;
+    // let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    let tokens = this.props.tokens;
+    let wallet = this.props.wallet;
+
     return (
-      <ul>
+      <ul className="select-token">
+        <li>
+          <input type="radio" id="ether" value="ether" name="choose-token" />
+          <label for="ether">
+            <span class="ether-symbol">Ξ</span>
+            <span class="token-name">ETHER</span>
+            <span class="balance">TODO</span>
+          </label>
+        </li>
         {tokens
           ? Object.keys(tokens).map(token => (
               <li>
@@ -23,9 +36,9 @@ export class RadioTokenSelect extends Component {
                   <SecurityIcon
                     type="radioToken"
                     classes="dapp-identicon dapp-tiny"
-                    hash={sw.address}
+                    hash={token}
                   />
-                  <span class="token-name">tokens[token].name</span>
+                  <span class="token-name">{tokens[token].name}</span>
                   <span class="balance">
                     {tokens[token].balance}
                     &nbsp;
