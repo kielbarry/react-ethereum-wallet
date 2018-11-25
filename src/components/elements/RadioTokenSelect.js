@@ -10,16 +10,7 @@ export class RadioTokenSelect extends Component {
   }
 
   chooseToken(e) {
-    console.log(e);
-
-    console.log(e.target);
-    console.log(e.target.value);
-
     let tokens = this.props.tokens;
-
-    // console.log('props', this.props);
-    // console.log('tokens', this.props.tokens);
-    // console.log('wallet', this.props.wallet);
     if (e.target.value === 'ether') {
       this.props.updateTokenToSend({
         sendToken: false,
@@ -36,7 +27,6 @@ export class RadioTokenSelect extends Component {
   render() {
     let tokens = this.props.tokens;
     let wallet = this.props.wallet;
-
     return (
       <ul className="select-token">
         <li onClick={e => this.chooseToken(e)}>
@@ -49,7 +39,7 @@ export class RadioTokenSelect extends Component {
               this.chooseToken(e);
             }}
           />
-          <label for="ether">
+          <label htmlFor="ether">
             <span className="ether-symbol">Ξ</span>
             <span className="token-name">ETHER</span>
             <span className="balance">TODO</span>
@@ -67,7 +57,7 @@ export class RadioTokenSelect extends Component {
                     this.chooseToken(e);
                   }}
                 />
-                <label for={'token-' + tokens[token].address}>
+                <label htmlFor={'token-' + tokens[token].address}>
                   <SecurityIcon
                     type="radioToken"
                     classes="dapp-identicon dapp-tiny"
