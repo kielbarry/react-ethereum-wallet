@@ -8,6 +8,8 @@ import WalletDropdown from '../components/elements/WalletDropdown.js';
 
 import RadioTokenSelect from '../components/elements/RadioTokenSelect.js';
 
+import GasFeeRow from '../components/GasFeeRow.js';
+
 import * as Actions from '../actions/actions.js';
 import * as Utils from '../utils/utils.js';
 
@@ -251,7 +253,9 @@ class SendContractForm extends Component {
               ' ' +
               this.props.reducers.currency
             : 0 + ' ' + this.props.reducers.currency}
-        </strong>{' '}
+        </strong>
+        {/*
+          {' '}
         in Ether, using exchange rates from
         <a
           href="https://www.cryptocompare.com/coins/eth/overview/BTC"
@@ -273,6 +277,7 @@ class SendContractForm extends Component {
               ' ETHER'
             : 0 + ' ETHER'}
         </strong>
+      */}
         .
       </p>
     );
@@ -287,6 +292,13 @@ class SendContractForm extends Component {
 
     // console.log(wallet);
     // console.log(tokens)
+    if (!tokens) {
+      //TODO: this is getting updated infinitely and kills app
+      // this.props.updateTokenToSend({
+      //   sendToken: false,
+      //   tokenToSend: {},
+      // });
+    }
     return (
       <div className="col col-6 mobile-full">
         <br />
@@ -334,49 +346,49 @@ class SendContractForm extends Component {
     );
   }
 
-  renderFeePriority() {
-    let GasStats = this.props.reducers.GasStats;
-    return (
-      <div className="col col-7 mobile-full">
-        <h3>Select Fee</h3>
-        <div className="dapp-select-gas-price" onClick={e => this.toggleFee(e)}>
-          {GasStats !== {} && this.state.standardFee ? (
-            <span>STANDARD FEE: &nbsp; {GasStats.safeLow} </span>
-          ) : (
-            <span>PRIORITY FEE: &nbsp; {GasStats.fastest}</span>
-          )}
-        </div>
-      </div>
-    );
-  }
+  // renderFeePriority() {
+  //   let GasStats = this.props.reducers.GasStats;
+  //   return (
+  //     <div className="col col-7 mobile-full">
+  //       <h3>Select Fee</h3>
+  //       <div className="dapp-select-gas-price" onClick={e => this.toggleFee(e)}>
+  //         {GasStats !== {} && this.state.standardFee ? (
+  //           <span>STANDARD FEE: &nbsp; {GasStats.safeLow} </span>
+  //         ) : (
+  //           <span>PRIORITY FEE: &nbsp; {GasStats.fastest}</span>
+  //         )}
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  renderEstimateTime() {
-    let GasStats = this.props.reducers.GasStats;
-    return (
-      <div className="col col-5 mobile-full send-info">
-        <br />
-        <br />
-        This is the most amount of money that might be used to process this
-        transaction. Your transaction will be mined &nbsp;
-        <strong>
-          probably within &nbsp;
-          {GasStats !== {} && this.state.standardFee
-            ? Utils.floatToTime(GasStats.safeLowWait)
-            : Utils.floatToTime(GasStats.fastWait)}
-        </strong>
-      </div>
-    );
-  }
+  // renderEstimateTime() {
+  //   let GasStats = this.props.reducers.GasStats;
+  //   return (
+  //     <div className="col col-5 mobile-full send-info">
+  //       <br />
+  //       <br />
+  //       This is the most amount of money that might be used to process this
+  //       transaction. Your transaction will be mined &nbsp;
+  //       <strong>
+  //         probably within &nbsp;
+  //         {GasStats !== {} && this.state.standardFee
+  //           ? Utils.floatToTime(GasStats.safeLowWait)
+  //           : Utils.floatToTime(GasStats.fastWait)}
+  //       </strong>
+  //     </div>
+  //   );
+  // }
 
-  renderFeeRow() {
-    return (
-      <div className="row clear">
-        {this.renderFeePriority()}
-        {this.renderEstimateTime()}
-        <div className="dapp-clear-fix" />
-      </div>
-    );
-  }
+  // renderFeeRow() {
+  //   return (
+  //     <div className="row clear">
+  //       {this.renderFeePriority()}
+  //       {this.renderEstimateTime()}
+  //       <div className="dapp-clear-fix" />
+  //     </div>
+  //   );
+  // }
 
   renderTotalRow() {
     let val = this.props.reducers.TransactionToSend.value;
@@ -428,7 +440,8 @@ class SendContractForm extends Component {
         <Title />
         {this.renderFromToRow()}
         {this.renderAmountRow()}
-        {this.renderFeeRow()}
+        {/*{this.renderFeeRow()}*/}
+        <GasFeeRow />
         {this.renderTotalRow()}
         {this.renderSubmitButton()}
       </form>
