@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SecurityIcon from './SecurityIcon.js';
+import shortid from 'shortid';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -101,7 +102,8 @@ class LatestTransactions extends Component {
     return (
       <tr
         className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}
-        key={tx.transactionHash}
+        // key={tx.transactionHash}
+        key={shortid.generate()}
         data-transaction-hash={tx.transactionHash}
         data-block-hash={tx.blockHash}
         onClick={e => {
@@ -121,6 +123,13 @@ class LatestTransactions extends Component {
   }
 
   //TODO: snapshot
+
+  // <React.Fragment>
+  //               {this.renderTableRow(transactions[txHash])}
+  //               {}
+  //               {this.renderProgressBar(transactions[txHash])}
+  //             }
+  //             </React.Fragment>
   render() {
     let transactions = this.props.reducers.Transactions;
     return (
@@ -134,12 +143,9 @@ class LatestTransactions extends Component {
         />
         <table className="dapp-zebra transactions">
           <tbody>
-            {Object.keys(transactions).map(txHash => (
-              <React.Fragment>
-                {this.renderTableRow(transactions[txHash])}
-                {this.renderProgressBar(transactions[txHash])}
-              </React.Fragment>
-            ))}
+            {Object.keys(transactions).map(txHash =>
+              this.renderTableRow(transactions[txHash])
+            )}
           </tbody>
         </table>
       </React.Fragment>

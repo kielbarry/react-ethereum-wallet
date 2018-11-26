@@ -61,6 +61,29 @@ export const initialState = {
 
 export const reducers = (state = initialState, action) => {
   switch (action.type) {
+    case 'UPDATE_TOKEN_TO_SEND':
+      return {
+        ...state,
+        TransactionToSend: {
+          ...state.TransactionToSend,
+          sendToken: action.payload.sendToken,
+          tokenToSend: action.payload.tokenToSend,
+        },
+      };
+    case 'UPDATE_CONTRACT_TOKEN_BALANCE':
+      return {
+        ...state,
+        WalletContracts: {
+          ...state.WalletContracts,
+          [action.payload.account]: {
+            ...state.WalletContracts[action.payload.account],
+            tokens: {
+              ...state.WalletContracts[action.payload.account]['tokens'],
+              [action.payload.tokenAddress]: action.payload.value,
+            },
+          },
+        },
+      };
     case 'UPDATE_ACCOUNT_TOKEN_BALANCE':
       return {
         ...state,

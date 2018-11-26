@@ -50,7 +50,7 @@ export const AccountDescription = () => {
       <h3>NOTE </h3>
       <p>
         Accounts can't display incoming transactions, but can receive, hold and
-        send Ether. To see incoming transactions create a wallet contract to
+        send Ether. To see incoming transactions, create a wallet contract to
         store ether.
       </p>
       <p>

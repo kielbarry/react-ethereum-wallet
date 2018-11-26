@@ -4,12 +4,47 @@ import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 
 export class RadioTokenSelect extends Component {
+  constructor(props) {
+    super(props);
+    this.chooseToken = this.chooseToken.bind(this);
+  }
+
+  chooseToken(e) {
+    let tokens = this.props.tokens;
+    if (e.target.value === 'ether') {
+      this.props.updateTokenToSend({
+        sendToken: false,
+        tokenToSend: {},
+      });
+    } else {
+      this.props.updateTokenToSend({
+        sendToken: true,
+        tokenToSend: Object.assign({}, tokens[e.target.value]),
+      });
+    }
+  }
+
   render() {
-    console.log(this.props);
-    let sw = this.props.reducers.selectedWallet;
-    let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    let tokens = this.props.tokens;
+    let wallet = this.props.wallet;
     return (
-      <ul>
+      <ul className="select-token">
+        <li onClick={e => this.chooseToken(e)}>
+          <input
+            type="radio"
+            id="ether"
+            value="ether"
+            name="choose-token"
+            onClick={e => {
+              this.chooseToken(e);
+            }}
+          />
+          <label htmlFor="ether">
+            <span className="ether-symbol">Ξ</span>
+            <span className="token-name">ETHER</span>
+            <span className="balance">TODO</span>
+          </label>
+        </li>
         {tokens
           ? Object.keys(tokens).map(token => (
               <li>
@@ -18,15 +53,18 @@ export class RadioTokenSelect extends Component {
                   id={'token-' + tokens[token].address}
                   value={tokens[token].address}
                   name="choose-token"
+                  onClick={e => {
+                    this.chooseToken(e);
+                  }}
                 />
-                <label for={'token-' + tokens[token].address}>
+                <label htmlFor={'token-' + tokens[token].address}>
                   <SecurityIcon
                     type="radioToken"
                     classes="dapp-identicon dapp-tiny"
-                    hash={sw.address}
+                    hash={token}
                   />
-                  <span class="token-name">tokens[token].name</span>
-                  <span class="balance">
+                  <span className="token-name">{tokens[token].name}</span>
+                  <span className="balance">
                     {tokens[token].balance}
                     &nbsp;
                     {tokens[token].symbol}

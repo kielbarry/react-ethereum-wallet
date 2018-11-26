@@ -109,10 +109,12 @@ class ContractItem extends Component {
     pending ? (pending = true) : (pending = false);
     return (
       <React.Fragment>
-        <TokenListForItems
-          addressType="WalletContracts"
-          address={contract.contractAddress}
-        />
+        {!pending ? (
+          <TokenListForItems
+            addressType="WalletContracts"
+            address={contract.contractAddress}
+          />
+        ) : null}
         <h3 className="not-ens-name">
           <i className="icon-eye" />
           &nbsp;

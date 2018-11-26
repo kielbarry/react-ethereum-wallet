@@ -38,15 +38,26 @@ export class TokenListForItems extends Component {
             if (result == 0) {
               return;
             }
-            console.log(result);
+
             let tokenResult = ObservedTokens[tokenAddress];
             tokenResult['balance'] = result;
 
-            this.props.updateAccountTokenBalance({
-              account: walletAddress,
-              value: tokenResult,
-              tokenAddress: tokenAddress,
-            });
+            if (this.props.addressType === 'Wallets') {
+              this.props.updateAccountTokenBalance({
+                account: walletAddress,
+                value: tokenResult,
+                tokenAddress: tokenAddress,
+              });
+              return;
+            }
+            if (this.props.addressType === 'WalletContracts') {
+              this.props.updateContractTokenBalance({
+                account: walletAddress,
+                value: tokenResult,
+                tokenAddress: tokenAddress,
+              });
+              return;
+            }
           });
       } catch (err) {
         console.warn('Err :', err);
@@ -68,24 +79,15 @@ export class TokenListForItems extends Component {
 
     let tokenCheck;
 
-    // console.log(this.props.reducers.WalletContracts)
-
     if (this.props.addressType === 'Wallets') {
       tokenCheck = this.props.reducers.Wallets[address].tokens;
     } else if (this.props.addressType === 'WalletContracts') {
-      // console.log("here...")
       tokenCheck = this.props.reducers.WalletContracts[address].tokens;
     } else {
       return;
     }
 
-    // console.log(this.props)
-    // console.log(this.props.addressType)
-    // console.log(tokenCheck)
-
     let currentWalletsTokens = tokenCheck ? tokenCheck : [];
-
-    // console.log(currentWalletsTokens)
 
     if (
       currentObservedTokens !== undefined &&
