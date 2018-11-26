@@ -15,15 +15,23 @@ const Title = () => {
   );
 };
 
-class AccountView extends Component {
+const StatelessPageContent = () => {
+  return (
+    <React.Fragment>
+      <Title />
+      <Addresses />
+      <DeployedWallets />
+    </React.Fragment>
+  );
+};
+
+export class AccountView extends Component {
   render() {
     return (
       <div className="dapp-container account-page">
-        <Title />
-        <Addresses />
-        <DeployedWallets />
-        {this.props.reducers.Transactions ? (
-          <LatestTransactions transactions={this.props.reducers.Transactions} />
+        <StatelessPageContent />
+        {this.props.Transactions ? (
+          <LatestTransactions transactions={this.props.Transactions} />
         ) : (
           <div>No transactions found.</div>
         )}
@@ -32,8 +40,9 @@ class AccountView extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = state => ({
+  // return state;
+  Transactions: state.reducers.Transactions,
+});
 
 export default connect(mapStateToProps)(AccountView);

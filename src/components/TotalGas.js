@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as Utils from '../utils/utils.js';
 
 export class TotalGas extends Component {
+  //
+
   render() {
     let val = this.props.TransactionToSend.value;
     let gas = this.props.TransactionToSend.gasPrice;

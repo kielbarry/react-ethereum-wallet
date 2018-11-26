@@ -32,11 +32,11 @@ class QRCode extends Component {
       >
         <section className="dapp-modal-container">
           <p />
-          <p>
-            <div id="qrcode">
-              <QRCode value={this.props.hash} />
-            </div>
-          </p>
+          {/*<p>*/}
+          <div id="qrcode">
+            <QRCode value={this.props.hash} />
+          </div>
+          {/*</p>*/}
           <p />
           <p> Point a compatible mobile app to this code </p>
         </section>

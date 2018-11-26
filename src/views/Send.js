@@ -8,14 +8,20 @@ import WalletDropdown from '../components/elements/WalletDropdown.js';
 
 import RadioTokenSelect from '../components/elements/RadioTokenSelect.js';
 
+import FromToRow from '../components/FromToRow.js';
 import AmountRow from '../components/AmountRow.js';
 import GasFeeRow from '../components/GasFeeRow.js';
 import TotalGas from '../components/TotalGas.js';
 
-import * as Actions from '../actions/actions.js';
-import * as Utils from '../utils/utils.js';
+// import * as Actions from '../actions/actions.js';
 
-const styles = {};
+import {
+  updateTransactionToSend,
+  displayGlobalNotification,
+  displayModal,
+} from '../actions/actions.js';
+
+import * as Utils from '../utils/utils.js';
 
 const Title = () => {
   return (
@@ -30,25 +36,7 @@ export class Send extends Component {
 
   constructor(props) {
     super(props);
-    let defaultWallet;
-    let wallets = this.props.reducers.Wallets;
-    for (var prop in wallets) {
-      defaultWallet = prop;
-      break;
-    }
-    this.props.updateTransactionToSend({
-      name: 'from',
-      value: defaultWallet,
-    });
-    this.state = {
-      fromWallet: defaultWallet,
-      switchChecked: true,
-      checkbox: false,
-      standardFee: false,
-    };
-
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
-    // this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.validateForm = this.validateForm.bind(this);
   }
 
@@ -115,57 +103,6 @@ export class Send extends Component {
     });
   }
 
-  renderFrom() {
-    let dropdownConfig = {
-      component: 'Send',
-      selectClassName: 'send-from',
-      selectName: 'from',
-    };
-    return (
-      <div className="col col-6 mobile-full from">
-        <h3>From</h3>
-        <div className="dapp-select-account send-from">
-          <WalletDropdown dropdownConfig={dropdownConfig} />
-        </div>
-      </div>
-    );
-  }
-
-  renderTo() {
-    return (
-      <div className="col col-6 mobile-full">
-        <h3>To</h3>
-        <div className="dapp-address-input">
-          <input
-            type="text"
-            name="to"
-            placeholder="0x000000.."
-            className="to"
-            autoFocus={true}
-            // value={tx.to}
-            onKeyUp={e => this.handleOnKeyUp(e)}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  renderFromToRow() {
-    let tx = this.props.reducers.TransactionToSend;
-    let dropdownConfig = {
-      component: 'Send',
-      selectClassName: 'send-from',
-      selectName: 'from',
-    };
-    return (
-      <div className="row clear from-to">
-        {this.renderFrom()}
-        {this.renderTo()}
-        <div className="dapp-clear-fix" />
-      </div>
-    );
-  }
-
   renderSubmitButton() {
     return (
       <button
@@ -190,7 +127,7 @@ export class Send extends Component {
         autoComplete="on"
       >
         <Title />
-        {this.renderFromToRow()}
+        <FromToRow />
         <AmountRow />
         <GasFeeRow />
         <TotalGas />
@@ -204,10 +141,7 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default compose(
-  withStyles(styles, { name: 'Send' }),
-  connect(
-    mapStateToProps,
-    { ...Actions }
-  )
+export default connect(
+  mapStateToProps,
+  { updateTransactionToSend, displayGlobalNotification, displayModal }
 )(Send);

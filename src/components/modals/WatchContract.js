@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 // import InputItem from '../elements/InputItem.jsx';
 import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
+import {
+  updateContractToWatch,
+  cancelContractToWatch,
+  closeModal,
+  addObservedContract,
+  displayGlobalNotification,
+} from '../../actions/actions.js';
 
 const listInputs = [
   {
@@ -116,33 +123,45 @@ class WatchItem extends Component {
     this.props.closeModal('displayWatchContract');
   }
 
+  renderInputs() {
+    return (
+      <React.Fragment>
+        <h1>Watch contract</h1>
+        {listInputs.map((field, i) => (
+          <TestInputItem
+            key={`contract-field-${i}`}
+            field={field}
+            onKeyUp={e => this.handleOnKeyUp(e)}
+          />
+        ))}
+      </React.Fragment>
+    );
+  }
+
+  renderButtons() {
+    return (
+      <div className="dapp-modal-buttons">
+        <button className="cancel" onClick={e => this.cancelFunction(e)}>
+          Cancel
+        </button>
+        <button
+          className="ok dapp-primary-button"
+          onClick={e => this.submitFunction(e)}
+        >
+          OK
+        </button>
+      </div>
+    );
+  }
+
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container modals-add-custom-contract">
-          <h1>Watch contract</h1>
-
-          {listInputs.map((field, i) => (
-            <TestInputItem
-              key={`contract-field-${i}`}
-              field={field}
-              onKeyUp={e => this.handleOnKeyUp(e)}
-            />
-          ))}
-
-          <div className="dapp-modal-buttons">
-            <button className="cancel" onClick={e => this.cancelFunction(e)}>
-              Cancel
-            </button>
-            <button
-              className="ok dapp-primary-button"
-              onClick={e => this.submitFunction(e)}
-            >
-              OK
-            </button>
-          </div>
+          {this.renderInputs()}
+          {this.renderButtons()}
         </section>
       </div>
     );
@@ -155,5 +174,11 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  {
+    updateContractToWatch,
+    cancelContractToWatch,
+    closeModal,
+    addObservedContract,
+    displayGlobalNotification,
+  }
 )(WatchItem);

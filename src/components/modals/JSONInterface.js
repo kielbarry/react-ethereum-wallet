@@ -32,11 +32,11 @@ class JSONInterface extends Component {
         <section className="dapp-modal-container">
           <h1>Contract JSON Interface</h1>
           <textarea
+            readOnly={true}
             name="jsonInterface"
             cols="40"
             rows="10"
             value={this.props.JSONInterface}
-            defaultValue={this.props.JSONInterface}
           />
           <p>
             If you want to have someone else execute this contract, send this
