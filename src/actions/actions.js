@@ -15,6 +15,13 @@ export const updateTokenToSend = tokenData => dispatch => {
   });
 };
 
+export const updateContractTokenBalance = token => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_CONTRACT_TOKEN_BALANCE,
+    payload: token,
+  });
+};
+
 export const updateAccountTokenBalance = token => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_ACCOUNT_TOKEN_BALANCE,

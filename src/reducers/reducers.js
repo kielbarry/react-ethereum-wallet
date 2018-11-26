@@ -70,6 +70,20 @@ export const reducers = (state = initialState, action) => {
           tokenToSend: action.payload.tokenToSend,
         },
       };
+    case 'UPDATE_CONTRACT_TOKEN_BALANCE':
+      return {
+        ...state,
+        WalletContracts: {
+          ...state.WalletContracts,
+          [action.payload.account]: {
+            ...state.WalletContracts[action.payload.account],
+            tokens: {
+              ...state.WalletContracts[action.payload.account]['tokens'],
+              [action.payload.tokenAddress]: action.payload.value,
+            },
+          },
+        },
+      };
     case 'UPDATE_ACCOUNT_TOKEN_BALANCE':
       return {
         ...state,

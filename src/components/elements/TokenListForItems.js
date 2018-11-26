@@ -25,9 +25,6 @@ export class TokenListForItems extends Component {
       return;
     }
 
-    console.log(walletAddress);
-    console.log(ObservedTokens);
-
     untrackedTokens.map(tokenAddress => {
       let web3 = this.props.web3.web3Instance;
       let TokenContract = new web3.eth.Contract(tokenInterface);
@@ -41,10 +38,7 @@ export class TokenListForItems extends Component {
             if (result == 0) {
               return;
             }
-            console.log(
-              'result of retrieving token balance. check sepecifically for wallet contracts',
-              result
-            );
+
             let tokenResult = ObservedTokens[tokenAddress];
             tokenResult['balance'] = result;
 
@@ -57,7 +51,7 @@ export class TokenListForItems extends Component {
               return;
             }
             if (this.props.addressType === 'WalletContracts') {
-              this.props.updateAccountTokenBalance({
+              this.props.updateContractTokenBalance({
                 account: walletAddress,
                 value: tokenResult,
                 tokenAddress: tokenAddress,
@@ -95,9 +89,6 @@ export class TokenListForItems extends Component {
 
     let currentWalletsTokens = tokenCheck ? tokenCheck : [];
 
-    // console.log(currentWalletsTokens)
-    console.log('the current observed TOkens', currentObservedTokens);
-    console.log(currentWalletsTokens);
     if (
       currentObservedTokens !== undefined &&
       currentWalletsTokens !== undefined
@@ -106,7 +97,6 @@ export class TokenListForItems extends Component {
       let untrackedTokens = Array.from(
         new Set([...currentObservedTokens].filter(x => !trackedTokens.has(x)))
       );
-      console.log('here inside', untrackedTokens);
       this.getTokenBalanceForAddress(untrackedTokens);
     }
 

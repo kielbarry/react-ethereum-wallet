@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SecurityIcon from './SecurityIcon.js';
+import shortid from 'shortid';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -101,7 +102,8 @@ class LatestTransactions extends Component {
     return (
       <tr
         className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}
-        key={tx.transactionHash}
+        // key={tx.transactionHash}
+        key={shortid.generate()}
         data-transaction-hash={tx.transactionHash}
         data-block-hash={tx.blockHash}
         onClick={e => {
