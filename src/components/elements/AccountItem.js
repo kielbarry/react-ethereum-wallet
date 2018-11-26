@@ -8,8 +8,6 @@ import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 import NumberFormat from 'react-number-format';
 
-import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
-
 import TokenListForItems from './TokenListForItems.js';
 
 // const openAccountPage = (w, props) => {

@@ -7,8 +7,6 @@ import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
 
-import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
-
 import TokenListForItems from './TokenListForItems.js';
 
 class ContractItem extends Component {

@@ -123,6 +123,13 @@ class LatestTransactions extends Component {
   }
 
   //TODO: snapshot
+
+  // <React.Fragment>
+  //               {this.renderTableRow(transactions[txHash])}
+  //               {}
+  //               {this.renderProgressBar(transactions[txHash])}
+  //             }
+  //             </React.Fragment>
   render() {
     let transactions = this.props.reducers.Transactions;
     return (
@@ -136,14 +143,9 @@ class LatestTransactions extends Component {
         />
         <table className="dapp-zebra transactions">
           <tbody>
-            {Object.keys(transactions).map(txHash => (
-              <React.Fragment>
-                {this.renderTableRow(transactions[txHash])}
-                {/*}
-                {this.renderProgressBar(transactions[txHash])}
-              */}
-              </React.Fragment>
-            ))}
+            {Object.keys(transactions).map(txHash =>
+              this.renderTableRow(transactions[txHash])
+            )}
           </tbody>
         </table>
       </React.Fragment>
