@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 
 // views
 import AccountView from './Account.js';
-
 import SingleAccountView from './SingleAccountView.js';
 import SingleContractView from './SingleContractView.js';
 import ContractsView from './Contracts.js';
@@ -19,7 +18,7 @@ class ViewContainer extends Component {
           <Route path="/account/*" component={SingleAccountView} />
           <Route exact path="/wallet/new" component={NewWalletContract} />
           <Route path="/contract/*" component={SingleContractView} />
-          <Route path="/send-*" component={SendContractForm} />
+          <Route path="/send*" component={SendContractForm} />
           <Route exact path="/contracts" component={ContractsView} />
         </main>
       </div>

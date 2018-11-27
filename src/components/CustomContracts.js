@@ -72,6 +72,7 @@ class CustomContracts extends Component {
               <ContractItem
                 key={shortid.generate()}
                 contract={contracts[contract]}
+                addressType="ObservedContracts"
               />
             ))}
           </div>

@@ -3,7 +3,24 @@ import { connect } from 'react-redux';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import * as Actions from '../../actions/actions.js';
+// import * as Actions from '../../actions/actions.js';
+import {
+  displayGlobalNotification,
+  updateQRCode,
+  displayModal,
+  updateJSON
+} from '../../actions/actions.js';
+
+const ListItem = (props) => {
+  return(
+    <li>
+      <a href={props.href} title={props.title} target="noopener noreferrer _blank">
+        <i className={props.icon} />
+        {props.text}
+      </a>
+    </li>
+  )
+}
 
 export class ContractActionBar extends Component {
   displayCopiedNotification(e) {
@@ -16,35 +33,26 @@ export class ContractActionBar extends Component {
   }
 
   displayAndSetQRCode(e) {
-    this.props.updateQRCode(this.props.props.address);
+    this.props.updateQRCode(this.props.contract.address);
     this.props.displayModal('displayQRCode');
   }
 
   displayAndSetJSON(e) {
-    this.props.updateJSON(this.props.props.jsonInterface);
+    this.props.updateJSON(this.props.contract.jsonInterface);
     this.props.displayModal('displayJSONInterface');
   }
 
   render() {
-    let address = this.props.props.address;
+    let address = this.props.contract.address;
     let transferEtherAddress = '/send/' + address;
     let etherScanAddress = 'https://etherscan.io/address/' + address;
     return (
       <aside className="dapp-actionbar">
         <nav>
           <ul>
-            <li>
-              <a href={transferEtherAddress} title={address}>
-                <i className="icon-arrow-down" />
-                Transfer Ether &amp; Tokens
-              </a>
-            </li>
-            <li>
-              <a href={etherScanAddress} target="noopener noreferrer _blank">
-                <i className="icon-info" />
-                View on Etherscan
-              </a>
-            </li>
+            <ListItem href={transferEtherAddress} title={address} 
+              icon="icon-arrow-down" text=" Transfer Ether &amp; Tokens"/>
+            <ListItem href={etherScanAddress} icon="icon-info" text="View on Etherscan"/>
             <CopyToClipboard text={address}>
               <li>
                 <button
@@ -86,5 +94,10 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  {
+    displayGlobalNotification,
+    updateQRCode,
+    displayModal,
+    updateJSON
+  }
 )(ContractActionBar);

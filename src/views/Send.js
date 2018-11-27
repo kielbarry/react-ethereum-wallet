@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-
-import { withStyles } from '@material-ui/core/styles';
 
 import WalletDropdown from '../components/elements/WalletDropdown.js';
 
@@ -12,8 +9,6 @@ import FromToRow from '../components/FromToRow.js';
 import AmountRow from '../components/AmountRow.js';
 import GasFeeRow from '../components/GasFeeRow.js';
 import TotalGas from '../components/TotalGas.js';
-
-// import * as Actions from '../actions/actions.js';
 
 import {
   updateTransactionToSend,

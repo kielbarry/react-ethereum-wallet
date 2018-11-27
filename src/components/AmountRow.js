@@ -118,16 +118,8 @@ export class AmountRow extends Component {
     // let wallet = this.state.fromWallet
     let wallet = this.props.TransactionToSend.from;
 
-    console.log(wallets);
-    console.log(wallet);
-    console.log(wallets[wallet]);
-    console.log(this.props.reducers);
-    console.log(this.props);
-
     let tokens = wallets[wallet] ? wallets[wallet].tokens : undefined;
 
-    // console.log(wallet);
-    // console.log(tokens)
     if (!tokens) {
       //TODO: this is getting updated infinitely and kills app
       // this.props.updateTokenToSend({

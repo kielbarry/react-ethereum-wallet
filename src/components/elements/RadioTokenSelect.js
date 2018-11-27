@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
+import shortid from 'shortid';
 
 export class RadioTokenSelect extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ export class RadioTokenSelect extends Component {
         </li>
         {tokens
           ? Object.keys(tokens).map(token => (
-              <li>
+              <li key={shortid.generate()}>
                 <input
                   type="radio"
                   id={'token-' + tokens[token].address}

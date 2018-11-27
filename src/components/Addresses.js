@@ -19,6 +19,7 @@ export class Addresses extends Component {
               currency={this.props.reducers.currency}
               web3={this.props.web3}
               props={this.props}
+              addressType="Wallets"
             />
           ))}
         </React.Fragment>

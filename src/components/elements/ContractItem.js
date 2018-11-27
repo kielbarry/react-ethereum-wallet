@@ -111,7 +111,7 @@ class ContractItem extends Component {
       <React.Fragment>
         {!pending ? (
           <TokenListForItems
-            addressType="WalletContracts"
+            addressType={this.props.addressType}
             address={contract.contractAddress}
           />
         ) : null}

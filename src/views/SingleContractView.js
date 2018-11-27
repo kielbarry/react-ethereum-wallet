@@ -329,7 +329,7 @@ export class SingleContractView extends Component {
           </table>
           {contract.deployedWalletContract ? this.renderWalletDetails() : null}
         </div>
-        <ContractActionBar props={contract} />
+        <ContractActionBar contract={contract} />
         {contractConstants &&
         contractFunctions &&
         (contractConstants.length || contractFunctions.length) ? (

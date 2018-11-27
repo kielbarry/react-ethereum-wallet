@@ -4,6 +4,17 @@ import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as Actions from '../../actions/actions.js';
 
+const ListItem = (props) => {
+  return(
+    <li>
+      <a href={props.href} title={props.title} target="noopener noreferrer _blank">
+        <i className={props.icon} />
+        {props.text}
+      </a>
+    </li>
+  )
+}
+
 export class AccountActionBar extends Component {
   shouldComponentUpdate(prevProps, prevState) {
     if (this.props !== prevProps) {
@@ -22,12 +33,12 @@ export class AccountActionBar extends Component {
   }
 
   displayAndSetQRCode(e) {
-    this.props.updateQRCode(this.props.props.address);
+    this.props.updateQRCode(this.props.wallet.address);
     this.props.displayModal('displayQRCode');
   }
 
   render() {
-    let address = this.props.props.address;
+    let address = this.props.wallet.address;
     let etherScanAddress = 'https://etherscan.io/address/' + address;
     let transferEtherAddress = '/send/' + address;
     let changellyAddress =
@@ -39,24 +50,10 @@ export class AccountActionBar extends Component {
       <aside className="dapp-actionbar">
         <nav>
           <ul>
-            <li>
-              <a href={transferEtherAddress} title={address}>
-                <i className="icon-arrow-down" />
-                Transfer Ether &amp; Tokens
-              </a>
-            </li>
-            <li>
-              <a href={changellyAddress} target="noopener noreferrer _blank">
-                <i className="icon-ethereum" />
-                Buy ether
-              </a>
-            </li>
-            <li>
-              <a href={etherScanAddress} target="noopener noreferrer _blank">
-                <i className="icon-info" />
-                View on Etherscan
-              </a>
-            </li>
+            <ListItem href={transferEtherAddress} title={address} 
+            icon="icon-arrow-down" text=" Transfer Ether &amp; Tokens"/>
+            <ListItem href={changellyAddress} title="" icon="icon-ethereum" text="Buy ether"/>
+            <ListItem href={etherScanAddress} icon="icon-info" text="View on Etherscan"/>
             <CopyToClipboard text={address}>
               <li>
                 <button

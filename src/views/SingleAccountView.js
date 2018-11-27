@@ -151,7 +151,7 @@ export class SingleAccountView extends Component {
             <AccountDescription />
           </header>
         </div>
-        <AccountActionBar props={sw} />
+        <AccountActionBar wallet={sw} />
         {this.renderAccountTransactions()}
       </div>
     );

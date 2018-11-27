@@ -65,6 +65,7 @@ class DeployedWallets extends Component {
               address={address}
               wallet={contracts[address].length === 0 ? contracts[address] : ''}
               props={this.props}
+              addressType="WalletContracts"
             />
           ))}
         </div>

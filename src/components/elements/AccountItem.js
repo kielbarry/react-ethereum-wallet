@@ -130,7 +130,7 @@ export class AccountItem extends Component {
             hash={this.props.address}
           />
           <TokenListForItems
-            addressType="Wallets"
+            addressType={this.props.addressType}
             address={this.props.address}
           />
           <h3 className="not-ens-name">
