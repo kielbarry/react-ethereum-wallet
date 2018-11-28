@@ -8,6 +8,27 @@ const web3 = new Web3(
   'https://mainnet.infura.io/v3/2e1f7de617754b72a8a61bef3f7de966'
 );
 
+export const updateContractName = name => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_OBSERVED_CONTRACT_NAME,
+    payload: name,
+  });
+};
+
+export const updateWalletContractName = name => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_WALLET_CONTRACT_NAME,
+    payload: name,
+  });
+};
+
+export const updateAddressName = name => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_ADDRESS_NAME,
+    payload: name,
+  });
+};
+
 export const updateTokenToSend = tokenData => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_TOKEN_TO_SEND,

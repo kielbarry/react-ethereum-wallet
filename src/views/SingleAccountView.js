@@ -141,7 +141,10 @@ export class SingleAccountView extends Component {
       <div className="dapp-container accounts-page">
         <StickyHeader sw={sw} />
 
-        <EditableName />
+        {/*
+        <EditableName addressType="address" />
+        <EditableName addressType="address" />
+        */}
 
         <div className="accounts-page-summary">
           <SecurityIcon
