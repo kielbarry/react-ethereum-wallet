@@ -8,6 +8,8 @@ import LatestTransactions from '../components/elements/LatestTransactions.js';
 import SecurityIcon from '../components/elements/SecurityIcon.js';
 import TokenList from '../components/TokenList.js';
 
+import EditableName from '../components/EditableName.js';
+
 // views
 import NotFound from './NotFound.js';
 
@@ -138,6 +140,9 @@ export class SingleAccountView extends Component {
     return (
       <div className="dapp-container accounts-page">
         <StickyHeader sw={sw} />
+
+        <EditableName />
+
         <div className="accounts-page-summary">
           <SecurityIcon
             type="singleAccountView"

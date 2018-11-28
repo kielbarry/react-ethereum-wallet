@@ -30,6 +30,15 @@ class ContractItem extends Component {
   }
 
   openAccountPage(e) {
+    console.log('this.props.contract in contractItem', this.props.contract);
+    let obj = {
+      contract: this.props.contract,
+      currency: this.props.reducers.currency,
+      exchangeRates: this.props.reducers.exchangeRates,
+      addressType: 'contract',
+    };
+    console.log('obj sent to electedContract', obj);
+
     this.props.selectedContract({
       contract: this.props.contract,
       currency: this.props.reducers.currency,

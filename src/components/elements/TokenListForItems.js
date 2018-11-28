@@ -80,13 +80,13 @@ export class TokenListForItems extends Component {
     let tokenCheck;
 
     //TODO: should extract this javascript into separate function
-    // returns null html 
+    // returns null html
     if (this.props.addressType === 'Wallets') {
       tokenCheck = this.props.reducers.Wallets[address].tokens;
     } else if (this.props.addressType === 'WalletContracts') {
       tokenCheck = this.props.reducers.WalletContracts[address].tokens;
     } else {
-      return (null);
+      return null;
     }
 
     let currentWalletsTokens = tokenCheck ? tokenCheck : [];

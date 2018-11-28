@@ -7,7 +7,7 @@ export const Slider = ({ field }) => {
         <h3>Select Fee</h3>
         <div className="dapp-select-gas-price">
           <span>
-              0.000106 <span>ETHER</span>
+            0.000106 <span>ETHER</span>
           </span>
           <br />
           <input type="range" name="fee" min="-4" max="1" step="1" />
@@ -18,8 +18,8 @@ export const Slider = ({ field }) => {
       <div className="col col-5 mobile-full send-info">
         <br />
         <br />
-        This is the most amount of money that might be used to process
-        this transaction. Your transaction will be mined
+        This is the most amount of money that might be used to process this
+        transaction. Your transaction will be mined
         <strong>probably within 30 seconds</strong>.
       </div>
       <div className="dapp-clear-fix" />

@@ -205,23 +205,28 @@ export function random32Bytes() {
 }
 
 export async function checkNetwork(web3, cb) {
-  return web3.eth
-    .getBlock(0)
-    .then(block => {
-      switch (block.hash) {
-        case '0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3':
-          return 'main';
-        case '0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177':
-          return 'rinkeby';
-        case '0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d':
-          return 'ropsten';
-        case '0xa3c565fc15c7478862d50ccd6561e3c06b24cc509bf388941c25ea985ce32cb9':
-          return 'kovan';
-        default:
-          return 'private';
-      }
-    })
-    .then(resp => cb(resp));
+  try {
+    return web3.eth
+      .getBlock(0)
+      .then(block => {
+        switch (block.hash) {
+          case '0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3':
+            return 'main';
+          case '0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177':
+            return 'rinkeby';
+          case '0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d':
+            return 'ropsten';
+          case '0xa3c565fc15c7478862d50ccd6561e3c06b24cc509bf388941c25ea985ce32cb9':
+            return 'kovan';
+          default:
+            return 'private';
+        }
+      })
+      .then(resp => cb(resp));
+  } catch (err) {
+    console.warn('web3 provider not open');
+    return err;
+  }
 }
 
 export function nameProvider(prov) {
@@ -241,30 +246,40 @@ export function createNewAccount(web3, cb) {
 }
 
 export function getAccounts(web3, cb1, cb2) {
-  web3.eth.getAccounts().then(accounts => {
-    let totalBalance = 0;
-    // eslint-disable-next-line
-    accounts.map(acc => {
-      let account = acc;
-      web3.eth.getBalance(acc, (err, balance) => {
-        cb1({ account, balance });
-        totalBalance += Number(balance);
-        cb2(totalBalance);
+  try {
+    web3.eth.getAccounts().then(accounts => {
+      let totalBalance = 0;
+      // eslint-disable-next-line
+      accounts.map(acc => {
+        let account = acc;
+        web3.eth.getBalance(acc, (err, balance) => {
+          cb1({ account, balance });
+          totalBalance += Number(balance);
+          cb2(totalBalance);
+        });
       });
     });
-  });
+  } catch (err) {
+    console.warn('web3 provider not open');
+    return err;
+  }
 }
 
 export function getNewBlockHeaders(web3, cb1, cb2) {
-  web3.eth.subscribe('newBlockHeaders', (err, b) => {
-    if (!err)
-      cb1({
-        gasLimit: b.gasLimit,
-        gasUsed: b.gasUsed,
-        number: b.number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-        size: b.size,
-        timestamp: b.timestamp,
-      });
-    web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
-  });
+  try {
+    web3.eth.subscribe('newBlockHeaders', (err, b) => {
+      if (!err)
+        cb1({
+          gasLimit: b.gasLimit,
+          gasUsed: b.gasUsed,
+          number: b.number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+          size: b.size,
+          timestamp: b.timestamp,
+        });
+      web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
+    });
+  } catch (err) {
+    console.warn('web3 provider not open');
+    return err;
+  }
 }

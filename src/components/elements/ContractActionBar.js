@@ -8,19 +8,23 @@ import {
   displayGlobalNotification,
   updateQRCode,
   displayModal,
-  updateJSON
+  updateJSON,
 } from '../../actions/actions.js';
 
-const ListItem = (props) => {
-  return(
+const ListItem = props => {
+  return (
     <li>
-      <a href={props.href} title={props.title} target="noopener noreferrer _blank">
+      <a
+        href={props.href}
+        title={props.title}
+        target="noopener noreferrer _blank"
+      >
         <i className={props.icon} />
         {props.text}
       </a>
     </li>
-  )
-}
+  );
+};
 
 export class ContractActionBar extends Component {
   displayCopiedNotification(e) {
@@ -50,9 +54,17 @@ export class ContractActionBar extends Component {
       <aside className="dapp-actionbar">
         <nav>
           <ul>
-            <ListItem href={transferEtherAddress} title={address} 
-              icon="icon-arrow-down" text=" Transfer Ether &amp; Tokens"/>
-            <ListItem href={etherScanAddress} icon="icon-info" text="View on Etherscan"/>
+            <ListItem
+              href={transferEtherAddress}
+              title={address}
+              icon="icon-arrow-down"
+              text=" Transfer Ether &amp; Tokens"
+            />
+            <ListItem
+              href={etherScanAddress}
+              icon="icon-info"
+              text="View on Etherscan"
+            />
             <CopyToClipboard text={address}>
               <li>
                 <button
@@ -98,6 +110,6 @@ export default connect(
     displayGlobalNotification,
     updateQRCode,
     displayModal,
-    updateJSON
+    updateJSON,
   }
 )(ContractActionBar);

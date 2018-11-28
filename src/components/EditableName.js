@@ -10,24 +10,46 @@ import * as Actions from '../actions/actions.js';
 
 // put in support for 721 ?
 // maybe have user input search for the contract by name ?
-// maybe have them define what kind of erc standard with input ? 
+// maybe have them define what kind of erc standard with input ?
 
-// markdown with 
-
+// markdown with
 
 export class EditableName extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contentEditable: false,
+    };
+  }
+
+  toggleEditability = e => {
+    console.log(e);
+    console.log('prev state', this.state.contentEditable);
+    this.setState({ contentEditable: !this.state.contentEditable });
+  };
+
   render() {
+    console.log('in editable name', this.props);
+    let type = this.props.addressType;
+    let wallet =
+      type === 'address'
+        ? this.props.reducers.selectedWallet
+        : this.props.reducers.selectedContract;
     return (
-      {
-        w === undefined || w === '' 
-        ?
-          (<h1>
-            <span>Account {sw.number}</span>
-            <em className="edit-name">Account {sw.number}</em>
-            <i className="edit-icon icon-pencil" />
-          </h1>)
-        : null
-      }
+      <h1>
+        {wallet !== undefined && wallet !== '' ? (
+          <em
+            className="edit-name"
+            contentEditable={this.state.contentEditable}
+            onClick={e => this.toggleEditability(e)}
+          >
+            {wallet.name ? wallet.name : 'Account' + wallet.number}
+          </em>
+        ) : (
+          'Unnamed'
+        )}
+        <i className="edit-icon icon-pencil" />
+      </h1>
     );
   }
 }

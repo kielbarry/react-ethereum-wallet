@@ -410,6 +410,7 @@ class NewWalletContract extends Component {
         receipt['logs'] = [];
         receipt['balance'] = 0;
         receipt['deployedWalletContract'] = true;
+        receipt['jsonInterface'] = JSON.stringify(jsonInterface);
 
         console.log(receipt);
 

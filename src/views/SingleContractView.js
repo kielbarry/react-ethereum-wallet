@@ -20,6 +20,7 @@ export class SingleContractView extends Component {
       dailyEtherLimit: '',
       requiredSignatures: '',
       ownersList: '',
+      showContractFunctions: true,
     };
     this.redirectToOwnersSingleView = this.redirectToOwnersSingleView.bind(
       this
@@ -30,11 +31,12 @@ export class SingleContractView extends Component {
     this.displayEventModal = this.displayEventModal.bind(this);
     this.executeAndWatch = this.executeAndWatch.bind(this);
     this.executeFunctions = this.executeFunctions.bind(this);
-    this.setState({ showContractFunctions: true });
+    // this.setState({ showContractFunctions: true });
   }
 
   componentDidMount() {
     this.setState({ displaySU: false });
+    // this.setState({ showContractFunctions: true });
   }
 
   toggleSU() {
@@ -283,13 +285,28 @@ export class SingleContractView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
+    console.log(this.props.reducers.selectedContract);
+    console.log(contract);
     // contract.deployedWalletContract
     //   ?
-    let {
-      logs,
-      contractFunctions,
-      contractConstants,
-    } = this.props.reducers.ObservedContracts[contract.address];
+    // let {
+    //   logs,
+    //   contractFunctions,
+    //   contractConstants,
+    // } = this.props.reducers.ObservedContracts[contract.address];
+    let logs = contract.logs ? contract.logs : undefined;
+    let contractFunctions = contract.contractFunctions
+      ? contract.contractFunctions
+      : undefined;
+    let contractConstants = contract.contractConstants
+      ? contract.contractConstants
+      : undefined;
+
+    // let {
+    //   logs,
+    //   contractFunctions,
+    //   contractConstants,
+    // } = this.props.reducers.ObservedContracts[contract.address];
 
     return (
       <div className="dapp-container accounts-page">

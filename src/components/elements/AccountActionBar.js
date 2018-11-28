@@ -4,16 +4,20 @@ import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as Actions from '../../actions/actions.js';
 
-const ListItem = (props) => {
-  return(
+const ListItem = props => {
+  return (
     <li>
-      <a href={props.href} title={props.title} target="noopener noreferrer _blank">
+      <a
+        href={props.href}
+        title={props.title}
+        target="noopener noreferrer _blank"
+      >
         <i className={props.icon} />
         {props.text}
       </a>
     </li>
-  )
-}
+  );
+};
 
 export class AccountActionBar extends Component {
   shouldComponentUpdate(prevProps, prevState) {
@@ -50,10 +54,23 @@ export class AccountActionBar extends Component {
       <aside className="dapp-actionbar">
         <nav>
           <ul>
-            <ListItem href={transferEtherAddress} title={address} 
-            icon="icon-arrow-down" text=" Transfer Ether &amp; Tokens"/>
-            <ListItem href={changellyAddress} title="" icon="icon-ethereum" text="Buy ether"/>
-            <ListItem href={etherScanAddress} icon="icon-info" text="View on Etherscan"/>
+            <ListItem
+              href={transferEtherAddress}
+              title={address}
+              icon="icon-arrow-down"
+              text=" Transfer Ether &amp; Tokens"
+            />
+            <ListItem
+              href={changellyAddress}
+              title=""
+              icon="icon-ethereum"
+              text="Buy ether"
+            />
+            <ListItem
+              href={etherScanAddress}
+              icon="icon-info"
+              text="View on Etherscan"
+            />
             <CopyToClipboard text={address}>
               <li>
                 <button
