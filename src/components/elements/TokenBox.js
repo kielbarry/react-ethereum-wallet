@@ -7,6 +7,8 @@ import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
 import { makeID } from '../../utils/helperFunctions.js';
 
+import { EthAddress, Identicon } from 'ethereum-react-components';
+
 // function deleteTokenModal(props) {
 //   console.log("props here in deleteTokenModal", props )
 //   this.tokenToDelete(props.token.name);
@@ -143,11 +145,14 @@ export class TokenBox extends Component {
 
     return (
       <div className="wallet-box tokens" style={iconStyle}>
-        <SecurityIcon
+        {/*}
+      <SecurityIcon
           type="tokenBox"
           classes="dapp-identicon dapp-small"
           hash={address}
         />
+      */}
+        <Identicon size="small" address={address} />
         <h3>{token.name}</h3>
         <button
           className="delete-token"
@@ -156,7 +161,8 @@ export class TokenBox extends Component {
           <i className="icon-trash" />
         </button>
         {this.renderBalance()}
-        <span className="account-id">{address}</span>
+        <EthAddress short className="account-id" address={address} />
+        {/*<span className="account-id">{address}</span>*/}
       </div>
     );
   }

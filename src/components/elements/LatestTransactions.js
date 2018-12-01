@@ -6,6 +6,8 @@ import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import { Identicon } from 'ethereum-react-components';
+
 class LatestTransactions extends Component {
   renderProgressBar(tx) {
     this.state = {
@@ -46,19 +48,25 @@ class LatestTransactions extends Component {
         <h2>Transaction Type</h2>
         <p>
           <span className="address dapp-shorten-text not-ens-name">
+            {/*}
             <SecurityIcon
               type="transactionHref"
               classes="dapp-identicon dapp-tiny"
               hash={tx.from}
             />
+          */}
+            <Identicon size="tiny" address={tx.from} />
           </span>
           <span className="arrow">→</span>
           <span className="address dapp-shorten-text not-ens-name">
+            {/*}
             <SecurityIcon
               type="transactionHref"
               classes="dapp-identicon dapp-tiny"
               hash={tx.to}
             />
+          */}
+            <Identicon size="tiny" address={tx.to} />
           </span>
         </p>
       </td>

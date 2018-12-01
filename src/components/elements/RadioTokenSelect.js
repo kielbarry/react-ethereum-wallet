@@ -4,6 +4,8 @@ import * as Actions from '../../actions/actions.js';
 import { SecurityIcon } from './SecurityIcon.js';
 import shortid from 'shortid';
 
+import { Identicon } from 'ethereum-react-components';
+
 export class RadioTokenSelect extends Component {
   constructor(props) {
     super(props);
@@ -59,11 +61,14 @@ export class RadioTokenSelect extends Component {
                   }}
                 />
                 <label htmlFor={'token-' + tokens[token].address}>
+                  {/*
                   <SecurityIcon
                     type="radioToken"
                     classes="dapp-identicon dapp-tiny"
                     hash={token}
                   />
+                */}
+                  <Identicon size="tiny" address={token} />
                   <span className="token-name">{tokens[token].name}</span>
                   <span className="balance">
                     {tokens[token].balance}

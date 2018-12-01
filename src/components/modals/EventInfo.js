@@ -4,7 +4,46 @@ import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 
-class EventInfo extends Component {
+import { Identicon } from 'ethereum-react-components';
+
+export const EventName = event => {
+  return (
+    <tr>
+      <td>Event name</td>
+      <td>{event.event}</td>
+    </tr>
+  );
+};
+
+export const Outputs = event => {
+  return (
+    <tr>
+      <td>Return Values</td>
+      <td style={{ wordBreak: 'break-word' }}>
+        from: <strong>{event.returnValues.from}</strong>
+        <br />
+        to: <strong>{event.returnValues.to}</strong>
+        <br />
+        tokenId: <strong>{event.returnValues.tokenId}</strong>
+        <br />
+      </td>
+    </tr>
+  );
+};
+
+export const Origin = event => {
+  return (
+    <tr>
+      <td>Origin Contract</td>
+      <td>
+        <Identicon size="tiny" address={event.originalContractAddress} />
+        {event.originalContractName}
+      </td>
+    </tr>
+  );
+};
+
+export class EventInfo extends Component {
   constructor() {
     super();
     this.closeModal = this.closeModal.bind(this);
@@ -48,6 +87,10 @@ class EventInfo extends Component {
           </p>
           <table className="dapp-zebra">
             <tbody>
+              <EventName event={event} />
+              <Outputs event={event} />
+              <Origin event={event} />
+              {/*}
               <tr>
                 <td>Event name</td>
                 <td>{event.event}</td>
@@ -63,15 +106,10 @@ class EventInfo extends Component {
                   <br />
                 </td>
               </tr>
-
               <tr>
                 <td>Origin Contract</td>
                 <td>
-                  <SecurityIcon
-                    type="singleAccountView"
-                    classes="dapp-identicon dapp-tiny"
-                    hash={event.originalContractAddress}
-                  />
+                  <Identicon size="tiny" address={event.originalContractAddress} />
                   {event.originalContractName}
                 </td>
               </tr>
@@ -109,6 +147,7 @@ class EventInfo extends Component {
                   </a>
                 </td>
               </tr>
+            */}
             </tbody>
           </table>
         </section>

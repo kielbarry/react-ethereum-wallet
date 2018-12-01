@@ -15,6 +15,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "ethereum-blockies-base64": "^1.0.2",
     "ethereum-qr-code": "^0.3.0",
+    "ethereum-react-components": "^1.1.4",
     "fetch-mock": "^7.2.5",
     "geopattern": "^1.2.3",
     "helmet": "^3.13.0",

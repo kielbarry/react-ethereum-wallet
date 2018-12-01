@@ -6,6 +6,8 @@ import * as Helpers from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
 
+import { Identicon } from 'ethereum-react-components';
+
 export class ExecuteConstants extends Component {
   constructor(props) {
     super(props);
@@ -120,10 +122,16 @@ export class ExecuteConstants extends Component {
   renderAddress(output) {
     return (
       <span className="address dapp-shorten-text not-ens-name">
+        {/*}
         <SecurityIcon
           type="transactionHref"
           classes={'dapp-identicon dapp-tiny'}
           hash={output.value !== '' ? output.value : '0x'}
+        />
+      */}
+        <Identicon
+          size="tiny"
+          address={output.value !== '' ? output.value : '0x'}
         />
       </span>
     );

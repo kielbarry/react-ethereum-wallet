@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 
+import { Identicon } from 'ethereum-react-components';
+
 class SendTransactionModal extends Component {
   constructor(props) {
     super(props);
@@ -118,20 +120,12 @@ class SendTransactionModal extends Component {
             ETHER
           </h1>
           <p>
-            <SecurityIcon
-              type="address"
-              classes="dapp-identicon dapp-small"
-              hash="asdf"
-            />
+            <Identicon size="small" address={transaction.from} />
             {transaction.from}
           </p>
           <i className="icon-arrow-down" />
           <p>
-            <SecurityIcon
-              type="address"
-              classes="dapp-identicon dapp-small"
-              hash="qwerty"
-            />
+            <Identicon size="small" address={transaction.to} />
             {transaction.to}
           </p>
           <hr />

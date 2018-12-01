@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import SecurityIcon from './elements/SecurityIcon';
 
+import { Identicon } from 'ethereum-react-components';
+
 import shortid from 'shortid';
 
 export class TokenList extends Component {
@@ -19,11 +21,14 @@ export class TokenList extends Component {
           {Object.keys(tokens).map(token => (
             <tr key={shortid.generate()}>
               <td>
+                {/*}
                 <SecurityIcon
                   type="accountItem"
                   classes="dapp-identicon dapp-tiny"
                   hash={tokens[token].address}
                 />
+              */}
+                <Identicon size="tiny" address={tokens[token].address} />
                 <strong>{tokens[token].name}</strong>
               </td>
               <td>

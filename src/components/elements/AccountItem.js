@@ -10,6 +10,8 @@ import NumberFormat from 'react-number-format';
 
 import TokenListForItems from './TokenListForItems.js';
 
+import { EthAddress, Identicon } from 'ethereum-react-components';
+
 // const openAccountPage = (w, props) => {
 //   console.log(this)
 //   console.log(props)
@@ -124,11 +126,14 @@ export class AccountItem extends Component {
           onClick={this.openAccountPage}
           className="wallet-box"
         >
+          {/*}
           <SecurityIcon
             type="accountItem"
             classes="dapp-identicon dapp-small"
             hash={this.props.address}
           />
+        */}
+          <Identicon size="small" address={this.props.address} />
           <TokenListForItems
             addressType={this.props.addressType}
             address={this.props.address}
@@ -138,7 +143,8 @@ export class AccountItem extends Component {
             Account {number}
           </h3>
           {this.renderBalance()}
-          <span className="account-id">{address}</span>
+          <EthAddress short className="account-id" address={address} />
+          {/*<span className="account-id">{address}</span>*/}
         </Link>
       </React.Fragment>
     );

@@ -10,6 +10,8 @@ import shortid from 'shortid';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 
+import { Identicon } from 'ethereum-react-components';
+
 const styles = theme => ({
   keyIcon: {
     width: '3%',
@@ -134,11 +136,14 @@ export class WalletDropdown extends Component {
             );
           })}
         </select>
+        {/*}
         <SecurityIcon
           type="address"
           classes="dapp-identicon dapp-small"
           hash={this.state.fromWallet}
         />
+      */}
+        <Identicon size="small" address={this.state.fromWallet} />
       </React.Fragment>
     );
   }

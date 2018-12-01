@@ -9,6 +9,8 @@ import NumberFormat from 'react-number-format';
 
 import TokenListForItems from './TokenListForItems.js';
 
+import { EthAddress, Identicon } from 'ethereum-react-components';
+
 class ContractItem extends Component {
   constructor(props) {
     super(props);
@@ -94,10 +96,19 @@ class ContractItem extends Component {
   renderPendingSecurityIcon() {
     return (
       <React.Fragment>
+        {/*}
         <SecurityIcon
           type="contractItem"
           classes={'dapp-identicon dapp-small dapp-icon-loading'}
           hash={this.state.fakeAddress}
+        />
+      */}
+
+        {/* TODO: if it's loading, rotate through pics"*/}
+        <Identicon
+          className="dapp-icon-loading"
+          size="small"
+          address={this.state.fakeAddress}
         />
       </React.Fragment>
     );
@@ -179,17 +190,18 @@ class ContractItem extends Component {
           className={!pending ? 'wallet-box' : 'wallet-box creating wallets'}
         >
           {!pending ? (
-            <SecurityIcon
-              type="contractItem"
-              classes={'dapp-identicon dapp-small dapp-icon-loading'}
-              hash={address}
+            <Identicon
+              className="dapp-icon-loading"
+              size="small"
+              address={address}
             />
           ) : (
             this.renderPending()
           )}
           {this.renderName()}
           {!pending ? this.renderBalance() : this.renderCreating()}
-          <span className="account-id">{address}</span>
+          {/*<span className="account-id">{address}</span>*/}
+          <EthAddress short className="account-id" address={address} />
         </Link>
       </React.Fragment>
     );
