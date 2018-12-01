@@ -111,6 +111,9 @@ class SendTransactionModal extends Component {
     let addresses = this.props.reducers.Wallets;
     let walletContracts = this.props.reducers.walletContracts;
     let wallets = Object.keys(Object.assign({}, addresses, walletContracts));
+
+    // TokenContract.methods['balanceOf'](tx.to)
+    // TokenContract.methods['balanceOf'](tx.from)
   }
 
   sendTokenTransaction(e) {
@@ -121,17 +124,21 @@ class SendTransactionModal extends Component {
     let TokenContract = new web3.eth.Contract(tokenInterface, {
       from: tx.from,
     });
+
     TokenContract.options.address = token.address;
 
     // TODO: update balances on successful send
 
     try {
       //TODO need this?
+
       //.encodeABI();
 
       TokenContract.methods['transfer'](tx.to, tx.tokenAmount)
         .call()
         .then(res => {
+          // yup returns nothing
+
           console.log('Res', res);
 
           //TODO: add to transaction list
@@ -157,63 +164,6 @@ class SendTransactionModal extends Component {
     let tx = this.props.reducers.TransactionToSend;
     !tx.sendToken ? this.sendEtherTransaction(e) : this.sendTokenTransaction(e);
     // console.log(tx);
-
-    // web3.eth
-    //   .sendTransaction({
-    //     from: tx.from,
-    //     to: tx.to,
-    //     amount: tx.value,
-    //     gasPrice: tx.gasPrice,
-    //   })
-    //   .on('transactionHash', hash => {
-    //     this.props.addTransaction({
-    //       hash: hash,
-    //       value: { ...tx, dateSent: date, confirmationNumber: 'Pending' },
-    //     });
-    //     this.props.displayGlobalNotification({
-    //       display: true,
-    //       type: 'warning',
-    //       msg: 'Your transaction has been submitted and is currently pending',
-    //     });
-    //     this.props.clearTransactionToSend();
-    //   })
-    //   .on('receipt', receipt => {
-    //     console.log('the receipt', receipt);
-    //     this.props.updateTransaction({
-    //       name: [receipt.transactionHash],
-    //       value: receipt,
-    //     });
-    //   })
-    //   .on('confirmation', (confirmationNumber, receipt) => {
-    //     let cn = confirmationNumber;
-    //     console.log('the cn', cn);
-    //     this.props.updateTransactionConfirmation({
-    //       name: [receipt.transactionHash],
-    //       value: cn,
-    //     });
-
-    //     let msg;
-    //     if (cn === 0 || cn === 12) {
-    //       cn === 0
-    //         ? (msg =
-    //             'Success! Your transaction has been confirmed. Please allow for 12 confirmations')
-    //         : (msg = 'Your transaction has been confirmed 12 times!');
-    //       this.props.displayGlobalNotification({
-    //         display: true,
-    //         type: 'success',
-    //         msg: msg,
-    //       });
-    //     }
-    //   })
-    //   .on('error', err => {
-    //     this.props.displayGlobalNotification({
-    //       display: true,
-    //       type: 'error',
-    //       msg: err.Error,
-    //       duration: 5,
-    //     });
-    //     console.warn(err);
-    //   });
   }
 
   submitFunction(e) {

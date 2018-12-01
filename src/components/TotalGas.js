@@ -11,6 +11,8 @@ export class TotalGas extends Component {
 
     let total = !tx.sendToken ? val + gas : gas;
 
+    total = !isNaN(total) ? total : 0;
+
     let web3 = new Web3();
     total = web3.utils.toBN(total);
     return (
