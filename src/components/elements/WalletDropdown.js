@@ -136,14 +136,12 @@ export class WalletDropdown extends Component {
             );
           })}
         </select>
-        {/*}
-        <SecurityIcon
-          type="address"
+        <Identicon
           classes="dapp-identicon dapp-small"
-          hash={this.state.fromWallet}
+          title
+          size="small"
+          seed={this.state.fromWallet}
         />
-      */}
-        <Identicon size="small" address={this.state.fromWallet} />
       </React.Fragment>
     );
   }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 
@@ -36,7 +35,12 @@ export const Origin = event => {
     <tr>
       <td>Origin Contract</td>
       <td>
-        <Identicon size="tiny" address={event.originalContractAddress} />
+        <Identicon
+          classes="dapp-identicon dapp-tiny"
+          title
+          size="tiny"
+          seed={event.originalContractAddress}
+        />
         {event.originalContractName}
       </td>
     </tr>

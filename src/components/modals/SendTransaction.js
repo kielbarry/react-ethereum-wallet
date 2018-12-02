@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 
 // import InputItem from '../elements/InputItem.js';
 // import TestInputItem from '../elements/TestInputItem.js';
-import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 
 import { Identicon } from 'ethereum-react-components';
 
-class SendTransactionModal extends Component {
+export class SendTransactionModal extends Component {
   constructor(props) {
     super(props);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
@@ -120,12 +119,22 @@ class SendTransactionModal extends Component {
             ETHER
           </h1>
           <p>
-            <Identicon size="small" address={transaction.from} />
+            <Identicon
+              classes="dapp-identicon dapp-small"
+              title
+              size="small"
+              seed={transaction.from}
+            />
             {transaction.from}
           </p>
           <i className="icon-arrow-down" />
           <p>
-            <Identicon size="small" address={transaction.to} />
+            <Identicon
+              classes="dapp-identicon dapp-small"
+              title
+              size="small"
+              seed={transaction.to}
+            />
             {transaction.to}
           </p>
           <hr />

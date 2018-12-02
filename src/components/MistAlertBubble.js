@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class MistAlertBubble extends Component {
+export class MistAlertBubble extends Component {
   constructor(props) {
     super(props);
     this.state = { displayAlertMessage: false };

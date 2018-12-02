@@ -12,7 +12,7 @@ import NumberFormat from 'react-number-format';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
-import { EthAddress, Identicon } from 'ethereum-react-components';
+import { Identicon } from 'ethereum-react-components';
 
 export class TokenListForItems extends Component {
   constructor(props) {

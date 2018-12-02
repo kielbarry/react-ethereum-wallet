@@ -15,6 +15,7 @@ To provide an easy GUI for smart contract developers to sanity-check code on tes
 The project is currently only configured for my developer experience, which is by using a local light geth node. Planned support is for Geth, Parity, Metamask, Infura, and Ganache, as well as all operational test networks.
 
 To run on localhost
+
 ```
 geth --ws --wsport {YOUR_PORT} --wsorigins "_" --rpc --rpcport {YOUR_PORT} --rpccorsdomain "_" --syncmode "light"
 --unlock {AN_ACCOUNT_OF_YOURS} --rinkeby
@@ -25,6 +26,12 @@ cd {YOUR_DESIRED_PATH}
 npm install --save
 npm start
 ```
+
+NOTE:
+This repo will increasingly rely on the ethereum-react-components, which can be found here: https://github.com/PhilippLgh/ethereum-react-components
+
+The above library is under very active development, and so if you contribute to this repo, be sure to follow the steps in the read me for ethereum-react-components to set-up a local sym linked version of the repo.
+
 <h3>Contributions</h3>
 
 ... are welcome. As noted, they are a large part of one goal of this project - to provide an arena for anyone at any skill level to contribute. Contributions also provide wonderful feedback for myself in many ways just in being able to observe how others think.

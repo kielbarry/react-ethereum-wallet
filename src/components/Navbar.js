@@ -15,7 +15,7 @@ import * as Utils from '../utils/utils.js';
 
 import NumberFormat from 'react-number-format';
 
-class NavBar extends Component {
+export class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
