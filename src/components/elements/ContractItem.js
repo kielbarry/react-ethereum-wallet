@@ -96,11 +96,10 @@ class ContractItem extends Component {
   renderPendingSecurityIcon() {
     return (
       <React.Fragment>
-        <Identicon
-          classes="dapp-identicon dapp-icon-loading"
-          title
-          size="small"
-          seed={this.state.fakeAddress}
+        <SecurityIcon
+          type="contractItem"
+          classes={'dapp-identicon dapp-small dapp-icon-loading'}
+          hash={this.state.fakeAddress}
         />
       </React.Fragment>
     );
@@ -147,7 +146,12 @@ class ContractItem extends Component {
           Creating
           <span>...</span>
         </span>
-        <span className="account-id creating" />
+        {/*<span className="account-id creating" />*/}
+        <EthAddress
+          short
+          classes="account-id creating"
+          address={this.state.fakeAddress}
+        />
       </React.Fragment>
     );
   }
@@ -182,12 +186,13 @@ class ContractItem extends Component {
           className={!pending ? 'wallet-box' : 'wallet-box creating wallets'}
         >
           {!pending ? (
-            <Identicon
-              classes="dapp-identicon dapp-icon-loading"
-              title
-              size="small"
-              seed={address}
-            />
+            <React.Fragment>
+              <SecurityIcon
+                type="contractItem"
+                classes={'dapp-identicon dapp-small'}
+                hash={address}
+              />
+            </React.Fragment>
           ) : (
             this.renderPending()
           )}
