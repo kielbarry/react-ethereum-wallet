@@ -9,6 +9,8 @@ import NumberFormat from 'react-number-format';
 
 import TokenListForItems from './TokenListForItems.js';
 
+import { EthAddress, Identicon } from 'ethereum-react-components';
+
 class ContractItem extends Component {
   constructor(props) {
     super(props);
@@ -144,7 +146,12 @@ class ContractItem extends Component {
           Creating
           <span>...</span>
         </span>
-        <span className="account-id creating" />
+        {/*<span className="account-id creating" />*/}
+        <EthAddress
+          short
+          classes="account-id creating"
+          address={this.state.fakeAddress}
+        />
       </React.Fragment>
     );
   }
@@ -179,17 +186,19 @@ class ContractItem extends Component {
           className={!pending ? 'wallet-box' : 'wallet-box creating wallets'}
         >
           {!pending ? (
-            <SecurityIcon
-              type="contractItem"
-              classes={'dapp-identicon dapp-small dapp-icon-loading'}
-              hash={address}
-            />
+            <React.Fragment>
+              <SecurityIcon
+                type="contractItem"
+                classes={'dapp-identicon dapp-small'}
+                hash={address}
+              />
+            </React.Fragment>
           ) : (
             this.renderPending()
           )}
           {this.renderName()}
           {!pending ? this.renderBalance() : this.renderCreating()}
-          <span className="account-id">{address}</span>
+          <EthAddress short classes="account-id" address={address} />
         </Link>
       </React.Fragment>
     );

@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SecurityIcon from '../elements/SecurityIcon.js';
+import { Link } from 'react-router-dom';
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 
-class TransactionInfo extends Component {
+import { Identicon } from 'ethereum-react-components';
+
+export class TransactionInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.updateToTransaction = this.updateToTransaction.bind(this);
+  }
   shouldComponentUpdate(prevProps, prevState) {
     if (
       this.props.transaction !== prevProps.transaction ||
@@ -24,6 +30,15 @@ class TransactionInfo extends Component {
     if (e.target.getAttribute('id') === 'viewTransaction') {
       this.props.closeModal('displayTransaction');
     }
+  }
+
+  updateToTransaction(e) {
+    e.stopPropagation();
+    console.warn('todo: moved from security icon and need to pudate');
+    // this.props.updateTransactionToSend({
+    //   name: 'to',
+    //   value: props.hash,
+    // });
   }
 
   render() {
@@ -72,11 +87,19 @@ class TransactionInfo extends Component {
                 <td>From</td>
                 <td>
                   <span className="address dapp-shorten-text not-ens-name">
-                    <SecurityIcon
-                      type="transactionHref"
+                    <Identicon
                       classes="dapp-identicon dapp-tiny"
-                      hash={tx.from}
+                      title
+                      size="tiny"
+                      seed={tx.from}
                     />
+                    <Link
+                      to={{ pathname: '/send-from/' + tx.from }}
+                      title={tx.from}
+                      onClick={e => this.updateToTransaction(e)}
+                    >
+                      {tx.from}
+                    </Link>
                   </span>
                 </td>
               </tr>
@@ -84,11 +107,19 @@ class TransactionInfo extends Component {
                 <td>To</td>
                 <td>
                   <span className="address dapp-shorten-text not-ens-name">
-                    <SecurityIcon
-                      type="transactionHref"
+                    <Identicon
                       classes="dapp-identicon dapp-tiny"
-                      hash={tx.to}
+                      title
+                      size="tiny"
+                      seed={tx.to}
                     />
+                    <Link
+                      to={{ pathname: '/send-from/' + tx.to }}
+                      title={tx.to}
+                      onClick={e => this.updateToTransaction(e)}
+                    >
+                      {tx.to}
+                    </Link>
                   </span>
                 </td>
               </tr>

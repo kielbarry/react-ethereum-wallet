@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SecurityIcon from '../elements/SecurityIcon.js';
+import { Link } from 'react-router-dom';
 import Inputs from '../elements/inputs/Inputs.js';
 import * as Helpers from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
+
+import { Identicon } from 'ethereum-react-components';
 
 export class ExecuteConstants extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
     this.executeInput = this.executeInput.bind(this);
+    this.updateToTransaction = this.updateToTransaction.bind(this);
   }
 
   executeInput(e, input, func) {
@@ -116,15 +119,33 @@ export class ExecuteConstants extends Component {
     );
   }
 
+  updateToTransaction(e) {
+    e.stopPropagation();
+    console.warn('todo: moved from security icon and need to pudate');
+    // this.props.updateTransactionToSend({
+    //   name: 'to',
+    //   value: props.hash,
+    // });
+  }
+
   // snapshotted
   renderAddress(output) {
+    let address = output.value !== '' ? output.value : '0x';
     return (
       <span className="address dapp-shorten-text not-ens-name">
-        <SecurityIcon
-          type="transactionHref"
-          classes={'dapp-identicon dapp-tiny'}
-          hash={output.value !== '' ? output.value : '0x'}
+        <Identicon
+          classes="dapp-identicon dapp-tiny"
+          title
+          size="tiny"
+          seed={address}
         />
+        <Link
+          to={{ pathname: '/send-from/' + address }}
+          title={address}
+          onClick={e => this.updateToTransaction(e)}
+        >
+          {address}
+        </Link>
       </span>
     );
   }

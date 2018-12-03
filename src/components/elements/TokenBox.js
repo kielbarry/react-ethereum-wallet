@@ -7,39 +7,7 @@ import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
 import { makeID } from '../../utils/helperFunctions.js';
 
-// function deleteTokenModal(props) {
-//   console.log("props here in deleteTokenModal", props )
-//   this.tokenToDelete(props.token.name);
-//   this.displayModal('displayDeleteToken');
-// }
-
-// export const TokenBox = props => {
-//   var GeoPattern = require('geopattern');
-//   var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-//   let iconStyle = { backgroundImage: pattern.toDataUrl() };
-//   let token = props.token;
-
-//   return (
-//     <div className="wallet-box tokens" style={iconStyle}>
-//       <SecurityIcon
-//         type="tokenBox"
-//         classes="dapp-identicon dapp-small"
-//         hash={token.address}
-//       />
-//       <h3>{token.name}</h3>
-//       <button className="delete-token" onClick={() => deleteTokenModal(props)}>
-//         <i className="icon-trash" />
-//       </button>
-//       <span className="account-balance">
-//         {token.balance}
-//         <span>{token.symbol}</span>
-//       </span>
-//       <span className="account-id">{token.address}</span>
-//     </div>
-//   );
-// };
-
-// export default TokenBox;
+import { EthAddress, Identicon } from 'ethereum-react-components';
 
 export class TokenBox extends Component {
   constructor(props) {
@@ -143,10 +111,11 @@ export class TokenBox extends Component {
 
     return (
       <div className="wallet-box tokens" style={iconStyle}>
-        <SecurityIcon
-          type="tokenBox"
+        <Identicon
           classes="dapp-identicon dapp-small"
-          hash={address}
+          title
+          size="small"
+          seed={address}
         />
         <h3>{token.name}</h3>
         <button
@@ -156,7 +125,7 @@ export class TokenBox extends Component {
           <i className="icon-trash" />
         </button>
         {this.renderBalance()}
-        <span className="account-id">{address}</span>
+        <EthAddress short classes="account-id" address={address} />
       </div>
     );
   }

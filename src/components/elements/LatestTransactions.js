@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import SecurityIcon from './SecurityIcon.js';
 import shortid from 'shortid';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import { Identicon } from 'ethereum-react-components';
+
 class LatestTransactions extends Component {
+  constructor(props) {
+    super(props);
+    this.updateToTransaction = this.updateToTransaction.bind(this);
+  }
   renderProgressBar(tx) {
     this.state = {
       completed:
@@ -39,26 +46,52 @@ class LatestTransactions extends Component {
     );
   }
 
+  updateToTransaction(e) {
+    e.stopPropagation();
+    console.warn('todo: moved from security icon and need to pudate');
+    // this.props.updateTransactionToSend({
+    //   name: 'to',
+    //   value: props.hash,
+    // });
+  }
+
   // snapshotted
   renderTransactionType(tx) {
+    //TODO: transaction type
     return (
       <td className="account-name">
         <h2>Transaction Type</h2>
         <p>
           <span className="address dapp-shorten-text not-ens-name">
-            <SecurityIcon
-              type="transactionHref"
+            <Identicon
               classes="dapp-identicon dapp-tiny"
-              hash={tx.from}
+              title
+              size="tiny"
+              seed={tx.from}
             />
+            <Link
+              to={{ pathname: '/send-from/' + tx.from }}
+              title={tx.from}
+              onClick={e => this.updateToTransaction(e)}
+            >
+              {tx.from}
+            </Link>
           </span>
           <span className="arrow">→</span>
           <span className="address dapp-shorten-text not-ens-name">
-            <SecurityIcon
-              type="transactionHref"
+            <Identicon
               classes="dapp-identicon dapp-tiny"
-              hash={tx.to}
+              title
+              size="tiny"
+              seed={tx.to}
             />
+            <Link
+              to={{ pathname: '/send-from/' + tx.to }}
+              title={tx.to}
+              onClick={e => this.updateToTransaction(e)}
+            >
+              {tx.to}
+            </Link>
           </span>
         </p>
       </td>

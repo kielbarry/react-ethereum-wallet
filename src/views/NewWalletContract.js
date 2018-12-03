@@ -14,10 +14,11 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import SecurityIcon from '../components/elements/SecurityIcon.js';
 import WalletDropdown from '../components/elements/WalletDropdown.js';
 import shortid from 'shortid';
 import * as Actions from '../actions/actions.js';
+
+import { Identicon } from 'ethereum-react-components';
 
 import {
   WalletInterfaceItems,
@@ -273,10 +274,11 @@ class NewWalletContract extends Component {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SecurityIcon
-                    type="address"
+                  <Identicon
                     classes="dapp-identicon dapp-small"
-                    hash={
+                    title
+                    size="small"
+                    seed={
                       index === 0
                         ? dcf.MainOwnerAddress
                         : typeof owners[index] == 'undefined'
