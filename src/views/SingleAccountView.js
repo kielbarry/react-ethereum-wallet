@@ -18,6 +18,8 @@ import * as Actions from '../actions/actions.js';
 
 import { Identicon } from 'ethereum-react-components';
 
+import NewSecurityIcon from '../designPrototypes/NewSecurityIcon';
+
 export const StickyHeader = ({ sw }) => {
   return (
     <div className="dapp-sticky-bar dapp-container">
@@ -144,7 +146,8 @@ export class SingleAccountView extends Component {
         */}
 
         <div className="accounts-page-summary">
-          <Identicon classes="dapp-identicon" title seed={sw.address} />
+          <NewSecurityIcon address={sw.address} />
+          {/*<Identicon classes="dapp-identicon" title seed={sw.address} />*/}
           <header>
             <AccountDetails sw={sw} />
             {this.renderBalance()}
