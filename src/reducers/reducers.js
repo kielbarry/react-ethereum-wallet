@@ -60,7 +60,94 @@ export const initialState = {
 };
 
 export const reducers = (state = initialState, action) => {
+  if (action.type === 'UPDATE_ADDRESS_NAME') {
+    console.log(
+      'lkaHSlkashflsakjfhlAKsjhkljhLKJAHDSFLKAJSHDLFKJASDHFLKAJSHFLKSAJHFLKDSJAH'
+    );
+    console.log({
+      ...state,
+      Wallets: {
+        ...state.Wallets,
+        [action.payload.address]: {
+          ...state.Wallets[action.payload.address],
+          name: action.payload.name,
+        },
+      },
+      selectedWallet: {
+        ...state.selectedWallet,
+        name: action.payload.name,
+      },
+    });
+  }
   switch (action.type) {
+    case 'UPDATE_OBSERVED_CONTRACT_NAME':
+      return {
+        ...state,
+        ObservedContracts: {
+          ...state.ObservedContracts,
+          [action.payload.address]: {
+            ...state.ObservedContracts[action.payload.address],
+            name: action.payload.name,
+          },
+        },
+        // TODO: testing update logs for selectedContract
+
+        selectedContract: {
+          ...state.selectedContract,
+          name: action.payload.name,
+        },
+        // selectedContract: {
+        //   ...state.ObservedContracts,
+        //   [action.payload.address]: {
+        //     ...state.ObservedContracts[action.payload.address],
+        //     name: action.payload.name,
+        //   }
+        // },
+      };
+    case 'UPDATE_WALLET_CONTRACT_NAME':
+      return {
+        ...state,
+        WalletContracts: {
+          ...state.WalletContracts,
+          [action.payload.address]: {
+            ...state.WalletContracts[action.payload.address],
+            name: action.payload.name,
+          },
+        },
+        selectedContract: {
+          ...state.selectedContract,
+          name: action.payload.name,
+        },
+        // selectedContract: {
+        //   ...state.WalletContracts,
+        //   [action.payload.address]: {
+        //     ...state.WalletContracts[action.payload.address],
+        //     name: action.payload.name,
+        //   }
+        // },
+      };
+    case 'UPDATE_ADDRESS_NAME':
+      return {
+        ...state,
+        Wallets: {
+          ...state.Wallets,
+          [action.payload.address]: {
+            ...state.Wallets[action.payload.address],
+            name: action.payload.name,
+          },
+        },
+        selectedWallet: {
+          ...state.selectedWallet,
+          name: action.payload.name,
+        },
+        // selectedWallet: {
+        //   ...state.Wallets,
+        //   [action.payload.address]: {
+        //     ...state.Wallets[action.payload.address],
+        //     name: action.payload.name,
+        //   }
+        // },
+      };
     case 'UPDATE_TOKEN_TO_SEND':
       return {
         ...state,
@@ -151,6 +238,7 @@ export const reducers = (state = initialState, action) => {
             }),
           },
         },
+        // TODO: testing update logs for selectedContract
       };
     case 'UPDATE_FUNCTION_INPUT':
       return {
@@ -211,6 +299,11 @@ export const reducers = (state = initialState, action) => {
             [action.payload.name]: action.payload.value,
           },
         },
+        // TODO: testing
+        selectedContract: {
+          ...state.selectedContract,
+          [action.payload.name]: action.payload.value,
+        },
       };
     case 'ADD_CONTRACT_CONSTANTS':
       return {
@@ -221,6 +314,11 @@ export const reducers = (state = initialState, action) => {
             ...state.ObservedContracts[action.payload.address],
             [action.payload.name]: action.payload.value,
           },
+        },
+        // TODO: testing
+        selectedContract: {
+          ...state.selectedContract,
+          [action.payload.name]: action.payload.value,
         },
       };
     case 'UPDATE_PAST_CONTRACT_LOGS':
@@ -236,6 +334,7 @@ export const reducers = (state = initialState, action) => {
             ],
           },
         },
+        // TODO: testing update logs for selectedContract
       };
     case 'ADD_PAST_CONTRACT_LOGS':
       return {
@@ -247,6 +346,7 @@ export const reducers = (state = initialState, action) => {
             logs: action.payload,
           },
         },
+        // TODO: testing update logs for selectedContract
       };
     case 'UPDATE_BALANCE_CHECKED':
       return {

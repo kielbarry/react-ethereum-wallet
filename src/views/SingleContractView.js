@@ -91,6 +91,10 @@ export class SingleContractView extends Component {
           : contractFunctions.push(func);
       }
     });
+
+    // TODO: conditional to update either observed contracts,
+    // selected wallet, or deployed wallet contracts
+    // right now is only updating observed contracts
     this.props.addContractFunctions({
       address: contract.address,
       value: contractFunctions,

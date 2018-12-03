@@ -1,42 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
-
 import TokenBox from '../elements/TokenBox.js';
-
 import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
-
-// const listInputs = [
-//   {
-//     title: 'Token Contract Address',
-//     divClass: 'dapp-address-input',
-//     editor: 'input',
-//     type: 'text',
-//     name: 'address',
-//     placeholder: '0x000000',
-//     className: 'token-address',
-//   },
-//   {
-//     title: 'Token name',
-//     divClass: 'dapp-token-name-input',
-//     editor: 'input',
-//     type: 'string',
-//     name: 'name',
-//     placeholder: 'Token name',
-//     className: 'name',
-//   },
-//   {
-//     title: 'Token symbol',
-//     divClass: 'dapp-token-symbol-input',
-//     editor: 'input',
-//     type: 'string',
-//     name: 'symbol',
-//     placeholder: 'Token symbol',
-//     className: 'symbol',
-//   },
-// ];
 
 class WatchToken extends Component {
   constructor(props) {
@@ -56,13 +23,6 @@ class WatchToken extends Component {
     this.cancelFunction = this.cancelFunction.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
   }
-
-  // shouldComponentUpdate(prevProps, prevState) {
-  //   if (this.props.display !== prevProps.display) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   invokeContractMethod(TokenContract, variableMethodName) {
     try {
@@ -90,13 +50,11 @@ class WatchToken extends Component {
     let web3 = this.props.web3.web3Instance;
     let TokenContract = new web3.eth.Contract(tokenInterface);
     TokenContract.options.address = address;
-
     this.setState({ address: address });
     this.props.updateTokenToWatch({
       name: 'address',
       value: address,
     });
-
     this.invokeContractMethod(TokenContract, 'symbol');
     this.invokeContractMethod(TokenContract, 'name');
     this.invokeContractMethod(TokenContract, 'decimals');
@@ -200,28 +158,15 @@ class WatchToken extends Component {
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
-
     var GeoPattern = require('geopattern');
     var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-
     let iconStyle = { backgroundImage: pattern.toDataUrl() };
-
     let TokenToWatch = this.props.reducers.TokenToWatch;
 
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container modals-add-token">
           <h1>Add Token</h1>
-
-          {/*
-          {listInputs.map((field, i) => (
-            <TestInputItem
-              key={`token-field-${i}`}
-              field={field}
-              onKeyUp={e => this.handleOnKeyUp(e)}
-            />
-          ))}
-        */}
           <h3>Token Contract Address</h3>
           <div className="dapp-address-input">
             <input
@@ -233,7 +178,6 @@ class WatchToken extends Component {
               value={this.state.address}
             />
           </div>
-
           <h3>Token name</h3>
           <div className="dapp-token-name-input">
             <input
@@ -245,7 +189,6 @@ class WatchToken extends Component {
               value={this.state.name}
             />
           </div>
-
           <h3>Token symbol</h3>
           <div className="dapp-token-symbol-input">
             <input
@@ -257,7 +200,6 @@ class WatchToken extends Component {
               value={this.state.symbol}
             />
           </div>
-
           <h3>Decimals places of smallest unit</h3>
           <input
             type="number"
@@ -271,7 +213,6 @@ class WatchToken extends Component {
           />
           <br />
           <h3>Preview</h3>
-
           {/*<TokenBox key={TokenToWatch.address} token={TokenToWatch} />
 
           {/*
@@ -287,7 +228,6 @@ class WatchToken extends Component {
             <span className="account-id" />
           </button>
           */}
-
           <div className="dapp-modal-buttons">
             <button className="cancel" onClick={() => this.cancelFunction()}>
               Cancel

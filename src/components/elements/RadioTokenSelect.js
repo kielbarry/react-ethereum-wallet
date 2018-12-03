@@ -12,6 +12,9 @@ export class RadioTokenSelect extends Component {
 
   chooseToken(e) {
     let tokens = this.props.tokens;
+    console.log(e.target);
+    console.log(tokens[e.target.value]);
+    console.log(this.props.wallet);
     if (e.target.value === 'ether') {
       this.props.updateTokenToSend({
         sendToken: false,

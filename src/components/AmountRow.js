@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import RadioTokenSelect from './elements/RadioTokenSelect.js';
-
 import { updateTransactionToSend } from '../actions/actions.js';
 import { displayPriceFormatter } from '../utils/utils.js';
+import Web3 from 'web3';
 
 export class AmountRow extends Component {
   constructor(props) {
@@ -19,13 +18,29 @@ export class AmountRow extends Component {
   handleOnKeyUp(e) {
     // TODO:validate inputs here
     // let web3 = this.props.web3.web3Instance;
+    let tx = this.props.TransactionToSend;
     let target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
-    if (target === 'value' && this.props.web3 && targetValue) {
+    //TODO: still not to validate, but allow single decimal
+    if (targetValue.includes('.')) {
+      console.log('in includes decimal');
+      let web3 = new Web3();
+      let eth = targetValue.split('.')[0];
+
+      let wei = web3.utils.toWei(eth, 'ether');
+      let subEth = targetValue.split('.')[1];
+    }
+
+    if (target === 'value' && this.props.web3 && targetValue && !tx.sendToken) {
       let web3 = this.props.web3.web3Instance;
       targetValue = web3.utils.toWei(targetValue, 'ETHER');
     }
+
+    if (tx.sendToken) {
+      target = 'tokenAmount';
+    }
+
     this.props.updateTransactionToSend({
       name: target,
       value: targetValue,
@@ -70,20 +85,27 @@ export class AmountRow extends Component {
   }
 
   renderAmountSummary() {
+    let tx = this.props.TransactionToSend;
     return (
       <p className="send-info">
         You want to send
-        <strong>
-          {this.props.web3 && this.props.web3.web3Instance
-            ? ' ' +
-              displayPriceFormatter(
-                this.props,
-                this.props.TransactionToSend.value
-              ) +
-              ' ' +
-              this.props.reducers.currency
-            : 0 + ' ' + this.props.reducers.currency}
-        </strong>
+        {!tx.sendToken ? (
+          <strong>
+            {this.props.web3 && this.props.web3.web3Instance
+              ? ' ' +
+                displayPriceFormatter(this.props, tx.value) +
+                ' ' +
+                this.props.reducers.currency
+              : 0 + ' ' + this.props.reducers.currency}
+          </strong>
+        ) : (
+          <strong>
+            &nbsp;
+            {tx.tokenAmount}
+            &nbsp;
+            {tx.tokenToSend.symbol}
+          </strong>
+        )}
         {/*
           {' '}
         in Ether, using exchange rates from

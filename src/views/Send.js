@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import WalletDropdown from '../components/elements/WalletDropdown.js';
-
 import RadioTokenSelect from '../components/elements/RadioTokenSelect.js';
 
 import FromToRow from '../components/FromToRow.js';
@@ -33,33 +32,15 @@ export class Send extends Component {
     super(props);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
     this.validateForm = this.validateForm.bind(this);
+    this.validateSendingEther = this.validateSendingEther.bind(this);
+    this.validateSendingTokens = this.validateSendingTokens.bind(this);
   }
 
-  validateForm(tx) {
+  validateSendingEther(tx) {
+    console.log('in validateSendingEther');
     let msg;
     let valid = true;
-    let web3 = this.props.web3.web3Instance;
     let totalBalance = this.props.reducers.totalBalance;
-    if (!web3.utils.isAddress(tx.to)) {
-      msg =
-        'The To field has an invalid address! Please check that it has been entered correctly';
-      valid = false;
-      this.props.displayGlobalNotification({
-        display: true,
-        type: 'error',
-        msg: msg,
-      });
-    }
-    if (!web3.utils.isAddress(tx.from)) {
-      msg =
-        'The From field has an invalid address! Please check that it has been entered correctly';
-      valid = false;
-      this.props.displayGlobalNotification({
-        display: true,
-        type: 'error',
-        msg: msg,
-      });
-    }
     if (!tx.value) {
       msg = "Oops! You'll need  to specify an amount to send";
       valid = false;
@@ -80,6 +61,49 @@ export class Send extends Component {
       });
     }
     if (valid) this.props.displayModal('displaySendTransaction');
+  }
+
+  validateSendingTokens(tx) {
+    console.log('in validateSendingTokens');
+    let msg;
+    let valid = true;
+
+    let web3 = this.props.web3.web3Instance;
+
+    if (valid) this.props.displayModal('displaySendTransaction');
+  }
+
+  validateForm(tx) {
+    let msg;
+    let valid = true;
+    let web3 = this.props.web3.web3Instance;
+
+    if (!web3.utils.isAddress(tx.to)) {
+      msg =
+        'The To field has an invalid address! Please check that it has been entered correctly';
+      valid = false;
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: msg,
+      });
+    }
+    if (!web3.utils.isAddress(tx.from)) {
+      msg =
+        'The From field has an invalid address! Please check that it has been entered correctly';
+      valid = false;
+      this.props.displayGlobalNotification({
+        display: true,
+        type: 'error',
+        msg: msg,
+      });
+    }
+
+    !tx.sendToken
+      ? this.validateSendingEther(tx)
+      : this.validateSendingTokens(tx);
+
+    // if (valid) this.props.displayModal('displaySendTransaction');
   }
 
   handleOnKeyUp(e) {
