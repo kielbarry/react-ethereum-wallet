@@ -5078,6 +5078,13 @@ span.address > .dapp-identicon {
   line-height: 1.4em;
   color: rgba(130, 122, 122, 0.6);
 }
+
+/*.wallet-box > span.eth-address {
+  font-size: 0.8em;
+  line-height: 1.4em;
+  color: rgba(130, 122, 122, 0.6);
+}*/
+
 .wallet-box > span.account-id.creating {
   color: #fafafa;
 }

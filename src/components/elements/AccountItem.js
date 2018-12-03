@@ -4,74 +4,9 @@ import { Link } from 'react-router-dom';
 import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
-// import SecurityIcon from './SecurityIcon.js';
-import { SecurityIcon } from './SecurityIcon.js';
 import NumberFormat from 'react-number-format';
-
 import TokenListForItems from './TokenListForItems.js';
-
-// const openAccountPage = (w, props) => {
-//   console.log(this)
-//   console.log(props)
-//   console.log(selectedWallet)
-//   console.log(this.selectedWallet())
-//   selectedWallet({
-//     address: props.address,
-//     number: props.number,
-//     wallet: props.wallet,
-//     currency: props.currency,
-//     addressType: 'account',
-//   });
-// }
-
-// export const AccountItem = props => {
-//   props = Object.assign({}, props, props.props);
-//   let wallet = props.wallet;
-//   let address = props.address;
-//   let number = props.number;
-//   const AccountURL = '/account/' + address;
-
-//   console.log(this)
-//   console.log(openAccountPage)
-
-//   return (
-//     <Link
-//       to={{ pathname: AccountURL }}
-//       onClick={w => openAccountPage(w, props)}
-//       className="wallet-box"
-//     >
-//       <SecurityIcon
-//         type="accountItem"
-//         classes="dapp-identicon dapp-small"
-//         hash={props.address}
-//       />
-//       <ul className="token-list" />
-//       <h3 className="not-ens-name">
-//         <i className={props.icon} title="Account" />
-//         Account {number}
-//       </h3>
-//       {props.web3 && props.web3.web3Instance ? (
-//         <NumberFormat
-//           className="account-balance"
-//           value={Utils.displayPriceFormatter(props, wallet.balance)}
-//           displayType={'text'}
-//           thousandSeparator={true}
-//         />
-//       ) : (
-//         <NumberFormat
-//           className="account-balance"
-//           value={wallet.balance}
-//           displayType={'text'}
-//           thousandSeparator={true}
-//         />
-//       )}
-//       <span> {props.currency} </span>
-//       <span className="account-id">{address}</span>
-//     </Link>
-//   );
-// };
-
-// export default AccountItem;
+import { EthAddress, Identicon } from 'ethereum-react-components';
 
 export class AccountItem extends Component {
   constructor(props) {
@@ -124,10 +59,11 @@ export class AccountItem extends Component {
           onClick={this.openAccountPage}
           className="wallet-box"
         >
-          <SecurityIcon
-            type="accountItem"
+          <Identicon
             classes="dapp-identicon dapp-small"
-            hash={this.props.address}
+            title
+            size="small"
+            seed={this.props.address}
           />
           <TokenListForItems
             addressType={this.props.addressType}
@@ -138,7 +74,7 @@ export class AccountItem extends Component {
             Account {number}
           </h3>
           {this.renderBalance()}
-          <span className="account-id">{address}</span>
+          <EthAddress short classes="account-id" address={address} />
         </Link>
       </React.Fragment>
     );

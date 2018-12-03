@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import SU from '../components/elements/SelectableUnit.js';
 import AccountActionBar from '../components/elements/AccountActionBar.js';
 import LatestTransactions from '../components/elements/LatestTransactions.js';
-import SecurityIcon from '../components/elements/SecurityIcon.js';
 import TokenList from '../components/TokenList.js';
 
 import EditableName from '../components/EditableName.js';
@@ -17,14 +16,12 @@ import NotFound from './NotFound.js';
 import * as Utils from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
+import { Identicon } from 'ethereum-react-components';
+
 export const StickyHeader = ({ sw }) => {
   return (
     <div className="dapp-sticky-bar dapp-container">
-      <SecurityIcon
-        type="singleAccountView"
-        classes="dapp-identicon"
-        hash={sw.address}
-      />
+      <Identicon classes="dapp-identicon" title seed={sw.address} />
     </div>
   );
 };
@@ -147,11 +144,7 @@ export class SingleAccountView extends Component {
         */}
 
         <div className="accounts-page-summary">
-          <SecurityIcon
-            type="singleAccountView"
-            classes="dapp-identicon"
-            hash={sw.address}
-          />
+          <Identicon classes="dapp-identicon" title seed={sw.address} />
           <header>
             <AccountDetails sw={sw} />
             {this.renderBalance()}

@@ -12,6 +12,8 @@ import NumberFormat from 'react-number-format';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
+import { Identicon } from 'ethereum-react-components';
+
 export class TokenListForItems extends Component {
   constructor(props) {
     super(props);
@@ -121,11 +123,14 @@ export class TokenListForItems extends Component {
                 }
                 className="simptip-position-right simptip-movable"
               >
+                {/*}
                 <SecurityIcon
                   type="accountItem"
                   classes="dapp-identicon dapp-tiny"
                   hash={tokens[token].address}
                 />
+              */}
+                <Identicon size="tiny" address={tokens[token].address} />
               </li>
             ))}
       </ul>

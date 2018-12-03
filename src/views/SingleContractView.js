@@ -5,12 +5,13 @@ import SU from '../components/elements/SelectableUnit.js';
 import ContractActionBar from '../components/elements/ContractActionBar.js';
 import ExecutableContract from '../components/elements/ExecutableContract.js';
 import ContractEvents from '../components/elements/ContractEvents.js';
-import SecurityIcon from '../components/elements/SecurityIcon.js';
 
 import * as Utils from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
 import NotFound from './NotFound.js';
+
+import { Identicon } from 'ethereum-react-components';
 
 export class SingleContractView extends Component {
   constructor(props) {
@@ -315,18 +316,10 @@ export class SingleContractView extends Component {
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container">
-          <SecurityIcon
-            type="singleAccountView"
-            classes="dapp-identicon"
-            hash={contract.address}
-          />
+          <Identicon classes="dapp-identicon" title seed={contract.address} />
         </div>
         <div className="accounts-page-summary">
-          <SecurityIcon
-            type="singleAccountView"
-            classes="dapp-identicon"
-            hash={contract.address}
-          />
+          <Identicon classes="dapp-identicon" title seed={contract.address} />
           <header>
             <h1>
               <em className="edit-name">{contract['contract-name']}</em>
