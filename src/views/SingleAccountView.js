@@ -105,7 +105,7 @@ export class SingleAccountView extends Component {
     });
     return (
       <div className="accounts-transactions">
-        {Object.keys(accountTxns).length ? (
+        {Object.keys(accountTxns).length && obj.constructor === Object ? (
           <LatestTransactions transactions={accountTxns} />
         ) : (
           <NoMatchingTransaction />

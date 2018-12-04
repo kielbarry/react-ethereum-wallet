@@ -368,7 +368,7 @@ export class SingleContractView extends Component {
     });
     return (
       <React.Fragment>
-        {Object.keys(accountTxns).length ? (
+        {Object.keys(accountTxns).length && obj.constructor === Object ? (
           <LatestTransactions transactions={accountTxns} />
         ) : (
           <NoMatchingTransaction />
