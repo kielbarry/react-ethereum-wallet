@@ -27,6 +27,7 @@ const StatelessPageContent = () => {
 
 export class AccountView extends Component {
   render() {
+    console.log('transactions in accountiew', this.props.Transactions);
     return (
       <div className="dapp-container account-page">
         <StatelessPageContent />

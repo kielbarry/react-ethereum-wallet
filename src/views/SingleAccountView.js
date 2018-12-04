@@ -94,8 +94,11 @@ export class SingleAccountView extends Component {
     let transactions = this.props.reducers.Transactions;
     let accountTxns = {};
     Object.keys(transactions).map(hash => {
-      if (hash === address) {
-        accountTxns[address] = transactions[hash];
+      if (
+        transactions[hash]['from'] === address.toLowerCase() ||
+        transactions[hash]['to'] === address.toLowerCase()
+      ) {
+        accountTxns[hash] = transactions[hash];
       }
       return null;
     });

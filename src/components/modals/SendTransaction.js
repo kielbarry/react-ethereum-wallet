@@ -49,7 +49,7 @@ export class SendTransactionModal extends Component {
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
     let date = new Date();
-    this.props.history.push('/accounts');
+    // this.props.history.push('/accounts');
     web3.eth
       .sendTransaction({
         from: tx.from,
@@ -101,11 +101,12 @@ export class SendTransactionModal extends Component {
         this.props.displayGlobalNotification({
           display: true,
           type: 'error',
-          msg: err.Error,
+          msg: err.message,
           duration: 5,
         });
         console.warn(err);
       });
+    this.props.history.push('/accounts');
   }
 
   updateTokenBalances(TokenContract) {
@@ -153,6 +154,7 @@ export class SendTransactionModal extends Component {
           // name the category is {token name} - Token transfer
 
           this.updateTokenBalances(TokenContract);
+          this.props.history.push('/accounts');
         });
     } catch (err) {
       console.warn(err);

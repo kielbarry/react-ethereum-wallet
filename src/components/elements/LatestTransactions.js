@@ -2,16 +2,70 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
-import * as Actions from '../../actions/actions.js';
-import * as Utils from '../../utils/utils.js';
+// import * as Actions from '../../actions/actions.js';
+// import * as Utils from '../../utils/utils.js';
+
+import {
+  updateSelectedTransaction,
+  displayModal,
+} from '../../actions/actions.js';
+
+import {
+  getMonthName,
+  getDate,
+  displayPriceFormatter,
+} from '../../utils/utils.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { Identicon } from 'ethereum-react-components';
 
-class LatestTransactions extends Component {
+// snapshotted
+const TransactionInfo = props => {
+  return (
+    <td className="info">
+      {props.tx.confirmationNumber === 'Pending'
+        ? 'Pending...'
+        : props.tx.confirmationNumber + ' of 12 Confirmations'}
+    </td>
+  );
+};
+
+const MinusIcon = () => {
+  return (
+    <td>
+      <i className="icon-arrow-right minus" />
+    </td>
+  );
+};
+
+const DateInfo = props => {
+  return (
+    <td
+      className="time simptip-position-right simptip-movable"
+      data-tool-tip={props.tx.dateSent}
+    >
+      <h2>{getMonthName(props.tx.dateSent)}</h2>
+      <p>{getDate(props.tx.dateSent)}</p>
+    </td>
+  );
+};
+
+export class LatestTransactions extends Component {
   constructor(props) {
     super(props);
+    // this.state = {
+    //   transactions: {
+    //     // ...this.props.Transactions
+    //     ...this.props.transactions
+    //   }
+    // }
+    this.state = this.props;
+
+    console.log('constructor in state', this.state);
+    console.log('constructor in props', this.props);
+
     this.updateToTransaction = this.updateToTransaction.bind(this);
+    this.selectSortOption = this.selectSortOption.bind(this);
   }
   renderProgressBar(tx) {
     this.state = {
@@ -29,19 +83,6 @@ class LatestTransactions extends Component {
           />
         )}
       </React.Fragment>
-    );
-  }
-
-  // snapshotted
-  renderDateInfo(tx) {
-    return (
-      <td
-        className="time simptip-position-right simptip-movable"
-        data-tool-tip={tx.dateSent}
-      >
-        <h2>{Utils.getMonthName(tx.dateSent)}</h2>
-        <p>{Utils.getDate(tx.dateSent)}</p>
-      </td>
     );
   }
 
@@ -98,33 +139,13 @@ class LatestTransactions extends Component {
   }
 
   // snapshotted
-  renderTransactionInfo(tx) {
-    return (
-      <td className="info">
-        {tx.confirmationNumber === 'Pending'
-          ? 'Pending...'
-          : tx.confirmationNumber + ' of 12 Confirmations'}
-      </td>
-    );
-  }
-
-  // snapshotted
   renderTransactionAmount(tx) {
     return (
       <td className="transaction-amount minus">
         -
         {this.props.web3 && this.props.web3.web3Instance
-          ? Utils.displayPriceFormatter(this.props, tx.value, 'ETHER') +
-            ' ETHER'
+          ? displayPriceFormatter(this.props, tx.value, 'ETHER') + ' ETHER'
           : tx.value}
-      </td>
-    );
-  }
-
-  renderIcon() {
-    return (
-      <td>
-        <i className="icon-arrow-right minus" />
       </td>
     );
   }
@@ -145,25 +166,24 @@ class LatestTransactions extends Component {
           }
         }}
       >
-        {this.renderDateInfo(tx)}
+        <DateInfo tx={tx} />
         {this.renderTransactionType(tx)}
-        {this.renderTransactionInfo(tx)}
+        <TransactionInfo tx={tx} />
         {this.renderTransactionAmount(tx)}
-        {this.renderIcon()}
+        <MinusIcon />
       </tr>
     );
   }
 
-  //TODO: snapshot
+  selectSortOption(e) {
+    console.log(e.target.value);
+  }
 
-  // <React.Fragment>
-  //               {this.renderTableRow(transactions[txHash])}
-  //               {}
-  //               {this.renderProgressBar(transactions[txHash])}
-  //             }
-  //             </React.Fragment>
   render() {
-    let transactions = this.props.reducers.Transactions;
+    console.log('this.state in render', this.state);
+    console.log('this.props in render', this.props);
+    // let transactions = this.props.reducers.Transactions;
+    let transactions = this.state.transactions;
     return (
       <React.Fragment>
         <h2>Latest transactions</h2>
@@ -173,6 +193,25 @@ class LatestTransactions extends Component {
           className="filter-transactions"
           placeholder="Filter transactions"
         />
+
+        <select
+          style={{ marginLeft: '20px' }}
+          onChange={e => this.selectSortOption(e)}
+        >
+          <option key={shortid.generate()} value={'none'} />
+          <option key={shortid.generate()} value={'Status'}>
+            Status
+          </option>
+          <option key={shortid.generate()} value={'Date'}>
+            Date
+          </option>
+          <option key={shortid.generate()} value={'TransactionType'}>
+            TransactionType
+          </option>
+          <option key={shortid.generate()} value={'Amount'}>
+            Amount
+          </option>
+        </select>
         <table className="dapp-zebra transactions">
           <tbody>
             {Object.keys(transactions).map(txHash =>
@@ -186,9 +225,15 @@ class LatestTransactions extends Component {
 }
 const mapStateToProps = state => ({
   ...state,
+  //   Transactions: state.reducers.Transactions,
+  // transactions: state.transactions
 });
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  // null,
+  {
+    updateSelectedTransaction,
+    displayModal,
+  }
 )(LatestTransactions);
