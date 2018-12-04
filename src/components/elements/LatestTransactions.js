@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import SecurityIcon from './SecurityIcon.js';
 import shortid from 'shortid';
 import * as Actions from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
