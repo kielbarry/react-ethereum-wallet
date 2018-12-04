@@ -53,16 +53,7 @@ const DateInfo = props => {
 export class LatestTransactions extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   transactions: {
-    //     // ...this.props.Transactions
-    //     ...this.props.transactions
-    //   }
-    // }
     this.state = this.props;
-
-    console.log('constructor in state', this.state);
-    console.log('constructor in props', this.props);
 
     this.updateToTransaction = this.updateToTransaction.bind(this);
     this.selectSortOption = this.selectSortOption.bind(this);
@@ -180,8 +171,6 @@ export class LatestTransactions extends Component {
   }
 
   render() {
-    console.log('this.state in render', this.state);
-    console.log('this.props in render', this.props);
     // let transactions = this.props.reducers.Transactions;
     let transactions = this.state.transactions;
     return (
@@ -225,13 +214,10 @@ export class LatestTransactions extends Component {
 }
 const mapStateToProps = state => ({
   ...state,
-  //   Transactions: state.reducers.Transactions,
-  // transactions: state.transactions
 });
 
 export default connect(
   mapStateToProps,
-  // null,
   {
     updateSelectedTransaction,
     displayModal,

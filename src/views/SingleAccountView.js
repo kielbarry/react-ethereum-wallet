@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import SU from '../components/elements/SelectableUnit.js';
 import AccountActionBar from '../components/elements/AccountActionBar.js';
 import LatestTransactions from '../components/elements/LatestTransactions.js';
+import NoMatchingTransaction from '../components/elements/NoMatchingTransaction.js';
 import TokenList from '../components/TokenList.js';
 
 import EditableName from '../components/EditableName.js';
@@ -104,10 +105,10 @@ export class SingleAccountView extends Component {
     });
     return (
       <div className="accounts-transactions">
-        {accountTxns !== {} ? (
+        {Object.keys(accountTxns).length ? (
           <LatestTransactions transactions={accountTxns} />
         ) : (
-          <div>No transactions found...</div>
+          <NoMatchingTransaction />
         )}
       </div>
     );

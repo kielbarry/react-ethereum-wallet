@@ -49,7 +49,6 @@ export class SendTransactionModal extends Component {
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
     let date = new Date();
-    // this.props.history.push('/accounts');
     web3.eth
       .sendTransaction({
         from: tx.from,
@@ -68,6 +67,7 @@ export class SendTransactionModal extends Component {
           msg: 'Your transaction has been submitted and is currently pending',
         });
         // this.props.clearTransactionToSend();
+        this.props.history.push('/accounts');
       })
       .on('receipt', receipt => {
         console.log('the receipt', receipt);
@@ -106,7 +106,6 @@ export class SendTransactionModal extends Component {
         });
         console.warn(err);
       });
-    this.props.history.push('/accounts');
   }
 
   updateTokenBalances(TokenContract) {
