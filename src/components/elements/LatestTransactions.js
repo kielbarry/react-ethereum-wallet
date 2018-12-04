@@ -53,7 +53,7 @@ const DateInfo = props => {
 export class LatestTransactions extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    this.state = { ...this.props, sortOption: '', searchValue: '' };
 
     this.updateToTransaction = this.updateToTransaction.bind(this);
     this.selectSortOption = this.selectSortOption.bind(this);
@@ -168,11 +168,22 @@ export class LatestTransactions extends Component {
 
   selectSortOption(e) {
     console.log(e.target.value);
+    let txs = this.state.transactions;
+    this.setState({ sortOption: e.target.value });
+  }
+
+  updateSearchValue(e) {
+    this.setState({ searchValue: e.target.value });
   }
 
   render() {
     // let transactions = this.props.reducers.Transactions;
     let transactions = this.state.transactions;
+    // console.log(transactions)
+    let txArr = Object.keys(transactions).map(hash => {
+      return transactions[hash];
+    });
+    let arr = ['Status', 'Date', 'TransactionType', 'Amount'];
     return (
       <React.Fragment>
         <h2>Latest transactions</h2>
@@ -181,32 +192,23 @@ export class LatestTransactions extends Component {
           type="text"
           className="filter-transactions"
           placeholder="Filter transactions"
+          onKeyUp={e => this.updateSearchValue(e)}
         />
 
         <select
           style={{ marginLeft: '20px' }}
           onChange={e => this.selectSortOption(e)}
+          value={this.state.sortOption}
         >
           <option key={shortid.generate()} value={'none'} />
-          <option key={shortid.generate()} value={'Status'}>
-            Status
-          </option>
-          <option key={shortid.generate()} value={'Date'}>
-            Date
-          </option>
-          <option key={shortid.generate()} value={'TransactionType'}>
-            TransactionType
-          </option>
-          <option key={shortid.generate()} value={'Amount'}>
-            Amount
-          </option>
+          {arr.map(val => (
+            <option key={shortid.generate()} value={val}>
+              {val}
+            </option>
+          ))}
         </select>
         <table className="dapp-zebra transactions">
-          <tbody>
-            {Object.keys(transactions).map(txHash =>
-              this.renderTableRow(transactions[txHash])
-            )}
-          </tbody>
+          <tbody>{txArr.map(tx => this.renderTableRow(tx))}</tbody>
         </table>
       </React.Fragment>
     );

@@ -28,11 +28,12 @@ const StatelessPageContent = () => {
 
 export class AccountView extends Component {
   render() {
+    let txs = this.props.Transactions;
     return (
       <div className="dapp-container account-page">
         <StatelessPageContent />
-        {this.props.Transactions ? (
-          <LatestTransactions transactions={this.props.Transactions} />
+        {Object.keys(txs).length && txs.constructor === Object ? (
+          <LatestTransactions transactions={txs} />
         ) : (
           <NoMatchingTransaction />
         )}
