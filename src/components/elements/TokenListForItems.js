@@ -6,8 +6,6 @@ import shortid from 'shortid';
 import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
-// import SecurityIcon from './SecurityIcon.js';
-import { SecurityIcon } from './SecurityIcon.js';
 import NumberFormat from 'react-number-format';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';

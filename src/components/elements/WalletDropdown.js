@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SecurityIcon from '../elements/SecurityIcon.js';
 import { sortByBalance } from '../../utils/helperFunctions.js';
 
 import * as Utils from '../../utils/utils.js';

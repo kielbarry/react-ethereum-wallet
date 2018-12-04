@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { withRouter } from 'react-router';
+
 // import InputItem from '../elements/InputItem.js';
 // import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
@@ -34,6 +36,11 @@ export class SendTransactionModal extends Component {
     return false;
   }
 
+  componentWillUnmount() {
+    console.log('in will unmount');
+    this.props.clearTransactionToSend();
+  }
+
   cancelFunction(e) {
     this.props.closeModal('displaySendTransaction');
   }
@@ -42,6 +49,7 @@ export class SendTransactionModal extends Component {
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
     let date = new Date();
+    this.props.history.push('/accounts');
     web3.eth
       .sendTransaction({
         from: tx.from,
@@ -59,7 +67,7 @@ export class SendTransactionModal extends Component {
           type: 'warning',
           msg: 'Your transaction has been submitted and is currently pending',
         });
-        this.props.clearTransactionToSend();
+        // this.props.clearTransactionToSend();
       })
       .on('receipt', receipt => {
         console.log('the receipt', receipt);
@@ -237,4 +245,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { ...Actions }
-)(SendTransactionModal);
+)(withRouter(SendTransactionModal));
