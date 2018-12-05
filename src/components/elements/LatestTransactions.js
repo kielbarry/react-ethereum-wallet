@@ -62,11 +62,13 @@ export class LatestTransactions extends Component {
       filtertedTransactions: [],
     };
 
+    this.fetchTransactions = this.fetchTransactions.bind(this);
     this.updateToTransaction = this.updateToTransaction.bind(this);
     this.updateSearchValue = this.updateSearchValue.bind(this);
     this.filterSearchValue = this.filterSearchValue.bind(this);
     this.selectSearchField = this.selectSearchField.bind(this);
     this.selectSortOption = this.selectSortOption.bind(this);
+    this.sortOptions = this.sortOptions.bind(this);
     this.toggleSortDirection = this.toggleSortDirection.bind(this);
   }
 
@@ -185,22 +187,31 @@ export class LatestTransactions extends Component {
     );
   }
 
+  fetchTransactions() {
+    let transactions = this.state.filteredTransactions;
+    if (typeof transactions !== 'undefined' && transactions.length > 0) {
+      transactions = Object.keys(this.props.transactions).map(
+        key => this.props.transactions[key]
+      );
+    }
+    return transactions;
+  }
+
   selectSortOption(e) {
-    let field = e.target.value;
-    let txs = Object.keys(this.state.transactions).map(
-      key => this.state.transactions[key]
-    );
     this.setState({ sortOption: e.target.value });
+  }
 
-    if (field === 'none') return;
+  sortOptions(e) {
+    let transactions = this.fetchTransactions();
 
-    let sorted = txs.sort((a, b) => {
-      console.log(b[field] + ' ' + a[field]);
-      return b[field] - a[field];
-    });
-
-    console.log(sorted);
-    // this.setState({transactions: sorted})
+    if (this.state.sortOption !== 'none' && this.state.sortOption !== '') {
+      let sorted = txs.sort((a, b) => {
+        return b[field] - a[field];
+      });
+      this.setState({ filteredTransactions: sorted });
+    } else {
+      this.setState({ filteredTransactions: transactions });
+    }
   }
 
   updateSearchValue(e) {
@@ -208,21 +219,18 @@ export class LatestTransactions extends Component {
   }
 
   filterSearchValue(e) {
-    let transactions = this.state.filteredTransactions;
-
-    if (typeof transactions !== 'undefined' && transactions.length > 0) {
-      transactions = Object.keys(this.props.transactions);
-    }
+    let transactions = this.fetchTransactions();
 
     if (this.state.searchValue !== '' && this.state.searchField !== 'none') {
-      // TODO
-      let arr = [];
-
-      let filteredArr = arr.filter(tx => {
+      let filteredArr = transactions.filter(tx => {
         let txValue = tx[this.state.searchField].toLowerCase();
         let searchValue = this.state.searchValue.toLowerCase();
         return txValue.includes(searchValue);
       });
+      console.log(filteredArr);
+      this.setState({ filteredTransactions: filteredArr });
+    } else {
+      this.setState({ filteredTransactions: transactions });
     }
   }
 
