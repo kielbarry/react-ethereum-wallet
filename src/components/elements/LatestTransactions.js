@@ -1,169 +1,156 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import shortid from 'shortid';
-import * as Actions from '../../actions/actions.js';
-import * as Utils from '../../utils/utils.js';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { Identicon } from 'ethereum-react-components';
+import TransactionItem from './TransactionItem';
 
-class LatestTransactions extends Component {
+export class LatestTransactions extends Component {
   constructor(props) {
     super(props);
-    this.updateToTransaction = this.updateToTransaction.bind(this);
-  }
-  renderProgressBar(tx) {
     this.state = {
-      completed:
-        tx.confirmationNumber !== 'Pending' ? tx.confirmationNumber : 0,
+      ...this.props,
+      filterOptions: {
+        searchValue: '',
+        searchField: 'none',
+        ascending: 'false',
+        sortOption: 'dateSent',
+      },
+      filteredTransactions: [],
     };
-    return (
-      <React.Fragment>
-        {tx.confirmationNumber === 'Pending' ? (
-          <LinearProgress />
-        ) : (
-          <LinearProgress
-            variant="determinate"
-            value={(100 / 12) * this.state.completed}
-          />
-        )}
-      </React.Fragment>
-    );
+
+    this.fetchTransactions = this.fetchTransactions.bind(this);
+    this.updateSearchValue = this.updateSearchValue.bind(this);
+    this.filterSearchValue = this.filterSearchValue.bind(this);
+    this.selectSearchField = this.selectSearchField.bind(this);
+    this.selectSortOption = this.selectSortOption.bind(this);
+    this.sortOptions = this.sortOptions.bind(this);
+    this.toggleSortDirection = this.toggleSortDirection.bind(this);
+    this.sortTransactions = this.sortTransactions.bind(this);
   }
 
-  // snapshotted
-  renderDateInfo(tx) {
-    return (
-      <td
-        className="time simptip-position-right simptip-movable"
-        data-tool-tip={tx.dateSent}
-      >
-        <h2>{Utils.getMonthName(tx.dateSent)}</h2>
-        <p>{Utils.getDate(tx.dateSent)}</p>
-      </td>
-    );
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.transactions !== nextProps.transactions) {
+      this.filterSearchValue();
+      this.sortOptions();
+      this.sortTransactions();
+      return true;
+    }
+    if (this.state.filterOptions !== nextState.filterOptions) {
+      this.filterSearchValue();
+      this.sortOptions();
+      this.sortTransactions();
+      return true;
+    }
+    return false;
   }
 
-  updateToTransaction(e) {
-    e.stopPropagation();
-    console.warn('todo: moved from security icon and need to pudate');
-    // this.props.updateTransactionToSend({
-    //   name: 'to',
-    //   value: props.hash,
-    // });
+  fetchTransactions() {
+    let transactions = this.state.filteredTransactions;
+    if (transactions.length === 0) {
+      transactions = Object.keys(this.props.transactions).map(
+        key => this.props.transactions[key]
+      );
+    }
+    return transactions;
   }
 
-  // snapshotted
-  renderTransactionType(tx) {
-    //TODO: transaction type
-    return (
-      <td className="account-name">
-        <h2>Transaction Type</h2>
-        <p>
-          <span className="address dapp-shorten-text not-ens-name">
-            <Identicon
-              classes="dapp-identicon dapp-tiny"
-              title
-              size="tiny"
-              seed={tx.from}
-            />
-            <Link
-              to={{ pathname: '/send-from/' + tx.from }}
-              title={tx.from}
-              onClick={e => this.updateToTransaction(e)}
-            >
-              {tx.from}
-            </Link>
-          </span>
-          <span className="arrow">→</span>
-          <span className="address dapp-shorten-text not-ens-name">
-            <Identicon
-              classes="dapp-identicon dapp-tiny"
-              title
-              size="tiny"
-              seed={tx.to}
-            />
-            <Link
-              to={{ pathname: '/send-from/' + tx.to }}
-              title={tx.to}
-              onClick={e => this.updateToTransaction(e)}
-            >
-              {tx.to}
-            </Link>
-          </span>
-        </p>
-      </td>
-    );
+  selectSortOption(e) {
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        sortOption: e.target.value,
+      },
+    });
+    this.sortOptions();
   }
 
-  // snapshotted
-  renderTransactionInfo(tx) {
-    return (
-      <td className="info">
-        {tx.confirmationNumber === 'Pending'
-          ? 'Pending...'
-          : tx.confirmationNumber + ' of 12 Confirmations'}
-      </td>
-    );
+  sortOptions(e) {
+    let transactions = this.fetchTransactions();
+    let field = this.state.filterOptions.sortOption;
+
+    if (
+      this.state.filterOptions.sortOption !== 'none' &&
+      this.state.filterOptions.sortOption !== ''
+    ) {
+      let sorted = transactions.sort((a, b) => {
+        return b[field] - a[field];
+      });
+      this.setState({ filteredTransactions: sorted });
+    } else {
+      this.setState({ filteredTransactions: transactions });
+    }
   }
 
-  // snapshotted
-  renderTransactionAmount(tx) {
-    return (
-      <td className="transaction-amount minus">
-        -
-        {this.props.web3 && this.props.web3.web3Instance
-          ? Utils.displayPriceFormatter(this.props, tx.value, 'ETHER') +
-            ' ETHER'
-          : tx.value}
-      </td>
-    );
+  updateSearchValue(e) {
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        searchValue: e.target.value,
+      },
+    });
+    this.filterSearchValue();
   }
 
-  renderIcon() {
-    return (
-      <td>
-        <i className="icon-arrow-right minus" />
-      </td>
-    );
+  filterSearchValue(e) {
+    let transactions = this.fetchTransactions();
+    console.log(transactions);
+    if (
+      this.state.filterOptions.searchValue !== '' &&
+      this.state.filterOptions.searchField !== 'none'
+    ) {
+      let filteredArr = transactions.filter(tx => {
+        let txValue = tx[this.state.filterOptions.searchField].toLowerCase();
+        let searchValue = this.state.filterOptions.searchValue.toLowerCase();
+        return txValue.includes(searchValue);
+      });
+      console.log(filteredArr);
+      this.setState({ filteredTransactions: filteredArr });
+    } else {
+      this.setState({ filteredTransactions: transactions });
+    }
   }
 
-  //TODO: snapshot
-  renderTableRow(tx) {
-    return (
-      <tr
-        className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}
-        // key={tx.transactionHash}
-        key={shortid.generate()}
-        data-transaction-hash={tx.transactionHash}
-        data-block-hash={tx.blockHash}
-        onClick={e => {
-          if (e.target.tagName !== 'A') {
-            this.props.updateSelectedTransaction(tx);
-            this.props.displayModal('displayTransaction');
-          }
-        }}
-      >
-        {this.renderDateInfo(tx)}
-        {this.renderTransactionType(tx)}
-        {this.renderTransactionInfo(tx)}
-        {this.renderTransactionAmount(tx)}
-        {this.renderIcon()}
-      </tr>
-    );
+  selectSearchField(e) {
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        searchField: e.target.value,
+      },
+    });
+    this.filterSearchValue();
   }
 
-  //TODO: snapshot
+  toggleSortDirection(e) {
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        ascending: !this.state.filterOptions.ascending,
+      },
+    });
+    this.sortTransactions();
+  }
 
-  // <React.Fragment>
-  //               {this.renderTableRow(transactions[txHash])}
-  //               {}
-  //               {this.renderProgressBar(transactions[txHash])}
-  //             }
-  //             </React.Fragment>
-  render() {
-    let transactions = this.props.reducers.Transactions;
+  sortTransactions() {
+    this.setState({
+      filteredTransactions: this.state.filteredTransactions.reverse(),
+    });
+  }
+
+  renderSearchField() {
+    let optionsArr = [
+      {
+        displayName: 'To',
+        txKey: 'to',
+      },
+      {
+        displayName: 'From',
+        txKey: 'from',
+      },
+      {
+        displayName: 'TransactionType (experimental)',
+        txKey: 'transactionType',
+      },
+    ];
     return (
       <React.Fragment>
         <h2>Latest transactions</h2>
@@ -172,14 +159,112 @@ class LatestTransactions extends Component {
           type="text"
           className="filter-transactions"
           placeholder="Filter transactions"
+          onKeyUp={e => this.updateSearchValue(e)}
         />
-        <table className="dapp-zebra transactions">
-          <tbody>
-            {Object.keys(transactions).map(txHash =>
-              this.renderTableRow(transactions[txHash])
-            )}
-          </tbody>
-        </table>
+        <select
+          style={{ marginLeft: '20px' }}
+          onChange={e => this.selectSearchField(e)}
+          value={this.state.filterOptions.searchField}
+        >
+          <option key={shortid.generate()} value={'none'} />
+          {optionsArr.map((val, i) => (
+            <option key={shortid.generate()} value={val['txKey']}>
+              {val['displayName']}
+            </option>
+          ))}
+        </select>
+      </React.Fragment>
+    );
+  }
+
+  renderSortOptions() {
+    let optionsArr = [
+      {
+        displayName: 'Confirmations',
+        txKey: 'confirmationNumber',
+      },
+      {
+        displayName: 'Date',
+        txKey: 'dateSent',
+      },
+      {
+        displayName: 'Nonce (experimental)',
+        txKey: 'none',
+      },
+      {
+        displayName: 'Amount',
+        txKey: 'value',
+      },
+      {
+        displayName: 'Gas Used',
+        txKey: 'gasUsed',
+      },
+      {
+        displayName: 'Block Number',
+        txKey: 'blockNumber',
+      },
+    ];
+    return (
+      <React.Fragment>
+        <select
+          style={{ marginLeft: '20px' }}
+          onChange={e => this.selectSortOption(e)}
+          value={this.state.filterOptions.sortOption}
+        >
+          <option key={shortid.generate()} value={'none'} />
+          {optionsArr.map((val, i) => (
+            <option key={shortid.generate()} value={val['txKey']}>
+              {val['displayName']}
+            </option>
+          ))}
+        </select>
+      </React.Fragment>
+    );
+  }
+
+  renderDirectionalIcon() {
+    let icon = this.state.filterOptions.ascending ? 'up' : 'down';
+    return (
+      <i
+        className={'icon-arrow-' + icon}
+        onClick={e => this.toggleSortDirection(e)}
+      />
+    );
+  }
+
+  renderTransactions() {
+    // let transactions = this.state.transactions;
+    let transactions;
+    if (this.state.filteredTransactions.length !== 0) {
+      transactions = this.state.filteredTransactions;
+    } else {
+      transactions = Object.keys(this.props.transactions).map(hash => {
+        return this.props.transactions[hash];
+      });
+    }
+
+    // let transactions = this.state.filteredTransactions;
+    // let txArr = Object.keys(transactions).map(hash => {
+    //   return transactions[hash];
+    // });
+    return (
+      <table className="dapp-zebra transactions">
+        <tbody>
+          {transactions.map(tx => (
+            <TransactionItem key={shortid.generate()} transaction={tx} />
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        {this.renderSearchField()}
+        {this.renderSortOptions()}
+        {this.renderDirectionalIcon()}
+        {this.renderTransactions()}
       </React.Fragment>
     );
   }
@@ -190,5 +275,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  null
 )(LatestTransactions);

@@ -6,6 +6,10 @@ import ContractActionBar from '../components/elements/ContractActionBar.js';
 import ExecutableContract from '../components/elements/ExecutableContract.js';
 import ContractEvents from '../components/elements/ContractEvents.js';
 
+import NoMatchingTransaction from '../components/elements/NoMatchingTransaction.js';
+
+import LatestTransactions from '../components/elements/LatestTransactions.js';
+
 import * as Utils from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
@@ -348,6 +352,32 @@ export class SingleContractView extends Component {
     );
   }
 
+  renderAccountTransactions() {
+    let contract = this.props.reducers.selectedContract.contract;
+    let address = contract.address;
+    let transactions = this.props.reducers.Transactions;
+    let accountTxns = {};
+    Object.keys(transactions).map(hash => {
+      if (
+        transactions[hash]['from'] === address.toLowerCase() ||
+        transactions[hash]['to'] === address.toLowerCase()
+      ) {
+        accountTxns[hash] = transactions[hash];
+      }
+      return null;
+    });
+    return (
+      <React.Fragment>
+        {Object.keys(accountTxns).length &&
+        accountTxns.constructor === Object ? (
+          <LatestTransactions transactions={accountTxns} />
+        ) : (
+          <NoMatchingTransaction />
+        )}
+      </React.Fragment>
+    );
+  }
+
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
     console.log(this.props.reducers.selectedContract);
@@ -409,7 +439,9 @@ export class SingleContractView extends Component {
         (contractConstants.length || contractFunctions.length) ? (
           <ExecutableContract />
         ) : null}
-        {logs && logs.length ? <ContractEvents /> : null}
+        {/*
+          {logs && logs.length ? <ContractEvents /> : null}
+        */}
         <div className="accounts-transactions">
           <h2>Latest events</h2>
           <br />
@@ -428,6 +460,8 @@ export class SingleContractView extends Component {
             className="filter-transactions"
             placeholder="Filter events"
           />
+          {logs && logs.length ? <ContractEvents /> : null}
+          {this.renderAccountTransactions()}
         </div>
       </div>
     );
