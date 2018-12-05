@@ -53,10 +53,16 @@ const DateInfo = props => {
 export class LatestTransactions extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...this.props, sortOption: '', searchValue: '' };
+    this.state = {
+      ...this.props,
+      sortOption: 'dateSent',
+      searchValue: '',
+      ascending: 'false',
+    };
 
     this.updateToTransaction = this.updateToTransaction.bind(this);
     this.selectSortOption = this.selectSortOption.bind(this);
+    this.toggleSortDirection = this.toggleSortDirection.bind(this);
   }
   renderProgressBar(tx) {
     this.state = {
@@ -144,46 +150,80 @@ export class LatestTransactions extends Component {
   //TODO: snapshot
   renderTableRow(tx) {
     return (
-      <tr
-        className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}
-        // key={tx.transactionHash}
-        key={shortid.generate()}
-        data-transaction-hash={tx.transactionHash}
-        data-block-hash={tx.blockHash}
-        onClick={e => {
-          if (e.target.tagName !== 'A') {
-            this.props.updateSelectedTransaction(tx);
-            this.props.displayModal('displayTransaction');
-          }
-        }}
-      >
-        <DateInfo tx={tx} />
-        {this.renderTransactionType(tx)}
-        <TransactionInfo tx={tx} />
-        {this.renderTransactionAmount(tx)}
-        <MinusIcon />
-      </tr>
+      <React.Fragment>
+        <tr
+          className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}
+          // key={tx.transactionHash}
+          key={shortid.generate()}
+          data-transaction-hash={tx.transactionHash}
+          data-block-hash={tx.blockHash}
+          onClick={e => {
+            if (e.target.tagName !== 'A') {
+              this.props.updateSelectedTransaction(tx);
+              this.props.displayModal('displayTransaction');
+            }
+          }}
+        >
+          <DateInfo tx={tx} />
+          {this.renderTransactionType(tx)}
+          <td>
+            <h2 />
+            <i className="icon-ban" />
+            <i className="icon-reload" />
+          </td>
+          <TransactionInfo tx={tx} />
+          {this.renderTransactionAmount(tx)}
+          <MinusIcon />
+        </tr>
+      </React.Fragment>
     );
   }
 
   selectSortOption(e) {
-    console.log(e.target.value);
-    let txs = this.state.transactions;
+    let field = e.target.value;
+    let txs = Object.keys(this.state.transactions).map(
+      key => this.state.transactions[key]
+    );
     this.setState({ sortOption: e.target.value });
+
+    if (field === 'none') return;
+
+    let sorted = txs.sort((a, b) => {
+      console.log(b[field] + ' ' + a[field]);
+      return b[field] - a[field];
+    });
+
+    console.log(sorted);
+    // this.setState({transactions: sorted})
   }
 
   updateSearchValue(e) {
     this.setState({ searchValue: e.target.value });
   }
 
-  render() {
-    // let transactions = this.props.reducers.Transactions;
-    let transactions = this.state.transactions;
-    // console.log(transactions)
-    let txArr = Object.keys(transactions).map(hash => {
-      return transactions[hash];
-    });
-    let arr = ['Status', 'Date', 'TransactionType', 'Amount'];
+  toggleSortDirection(e) {
+    this.setState({ ascending: !this.state.ascending });
+  }
+
+  renderSearchField() {
+    let optionsArr = [
+      {
+        displayName: 'To',
+        txKey: 'to',
+      },
+      {
+        displayName: 'From',
+        txKey: 'from',
+      },
+      {
+        displayName: 'TransactionType (experimental)',
+        txKey: 'transactionType',
+      },
+      {
+        displayName: 'Block Number',
+        txKey: 'blockNumber',
+      },
+    ];
     return (
       <React.Fragment>
         <h2>Latest transactions</h2>
@@ -194,19 +234,88 @@ export class LatestTransactions extends Component {
           placeholder="Filter transactions"
           onKeyUp={e => this.updateSearchValue(e)}
         />
+        <select
+          style={{ marginLeft: '20px' }}
+          // onChange={e => this.selectSortOption(e)}
+          value={this.state.searchValue}
+        >
+          <option key={shortid.generate()} value={'none'} />
+          {optionsArr.map((val, i) => (
+            <option key={shortid.generate()} value={val['txKey']}>
+              {val['displayName']}
+            </option>
+          ))}
+        </select>
+      </React.Fragment>
+    );
+  }
 
+  renderSortOptions() {
+    let optionsArr = [
+      {
+        displayName: 'Confirmations',
+        txKey: 'confirmationNumber',
+      },
+      {
+        displayName: 'Date',
+        txKey: 'dateSent',
+      },
+      {
+        displayName: 'Nonce (experimental)',
+        txKey: 'none',
+      },
+      {
+        displayName: 'Amount',
+        txKey: 'value',
+      },
+      {
+        displayName: 'Gas Used',
+        txKey: 'gasUsed',
+      },
+      {
+        displayName: 'Block Number',
+        txKey: 'blockNumber',
+      },
+    ];
+    return (
+      <React.Fragment>
         <select
           style={{ marginLeft: '20px' }}
           onChange={e => this.selectSortOption(e)}
           value={this.state.sortOption}
         >
           <option key={shortid.generate()} value={'none'} />
-          {arr.map(val => (
-            <option key={shortid.generate()} value={val}>
-              {val}
+          {optionsArr.map((val, i) => (
+            <option key={shortid.generate()} value={val['txKey']}>
+              {val['displayName']}
             </option>
           ))}
         </select>
+      </React.Fragment>
+    );
+  }
+
+  renderDirectionalIcon() {
+    let icon = this.state.ascending ? 'up' : 'down';
+    return (
+      <i
+        className={'icon-arrow-' + icon}
+        onClick={e => this.toggleSortDirection(e)}
+      />
+    );
+  }
+
+  render() {
+    // let transactions = this.props.reducers.Transactions;
+    let transactions = this.state.transactions;
+    let txArr = Object.keys(transactions).map(hash => {
+      return transactions[hash];
+    });
+    return (
+      <React.Fragment>
+        {this.renderSearchField()}
+        {this.renderSortOptions()}
+        {this.renderDirectionalIcon()}
         <table className="dapp-zebra transactions">
           <tbody>{txArr.map(tx => this.renderTableRow(tx))}</tbody>
         </table>
