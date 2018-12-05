@@ -9,10 +9,12 @@ export class LatestTransactions extends Component {
     super(props);
     this.state = {
       ...this.props,
-      searchValue: '',
-      searchField: 'none',
-      ascending: 'false',
-      sortOption: 'dateSent',
+      filterOptions: {
+        searchValue: '',
+        searchField: 'none',
+        ascending: 'false',
+        sortOption: 'dateSent',
+      },
       filteredTransactions: [],
     };
 
@@ -23,10 +25,20 @@ export class LatestTransactions extends Component {
     this.selectSortOption = this.selectSortOption.bind(this);
     this.sortOptions = this.sortOptions.bind(this);
     this.toggleSortDirection = this.toggleSortDirection.bind(this);
+    this.sortTransactions = this.sortTransactions.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.transactions !== nextProps.transactions) {
+      this.filterSearchValue();
+      this.sortOptions();
+      this.sortTransactions();
+      return true;
+    }
+    if (this.state.filterOptions !== nextState.filterOptions) {
+      this.filterSearchValue();
+      this.sortOptions();
+      this.sortTransactions();
       return true;
     }
     return false;
@@ -34,7 +46,7 @@ export class LatestTransactions extends Component {
 
   fetchTransactions() {
     let transactions = this.state.filteredTransactions;
-    if (typeof transactions === 'undefined' && transactions.length === 0) {
+    if (transactions.length === 0) {
       transactions = Object.keys(this.props.transactions).map(
         key => this.props.transactions[key]
       );
@@ -43,14 +55,23 @@ export class LatestTransactions extends Component {
   }
 
   selectSortOption(e) {
-    this.setState({ sortOption: e.target.value });
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        sortOption: e.target.value,
+      },
+    });
+    this.sortOptions();
   }
 
   sortOptions(e) {
     let transactions = this.fetchTransactions();
-    let field = this.state.sortOption;
+    let field = this.state.filterOptions.sortOption;
 
-    if (this.state.sortOption !== 'none' && this.state.sortOption !== '') {
+    if (
+      this.state.filterOptions.sortOption !== 'none' &&
+      this.state.filterOptions.sortOption !== ''
+    ) {
       let sorted = transactions.sort((a, b) => {
         return b[field] - a[field];
       });
@@ -61,16 +82,25 @@ export class LatestTransactions extends Component {
   }
 
   updateSearchValue(e) {
-    this.setState({ searchValue: e.target.value });
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        searchValue: e.target.value,
+      },
+    });
+    this.filterSearchValue();
   }
 
   filterSearchValue(e) {
     let transactions = this.fetchTransactions();
-
-    if (this.state.searchValue !== '' && this.state.searchField !== 'none') {
+    console.log(transactions);
+    if (
+      this.state.filterOptions.searchValue !== '' &&
+      this.state.filterOptions.searchField !== 'none'
+    ) {
       let filteredArr = transactions.filter(tx => {
-        let txValue = tx[this.state.searchField].toLowerCase();
-        let searchValue = this.state.searchValue.toLowerCase();
+        let txValue = tx[this.state.filterOptions.searchField].toLowerCase();
+        let searchValue = this.state.filterOptions.searchValue.toLowerCase();
         return txValue.includes(searchValue);
       });
       console.log(filteredArr);
@@ -81,11 +111,29 @@ export class LatestTransactions extends Component {
   }
 
   selectSearchField(e) {
-    this.setState({ searchField: e.target.value });
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        searchField: e.target.value,
+      },
+    });
+    this.filterSearchValue();
   }
 
   toggleSortDirection(e) {
-    this.setState({ ascending: !this.state.ascending });
+    this.setState({
+      filterOptions: {
+        ...this.state.filterOptions,
+        ascending: !this.state.filterOptions.ascending,
+      },
+    });
+    this.sortTransactions();
+  }
+
+  sortTransactions() {
+    this.setState({
+      filteredTransactions: this.state.filteredTransactions.reverse(),
+    });
   }
 
   renderSearchField() {
@@ -116,7 +164,7 @@ export class LatestTransactions extends Component {
         <select
           style={{ marginLeft: '20px' }}
           onChange={e => this.selectSearchField(e)}
-          value={this.state.searchField}
+          value={this.state.filterOptions.searchField}
         >
           <option key={shortid.generate()} value={'none'} />
           {optionsArr.map((val, i) => (
@@ -161,7 +209,7 @@ export class LatestTransactions extends Component {
         <select
           style={{ marginLeft: '20px' }}
           onChange={e => this.selectSortOption(e)}
-          value={this.state.sortOption}
+          value={this.state.filterOptions.sortOption}
         >
           <option key={shortid.generate()} value={'none'} />
           {optionsArr.map((val, i) => (
@@ -175,7 +223,7 @@ export class LatestTransactions extends Component {
   }
 
   renderDirectionalIcon() {
-    let icon = this.state.ascending ? 'up' : 'down';
+    let icon = this.state.filterOptions.ascending ? 'up' : 'down';
     return (
       <i
         className={'icon-arrow-' + icon}
@@ -185,14 +233,24 @@ export class LatestTransactions extends Component {
   }
 
   renderTransactions() {
-    let transactions = this.state.transactions;
-    let txArr = Object.keys(transactions).map(hash => {
-      return transactions[hash];
-    });
+    // let transactions = this.state.transactions;
+    let transactions;
+    if (this.state.filteredTransactions.length !== 0) {
+      transactions = this.state.filteredTransactions;
+    } else {
+      transactions = Object.keys(this.props.transactions).map(hash => {
+        return this.props.transactions[hash];
+      });
+    }
+
+    // let transactions = this.state.filteredTransactions;
+    // let txArr = Object.keys(transactions).map(hash => {
+    //   return transactions[hash];
+    // });
     return (
       <table className="dapp-zebra transactions">
         <tbody>
-          {txArr.map(tx => (
+          {transactions.map(tx => (
             <TransactionItem key={shortid.generate()} transaction={tx} />
           ))}
         </tbody>
