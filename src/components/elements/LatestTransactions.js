@@ -55,15 +55,21 @@ export class LatestTransactions extends Component {
     super(props);
     this.state = {
       ...this.props,
-      sortOption: 'dateSent',
       searchValue: '',
+      searchField: 'none',
       ascending: 'false',
+      sortOption: 'dateSent',
+      filtertedTransactions: [],
     };
 
     this.updateToTransaction = this.updateToTransaction.bind(this);
+    this.updateSearchValue = this.updateSearchValue.bind(this);
+    this.filterSearchValue = this.filterSearchValue.bind(this);
+    this.selectSearchField = this.selectSearchField.bind(this);
     this.selectSortOption = this.selectSortOption.bind(this);
     this.toggleSortDirection = this.toggleSortDirection.bind(this);
   }
+
   renderProgressBar(tx) {
     this.state = {
       completed:
@@ -201,6 +207,29 @@ export class LatestTransactions extends Component {
     this.setState({ searchValue: e.target.value });
   }
 
+  filterSearchValue(e) {
+    let transactions = this.state.filteredTransactions;
+
+    if (typeof transactions !== 'undefined' && transactions.length > 0) {
+      transactions = Object.keys(this.props.transactions);
+    }
+
+    if (this.state.searchValue !== '' && this.state.searchField !== 'none') {
+      // TODO
+      let arr = [];
+
+      let filteredArr = arr.filter(tx => {
+        let txValue = tx[this.state.searchField].toLowerCase();
+        let searchValue = this.state.searchValue.toLowerCase();
+        return txValue.includes(searchValue);
+      });
+    }
+  }
+
+  selectSearchField(e) {
+    this.setState({ searchField: e.target.value });
+  }
+
   toggleSortDirection(e) {
     this.setState({ ascending: !this.state.ascending });
   }
@@ -219,10 +248,10 @@ export class LatestTransactions extends Component {
         displayName: 'TransactionType (experimental)',
         txKey: 'transactionType',
       },
-      {
-        displayName: 'Block Number',
-        txKey: 'blockNumber',
-      },
+      // {
+      //   displayName: 'Block Number',
+      //   txKey: 'blockNumber',
+      // },
     ];
     return (
       <React.Fragment>
@@ -236,8 +265,8 @@ export class LatestTransactions extends Component {
         />
         <select
           style={{ marginLeft: '20px' }}
-          // onChange={e => this.selectSortOption(e)}
-          value={this.state.searchValue}
+          onChange={e => this.selectSearchField(e)}
+          value={this.state.searchField}
         >
           <option key={shortid.generate()} value={'none'} />
           {optionsArr.map((val, i) => (
@@ -305,20 +334,25 @@ export class LatestTransactions extends Component {
     );
   }
 
-  render() {
-    // let transactions = this.props.reducers.Transactions;
+  renderTransactions() {
     let transactions = this.state.transactions;
     let txArr = Object.keys(transactions).map(hash => {
       return transactions[hash];
     });
     return (
+      <table className="dapp-zebra transactions">
+        <tbody>{txArr.map(tx => this.renderTableRow(tx))}</tbody>
+      </table>
+    );
+  }
+
+  render() {
+    return (
       <React.Fragment>
         {this.renderSearchField()}
         {this.renderSortOptions()}
         {this.renderDirectionalIcon()}
-        <table className="dapp-zebra transactions">
-          <tbody>{txArr.map(tx => this.renderTableRow(tx))}</tbody>
-        </table>
+        {this.renderTransactions()}
       </React.Fragment>
     );
   }
