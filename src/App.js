@@ -106,6 +106,12 @@ export class App extends Component {
           this.props.reducers.Transactions,
           this.props.updateTransactionConfirmation
         );
+
+        Utils.updatePendingConfirmations(
+          web3,
+          this.props.reducers.Transactions,
+          this.props.updateTransaction
+        );
       }
     }, 1000);
   }

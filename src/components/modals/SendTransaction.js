@@ -56,10 +56,15 @@ export class SendTransactionModal extends Component {
         amount: tx.value,
         gasPrice: tx.gasPrice,
       })
-      .on('transactionHash', hash => {
+      .on('transactionHash', transactionHash => {
         this.props.addTransaction({
-          hash: hash,
-          value: { ...tx, dateSent: date, confirmationNumber: 'Pending' },
+          hash: transactionHash,
+          value: {
+            ...tx,
+            dateSent: date,
+            confirmationNumber: 'Pending',
+            transactionHash: transactionHash,
+          },
         });
         this.props.displayGlobalNotification({
           display: true,

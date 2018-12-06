@@ -245,11 +245,24 @@ export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
 }
 
-export function updateAccountBalances(web3, accounts, cb1, cb2) {
+// export function updateAccountBalances(web3, accounts, cb1, cb2) {
+//   let totalBalance = 0;
+//   accounts.map(acc => {
+//     let account = acc;
+//     web3.eth.getBalance(acc, (err, balance) => {
+//       cb1({ account, balance });
+//       totalBalance += Number(balance);
+//       cb2(totalBalance);
+//     });
+//   });
+// }
+
+function updateAccounts(web3, accounts, cb1, cb2) {
   let totalBalance = 0;
   accounts.map(acc => {
     let account = acc;
     web3.eth.getBalance(acc, (err, balance) => {
+      console.log(account, ' : ', balance);
       cb1({ account, balance });
       totalBalance += Number(balance);
       cb2(totalBalance);
@@ -258,19 +271,61 @@ export function updateAccountBalances(web3, accounts, cb1, cb2) {
 }
 
 export function getAccounts(web3, cb1, cb2) {
+  console.log(this);
   try {
     web3.eth.getAccounts().then(accounts => {
-      let totalBalance = 0;
-      // eslint-disable-next-line
-      accounts.map(acc => {
-        let account = acc;
-        web3.eth.getBalance(acc, (err, balance) => {
-          cb1({ account, balance });
-          totalBalance += Number(balance);
-          cb2(totalBalance);
+      updateAccounts(web3, accounts, cb1, cb2);
+      web3.eth.subscribe('newBlockHeaders', (err, b) => {
+        console.log('new blockheaders for updateaccounts');
+        updateAccounts(web3, accounts, cb1, cb2);
+      });
+    });
+  } catch (err) {
+    console.warn('web3 provider not open');
+    return err;
+  }
+}
+
+export function updatePendingConfirmations(web3, transactions, cb1) {
+  console.log('updatePendingConfirmations');
+  let pending = Object.keys(transactions).filter(tx => {
+    return transactions[tx].confirmationNumber === 'Pending';
+  });
+  console.log(pending);
+  let subscription;
+  try {
+    // while (pending.length) {
+    console.log(pending);
+    console.log(pending.length);
+    // subscription = subscription.subscribe((error, result) => {
+    //   if (error) console.log(error)
+    // }).on('data', async (txHash) => {
+    //   console.log('txHash in updatePendingConfirmations', txHash)
+    // })
+    subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
+      pending.map((txHash, index) => {
+        web3.eth.getTransaction(txHash, (error, tx) => {
+          // web3.eth.getTransactionReceipt(recept, (error, tx) => {
+          if (error) console.warn(error);
+          if (tx) console.log(tx);
+          if (tx.blockNumber !== null) {
+            pending.splice(index, 1);
+            cb1({
+              name: [tx.transactionHash],
+              // name: [receipt.transactionHash],
+              value: tx,
+              // value: receipt,
+            });
+          }
         });
       });
     });
+
+    // }
+    // subscription.unsubscribe(function(error, success) {
+    //   if (success) console.log('Error unsubscribing!', error);
+    //   if (success) console.log('Successfully unsubscribed!');
+    // });
   } catch (err) {
     console.warn('web3 provider not open');
     return err;
@@ -284,9 +339,6 @@ export function updateTransactionConfirmation(web3, transactions, cb1) {
       transactions[tx].confirmationNumber !== 'Pending' &&
       transactions[tx].confirmationNumber < 12
     );
-  });
-  let pending = Object.keys(transactions).filter(tx => {
-    return transactions[tx].confirmationNumber === 'Pending';
   });
   let subscription;
   try {
@@ -337,19 +389,6 @@ export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
         });
 
       web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
-
-      // if(transactions) {
-      //   transactions.map(txHash => {
-      //     console.log("inside getNewBlockHeaders", txHash)
-      //     web3.eth.getTransaction(txHash, (error, tx) => {
-      //       if(err) console.warn("there was an error updating the transaction with hash: " txHash)
-      //       cb3({
-      //         name: [txHash],
-      //         value: b.number,
-      //       })
-      //     })
-      //   })
-      // }
     });
   } catch (err) {
     console.warn('web3 provider not open');
