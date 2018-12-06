@@ -9,6 +9,7 @@ import * as WalletUtils from './utils/WalletUtils.js';
 
 // views
 import LandingPage from './views/LandingPage.js';
+
 import ViewContainer from './views/ViewContainer.js';
 
 // Modals
@@ -22,10 +23,38 @@ import './App.css';
 
 import Web3Initializer from './web3/Web3Initializer.js';
 
+// const LoadableLandingPage = LandingPage({
+//   loader: () => import('./views/LandingPage.js'),
+//   loading() {
+//     return LandingPage
+//   }
+// });
+// const LoadableViewContainer = ViewContainer({
+//   loader: () => import('./views/ViewContainer.js'),
+//   loading() {
+//     return ViewContainer
+//   }
+// });
+// const LoadableModalContainer = ModalContainer({
+//   loader: () => import('./components/modals/ModalContainer.js'),
+//   loading() {
+//     return ModalContainer
+//   }
+// });
+// const LoadableNavBar = NavBar({
+//   loader: () => import('./components/Navbar'),
+//   loading() {
+//     return NavBar
+//   }
+// });
+
 export class App extends Component {
   constructor(props) {
     super(props);
     this.getCryptoComparePrices = this.getCryptoComparePrices.bind(this);
+    this.updateTransactionConfirmations = this.updateTransactionConfirmations.bind(
+      this
+    );
 
     this.getCryptoComparePrices();
     this.CryptoCompareInterval = setInterval(
@@ -74,8 +103,55 @@ export class App extends Component {
         } catch (err) {
           console.error('error', err);
         }
+
+        this.updateTransactionConfirmations(web3);
       }
     }, 1000);
+  }
+
+  updateTransactionConfirmations(web3) {
+    console.log('inside updateTransactionConfirmations');
+    let allTxns = this.props.reducers.Transactions;
+    let unconfirmed = Object.keys(allTxns).filter(tx => {
+      // console.log(tx)
+      return (
+        allTxns[tx].confirmationNumber !== 'Pending' &&
+        allTxns[tx].confirmationNumber < 12
+      );
+    });
+
+    // console.log("not fully confirmed transaction list", unconfirmed)
+    // console.log(typeof unconfirmed)
+
+    let currentBlock = Number(
+      this.props.reducers.blockHeader.number.split(',').join('')
+    );
+
+    let subscriptionRequired = [];
+
+    unconfirmed.map(tx => {
+      console.log(tx);
+
+      web3.eth.getTransaction(allTxns[tx].transactionHash, (err, tx) => {
+        if (err) {
+          this.props.displayGlobalNotification({
+            display: true,
+            type: 'error',
+            msg: 'There was an error updating a transaction',
+            duration: 5,
+          });
+          console.warn(error);
+        }
+        if (tx && tx.blockNumber !== null) {
+          let blocksConfirmed = currentBlock - tx.blockNumber;
+          blocksConfirmed >= 12
+            ? (tx['confirmationNumber'] = blocksConfirmed)
+            : subscriptionRequired.push(tx);
+        } else {
+          subscriptionRequired.push(tx);
+        }
+      });
+    });
   }
 
   // componentDidMount() {
@@ -117,7 +193,19 @@ export class App extends Component {
           <Route exact path="/" component={LandingPage} />
           {/*}
             if web3 connected, display rest
+
+            // if lazy load doesn't work
+          <NavBar />
+          <ViewContainer />
+          <ModalContainer />
+
+          <LoadableLandingPage />
+          <LoadableViewContainer />
+          <LoadableModalContainer />
+          <LoadableNavBar />
+
           */}
+
           <NavBar />
           <ViewContainer />
           <ModalContainer />

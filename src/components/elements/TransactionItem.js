@@ -19,11 +19,14 @@ import { Identicon } from 'ethereum-react-components';
 
 // snapshotted
 const TransactionInfo = props => {
+  let cn = props.tx.confirmationNumber;
   return (
     <td className="info">
-      {props.tx.confirmationNumber === 'Pending'
+      {cn === 'Pending'
         ? 'Pending...'
-        : props.tx.confirmationNumber + ' of 12 Confirmations'}
+        : cn > 12
+        ? '12 of 12 Confirmations'
+        : cn + ' of 12 Confirmations'}
     </td>
   );
 };

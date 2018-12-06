@@ -227,6 +227,7 @@ export class LatestTransactions extends Component {
     return (
       <i
         className={'icon-arrow-' + icon}
+        style={{ marginLeft: '20px' }}
         onClick={e => this.toggleSortDirection(e)}
       />
     );
