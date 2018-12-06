@@ -52,9 +52,6 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.getCryptoComparePrices = this.getCryptoComparePrices.bind(this);
-    this.updateTransactionConfirmations = this.updateTransactionConfirmations.bind(
-      this
-    );
 
     this.getCryptoComparePrices();
     this.CryptoCompareInterval = setInterval(
@@ -104,64 +101,14 @@ export class App extends Component {
           console.error('error', err);
         }
 
-        this.updateTransactionConfirmations(web3);
+        Utils.updateTransactionConfirmation(
+          web3,
+          this.props.reducers.Transactions,
+          this.props.updateTransactionConfirmation
+        );
       }
     }, 1000);
   }
-
-  updateTransactionConfirmations(web3) {
-    console.log('inside updateTransactionConfirmations');
-    let allTxns = this.props.reducers.Transactions;
-    let unconfirmed = Object.keys(allTxns).filter(tx => {
-      // console.log(tx)
-      return (
-        allTxns[tx].confirmationNumber !== 'Pending' &&
-        allTxns[tx].confirmationNumber < 12
-      );
-    });
-
-    // console.log("not fully confirmed transaction list", unconfirmed)
-    // console.log(typeof unconfirmed)
-
-    let currentBlock = Number(
-      this.props.reducers.blockHeader.number.split(',').join('')
-    );
-
-    let subscriptionRequired = [];
-
-    unconfirmed.map(tx => {
-      console.log(tx);
-
-      web3.eth.getTransaction(allTxns[tx].transactionHash, (err, tx) => {
-        if (err) {
-          this.props.displayGlobalNotification({
-            display: true,
-            type: 'error',
-            msg: 'There was an error updating a transaction',
-            duration: 5,
-          });
-          console.warn(error);
-        }
-        if (tx && tx.blockNumber !== null) {
-          let blocksConfirmed = currentBlock - tx.blockNumber;
-          blocksConfirmed >= 12
-            ? (tx['confirmationNumber'] = blocksConfirmed)
-            : subscriptionRequired.push(tx);
-        } else {
-          subscriptionRequired.push(tx);
-        }
-      });
-    });
-  }
-
-  // componentDidMount() {
-  //   console.log('this.props', this.props);
-  //   console.log('this.props', this.props.history);
-  //   console.log('context', this.context);
-  //   if (performance.navigation.TYPE_RELOAD === 1) {
-  //     this.context.history.push('/accounts');
-  //   }
-  // }
 
   componentDidUpdate(prevProps, prevState) {
     if (

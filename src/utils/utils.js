@@ -245,6 +245,18 @@ export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
 }
 
+export function updateAccountBalances(web3, accounts, cb1, cb2) {
+  let totalBalance = 0;
+  accounts.map(acc => {
+    let account = acc;
+    web3.eth.getBalance(acc, (err, balance) => {
+      cb1({ account, balance });
+      totalBalance += Number(balance);
+      cb2(totalBalance);
+    });
+  });
+}
+
 export function getAccounts(web3, cb1, cb2) {
   try {
     web3.eth.getAccounts().then(accounts => {
@@ -265,7 +277,54 @@ export function getAccounts(web3, cb1, cb2) {
   }
 }
 
-export function getNewBlockHeaders(web3, cb1, cb2) {
+export function updateTransactionConfirmation(web3, transactions, cb1) {
+  if (!transactions) return;
+  let unconfirmed = Object.keys(transactions).filter(tx => {
+    return (
+      transactions[tx].confirmationNumber !== 'Pending' &&
+      transactions[tx].confirmationNumber < 12
+    );
+  });
+  let pending = Object.keys(transactions).filter(tx => {
+    return transactions[tx].confirmationNumber === 'Pending';
+  });
+  let subscription;
+  try {
+    while (unconfirmed.length) {
+      subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
+        let currentBlock = b.number;
+        unconfirmed.map((txHash, index) => {
+          console.log(unconfirmed.length);
+          // double check localStorage data is indeed a tx
+          web3.eth.getTransaction(txHash, (error, tx) => {
+            if (err)
+              console.warn(
+                'there was an error updating the transaction with hash: ',
+                txHash
+              );
+            let confirmations = currentBlock - tx.blockNumber;
+            if (confirmations >= 12) {
+              unconfirmed.splice(index, 1);
+            }
+            cb1({
+              name: [txHash],
+              value: confirmations,
+            });
+          });
+        });
+      });
+    }
+    subscription.unsubscribe(function(error, success) {
+      if (success) console.log('Error unsubscribing!', error);
+      if (success) console.log('Successfully unsubscribed!');
+    });
+  } catch (err) {
+    console.warn('web3 provider not open');
+    return err;
+  }
+}
+
+export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
   try {
     web3.eth.subscribe('newBlockHeaders', (err, b) => {
       if (!err)
@@ -276,7 +335,21 @@ export function getNewBlockHeaders(web3, cb1, cb2) {
           size: b.size,
           timestamp: b.timestamp,
         });
+
       web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
+
+      // if(transactions) {
+      //   transactions.map(txHash => {
+      //     console.log("inside getNewBlockHeaders", txHash)
+      //     web3.eth.getTransaction(txHash, (error, tx) => {
+      //       if(err) console.warn("there was an error updating the transaction with hash: " txHash)
+      //       cb3({
+      //         name: [txHash],
+      //         value: b.number,
+      //       })
+      //     })
+      //   })
+      // }
     });
   } catch (err) {
     console.warn('web3 provider not open');
