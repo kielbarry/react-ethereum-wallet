@@ -60,6 +60,30 @@ Sort method for accounts and wallets to sort by balance
 //     ? 1
 //     : -1;
 // };
+// 0xb625F6B6152e24248BDE850492750E13E8A41113
+
+export function combineWallets(addresses, walletContracts) {
+  return sortByBalance(
+    Object.keys(addresses)
+      .map(address => {
+        return {
+          ...addresses[address],
+          address,
+          addressType: 'walletAddress',
+        };
+      })
+      .concat(
+        Object.keys(walletContracts).map(address => {
+          let contract = walletContracts[address];
+          return {
+            ...walletContracts,
+            address,
+            addressType: 'contractAddress',
+          };
+        })
+      )
+  );
+}
 
 /**
 Sort method for accounts and wallets to sort by balance and remove empty addresses;

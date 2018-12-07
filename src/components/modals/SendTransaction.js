@@ -7,6 +7,8 @@ import { withRouter } from 'react-router';
 // import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
 
+import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
+
 //List of actions actually used
 // closeModal
 // addTransaction
@@ -49,64 +51,29 @@ export class SendTransactionModal extends Component {
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
 
-    console.log(tx);
-
     let date = new Date();
 
-    console.log(tx.value);
-    console.log(tx.gasPrice);
-
     const BN = web3.utils.BN;
-
-    // let valueBN = new BN(tx.value)
-    // let gasPriceBN = new BN(tx.gasPrice)
-
     let amount = new BN(tx.value);
     let gasPrice = new BN(tx.gasPrice.toString());
     let maxGas = new BN('21000');
 
-    let amountNumber = Number(tx.value);
-    let gasPriceNumber = tx.gasPrice;
-    let maxGasNumber = 21000;
+    let { Wallets, WalletContracts } = this.props;
+    let combinedWallets = Object.keys(
+      combineWallets(Wallets, WalletContracts)
+    ).map(address => address);
 
-    let amountString = tx.value;
-    let gasPriceString = tx.gasPrice.toString();
-    let maxGasString = '21000';
-
-    console.log('amount ', amount);
-    console.log('gasPrice ', gasPrice);
-    console.log('maxGas ', maxGas);
-
-    console.log('gasPrice * maxGas', gasPrice * maxGas);
-    console.log(
-      'gasPrice * maxGas + amount',
-      gasPrice * maxGas + Number(amount)
-    );
-
-    // let testAmount = 2100 * tx.gasPrice
-    // console.log(testAmount, " : ", web3.utils.fromWei(testAmount, 'ETHER'))
-    // console.log(testAmount + tx.value, " : ", web3.utils.fromWei(testAmount + tx.value, 'ETHER'))
-    // console.log(testAmount + Number(tx.value), " : ", web3.utils.fromWei(testAmount + Number(tx.value), 'ETHER'))
-
-    let total = gasPrice * maxGas + Number(amount);
-    let totalBN = new BN(total.toString());
-    console.log(web3.utils.fromWei(totalBN, 'ETHER'));
+    let transactionType;
+    if (combinedWallets.includes(tx.to) && combinedWallets.includes(tx.from)) {
+      transactionType = 'Transfer between accounts';
+    }
 
     web3.eth
       .sendTransaction({
         from: tx.from,
         to: tx.to,
-        // amount: tx.value,
         value: amount,
         gasPrice: gasPrice,
-        // gas: maxGas,
-        // value: amountNumber,
-        // gasPrice: gasPriceNumber,
-        // gas: maxGasNumber,
-        // value: amountString,
-        // gasPrice: gasPriceString,
-        // gas has to be a number
-        // gas: 21000,
       })
       .on('transactionHash', transactionHash => {
         this.props.addTransaction({
@@ -116,6 +83,7 @@ export class SendTransactionModal extends Component {
             dateSent: date,
             confirmationNumber: 'Pending',
             transactionHash: transactionHash,
+            transactionType: transactionType,
           },
         });
         this.props.displayGlobalNotification({
@@ -191,6 +159,8 @@ export class SendTransactionModal extends Component {
     });
 
     TokenContract.options.address = token.address;
+
+    let transactionType = 'Token sent';
 
     // TODO: update balances on successful send
 

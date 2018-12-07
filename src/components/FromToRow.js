@@ -5,22 +5,23 @@ import WalletDropdown from '../components/elements/WalletDropdown.js';
 import { updateTransactionToSend } from '../actions/actions.js';
 import * as Utils from '../utils/utils.js';
 
+import { combineWallets, sortByBalance } from '../utils/helperFunctions.js';
+
 export class Send extends Component {
   //TODO replace fromWallet with the from field from reducer TransactionToSend
   constructor(props) {
     super(props);
-    let defaultWallet;
     let wallets = this.props.Wallets;
-    for (var prop in wallets) {
-      defaultWallet = prop;
-      break;
-    }
+
+    let { Wallets, WalletContracts } = this.props;
+    let combinedWallets = combineWallets(Wallets, WalletContracts);
+
     this.props.updateTransactionToSend({
       name: 'from',
-      value: defaultWallet,
+      value: combinedWallets[0].address,
     });
     this.state = {
-      fromWallet: defaultWallet,
+      fromWallet: combinedWallets[0].address,
       switchChecked: true,
       checkbox: false,
       standardFee: false,
@@ -98,6 +99,7 @@ export class Send extends Component {
 const mapStateToProps = state => ({
   TransactionToSend: state.reducers.TransactionToSend,
   Wallets: state.reducers.Wallets,
+  WalletContracts: state.reducers.WalletContracts,
 });
 
 export default connect(
