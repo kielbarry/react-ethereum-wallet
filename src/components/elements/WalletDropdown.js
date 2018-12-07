@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sortByBalance } from '../../utils/helperFunctions.js';
+import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
 
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';

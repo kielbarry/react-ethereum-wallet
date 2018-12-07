@@ -60,7 +60,6 @@ Sort method for accounts and wallets to sort by balance
 //     ? 1
 //     : -1;
 // };
-// 0xb625F6B6152e24248BDE850492750E13E8A41113
 
 export function combineWallets(addresses, walletContracts) {
   return sortByBalance(
