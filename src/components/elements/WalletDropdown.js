@@ -55,7 +55,7 @@ export class WalletDropdown extends Component {
       name: 'MainOwnerAddress',
       value: this.state.fromWallet,
     });
-    let msc = this.props.reducers.DeployContractForm.multiSigContract;
+    // let msc = this.props.reducers.DeployContractForm.multiSigContract;
     let owners = this.props.reducers.DeployContractForm.multiSigContract.owners;
     owners[0] = this.state.fromWallet;
     let obj = {
@@ -84,7 +84,7 @@ export class WalletDropdown extends Component {
         value: e.target.value,
       });
 
-      let msc = this.props.reducers.DeployContractForm.multiSigContract;
+      // let msc = this.props.reducers.DeployContractForm.multiSigContract;
       let owners = this.props.reducers.DeployContractForm.multiSigContract
         .owners;
       owners[0] = e.target.value;
@@ -108,7 +108,6 @@ export class WalletDropdown extends Component {
   render() {
     let wallets = this.state.Wallets;
     let config = this.state.dropdownConfig;
-    const { classes } = this.props;
     return (
       <React.Fragment>
         <select

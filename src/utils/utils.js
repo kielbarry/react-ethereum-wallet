@@ -245,24 +245,12 @@ export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
 }
 
-// export function updateAccountBalances(web3, accounts, cb1, cb2) {
-//   let totalBalance = 0;
-//   accounts.map(acc => {
-//     let account = acc;
-//     web3.eth.getBalance(acc, (err, balance) => {
-//       cb1({ account, balance });
-//       totalBalance += Number(balance);
-//       cb2(totalBalance);
-//     });
-//   });
-// }
-
 function updateAccounts(web3, accounts, cb1, cb2) {
   let totalBalance = 0;
   accounts.map(acc => {
     let account = acc;
     web3.eth.getBalance(acc, (err, balance) => {
-      console.log(account, ' : ', balance);
+      // console.log(account, ' : ', balance);
       cb1({ account, balance });
       totalBalance += Number(balance);
       cb2(totalBalance);
@@ -276,13 +264,33 @@ export function getAccounts(web3, cb1, cb2) {
     web3.eth.getAccounts().then(accounts => {
       updateAccounts(web3, accounts, cb1, cb2);
       web3.eth.subscribe('newBlockHeaders', (err, b) => {
-        console.log('new blockheaders for updateaccounts');
         updateAccounts(web3, accounts, cb1, cb2);
       });
     });
   } catch (err) {
     console.warn('web3 provider not open');
     return err;
+  }
+}
+
+export function listenForIncomingTransactions(web3, accounts) {
+  console.log('listenForIncomingTransactions');
+  try {
+    let subscription = web3.eth
+      .subscribe('pendingTransactions', (err, res) => {
+        if (err) console.log(err);
+        if (res) {
+          console.log(res);
+        }
+      })
+      .on('data', function(transaction) {
+        console.log(transaction);
+      })
+      .on('error', function(error) {
+        console.log(error);
+      });
+  } catch (err) {
+    console.warn('err in listen');
   }
 }
 

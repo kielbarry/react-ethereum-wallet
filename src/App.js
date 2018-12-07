@@ -112,6 +112,8 @@ export class App extends Component {
           this.props.reducers.Transactions,
           this.props.updateTransaction
         );
+
+        // Utils.listenForIncomingTransactions(web3, this.props.reducers.Wallets)
       }
     }, 1000);
   }

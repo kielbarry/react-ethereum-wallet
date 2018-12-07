@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import WalletDropdown from '../components/elements/WalletDropdown.js';
-import RadioTokenSelect from '../components/elements/RadioTokenSelect.js';
-
 import FromToRow from '../components/FromToRow.js';
 import AmountRow from '../components/AmountRow.js';
 import GasFeeRow from '../components/GasFeeRow.js';
@@ -14,8 +11,6 @@ import {
   displayGlobalNotification,
   displayModal,
 } from '../actions/actions.js';
-
-import * as Utils from '../utils/utils.js';
 
 const Title = () => {
   return (
@@ -65,11 +60,8 @@ export class Send extends Component {
 
   validateSendingTokens(tx) {
     console.log('in validateSendingTokens');
-    let msg;
     let valid = true;
-
     let web3 = this.props.web3.web3Instance;
-
     if (valid) this.props.displayModal('displaySendTransaction');
   }
 
