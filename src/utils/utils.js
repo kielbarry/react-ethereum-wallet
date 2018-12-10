@@ -356,40 +356,42 @@ export function updateTransactionConfirmation(web3, transactions, cb1) {
       transactions[tx].confirmationNumber < 12
     );
   });
-  let subscription;
-  try {
-    while (unconfirmed.length) {
-      subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
-        let currentBlock = b.number;
-        unconfirmed.map((txHash, index) => {
-          console.log(unconfirmed.length);
-          // double check localStorage data is indeed a tx
-          web3.eth.getTransaction(txHash, (error, tx) => {
-            if (err)
-              console.warn(
-                'there was an error updating the transaction with hash: ',
-                txHash
-              );
-            let confirmations = currentBlock - tx.blockNumber;
-            if (confirmations >= 12) {
-              unconfirmed.splice(index, 1);
-            }
-            cb1({
-              name: [txHash],
-              value: confirmations,
-            });
-          });
-        });
-      });
-    }
-    subscription.unsubscribe(function(error, success) {
-      if (success) console.log('Error unsubscribing!', error);
-      if (success) console.log('Successfully unsubscribed!');
-    });
-  } catch (err) {
-    console.warn('web3 provider not open');
-    return err;
-  }
+
+  console.log(unconfirmed);
+  // let subscription;
+  // try {
+  //   while (unconfirmed !== undefined && unconfirmed.length) {
+  //     subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
+  //       let currentBlock = b.number;
+  //       unconfirmed.map((txHash, index) => {
+  //         console.log(unconfirmed.length);
+  //         // double check localStorage data is indeed a tx
+  //         web3.eth.getTransaction(txHash, (error, tx) => {
+  //           if (err)
+  //             console.warn(
+  //               'there was an error updating the transaction with hash: ',
+  //               txHash
+  //             );
+  //           let confirmations = currentBlock - tx.blockNumber;
+  //           if (confirmations >= 12) {
+  //             unconfirmed.splice(index, 1);
+  //           }
+  //           cb1({
+  //             name: [txHash],
+  //             value: confirmations,
+  //           });
+  //         });
+  //       });
+  //     });
+  //   }
+  //   subscription.unsubscribe(function(error, success) {
+  //     if (success) console.log('Error unsubscribing!', error);
+  //     if (success) console.log('Successfully unsubscribed!');
+  //   });
+  // } catch (err) {
+  //   console.warn('web3 provider not open');
+  //   return err;
+  // }
 }
 
 export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
