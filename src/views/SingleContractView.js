@@ -6,6 +6,10 @@ import ContractActionBar from '../components/elements/ContractActionBar.js';
 import ExecutableContract from '../components/elements/ExecutableContract.js';
 import ContractEvents from '../components/elements/ContractEvents.js';
 
+import NoMatchingTransaction from '../components/elements/NoMatchingTransaction.js';
+
+import LatestTransactions from '../components/elements/LatestTransactions.js';
+
 import * as Utils from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
@@ -32,6 +36,10 @@ export class SingleContractView extends Component {
     this.displayEventModal = this.displayEventModal.bind(this);
     this.executeAndWatch = this.executeAndWatch.bind(this);
     this.executeFunctions = this.executeFunctions.bind(this);
+    this.updateContractWithMethods = this.updateContractWithMethods.bind(this);
+    this.updateContractWithMethodOutputs = this.updateContractWithMethodOutputs.bind(
+      this
+    );
     // this.setState({ showContractFunctions: true });
   }
 
@@ -68,6 +76,51 @@ export class SingleContractView extends Component {
     this.watchContractEvents(e, contract);
   }
 
+  updateContractWithMethods(contract, contractFunctions, contractConstants) {
+    console.log('is deployed contract', contract.deployedWalletContract);
+    if (!contract.deployedWalletContract) {
+      this.props.addObservedContractFunctions({
+        address: contract.address,
+        value: contractFunctions,
+        name: 'contractFunctions',
+      });
+      this.props.addObservedContractConstants({
+        address: contract.address,
+        value: contractConstants,
+        name: 'contractConstants',
+      });
+    } else {
+      this.props.addDeployedContractFunctions({
+        address: contract.address,
+        value: contractFunctions,
+        name: 'contractFunctions',
+      });
+      this.props.addDeployedContractConstants({
+        address: contract.address,
+        value: contractConstants,
+        name: 'contractConstants',
+      });
+    }
+  }
+
+  updateContractWithMethodOutputs(contract, method, index) {
+    if (!contract.deployedWalletContract) {
+      this.props.updateInitialObservedContractMethodOutputs({
+        contractAddress: contract.address,
+        name: method.name,
+        index: index,
+        value: method.outputs,
+      });
+    } else {
+      this.props.updateInitialDeployedContractMethodOutputs({
+        contractAddress: contract.address,
+        name: method.name,
+        index: index,
+        value: method.outputs,
+      });
+    }
+  }
+
   executeFunctions(e, contract) {
     let web3;
     if (this.props.web3 && this.props.web3.web3Instance) {
@@ -92,19 +145,27 @@ export class SingleContractView extends Component {
       }
     });
 
-    // TODO: conditional to update either observed contracts,
-    // selected wallet, or deployed wallet contracts
-    // right now is only updating observed contracts
-    this.props.addContractFunctions({
-      address: contract.address,
-      value: contractFunctions,
-      name: 'contractFunctions',
-    });
-    this.props.addContractConstants({
-      address: contract.address,
-      value: contractConstants,
-      name: 'contractConstants',
-    });
+    this.updateContractWithMethods(
+      contract,
+      contractFunctions,
+      contractConstants
+    );
+
+    // console.log("is it a deployed wallet contract?! ", contract.deployedWalletContract)
+
+    // // TODO: conditional to update either observed contracts,
+    // // selected wallet, or deployed wallet contracts
+    // // right now is only updating observed contracts
+    // this.props.addObservedContractFunctions({
+    //   address: contract.address,
+    //   value: contractFunctions,
+    //   name: 'contractFunctions',
+    // });
+    // this.props.addObservedContractConstants({
+    //   address: contract.address,
+    //   value: contractConstants,
+    //   name: 'contractConstants',
+    // });
     // END
     contractConstants.map((method, index) => {
       let args = method.inputs.map(input => {
@@ -151,12 +212,15 @@ export class SingleContractView extends Component {
         );
         console.warn(err);
       }
-      this.props.updateInitialContractMethodOutputs({
-        contractAddress: contract.address,
-        name: method.name,
-        index: index,
-        value: method.outputs,
-      });
+
+      this.updateContractWithMethodOutputs(contract, method, index);
+
+      // this.props.updateInitialContractMethodOutputs({
+      //   contractAddress: contract.address,
+      //   name: method.name,
+      //   index: index,
+      //   value: method.outputs,
+      // });
     });
   }
 
@@ -288,6 +352,32 @@ export class SingleContractView extends Component {
     );
   }
 
+  renderAccountTransactions() {
+    let contract = this.props.reducers.selectedContract.contract;
+    let address = contract.address;
+    let transactions = this.props.reducers.Transactions;
+    let accountTxns = {};
+    Object.keys(transactions).map(hash => {
+      if (
+        transactions[hash]['from'] === address.toLowerCase() ||
+        transactions[hash]['to'] === address.toLowerCase()
+      ) {
+        accountTxns[hash] = transactions[hash];
+      }
+      return null;
+    });
+    return (
+      <React.Fragment>
+        {Object.keys(accountTxns).length &&
+        accountTxns.constructor === Object ? (
+          <LatestTransactions transactions={accountTxns} />
+        ) : (
+          <NoMatchingTransaction />
+        )}
+      </React.Fragment>
+    );
+  }
+
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
     console.log(this.props.reducers.selectedContract);
@@ -349,7 +439,9 @@ export class SingleContractView extends Component {
         (contractConstants.length || contractFunctions.length) ? (
           <ExecutableContract />
         ) : null}
-        {logs && logs.length ? <ContractEvents /> : null}
+        {/*
+          {logs && logs.length ? <ContractEvents /> : null}
+        */}
         <div className="accounts-transactions">
           <h2>Latest events</h2>
           <br />
@@ -368,6 +460,8 @@ export class SingleContractView extends Component {
             className="filter-transactions"
             placeholder="Filter events"
           />
+          {logs && logs.length ? <ContractEvents /> : null}
+          {this.renderAccountTransactions()}
         </div>
       </div>
     );

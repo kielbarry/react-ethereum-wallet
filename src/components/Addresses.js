@@ -8,7 +8,7 @@ export class Addresses extends Component {
       const wallets = this.props.reducers.Wallets;
       const icon = 'icon-key';
       return (
-        <React.Fragment>
+        <div className="wallet-box-list">
           {Object.keys(wallets).map((address, i) => (
             <AccountItem
               key={address}
@@ -20,9 +20,10 @@ export class Addresses extends Component {
               web3={this.props.web3}
               props={this.props}
               addressType="Wallets"
+              index={i}
             />
           ))}
-        </React.Fragment>
+        </div>
       );
     }
   }

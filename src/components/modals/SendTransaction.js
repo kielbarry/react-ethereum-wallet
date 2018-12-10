@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { withRouter } from 'react-router';
+
 // import InputItem from '../elements/InputItem.js';
 // import TestInputItem from '../elements/TestInputItem.js';
 import * as Actions from '../../actions/actions.js';
@@ -34,6 +36,11 @@ export class SendTransactionModal extends Component {
     return false;
   }
 
+  componentWillUnmount() {
+    console.log('in will unmount');
+    this.props.clearTransactionToSend();
+  }
+
   cancelFunction(e) {
     this.props.closeModal('displaySendTransaction');
   }
@@ -59,7 +66,8 @@ export class SendTransactionModal extends Component {
           type: 'warning',
           msg: 'Your transaction has been submitted and is currently pending',
         });
-        this.props.clearTransactionToSend();
+        // this.props.clearTransactionToSend();
+        this.props.history.push('/accounts');
       })
       .on('receipt', receipt => {
         console.log('the receipt', receipt);
@@ -93,7 +101,7 @@ export class SendTransactionModal extends Component {
         this.props.displayGlobalNotification({
           display: true,
           type: 'error',
-          msg: err.Error,
+          msg: err.message,
           duration: 5,
         });
         console.warn(err);
@@ -145,6 +153,7 @@ export class SendTransactionModal extends Component {
           // name the category is {token name} - Token transfer
 
           this.updateTokenBalances(TokenContract);
+          this.props.history.push('/accounts');
         });
     } catch (err) {
       console.warn(err);
@@ -184,33 +193,42 @@ export class SendTransactionModal extends Component {
             ETHER
           </h1>
           <p>
-            <Identicon
-              classes="dapp-identicon dapp-small"
-              title
-              size="small"
-              seed={transaction.from}
-            />
-            {transaction.from}
+            <span className="address dapp-shorten-text not-ens-name">
+              <Identicon
+                classes="dapp-identicon dapp-small"
+                title
+                size="small"
+                seed={transaction.from}
+              />
+              {transaction.from}
+            </span>
           </p>
           <i className="icon-arrow-down" />
           <p>
-            <Identicon
-              classes="dapp-identicon dapp-small"
-              title
-              size="small"
-              seed={transaction.to}
-            />
-            {transaction.to}
+            <span className="address dapp-shorten-text not-ens-name">
+              <Identicon
+                classes="dapp-identicon dapp-small"
+                title
+                size="small"
+                seed={transaction.to}
+              />
+              {transaction.to}
+            </span>
           </p>
           <hr />
           <p className="tx-info">
-            <small>"+ Estimated fee"</small>
+            <small>+ Estimated fee</small>
             {transaction.estimatedGas} Wei
             <br />
             <small className="gas-price">
               Gas price {transaction.gasPrice} gWei
               <br />
               Estimated required gas {transaction.estimatedGas}
+              <br />
+            </small>
+            <small>
+              Provide gas:
+              <input type="number" min="21000" className="gas dapp-tiny" />
             </small>
           </p>
           <div className="dapp-modal-buttons">
@@ -237,4 +255,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { ...Actions }
-)(SendTransactionModal);
+)(withRouter(SendTransactionModal));

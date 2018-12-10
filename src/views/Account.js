@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import LatestTransactions from '../components/elements/LatestTransactions.js';
+import NoMatchingTransaction from '../components/elements/NoMatchingTransaction.js';
 
 import Addresses from '../components/Addresses.js';
 import DeployedWallets from '../components/DeployedWallets.js';
@@ -27,13 +28,14 @@ const StatelessPageContent = () => {
 
 export class AccountView extends Component {
   render() {
+    let txs = this.props.Transactions;
     return (
       <div className="dapp-container account-page">
         <StatelessPageContent />
-        {this.props.Transactions ? (
-          <LatestTransactions transactions={this.props.Transactions} />
+        {Object.keys(txs).length && txs.constructor === Object ? (
+          <LatestTransactions transactions={txs} />
         ) : (
-          <div>No transactions found.</div>
+          <NoMatchingTransaction />
         )}
       </div>
     );

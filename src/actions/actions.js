@@ -22,10 +22,10 @@ export const updateWalletContractName = name => dispatch => {
   });
 };
 
-export const updateAddressName = name => dispatch => {
+export const updateAddressName = walletData => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_ADDRESS_NAME,
-    payload: name,
+    payload: walletData,
   });
 };
 
@@ -80,9 +80,16 @@ export const updatePendingContracts = hash => dispatch => {
   });
 };
 
-export const updateInitialContractMethodOutputs = outputs => dispatch => {
+export const updateInitialDeployedContractMethodOutputs = outputs => dispatch => {
   dispatch({
-    type: actionTypes.UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS,
+    type: actionTypes.UPDATE_INITIAL_DEPLOYED_CONTRACT_METHOD_OUTPUTS,
+    payload: outputs,
+  });
+};
+
+export const updateInitialObservedContractMethodOutputs = outputs => dispatch => {
+  dispatch({
+    type: actionTypes.UPDATE_INITIAL_OBSERVED_CONTRACT_METHOD_OUTPUTS,
     payload: outputs,
   });
 };
@@ -136,16 +143,30 @@ export const updateSelectedEvent = event => dispatch => {
   });
 };
 
-export const addContractFunctions = funcs => dispatch => {
+export const addDeployedContractFunctions = funcs => dispatch => {
   dispatch({
-    type: actionTypes.ADD_CONTRACT_FUNCTIONS,
+    type: actionTypes.ADD_DEPLOYED_CONTRACT_FUNCTIONS,
     payload: funcs,
   });
 };
 
-export const addContractConstants = consts => dispatch => {
+export const addDeployedContractConstants = consts => dispatch => {
   dispatch({
-    type: actionTypes.ADD_CONTRACT_CONSTANTS,
+    type: actionTypes.ADD_DEPLOYED_CONTRACT_CONSTANTS,
+    payload: consts,
+  });
+};
+
+export const addObservedContractFunctions = funcs => dispatch => {
+  dispatch({
+    type: actionTypes.ADD_OBSERVED_CONTRACT_FUNCTIONS,
+    payload: funcs,
+  });
+};
+
+export const addObservedContractConstants = consts => dispatch => {
+  dispatch({
+    type: actionTypes.ADD_OBSERVED_CONTRACT_CONSTANTS,
     payload: consts,
   });
 };

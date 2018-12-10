@@ -6,8 +6,6 @@ import shortid from 'shortid';
 import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
-// import SecurityIcon from './SecurityIcon.js';
-import { SecurityIcon } from './SecurityIcon.js';
 import NumberFormat from 'react-number-format';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
@@ -123,14 +121,12 @@ export class TokenListForItems extends Component {
                 }
                 className="simptip-position-right simptip-movable"
               >
-                {/*}
-                <SecurityIcon
-                  type="accountItem"
+                <Identicon
                   classes="dapp-identicon dapp-tiny"
-                  hash={tokens[token].address}
+                  title
+                  size="tiny"
+                  seed={tokens[token].address}
                 />
-              */}
-                <Identicon size="tiny" address={tokens[token].address} />
               </li>
             ))}
       </ul>

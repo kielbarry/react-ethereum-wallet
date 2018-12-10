@@ -5877,7 +5877,7 @@ body.app-blur {
 }
 .accounts-page h1 .edit-name {
   outline: 0;
-  font-style: normal;
+  /*font-style: normal;*/
 }
 .accounts-page h1 .edit-name + .edit-icon {
   display: none;
@@ -6249,8 +6249,8 @@ h2 {
 }
 .wallet-box:not(.create) h3 {
   margin-top: 5px;
-  color: #333;
-  font-style: normal;
+  /*color: #333;*/
+  /*font-style: normal;*/
 }
 .wallet-box:not(.create) h3 span {
   color: #696969;

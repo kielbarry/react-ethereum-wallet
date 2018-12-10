@@ -66,6 +66,7 @@ export class App extends Component {
         } catch (err) {
           console.error('error', err);
         }
+        //TODO: is this necessary? what was the purpose?
         try {
           this.props.createInitWalletContract(
             WalletUtils.initWalletContact(web3)

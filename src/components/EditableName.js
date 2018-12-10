@@ -1,35 +1,76 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import clickOutside from 'react-click-outside';
+
+import ContentEditable from 'react-contenteditable';
 // utils and actions
 import * as Utils from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
-// NO MOAR MULTISIG
-
-//TODO: notify me on event checkbox? then toast?
-
-// put in support for 721 ?
-// maybe have user input search for the contract by name ?
-// maybe have them define what kind of erc standard with input ?
-
-// markdown with
-
 export class EditableName extends Component {
   constructor(props) {
     super(props);
+
+    // TODO: logic for contracts
+    let wallet = this.props.reducers.selectedWallet;
+    let walletName = wallet.wallet.name;
+    console.log(walletName);
     this.state = {
       contentEditable: false,
+      newName: '',
+      html: `
+            ${walletName ? walletName : 'Account ' + wallet.number} 
+          `,
     };
+    this.toggleEditability = this.toggleEditability.bind(this);
+    this.contentEditable = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
+
+  shouldComponentUpdate(prevProps, prevState) {
+    if (this.state.contentEditable !== prevState.contentEditable) {
+      return true;
+    }
+    return false;
+  }
+
+  handleChange = e => {
+    let wallet = this.props.reducers.selectedWallet;
+    this.setState({
+      newName: e.target.value,
+    });
+    this.props.updateAddressName({
+      name: e.target.value,
+      address: wallet.address,
+    });
+  };
+
+  handleClickOutside(e) {
+    let id = e.target.getAttribute('id');
+    e.target.getAttribute('id') !== 'editableName'
+      ? this.setState({ contentEditable: false })
+      : this.toggleEditability(e);
   }
 
   toggleEditability = e => {
-    console.log(e);
-    console.log('prev state', this.state.contentEditable);
-    this.setState({ contentEditable: !this.state.contentEditable });
+    if (e.target.getAttribute('contenteditable') === 'false') {
+      this.setState({
+        contentEditable: true,
+        newName: e.target.value,
+      });
+    }
   };
 
   render() {
-    console.log('in editable name', this.props);
     let type = this.props.addressType;
     let wallet =
       type === 'address'
@@ -37,17 +78,15 @@ export class EditableName extends Component {
         : this.props.reducers.selectedContract;
     return (
       <h1>
-        {wallet !== undefined && wallet !== '' ? (
-          <em
-            className="edit-name"
-            contentEditable={this.state.contentEditable}
-            onClick={e => this.toggleEditability(e)}
-          >
-            {wallet.name ? wallet.name : 'Account' + wallet.number}
-          </em>
-        ) : (
-          'Unnamed'
-        )}
+        <ContentEditable
+          id="editableName"
+          className="edit-name"
+          innerRef={this.contentEditable}
+          html={this.state.html} // innerHTML of the editable div
+          disabled={!this.state.contentEditable}
+          onChange={this.handleChange} // handle innerHTML change
+          tagName="em" // Use a custom HTML tag (uses a div by default)
+        />
         <i className="edit-icon icon-pencil" />
       </h1>
     );

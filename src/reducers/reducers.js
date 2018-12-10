@@ -140,13 +140,6 @@ export const reducers = (state = initialState, action) => {
           ...state.selectedWallet,
           name: action.payload.name,
         },
-        // selectedWallet: {
-        //   ...state.Wallets,
-        //   [action.payload.address]: {
-        //     ...state.Wallets[action.payload.address],
-        //     name: action.payload.name,
-        //   }
-        // },
       };
     case 'UPDATE_TOKEN_TO_SEND':
       return {
@@ -218,7 +211,31 @@ export const reducers = (state = initialState, action) => {
           }
         ),
       };
-    case 'UPDATE_INITIAL_CONTRACT_METHOD_OUTPUTS':
+
+    case 'UPDATE_INITIAL_DEPLOYED_CONTRACT_METHOD_OUTPUTS':
+      return {
+        ...state,
+        WalletContracts: {
+          ...state.WalletContracts,
+          [action.payload.contractAddress]: {
+            ...state.WalletContracts[action.payload.contractAddress],
+            contractConstants: state.WalletContracts[
+              action.payload.contractAddress
+            ].contractConstants.map((item, ind) => {
+              if (item.name === action.payload.name) {
+                return {
+                  ...item,
+                  outputs: [...action.payload.value],
+                };
+              }
+              return item;
+            }),
+          },
+        },
+        // TODO: testing update logs for selectedContract
+      };
+
+    case 'UPDATE_INITIAL_OBSERVED_CONTRACT_METHOD_OUTPUTS':
       return {
         ...state,
         ObservedContracts: {
@@ -289,7 +306,41 @@ export const reducers = (state = initialState, action) => {
         ...state,
         SelectedEvent: action.payload,
       };
-    case 'ADD_CONTRACT_FUNCTIONS':
+
+    case 'ADD_DEPLOYED_CONTRACT_FUNCTIONS':
+      return {
+        ...state,
+        WalletContracts: {
+          ...state.WalletContracts,
+          [action.payload.address]: {
+            ...state.WalletContracts[action.payload.address],
+            [action.payload.name]: action.payload.value,
+          },
+        },
+        // TODO: testing
+        selectedContract: {
+          ...state.selectedContract,
+          [action.payload.name]: action.payload.value,
+        },
+      };
+    case 'ADD_DEPLOYED_CONTRACT_CONSTANTS':
+      return {
+        ...state,
+        WalletContracts: {
+          ...state.WalletContracts,
+          [action.payload.address]: {
+            ...state.WalletContracts[action.payload.address],
+            [action.payload.name]: action.payload.value,
+          },
+        },
+        // TODO: testing
+        selectedContract: {
+          ...state.selectedContract,
+          [action.payload.name]: action.payload.value,
+        },
+      };
+
+    case 'ADD_OBSERVED_CONTRACT_FUNCTIONS':
       return {
         ...state,
         ObservedContracts: {
@@ -305,7 +356,7 @@ export const reducers = (state = initialState, action) => {
           [action.payload.name]: action.payload.value,
         },
       };
-    case 'ADD_CONTRACT_CONSTANTS':
+    case 'ADD_OBSERVED_CONTRACT_CONSTANTS':
       return {
         ...state,
         ObservedContracts: {

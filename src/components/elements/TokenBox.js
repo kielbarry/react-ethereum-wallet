@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { displayModal, tokenToDelete } from '../../actions/actions.js';
-import { SecurityIcon } from './SecurityIcon.js';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 
