@@ -54,6 +54,7 @@ export class AccountItem extends Component {
     return (
       <h3 className="not-ens-name">
         <i className={this.props.icon} title="Account" />
+        &nbsp;
         {!name ? 'Account ' + number : name}
       </h3>
     );
