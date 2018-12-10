@@ -65,6 +65,13 @@ export class App extends Component {
       15000
     );
     this.props.closeModal('displayEventInfo');
+
+    // let object = {
+    //   setWallets: this.props.setWallets,
+    // }
+
+    // this.props.setWallets(Utils.getAccounts())
+
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
