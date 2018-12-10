@@ -61,6 +61,17 @@ Sort method for accounts and wallets to sort by balance
 //     : -1;
 // };
 
+/**
+Sort method for accounts and wallets to sort by balance and remove empty addresses;
+
+@method sortByBalance
+**/
+export function sortByBalance(wallets) {
+  return wallets
+    .filter(wallet => wallet.balance != 0)
+    .sort((a, b) => b.balance - a.balance);
+}
+
 export function combineWallets(addresses, walletContracts) {
   return sortByBalance(
     Object.keys(addresses)
@@ -82,17 +93,6 @@ export function combineWallets(addresses, walletContracts) {
         })
       )
   );
-}
-
-/**
-Sort method for accounts and wallets to sort by balance and remove empty addresses;
-
-@method sortByBalance
-**/
-export function sortByBalance(wallets) {
-  return wallets
-    .filter(wallet => wallet.balance != 0)
-    .sort((a, b) => b.balance - a.balance);
 }
 
 /**

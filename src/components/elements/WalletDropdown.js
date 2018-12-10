@@ -26,26 +26,10 @@ const styles = theme => ({
 export class WalletDropdown extends Component {
   constructor(props) {
     super(props);
-    let WalletsCombined = sortByBalance(
-      Object.keys(this.props.reducers.Wallets)
-        .map(address => {
-          return {
-            ...this.props.reducers.Wallets[address],
-            address,
-            addressType: 'walletAddress',
-          };
-        })
-        .concat(
-          Object.keys(this.props.reducers.WalletContracts).map(address => {
-            let contract = this.props.reducers.WalletContracts[address];
-            return {
-              ...contract,
-              address,
-              addressType: 'contractAddress',
-            };
-          })
-        )
-    );
+
+    let { Wallets, WalletContracts } = this.props.reducers;
+    let WalletsCombined = combineWallets(Wallets, WalletContracts);
+
     this.state = {
       Wallets: WalletsCombined,
       fromWallet: WalletsCombined[0].address,

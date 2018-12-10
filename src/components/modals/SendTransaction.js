@@ -58,10 +58,14 @@ export class SendTransactionModal extends Component {
     let gasPrice = new BN(tx.gasPrice.toString());
     let maxGas = new BN('21000');
 
-    let { Wallets, WalletContracts } = this.props;
+    let { Wallets, WalletContracts } = this.props.reducers;
+    console.log(Wallets);
+    console.log(WalletContracts);
     let combinedWallets = Object.keys(
       combineWallets(Wallets, WalletContracts)
     ).map(address => address);
+
+    console.log(combinedWallets);
 
     let transactionType;
     if (combinedWallets.includes(tx.to) && combinedWallets.includes(tx.from)) {

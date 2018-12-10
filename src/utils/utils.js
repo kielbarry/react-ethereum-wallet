@@ -259,12 +259,21 @@ function updateAccounts(web3, accounts, cb1, cb2) {
 }
 
 export function getAccounts(web3, cb1, cb2) {
-  console.log(this);
   try {
     web3.eth.getAccounts().then(accounts => {
-      updateAccounts(web3, accounts, cb1, cb2);
-      web3.eth.subscribe('newBlockHeaders', (err, b) => {
-        updateAccounts(web3, accounts, cb1, cb2);
+      // updateAccounts(web3, accounts, cb1, cb2);
+      // web3.eth.subscribe('newBlockHeaders', (err, b) => {
+      //   updateAccounts(web3, accounts, cb1, cb2);
+      // });
+      let totalBalance = 0;
+      accounts.map(acc => {
+        let account = acc;
+        web3.eth.getBalance(acc, (err, balance) => {
+          // console.log(account, ' : ', balance);
+          cb1({ account, balance });
+          totalBalance += Number(balance);
+          cb2(totalBalance);
+        });
       });
     });
   } catch (err) {
@@ -274,70 +283,69 @@ export function getAccounts(web3, cb1, cb2) {
 }
 
 export function listenForIncomingTransactions(web3, accounts) {
-  console.log('listenForIncomingTransactions');
-  try {
-    let subscription = web3.eth
-      .subscribe('pendingTransactions', (err, res) => {
-        if (err) console.log(err);
-        if (res) {
-          console.log(res);
-        }
-      })
-      .on('data', function(transaction) {
-        console.log(transaction);
-      })
-      .on('error', function(error) {
-        console.log(error);
-      });
-  } catch (err) {
-    console.warn('err in listen');
-  }
+  // console.log('listenForIncomingTransactions');
+  // try {
+  //   let subscription = web3.eth
+  //     .subscribe('pendingTransactions', (err, res) => {
+  //       if (err) console.log(err);
+  //       if (res) {
+  //         console.log(res);
+  //       }
+  //     })
+  //     .on('data', function(transaction) {
+  //       console.log(transaction);
+  //     })
+  //     .on('error', function(error) {
+  //       console.log(error);
+  //     });
+  // } catch (err) {
+  //   console.warn('err in listen');
+  // }
 }
 
 export function updatePendingConfirmations(web3, transactions, cb1) {
-  console.log('updatePendingConfirmations');
-  let pending = Object.keys(transactions).filter(tx => {
-    return transactions[tx].confirmationNumber === 'Pending';
-  });
-  console.log(pending);
-  let subscription;
-  try {
-    // while (pending.length) {
-    console.log(pending);
-    console.log(pending.length);
-    // subscription = subscription.subscribe((error, result) => {
-    //   if (error) console.log(error)
-    // }).on('data', async (txHash) => {
-    //   console.log('txHash in updatePendingConfirmations', txHash)
-    // })
-    subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
-      pending.map((txHash, index) => {
-        web3.eth.getTransaction(txHash, (error, tx) => {
-          // web3.eth.getTransactionReceipt(recept, (error, tx) => {
-          if (error) console.warn(error);
-          if (tx) console.log(tx);
-          if (tx.blockNumber !== null) {
-            pending.splice(index, 1);
-            cb1({
-              name: [tx.transactionHash],
-              // name: [receipt.transactionHash],
-              value: tx,
-              // value: receipt,
-            });
-          }
-        });
-      });
-    });
-
-    // }
-    // subscription.unsubscribe(function(error, success) {
-    //   if (success) console.log('Error unsubscribing!', error);
-    //   if (success) console.log('Successfully unsubscribed!');
-    // });
-  } catch (err) {
-    console.warn('web3 provider not open');
-    return err;
-  }
+  // console.log('updatePendingConfirmations');
+  // let pending = Object.keys(transactions).filter(tx => {
+  //   return transactions[tx].confirmationNumber === 'Pending';
+  // });
+  // console.log(pending);
+  // let subscription;
+  // try {
+  //   // while (pending.length) {
+  //   console.log(pending);
+  //   console.log(pending.length);
+  //   // subscription = subscription.subscribe((error, result) => {
+  //   //   if (error) console.log(error)
+  //   // }).on('data', async (txHash) => {
+  //   //   console.log('txHash in updatePendingConfirmations', txHash)
+  //   // })
+  //   subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
+  //     pending.map((txHash, index) => {
+  //       web3.eth.getTransaction(txHash, (error, tx) => {
+  //         // web3.eth.getTransactionReceipt(recept, (error, tx) => {
+  //         if (error) console.warn(error);
+  //         if (tx) console.log(tx);
+  //         if (tx.blockNumber !== null) {
+  //           pending.splice(index, 1);
+  //           cb1({
+  //             name: [tx.transactionHash],
+  //             // name: [receipt.transactionHash],
+  //             value: tx,
+  //             // value: receipt,
+  //           });
+  //         }
+  //       });
+  //     });
+  //   });
+  //   // }
+  //   // subscription.unsubscribe(function(error, success) {
+  //   //   if (success) console.log('Error unsubscribing!', error);
+  //   //   if (success) console.log('Successfully unsubscribed!');
+  //   // });
+  // } catch (err) {
+  //   console.warn('web3 provider not open');
+  //   return err;
+  // }
 }
 
 export function updateTransactionConfirmation(web3, transactions, cb1) {

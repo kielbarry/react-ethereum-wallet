@@ -14,6 +14,9 @@ export class Send extends Component {
     let wallets = this.props.Wallets;
 
     let { Wallets, WalletContracts } = this.props;
+    console.log(Wallets);
+    console.log(WalletContracts);
+
     let combinedWallets = combineWallets(Wallets, WalletContracts);
 
     this.props.updateTransactionToSend({
