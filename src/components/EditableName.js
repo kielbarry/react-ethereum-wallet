@@ -14,8 +14,8 @@ export class EditableName extends Component {
 
     // TODO: logic for contracts
     let wallet = this.props.reducers.selectedWallet;
-    let walletName = wallet.name;
-
+    let walletName = wallet.wallet.name;
+    console.log(walletName);
     this.state = {
       contentEditable: false,
       newName: '',
