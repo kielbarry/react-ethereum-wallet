@@ -96,7 +96,7 @@ export class NewSecurityIcon extends Component {
   };
 
   onLoad = texture => {
-    var objGeometry = new THREE.SphereBufferGeometry(4.5, 100, 100);
+    var objGeometry = new THREE.SphereBufferGeometry(4.5, 200, 200);
     var objMaterial = new THREE.MeshPhongMaterial({
       map: texture,
       shading: THREE.FlatShading,
