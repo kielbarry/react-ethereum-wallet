@@ -48,9 +48,20 @@ export class AccountItem extends Component {
     );
   }
 
+  renderName() {
+    let number = this.props.number;
+    let name = this.props.wallet.name;
+    return (
+      <h3 className="not-ens-name">
+        <i className={this.props.icon} title="Account" />
+        &nbsp;
+        {!name ? 'Account ' + number : name}
+      </h3>
+    );
+  }
+
   render() {
     let address = this.props.address;
-    let number = this.props.number;
     const AccountURL = '/account/' + address;
     return (
       <React.Fragment>
@@ -69,10 +80,7 @@ export class AccountItem extends Component {
             addressType={this.props.addressType}
             address={this.props.address}
           />
-          <h3 className="not-ens-name">
-            <i className={this.props.icon} title="Account" />
-            Account {number}
-          </h3>
+          {this.renderName()}
           {this.renderBalance()}
           <EthAddress short classes="account-id" address={address} />
         </Link>

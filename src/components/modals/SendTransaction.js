@@ -224,33 +224,42 @@ export class SendTransactionModal extends Component {
             ETHER
           </h1>
           <p>
-            <Identicon
-              classes="dapp-identicon dapp-small"
-              title
-              size="small"
-              seed={transaction.from}
-            />
-            {transaction.from}
+            <span className="address dapp-shorten-text not-ens-name">
+              <Identicon
+                classes="dapp-identicon dapp-small"
+                title
+                size="small"
+                seed={transaction.from}
+              />
+              {transaction.from}
+            </span>
           </p>
           <i className="icon-arrow-down" />
           <p>
-            <Identicon
-              classes="dapp-identicon dapp-small"
-              title
-              size="small"
-              seed={transaction.to}
-            />
-            {transaction.to}
+            <span className="address dapp-shorten-text not-ens-name">
+              <Identicon
+                classes="dapp-identicon dapp-small"
+                title
+                size="small"
+                seed={transaction.to}
+              />
+              {transaction.to}
+            </span>
           </p>
           <hr />
           <p className="tx-info">
-            <small>"+ Estimated fee"</small>
+            <small>+ Estimated fee</small>
             {transaction.estimatedGas} Wei
             <br />
             <small className="gas-price">
               Gas price {transaction.gasPrice} gWei
               <br />
               Estimated required gas {transaction.estimatedGas}
+              <br />
+            </small>
+            <small>
+              Provide gas:
+              <input type="number" min="21000" className="gas dapp-tiny" />
             </small>
           </p>
           <div className="dapp-modal-buttons">

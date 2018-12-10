@@ -30,11 +30,17 @@ export const StickyHeader = ({ sw }) => {
 export const AccountDetails = ({ sw }) => {
   return (
     <React.Fragment>
+      <EditableName addressType="address" sw={sw} />
+      {/*
       <h1>
-        <span>Account {sw.number}</span>
-        <em className="edit-name">Account {sw.number}</em>
+        {!sw.name ? (
+          <em className="edit-name">Account {sw.number}</em>
+        ) : (
+          <em className="edit-name">{sw.name}</em>
+        )}
         <i className="edit-icon icon-pencil" />
       </h1>
+    */}
       <h2 className="copyable-address">
         <i className="icon-key" title="Account" />
         <span>{sw.address}</span>
@@ -129,7 +135,7 @@ export class SingleAccountView extends Component {
             data-value={this.props.reducers.currency}
             onClick={() => this.toggleSU()}
           >
-            {this.props.reducers.currency}
+            &nbsp;{this.props.reducers.currency}
           </button>
           <SU displaySU={this.state.displaySU} />
         </span>
