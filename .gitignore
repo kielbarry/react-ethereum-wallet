@@ -1,6 +1,7 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 .env
+.notes
 
 # dependencies
 /node_modules

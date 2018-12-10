@@ -30,6 +30,8 @@ export const StickyHeader = ({ sw }) => {
 export const AccountDetails = ({ sw }) => {
   return (
     <React.Fragment>
+      <EditableName addressType="address" sw={sw} />
+      {/*
       <h1>
         {!sw.name ? (
           <em className="edit-name">Account {sw.number}</em>
@@ -38,6 +40,7 @@ export const AccountDetails = ({ sw }) => {
         )}
         <i className="edit-icon icon-pencil" />
       </h1>
+    */}
       <h2 className="copyable-address">
         <i className="icon-key" title="Account" />
         <span>{sw.address}</span>

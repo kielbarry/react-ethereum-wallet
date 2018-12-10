@@ -140,13 +140,6 @@ export const reducers = (state = initialState, action) => {
           ...state.selectedWallet,
           name: action.payload.name,
         },
-        // selectedWallet: {
-        //   ...state.Wallets,
-        //   [action.payload.address]: {
-        //     ...state.Wallets[action.payload.address],
-        //     name: action.payload.name,
-        //   }
-        // },
       };
     case 'UPDATE_TOKEN_TO_SEND':
       return {

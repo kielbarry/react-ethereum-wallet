@@ -22,10 +22,10 @@ export const updateWalletContractName = name => dispatch => {
   });
 };
 
-export const updateAddressName = name => dispatch => {
+export const updateAddressName = walletData => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_ADDRESS_NAME,
-    payload: name,
+    payload: walletData,
   });
 };
 
