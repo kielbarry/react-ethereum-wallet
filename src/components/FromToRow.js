@@ -32,10 +32,10 @@ export class Send extends Component {
       standardFee: false,
     };
 
-    this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.checkIsAddress = this.checkIsAddress.bind(this);
   }
-  handleOnKeyUp(e) {
+  handleInputChange(e) {
     // TODO:validate inputs here
     let target = e.target.getAttribute('name');
     let targetValue = e.target.value;
@@ -116,7 +116,8 @@ export class Send extends Component {
             className={newClasses}
             autoFocus={true}
             // value={tx.to}
-            onKeyUp={e => this.handleOnKeyUp(e)}
+            onChange={e => this.handleInputChange(e)}
+            onKeyUp={e => this.handleInputChange(e)}
           />
           {this.renderIcon()}
         </div>

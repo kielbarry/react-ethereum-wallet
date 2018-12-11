@@ -19,12 +19,16 @@ import * as Actions from '../../actions/actions.js';
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 import { Identicon } from 'ethereum-react-components';
 
-export const Title = () => {
+import Web3 from 'web3';
+let newWeb3 = new Web3();
+
+export const Title = props => {
+  let value = newWeb3.utils.fromWei(props.tx.value, 'ETHER');
   return (
     <h1>
       Send
       <br />
-      ETHER
+      {value} ETHER
     </h1>
   );
 };
@@ -229,8 +233,6 @@ export class SendTransactionModal extends Component {
 
   returnAccountName(address) {
     // let transaction = this.props.reducers.TransactionToSend;
-    console.log(address);
-    console.log(this.props.reducers.Wallets);
     let wallets = this.props.reducers.Wallets;
     let walletArray = Object.keys(wallets).map(key => key);
     let walletContracts = this.props.reducers.WalletContracts;
@@ -241,10 +243,7 @@ export class SendTransactionModal extends Component {
     let observedTokensArray = Object.keys(observedTokens).map(key => key);
     let name;
     if (walletArray.includes(address)) {
-      console.log(wallets.address);
       name = wallets[address].name;
-      console.log(name);
-
       name ? name : 'Account ' + wallets[address].number;
       console.log(name);
     } else if (walletContractArray.includes(address)) {
@@ -254,8 +253,6 @@ export class SendTransactionModal extends Component {
     } else if (observedTokensArray.includes(address)) {
       name = observedTokens[address].name;
     }
-
-    console.log(name);
     return name;
   }
 
@@ -265,18 +262,27 @@ export class SendTransactionModal extends Component {
     let transaction = this.props.reducers.TransactionToSend;
 
     let fromName = this.returnAccountName(transaction.from);
-    console.log(fromName);
+    console.log('fromName', fromName);
+    console.log('fromName', typeof fromName);
 
     let toName = this.returnAccountName(transaction.to);
-    console.log(toName);
+    console.log('toName', toName);
+    console.log('toName', typeof toName);
 
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container send-transaction-info">
-          <Title />
+          <Title tx={transaction} />
           {/*<TransactionName info={transaction} />*/}
           <p>
             <span className="address dapp-shorten-text not-ens-name">
+              {/*
+              <SecurityIcon
+                type="accountRoute"
+                classes={'dapp-identicon dapp-tiny'}
+                hash={transaction.from || ''}
+              />
+              */}
               <Identicon
                 classes="dapp-identicon dapp-tiny"
                 title
@@ -284,20 +290,27 @@ export class SendTransactionModal extends Component {
                 seed={transaction.from}
               />
               {/*{transaction.from}*/}
-              {fromName}
+              {fromName ? fromName : transaction.from}
             </span>
           </p>
           <i className="icon-arrow-down" />
           {/*<TransactionName info={transaction} />*/}
           <p>
             <span className="address dapp-shorten-text not-ens-name">
+              {/*}
+              <SecurityIcon
+                type="transactionHref"
+                classes={'dapp-identicon dapp-tiny'}
+                hash={transaction.to || ''}
+              />
+              */}
               <Identicon
                 classes="dapp-identicon dapp-tiny"
                 title
                 size="tiny"
                 seed={transaction.to}
               />
-              {transaction.to}
+              {toName ? toName : transaction.to}
             </span>
           </p>
           <hr />
