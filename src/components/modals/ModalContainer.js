@@ -5,8 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // actions
-import * as Actions from '../../actions/actions.js';
-
+// import * as Actions from '../../actions/actions.js';
+import { displayGlobalNotification } from '../../actions/actions.js';
 // Modals
 // import NoConnection from './NoConnection.js';
 import WatchContract from './WatchContract.js';
@@ -18,7 +18,11 @@ import QRCode from './QRCode.js';
 import EventInfo from './EventInfo.js';
 import JSONInterface from './JSONInterface.js';
 
-class App extends Component {
+export class ModalContainer extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
     window.addEventListener('blur', e =>
       document.body.classList.add('app-blur')
@@ -30,11 +34,10 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (
-      this.props.reducers.globalNotification !==
-        prevProps.reducers.globalNotification.display &&
-      this.props.reducers.globalNotification.display === true
+      this.props.globalNotification !== prevProps.globalNotification.display &&
+      this.props.globalNotification.display === true
     ) {
-      let notification = this.props.reducers.globalNotification;
+      let notification = this.props.globalNotification;
       let toastConfig = {
         position: 'bottom-right',
         autoClose: 5000,
@@ -66,13 +69,14 @@ class App extends Component {
       this.props.displayGlobalNotification({ display: false });
     }
 
-    Object.values(this.props.reducers.modals).includes(true)
+    Object.values(this.props.modals).includes(true)
       ? document.body.classList.add('disable-scroll', 'blur', 'app-blur')
       : document.body.classList.remove('disable-scroll', 'blur', 'app-blur');
   }
 
   render() {
-    let modals = this.props.reducers.modals;
+    let modals = this.props.modals;
+
     let watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,
     });
@@ -82,9 +86,7 @@ class App extends Component {
     let deleteToken = cn({
       'dapp-modal-overlay': modals.displayDeleteToken || false,
     });
-    // let sendTransaction = cn({
-    //   'dapp-modal-overlay': modals.displaySendTransaction || false,
-    // });
+
     let viewTransaction = cn({
       'dapp-modal-overlay': modals.displayTransaction || false,
     });
@@ -104,9 +106,6 @@ class App extends Component {
       'dapp-modal-overlay': modals.displayEventInfo || false,
     });
 
-    // let qrHash = this.props.reducers.SelectedWallet ? this.props.reducers.SelectedWallet.adress : ''
-    // let qrHash = this.props.reducers.SelectedTransaction ? this.props.reducers.SelectedTransaction.adress : ''
-
     return (
       <React.Fragment>
         <ToastContainer
@@ -120,44 +119,56 @@ class App extends Component {
           draggable
           pauseOnHover
         />
-        <DeleteToken
-          token={this.props.reducers.TokenToDelete}
-          display={deleteToken}
-        />
-        {/*}
-
-        {this.props.reducers.SelectedTransaction ? (
-          <TransactionInfo
-            display={viewTransaction}
-            transaction={this.props.reducers.SelectedTransaction}
-          />
-        ) : null}
-        {/*}
-        <EventInfo
-          display={viewEventInfo}
-          event={this.props.reducers.SelectedEvent}
-        />
-      */}
+        {/*<NoConnection connection={this.props.web3} />*/}
         <WatchToken display={watchToken} />
         <WatchContract display={watchContract} />
-        <SendTransaction display={sendTransaction} />
-        <QRCode hash={this.props.reducers.qrCode} display={qrCode} />
-        <JSONInterface
-          JSONInterface={this.props.reducers.JSONInterface}
-          display={JsonInterface}
-        />
-        */}
-        {/*<NoConnection connection={this.props.web3} />*/}
+        {this.props.TokenToDelete ? (
+          <DeleteToken token={this.props.TokenToDelete} display={deleteToken} />
+        ) : null}
+        {this.props.SelectedTransaction ? (
+          <TransactionInfo
+            display={viewTransaction}
+            transaction={this.props.SelectedTransaction}
+          />
+        ) : null}
+        {this.props.SelectedEvent ? (
+          <EventInfo display={viewEventInfo} event={this.props.SelectedEvent} />
+        ) : null}
+        {/*}
+        {this.props.TransactionToSend ? (
+          <SendTransaction display={sendTransaction} />
+        ) : null}
+      */}
+        {this.props.qrCode ? (
+          <QRCode hash={this.props.qrCode} display={qrCode} />
+        ) : null}
+        {this.props.JSONInterface ? (
+          <JSONInterface
+            JSONInterface={this.props.JSONInterface}
+            display={JsonInterface}
+          />
+        ) : null}
       </React.Fragment>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+// const mapStateToProps = state => {
+//   return state;
+// };
+
+const mapStateToProps = state => ({
+  // return state;
+  TransactionToSend: state.reducers.TransactionToSend,
+  TokenToDelete: state.reducers.TokenToDelete,
+  SelectedTransaction: state.reducers.SelectedTransaction,
+  JSONInterface: state.reducers.JSONInterface,
+  globalNotification: state.reducers.globalNotification,
+  modals: state.reducers.modals,
+});
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
-)(App);
+  // { ...Actions }
+  { displayGlobalNotification }
+)(ModalContainer);

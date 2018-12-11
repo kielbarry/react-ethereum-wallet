@@ -28,6 +28,7 @@ export class LatestTransactions extends Component {
     this.sortTransactions = this.sortTransactions.bind(this);
   }
 
+  // TODO: was this done right? nextProps vs prevProps?
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.transactions !== nextProps.transactions) {
       this.filterSearchValue();

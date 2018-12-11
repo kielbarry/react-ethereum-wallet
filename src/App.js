@@ -23,31 +23,6 @@ import './App.css';
 
 import Web3Initializer from './web3/Web3Initializer.js';
 
-// const LoadableLandingPage = LandingPage({
-//   loader: () => import('./views/LandingPage.js'),
-//   loading() {
-//     return LandingPage
-//   }
-// });
-// const LoadableViewContainer = ViewContainer({
-//   loader: () => import('./views/ViewContainer.js'),
-//   loading() {
-//     return ViewContainer
-//   }
-// });
-// const LoadableModalContainer = ModalContainer({
-//   loader: () => import('./components/modals/ModalContainer.js'),
-//   loading() {
-//     return ModalContainer
-//   }
-// });
-// const LoadableNavBar = NavBar({
-//   loader: () => import('./components/Navbar'),
-//   loading() {
-//     return NavBar
-//   }
-// });
-
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -66,15 +41,13 @@ export class App extends Component {
     );
     this.props.closeModal('displayEventInfo');
 
-    // let object = {
-    //   setWallets: this.props.setWallets,
-    // }
-
-    // this.props.setWallets(Utils.getAccounts())
-
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
+
+        console.log(this.props);
+        console.log(this.props.reducers);
+
         let web3 = this.props.web3.web3Instance;
         try {
           Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
@@ -90,15 +63,37 @@ export class App extends Component {
         // } catch (err) {
         //   console.error('error', err);
         // }
+        // try {
+        //   Utils.getNewBlockHeaders(
+        //     web3,
+        //     this.props.updateBlockHeader,
+        //     this.props.updatePeerCount
+        //   );
+        // } catch (err) {
+        //   console.error('error', err);
+        // }
+
         try {
-          Utils.getNewBlockHeaders(
-            web3,
-            this.props.updateBlockHeader,
-            this.props.updatePeerCount
-          );
+          web3.eth.subscribe('newBlockHeaders', (err, b) => {
+            if (!err) {
+              this.props.updateBlockHeader({
+                gasLimit: b.gasLimit,
+                gasUsed: b.gasUsed,
+                number: b.number
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                size: b.size,
+                timestamp: b.timestamp,
+              });
+              web3.eth.net.getPeerCount().then(this.props.updatePeerCount);
+            }
+            Utils.updateTransactionConfirmation2(b, web3);
+          });
         } catch (err) {
-          console.error('error', err);
+          console.warn('web3 provider not open');
+          return err;
         }
+
         //TODO: is this necessary? what was the purpose?
         try {
           this.props.createInitWalletContract(
@@ -108,11 +103,11 @@ export class App extends Component {
           console.error('error', err);
         }
 
-        Utils.updateTransactionConfirmation(
-          web3,
-          this.props.reducers.Transactions,
-          this.props.updateTransactionConfirmation
-        );
+        // Utils.updateTransactionConfirmation(
+        //   web3,
+        //   this.props.reducers.Transactions,
+        //   this.props.updateTransactionConfirmation
+        // );
 
         // Utils.updatePendingConfirmations(
         //   web3,
@@ -165,11 +160,15 @@ export class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+// const mapStateToProps = state => {
+//   return state;
+// };
+const mapStateToProps = state => ({
+  web3: state.web3,
+});
 
 export default connect(
   mapStateToProps,
+  // {},
   { ...Actions }
 )(App);

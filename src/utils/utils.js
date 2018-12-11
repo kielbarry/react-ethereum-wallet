@@ -1,5 +1,9 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
+
+import * as Actions from '../actions/actions.js';
+import { bindActionCreators } from 'redux';
+
 // var Web3 = require('web3');
 import Web3 from 'web3';
 let newWeb3 = new Web3();
@@ -348,6 +352,52 @@ export function updatePendingConfirmations(web3, transactions, cb1) {
   // }
 }
 
+export function updateTransactionConfirmation2(block, web3, transactions, cb1) {
+  if (!transactions) return;
+  let unconfirmed = Object.keys(transactions).filter(tx => {
+    return (
+      transactions[tx].confirmationNumber !== 'Pending' &&
+      transactions[tx].confirmationNumber < 12
+    );
+  });
+
+  console.log(unconfirmed);
+  // let subscription;
+  // try {
+  //   while (unconfirmed !== undefined && unconfirmed.length) {
+  //     subscription = web3.eth.subscribe('newBlockHeaders', (err, b) => {
+  //       let currentBlock = b.number;
+  //       unconfirmed.map((txHash, index) => {
+  //         console.log(unconfirmed.length);
+  //         // double check localStorage data is indeed a tx
+  //         web3.eth.getTransaction(txHash, (error, tx) => {
+  //           if (err)
+  //             console.warn(
+  //               'there was an error updating the transaction with hash: ',
+  //               txHash
+  //             );
+  //           let confirmations = currentBlock - tx.blockNumber;
+  //           if (confirmations >= 12) {
+  //             unconfirmed.splice(index, 1);
+  //           }
+  //           cb1({
+  //             name: [txHash],
+  //             value: confirmations,
+  //           });
+  //         });
+  //       });
+  //     });
+  //   }
+  //   subscription.unsubscribe(function(error, success) {
+  //     if (success) console.log('Error unsubscribing!', error);
+  //     if (success) console.log('Successfully unsubscribed!');
+  //   });
+  // } catch (err) {
+  //   console.warn('web3 provider not open');
+  //   return err;
+  // }
+}
+
 export function updateTransactionConfirmation(web3, transactions, cb1) {
   if (!transactions) return;
   let unconfirmed = Object.keys(transactions).filter(tx => {
@@ -395,10 +445,23 @@ export function updateTransactionConfirmation(web3, transactions, cb1) {
 }
 
 export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
+  console.log(Actions);
+  console.log(this);
+  console.log(this.props);
+
+  // Actions.updateBlockHeader,
+  //           Actions.updatePeerCount
   try {
     web3.eth.subscribe('newBlockHeaders', (err, b) => {
       if (!err)
-        cb1({
+        // cb1({
+        //   gasLimit: b.gasLimit,
+        //   gasUsed: b.gasUsed,
+        //   number: b.number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+        //   size: b.size,
+        //   timestamp: b.timestamp,
+        // });
+        Actions.updateBlockHeader({
           gasLimit: b.gasLimit,
           gasUsed: b.gasUsed,
           number: b.number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
@@ -406,7 +469,8 @@ export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
           timestamp: b.timestamp,
         });
 
-      web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
+      // web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
+      web3.eth.net.getPeerCount().then(Actions.updatePeerCount);
     });
   } catch (err) {
     console.warn('web3 provider not open');

@@ -19,11 +19,15 @@ export class TokenListForItems extends Component {
 
   getTokenBalanceForAddress(untrackedTokens) {
     let walletAddress = this.props.address;
-    let ObservedTokens = this.props.reducers.ObservedTokens;
+    let ObservedTokens = this.props.ObservedTokens;
 
-    if (!this.props.web3 || !this.props.web3.web3Instance) {
-      return;
-    }
+    // if observedTokens Empty
+    // or if no tokens in walletaddress
+    // then return
+    if (ObservedTokens)
+      if (!this.props.web3 || !this.props.web3.web3Instance) {
+        return;
+      }
 
     untrackedTokens.map(tokenAddress => {
       let web3 = this.props.web3.web3Instance;
@@ -73,18 +77,16 @@ export class TokenListForItems extends Component {
   render() {
     let address = this.props.address;
 
-    let currentObservedTokens = new Set(
-      Object.keys(this.props.reducers.ObservedTokens)
-    );
+    let currentObservedTokens = new Set(Object.keys(this.props.ObservedTokens));
 
     let tokenCheck;
 
     //TODO: should extract this javascript into separate function
     // returns null html
     if (this.props.addressType === 'Wallets') {
-      tokenCheck = this.props.reducers.Wallets[address].tokens;
+      tokenCheck = this.props.Wallets[address].tokens;
     } else if (this.props.addressType === 'WalletContracts') {
-      tokenCheck = this.props.reducers.WalletContracts[address].tokens;
+      tokenCheck = this.props.WalletContracts[address].tokens;
     } else {
       return null;
     }
@@ -93,7 +95,8 @@ export class TokenListForItems extends Component {
 
     if (
       currentObservedTokens !== undefined &&
-      currentWalletsTokens !== undefined
+      currentWalletsTokens !== undefined &&
+      tokenCheck !== undefined
     ) {
       let trackedTokens = new Set(Object.keys(currentWalletsTokens));
       let untrackedTokens = Array.from(
@@ -103,6 +106,7 @@ export class TokenListForItems extends Component {
     }
 
     let tokens = tokenCheck;
+    console.log('renders countAmount / walletContracts+wallets ', tokens);
 
     return (
       <ul className="token-list">
@@ -134,9 +138,15 @@ export class TokenListForItems extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+// const mapStateToProps = state => {
+//   return state;
+// };
+
+const mapStateToProps = state => ({
+  ObservedTokens: state.reducers.ObservedTokens,
+  Wallets: state.reducers.Wallets,
+  WalletContracts: state.reducers.WalletContracts,
+});
 
 export default connect(
   mapStateToProps,

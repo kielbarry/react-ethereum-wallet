@@ -40,6 +40,17 @@ export const SecurityIcon = props => {
       ) : (
         ''
       )}
+      {props.type === 'accountRoute' ? (
+        <Link
+          to={{ pathname: '/account/' + props.hash }}
+          title={props.hash}
+          // onClick={e => updateToTransaction(e)}
+        >
+          {props.hash}
+        </Link>
+      ) : (
+        ''
+      )}
     </React.Fragment>
   );
 };

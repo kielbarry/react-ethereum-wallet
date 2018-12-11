@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 
 // import InputItem from '../elements/InputItem.js';
 // import TestInputItem from '../elements/TestInputItem.js';
+import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 
 import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
@@ -20,19 +21,84 @@ import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
 import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 import { Identicon } from 'ethereum-react-components';
 
+import Web3 from 'web3';
+let newWeb3 = new Web3();
+
+export const Title = props => {
+  let value = newWeb3.utils.fromWei(props.tx.value, 'ETHER');
+  return (
+    <h1>
+      Send
+      <br />
+      {value} ETHER
+    </h1>
+  );
+};
+
+export const TransactionName = info => {
+  return (
+    <p>
+      <span className="address dapp-shorten-text not-ens-name">
+        <Identicon
+          classes="dapp-identicon dapp-small"
+          title
+          size="small"
+          seed={info.from}
+        />
+        {info.from}
+      </span>
+    </p>
+  );
+};
+
+export const GasInfo = info => {
+  return (
+    <React.Fragment>
+      <small>+ Estimated fee</small>
+      {info.estimatedGas} Wei
+      <br />
+      <small className="gas-price">
+        Gas price {info.gasPrice} gWei
+        <br />
+        Estimated required gas {info.estimatedGas}
+        <br />
+      </small>
+    </React.Fragment>
+  );
+};
+
 export class SendTransactionModal extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      userEnteredGas: '',
+    };
+
     this.cancelFunction = this.cancelFunction.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
     this.sendTransaction = this.sendTransaction.bind(this);
     this.sendEtherTransaction = this.sendEtherTransaction.bind(this);
     this.sendTokenTransaction = this.sendTokenTransaction.bind(this);
     this.updateTokenBalances = this.updateTokenBalances.bind(this);
+    this.returnAccountName = this.returnAccountName.bind(this);
   }
 
   shouldComponentUpdate(prevProps, prevState) {
     if (this.props.display !== prevProps.display) {
+      console.log('this.props.display', this.props.display);
+      console.log('prevProps.display', prevProps.display);
+      return true;
+    }
+    if (this.props.reducers.TransactionToSend !== prevProps.TransactionToSend) {
+      // console.log(
+      //   'this.props.reducers.TransactionToSend',
+      //   this.props.reducers.TransactionToSend
+      // );
+      // console.log(
+      //   'prevProps.reducers.TransactionToSend',
+      //   prevProps.reducers.TransactionToSend
+      // );
       return true;
     }
     return false;
@@ -211,39 +277,80 @@ export class SendTransactionModal extends Component {
     this.props.closeModal('displaySendTransaction');
   }
 
+  returnAccountName(address) {
+    // let transaction = this.props.reducers.TransactionToSend;
+    let wallets = this.props.reducers.Wallets;
+    let walletArray = Object.keys(wallets).map(key => key);
+    let walletContracts = this.props.reducers.WalletContracts;
+    let walletContractArray = Object.keys(walletContracts).map(key => key);
+    let observedContracts = this.props.reducers.ObservedContracts;
+    let observedContractsArray = Object.keys(observedContracts).map(key => key);
+    let observedTokens = this.props.reducers.ObservedTokens;
+    let observedTokensArray = Object.keys(observedTokens).map(key => key);
+    let name;
+    if (walletArray.includes(address)) {
+      name = wallets[address].name;
+      name ? name : 'Account ' + wallets[address].number;
+      return name;
+    } else if (walletContractArray.includes(address)) {
+      return walletContracts[address]['contract-name'];
+    } else if (observedContractsArray.includes(address)) {
+      return observedContracts[address]['contract-name'];
+    } else if (observedTokensArray.includes(address)) {
+      return observedTokens[address].name;
+    }
+    return name;
+  }
+
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     let transaction = this.props.reducers.TransactionToSend;
+    let fromName = this.returnAccountName(transaction.from);
+    let toName = this.returnAccountName(transaction.to);
+
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container send-transaction-info">
-          <h1>
-            Send
-            <br />
-            ETHER
-          </h1>
+          <Title tx={transaction} />
+          {/*<TransactionName info={transaction} />*/}
           <p>
             <span className="address dapp-shorten-text not-ens-name">
+              {/*
+              <SecurityIcon
+                type="accountRoute"
+                classes={'dapp-identicon dapp-tiny'}
+                hash={transaction.from || ''}
+              />
+              */}
               <Identicon
-                classes="dapp-identicon dapp-small"
+                classes="dapp-identicon dapp-tiny"
                 title
-                size="small"
+                size="tiny"
                 seed={transaction.from}
               />
-              {transaction.from}
+              {/*{transaction.from}*/}
+              {fromName ? fromName : transaction.from}
             </span>
           </p>
           <i className="icon-arrow-down" />
+          {/*<TransactionName info={transaction} />*/}
           <p>
             <span className="address dapp-shorten-text not-ens-name">
+              {/*}
+              <SecurityIcon
+                type="transactionHref"
+                classes={'dapp-identicon dapp-tiny'}
+                hash={transaction.to || ''}
+              />
+              */}
               <Identicon
-                classes="dapp-identicon dapp-small"
+                classes="dapp-identicon dapp-tiny"
                 title
-                size="small"
+                size="tiny"
                 seed={transaction.to}
               />
-              {transaction.to}
+              {toName ? toName : transaction.to}
             </span>
           </p>
           <hr />
@@ -257,6 +364,7 @@ export class SendTransactionModal extends Component {
               Estimated required gas {transaction.estimatedGas}
               <br />
             </small>
+            {/*<GasInfo/>*/}
             <small>
               Provide gas:
               <input type="number" min="21000" className="gas dapp-tiny" />

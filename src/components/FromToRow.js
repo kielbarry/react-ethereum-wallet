@@ -3,9 +3,14 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import WalletDropdown from '../components/elements/WalletDropdown.js';
 import { updateTransactionToSend } from '../actions/actions.js';
+
+import { Identicon } from 'ethereum-react-components';
+
 import * as Utils from '../utils/utils.js';
 
 import { combineWallets, sortByBalance } from '../utils/helperFunctions.js';
+import Web3 from 'web3';
+let web3 = new Web3();
 
 export class Send extends Component {
   //TODO replace fromWallet with the from field from reducer TransactionToSend
@@ -30,22 +35,36 @@ export class Send extends Component {
       standardFee: false,
     };
 
-    this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.checkIsAddress = this.checkIsAddress.bind(this);
   }
-  handleOnKeyUp(e) {
+  handleInputChange(e) {
     // TODO:validate inputs here
-    // let web3 = this.props.web3.web3Instance;
     let target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
-    if (target === 'value' && this.props.web3 && targetValue) {
-      let web3 = this.props.web3.web3Instance;
+    if (target === 'value' && targetValue) {
       targetValue = web3.utils.toWei(targetValue, 'ETHER');
     }
+
+    this.setState({ toAddress: targetValue });
+
+    this.checkIsAddress();
+
     this.props.updateTransactionToSend({
       name: target,
       value: targetValue,
     });
+  }
+
+  checkIsAddress() {
+    let isAddress =
+      this.state.toAddress !== '' && this.state.toAddress !== undefined
+        ? web3.utils.isAddress(this.state.toAddress)
+        : this.state.toAddress !== '' || this.state.toAddress !== undefined
+        ? null
+        : false;
+    this.setState({ toIsAddress: isAddress });
   }
 
   renderFrom() {
@@ -64,7 +83,31 @@ export class Send extends Component {
     );
   }
 
+  renderIcon() {
+    return (
+      <React.Fragment>
+        {this.state.toIsAddress &&
+        typeof this.state.toIsAddress === typeof true ? (
+          <Identicon
+            classes="dapp-identicon dapp-tiny"
+            title
+            size="tiny"
+            seed={this.state.toAddress}
+          />
+        ) : this.state.toIsAddress === null ||
+          this.state.toIsAddress === undefined ? null : (
+          <i className="icon-shield" />
+        )}
+      </React.Fragment>
+    );
+  }
+
   renderTo() {
+    let cn = require('classnames');
+    let newClasses = cn({
+      to: true,
+      'dapp-error': this.state.toIsAddress === false,
+    });
     return (
       <div className="col col-6 mobile-full">
         <h3>To</h3>
@@ -73,11 +116,13 @@ export class Send extends Component {
             type="text"
             name="to"
             placeholder="0x000000.."
-            className="to"
+            className={newClasses}
             autoFocus={true}
             // value={tx.to}
-            onKeyUp={e => this.handleOnKeyUp(e)}
+            onChange={e => this.handleInputChange(e)}
+            onKeyUp={e => this.handleInputChange(e)}
           />
+          {this.renderIcon()}
         </div>
       </div>
     );
