@@ -29,7 +29,7 @@ export const Header = props => {
 
 export const DateRow = props => {
   let today = new Date();
-  let txDate = new Date(props.dateSent);
+  let txDate = new Date(props.tx.dateSent);
   var timeDiff = Math.abs(txDate.getTime() - today.getTime());
   var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
@@ -37,10 +37,7 @@ export const DateRow = props => {
       {Utils.getMonthName(props.tx.dateSent)}
       {Utils.getDate(props.tx.dateSent)}
       <br />
-      <small>
-        {diffDays} day(s) ago
-        {/*, <strong>6,511</strong> Confirmations*/}
-      </small>
+      <small>{diffDays} day(s) ago</small>
     </p>
   );
 };
@@ -95,6 +92,7 @@ export class TransactionInfo extends Component {
     this.updateToTransaction = this.updateToTransaction.bind(this);
     this.handleRoute = this.handleRoute.bind(this);
   }
+
   shouldComponentUpdate(prevProps, prevState) {
     if (
       this.props.transaction !== prevProps.transaction ||
@@ -144,9 +142,6 @@ export class TransactionInfo extends Component {
 
   renderAddress(tx, direction) {
     //TODO: conditional update transaction inside handleRoute
-    console.log(tx);
-    console.log(direction);
-    console.log(tx[direction.toLowerCase()]);
     return (
       <tr>
         <td>{direction}</td>
@@ -198,48 +193,6 @@ export class TransactionInfo extends Component {
               {this.renderSentAmount()}
               {this.renderAddress(tx, 'From')}
               {this.renderAddress(tx, 'To')}
-              {/*}
-              <tr>
-                <td>From</td>
-                <td>
-                  <span className="address dapp-shorten-text not-ens-name">
-                    <Identicon
-                      classes="dapp-identicon dapp-tiny"
-                      title
-                      size="tiny"
-                      seed={tx.from}
-                    />
-                    <Link
-                      to={{ pathname: '/send-from/' + tx.from }}
-                      title={tx.from}
-                      onClick={this.handleRoute}
-                    >
-                      {tx.from}
-                    </Link>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>To</td>
-                <td>
-                  <span className="address dapp-shorten-text not-ens-name">
-                    <Identicon
-                      classes="dapp-identicon dapp-tiny"
-                      title
-                      size="tiny"
-                      seed={tx.to}
-                    />
-                    <Link
-                      to={{ pathname: '/send-from/' + tx.to }}
-                      title={tx.to}
-                      onClick={this.handleRoute}
-                    >
-                      {tx.to}
-                    </Link>
-                  </span>
-                </td>
-              </tr>
-            */}
               <GasStat title="Fee paid" text="ETHER" gasAmount={tx.gasUsed} />
               <GasStat title="Gas used" text="" gasAmount={tx.gasUsed} />
               <GasStat

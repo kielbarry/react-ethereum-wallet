@@ -106,7 +106,7 @@ export class TokenListForItems extends Component {
     }
 
     let tokens = tokenCheck;
-    console.log(tokens);
+    console.log('renders countAmount / walletContracts+wallets ', tokens);
 
     return (
       <ul className="token-list">
