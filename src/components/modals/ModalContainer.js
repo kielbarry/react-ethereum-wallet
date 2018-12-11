@@ -158,6 +158,7 @@ export class ModalContainer extends Component {
 
 const mapStateToProps = state => ({
   // return state;
+  TransactionToSend: state.reducers.TransactionToSend,
   TokenToDelete: state.reducers.TokenToDelete,
   SelectedTransaction: state.reducers.SelectedTransaction,
   JSONInterface: state.reducers.JSONInterface,

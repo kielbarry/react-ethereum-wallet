@@ -68,6 +68,11 @@ export const GasInfo = info => {
 export class SendTransactionModal extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      userEnteredGas: '',
+    };
+
     this.cancelFunction = this.cancelFunction.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
     this.sendTransaction = this.sendTransaction.bind(this);
