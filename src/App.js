@@ -127,9 +127,12 @@ export class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+// const mapStateToProps = state => {
+//   return state;
+// };
+const mapStateToProps = state => ({
+  web3: state.web3,
+});
 
 export default connect(
   mapStateToProps,
