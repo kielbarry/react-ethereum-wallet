@@ -87,17 +87,17 @@ export class App extends Component {
   //   }
   // }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.reducers.Web3Initializer !== this.props.reducers.Web3Initializer
-    ) {
-      // console.log(prevProps.reducers.Web3Initializer)
-      // console.log(this.props.reducers.Web3Initializer)
-      console.log(Web3Initializer);
-      // console.log(Web3Initializer.init)
-      console.log(Web3Initializer.init());
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (
+  //     prevProps.reducers.Web3Initializer !== this.props.reducers.Web3Initializer
+  //   ) {
+  //     // console.log(prevProps.reducers.Web3Initializer)
+  //     // console.log(this.props.reducers.Web3Initializer)
+  //     console.log(Web3Initializer);
+  //     // console.log(Web3Initializer.init)
+  //     console.log(Web3Initializer.init());
+  //   }
+  // }
 
   getCryptoComparePrices() {
     Utils.getCryptoComparePrices().then(exchangeRates => {
@@ -133,5 +133,6 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
+  // {},
   { ...Actions }
 )(App);

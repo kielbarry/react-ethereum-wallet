@@ -21,9 +21,13 @@ export class TokenListForItems extends Component {
     let walletAddress = this.props.address;
     let ObservedTokens = this.props.reducers.ObservedTokens;
 
-    if (!this.props.web3 || !this.props.web3.web3Instance) {
-      return;
-    }
+    // if observedTokens Empty
+    // or if no tokens in walletaddress
+    // then return
+    if (ObservedTokens)
+      if (!this.props.web3 || !this.props.web3.web3Instance) {
+        return;
+      }
 
     untrackedTokens.map(tokenAddress => {
       let web3 = this.props.web3.web3Instance;

@@ -93,6 +93,7 @@ export class TransactionInfo extends Component {
   constructor(props) {
     super(props);
     this.updateToTransaction = this.updateToTransaction.bind(this);
+    this.handleRoute = this.handleRoute.bind(this);
   }
   shouldComponentUpdate(prevProps, prevState) {
     if (
@@ -108,6 +109,12 @@ export class TransactionInfo extends Component {
     if (!this.props.display) return;
     this.props.closeModal('displayTransaction');
   }
+
+  handleRoute(e) {
+    this.updateToTransaction(e);
+    this.closeModal(e);
+  }
+
   closeModal(e) {
     e.preventDefault();
     if (e.target.getAttribute('id') === 'viewTransaction') {
@@ -135,11 +142,34 @@ export class TransactionInfo extends Component {
     );
   }
 
-  // renderAddress() {
-  //   return (
-
-  //   )
-  // }
+  renderAddress(tx, direction) {
+    //TODO: conditional update transaction inside handleRoute
+    console.log(tx);
+    console.log(direction);
+    console.log(tx[direction.toLowerCase()]);
+    return (
+      <tr>
+        <td>{direction}</td>
+        <td>
+          <span className="address dapp-shorten-text not-ens-name">
+            <Identicon
+              classes="dapp-identicon dapp-tiny"
+              title
+              size="tiny"
+              seed={tx[direction.toLowerCase()]}
+            />
+            <Link
+              to={{ pathname: '/send-from/' + tx[direction.toLowerCase()] }}
+              title={tx[direction.toLowerCase()]}
+              onClick={this.handleRoute}
+            >
+              {tx[direction.toLowerCase()]}
+            </Link>
+          </span>
+        </td>
+      </tr>
+    );
+  }
 
   render() {
     //TODO: gas paid versus fee
@@ -166,10 +196,9 @@ export class TransactionInfo extends Component {
           <table className="dapp-zebra">
             <tbody>
               {this.renderSentAmount()}
-              {/*
-              {this.renderAddress({tx.from, 'FROM'})}
-              {this.renderAddress({tx.to, 'TO'})}
-            */}
+              {this.renderAddress(tx, 'From')}
+              {this.renderAddress(tx, 'To')}
+              {/*}
               <tr>
                 <td>From</td>
                 <td>
@@ -183,7 +212,7 @@ export class TransactionInfo extends Component {
                     <Link
                       to={{ pathname: '/send-from/' + tx.from }}
                       title={tx.from}
-                      onClick={e => this.updateToTransaction(e)}
+                      onClick={this.handleRoute}
                     >
                       {tx.from}
                     </Link>
@@ -203,13 +232,14 @@ export class TransactionInfo extends Component {
                     <Link
                       to={{ pathname: '/send-from/' + tx.to }}
                       title={tx.to}
-                      onClick={e => this.updateToTransaction(e)}
+                      onClick={this.handleRoute}
                     >
                       {tx.to}
                     </Link>
                   </span>
                 </td>
               </tr>
+            */}
               <GasStat title="Fee paid" text="ETHER" gasAmount={tx.gasUsed} />
               <GasStat title="Gas used" text="" gasAmount={tx.gasUsed} />
               <GasStat

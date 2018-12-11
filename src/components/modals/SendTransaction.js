@@ -79,9 +79,19 @@ export class SendTransactionModal extends Component {
 
   shouldComponentUpdate(prevProps, prevState) {
     if (this.props.display !== prevProps.display) {
+      console.log('this.props.display', this.props.display);
+      console.log('prevProps.display', prevProps.display);
       return true;
     }
     if (this.props.reducers.TransactionToSend !== prevProps.TransactionToSend) {
+      console.log(
+        'this.props.reducers.TransactionToSend',
+        this.props.reducers.TransactionToSend
+      );
+      console.log(
+        'prevProps.reducers.TransactionToSend',
+        prevProps.reducers.TransactionToSend
+      );
       return true;
     }
     return false;
@@ -245,13 +255,13 @@ export class SendTransactionModal extends Component {
     if (walletArray.includes(address)) {
       name = wallets[address].name;
       name ? name : 'Account ' + wallets[address].number;
-      console.log(name);
+      return name;
     } else if (walletContractArray.includes(address)) {
-      name = walletContracts[address]['contract-name'];
+      return walletContracts[address]['contract-name'];
     } else if (observedContractsArray.includes(address)) {
-      name = observedContracts[address]['contract-name'];
+      return observedContracts[address]['contract-name'];
     } else if (observedTokensArray.includes(address)) {
-      name = observedTokens[address].name;
+      return observedTokens[address].name;
     }
     return name;
   }
@@ -260,14 +270,8 @@ export class SendTransactionModal extends Component {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     let transaction = this.props.reducers.TransactionToSend;
-
     let fromName = this.returnAccountName(transaction.from);
-    console.log('fromName', fromName);
-    console.log('fromName', typeof fromName);
-
     let toName = this.returnAccountName(transaction.to);
-    console.log('toName', toName);
-    console.log('toName', typeof toName);
 
     return (
       <div className={this.props.display} style={divStyle}>
