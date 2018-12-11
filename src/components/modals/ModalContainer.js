@@ -124,15 +124,13 @@ class App extends Component {
           token={this.props.reducers.TokenToDelete}
           display={deleteToken}
         />
-        {/*}
-
         {this.props.reducers.SelectedTransaction ? (
           <TransactionInfo
             display={viewTransaction}
             transaction={this.props.reducers.SelectedTransaction}
           />
         ) : null}
-        {/*}
+        {/*
         <EventInfo
           display={viewEventInfo}
           event={this.props.reducers.SelectedEvent}
