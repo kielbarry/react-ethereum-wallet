@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 
 // import InputItem from '../elements/InputItem.js';
 // import TestInputItem from '../elements/TestInputItem.js';
+import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 
 //List of actions actually used
@@ -74,6 +75,9 @@ export class SendTransactionModal extends Component {
 
   shouldComponentUpdate(prevProps, prevState) {
     if (this.props.display !== prevProps.display) {
+      return true;
+    }
+    if (this.props.reducers.TransactionToSend !== prevProps.TransactionToSend) {
       return true;
     }
     return false;
@@ -225,14 +229,34 @@ export class SendTransactionModal extends Component {
 
   returnAccountName(address) {
     // let transaction = this.props.reducers.TransactionToSend;
+    console.log(address);
+    console.log(this.props.reducers.Wallets);
     let wallets = this.props.reducers.Wallets;
     let walletArray = Object.keys(wallets).map(key => key);
     let walletContracts = this.props.reducers.WalletContracts;
     let walletContractArray = Object.keys(walletContracts).map(key => key);
+    let observedContracts = this.props.reducers.ObservedContracts;
+    let observedContractsArray = Object.keys(observedContracts).map(key => key);
+    let observedTokens = this.props.reducers.ObservedTokens;
+    let observedTokensArray = Object.keys(observedTokens).map(key => key);
+    let name;
     if (walletArray.includes(address)) {
-      let name = wallets[address].name;
-      name ? name : 'Account ' + wallets[address];
+      console.log(wallets.address);
+      name = wallets[address].name;
+      console.log(name);
+
+      name ? name : 'Account ' + wallets[address].number;
+      console.log(name);
+    } else if (walletContractArray.includes(address)) {
+      name = walletContracts[address]['contract-name'];
+    } else if (observedContractsArray.includes(address)) {
+      name = observedContracts[address]['contract-name'];
+    } else if (observedTokensArray.includes(address)) {
+      name = observedTokens[address].name;
     }
+
+    console.log(name);
+    return name;
   }
 
   render() {
@@ -243,6 +267,9 @@ export class SendTransactionModal extends Component {
     let fromName = this.returnAccountName(transaction.from);
     console.log(fromName);
 
+    let toName = this.returnAccountName(transaction.to);
+    console.log(toName);
+
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container send-transaction-info">
@@ -251,9 +278,9 @@ export class SendTransactionModal extends Component {
           <p>
             <span className="address dapp-shorten-text not-ens-name">
               <Identicon
-                classes="dapp-identicon dapp-small"
+                classes="dapp-identicon dapp-tiny"
                 title
-                size="small"
+                size="tiny"
                 seed={transaction.from}
               />
               {/*{transaction.from}*/}
@@ -265,9 +292,9 @@ export class SendTransactionModal extends Component {
           <p>
             <span className="address dapp-shorten-text not-ens-name">
               <Identicon
-                classes="dapp-identicon dapp-small"
+                classes="dapp-identicon dapp-tiny"
                 title
-                size="small"
+                size="tiny"
                 seed={transaction.to}
               />
               {transaction.to}

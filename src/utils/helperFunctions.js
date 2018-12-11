@@ -61,6 +61,29 @@ Sort method for accounts and wallets to sort by balance
 //     : -1;
 // };
 
+export function returnAddressName(address, props) {
+  let wallets = props.reducers.Wallets;
+  let walletArray = Object.keys(wallets).map(key => key);
+  let walletContracts = props.reducers.WalletContracts;
+  let walletContractArray = Object.keys(walletContracts).map(key => key);
+  let observedContracts = props.reducers.ObservedContracts;
+  let observedContractsArray = Object.keys(observedContracts).map(key => key);
+  let observedTokens = props.reducers.ObservedTokens;
+  let observedTokensArray = Object.keys(observedTokens).map(key => key);
+  let name;
+  if (walletArray.includes(address)) {
+    name = wallets[address].name;
+    name ? name : 'Account ' + wallets[address];
+  } else if (walletContractArray.includes(address)) {
+    name = walletContracts[address]['contract-name'];
+  } else if (observedContractsArray.includes(address)) {
+    name = observedContracts[address]['contract-name'];
+  } else if (observedTokensArray.includes(address)) {
+    name = observedTokens[address].name;
+  }
+  return name;
+}
+
 /**
 Sort method for accounts and wallets to sort by balance and remove empty addresses;
 
