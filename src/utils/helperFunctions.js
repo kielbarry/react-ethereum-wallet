@@ -95,6 +95,29 @@ export function sortByBalance(wallets) {
     .sort((a, b) => b.balance - a.balance);
 }
 
+export function combineWallets(addresses, walletContracts) {
+  return sortByBalance(
+    Object.keys(addresses)
+      .map(address => {
+        return {
+          ...addresses[address],
+          address,
+          addressType: 'walletAddress',
+        };
+      })
+      .concat(
+        Object.keys(walletContracts).map(address => {
+          let contract = walletContracts[address];
+          return {
+            ...walletContracts,
+            address,
+            addressType: 'contractAddress',
+          };
+        })
+      )
+  );
+}
+
 /**
 Return an account you own, from a list of accounts
 

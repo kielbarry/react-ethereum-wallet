@@ -60,25 +60,6 @@ export const initialState = {
 };
 
 export const reducers = (state = initialState, action) => {
-  if (action.type === 'UPDATE_ADDRESS_NAME') {
-    console.log(
-      'lkaHSlkashflsakjfhlAKsjhkljhLKJAHDSFLKAJSHDLFKJASDHFLKAJSHFLKSAJHFLKDSJAH'
-    );
-    console.log({
-      ...state,
-      Wallets: {
-        ...state.Wallets,
-        [action.payload.address]: {
-          ...state.Wallets[action.payload.address],
-          name: action.payload.name,
-        },
-      },
-      selectedWallet: {
-        ...state.selectedWallet,
-        name: action.payload.name,
-      },
-    });
-  }
   switch (action.type) {
     case 'UPDATE_OBSERVED_CONTRACT_NAME':
       return {

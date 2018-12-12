@@ -114,6 +114,7 @@ export class NavBar extends Component {
               thousandSeparator={true}
             />
           )}
+          &nbsp;
           <span className="inline-form" name="unit">
             <button
               type="button"

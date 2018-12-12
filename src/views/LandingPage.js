@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
-import * as MetamaskModel from 'metamask-logo';
+// import * as MetamaskModel from 'metamask-logo';
 
 import {
   withStyles,

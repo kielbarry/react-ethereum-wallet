@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AccountItem from './elements/AccountItem.js';
 
+import shortid from 'shortid';
+
 export class Addresses extends Component {
   render() {
     if (this.props.reducers.Wallets !== undefined) {
@@ -11,14 +13,16 @@ export class Addresses extends Component {
         <div className="wallet-box-list">
           {Object.keys(wallets).map((address, i) => (
             <AccountItem
-              key={address}
+              // key={address}
+              key={shortid.generate()}
               number={i + 1}
               icon={icon}
               address={address}
               wallet={wallets[address]}
               currency={this.props.reducers.currency}
               web3={this.props.web3}
-              props={this.props}
+              reducers={this.props.reducers}
+              ObservedTokens={this.props.reducers.ObservedTokens}
               addressType="Wallets"
               index={i}
             />

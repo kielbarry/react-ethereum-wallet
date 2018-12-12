@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sortByBalance } from '../../utils/helperFunctions.js';
+import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
 
 import * as Utils from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
@@ -26,26 +26,10 @@ const styles = theme => ({
 export class WalletDropdown extends Component {
   constructor(props) {
     super(props);
-    let WalletsCombined = sortByBalance(
-      Object.keys(this.props.reducers.Wallets)
-        .map(address => {
-          return {
-            ...this.props.reducers.Wallets[address],
-            address,
-            addressType: 'walletAddress',
-          };
-        })
-        .concat(
-          Object.keys(this.props.reducers.WalletContracts).map(address => {
-            let contract = this.props.reducers.WalletContracts[address];
-            return {
-              ...contract,
-              address,
-              addressType: 'contractAddress',
-            };
-          })
-        )
-    );
+
+    let { Wallets, WalletContracts } = this.props.reducers;
+    let WalletsCombined = combineWallets(Wallets, WalletContracts);
+
     this.state = {
       Wallets: WalletsCombined,
       fromWallet: WalletsCombined[0].address,
@@ -55,7 +39,7 @@ export class WalletDropdown extends Component {
       name: 'MainOwnerAddress',
       value: this.state.fromWallet,
     });
-    let msc = this.props.reducers.DeployContractForm.multiSigContract;
+    // let msc = this.props.reducers.DeployContractForm.multiSigContract;
     let owners = this.props.reducers.DeployContractForm.multiSigContract.owners;
     owners[0] = this.state.fromWallet;
     let obj = {
@@ -84,7 +68,7 @@ export class WalletDropdown extends Component {
         value: e.target.value,
       });
 
-      let msc = this.props.reducers.DeployContractForm.multiSigContract;
+      // let msc = this.props.reducers.DeployContractForm.multiSigContract;
       let owners = this.props.reducers.DeployContractForm.multiSigContract
         .owners;
       owners[0] = e.target.value;
@@ -108,7 +92,6 @@ export class WalletDropdown extends Component {
   render() {
     let wallets = this.state.Wallets;
     let config = this.state.dropdownConfig;
-    const { classes } = this.props;
     return (
       <React.Fragment>
         <select

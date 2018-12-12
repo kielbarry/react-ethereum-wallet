@@ -76,6 +76,7 @@ export class ModalContainer extends Component {
 
   render() {
     let modals = this.props.modals;
+
     let watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,
     });
@@ -85,9 +86,7 @@ export class ModalContainer extends Component {
     let deleteToken = cn({
       'dapp-modal-overlay': modals.displayDeleteToken || false,
     });
-    // let sendTransaction = cn({
-    //   'dapp-modal-overlay': modals.displaySendTransaction || false,
-    // });
+
     let viewTransaction = cn({
       'dapp-modal-overlay': modals.displayTransaction || false,
     });
@@ -138,6 +137,11 @@ export class ModalContainer extends Component {
         {this.props.TransactionToSend ? (
           <SendTransaction display={sendTransaction} />
         ) : null}
+        {/*}
+        {this.props.TransactionToSend ? (
+          <SendTransaction display={sendTransaction} />
+        ) : null}
+      */}
         {this.props.qrCode ? (
           <QRCode hash={this.props.qrCode} display={qrCode} />
         ) : null}

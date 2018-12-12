@@ -8,6 +8,8 @@ import { withRouter } from 'react-router';
 import SecurityIcon from '../elements/SecurityIcon.js';
 import * as Actions from '../../actions/actions.js';
 
+import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
+
 //List of actions actually used
 // closeModal
 // addTransaction
@@ -89,14 +91,14 @@ export class SendTransactionModal extends Component {
       return true;
     }
     if (this.props.reducers.TransactionToSend !== prevProps.TransactionToSend) {
-      console.log(
-        'this.props.reducers.TransactionToSend',
-        this.props.reducers.TransactionToSend
-      );
-      console.log(
-        'prevProps.reducers.TransactionToSend',
-        prevProps.reducers.TransactionToSend
-      );
+      // console.log(
+      //   'this.props.reducers.TransactionToSend',
+      //   this.props.reducers.TransactionToSend
+      // );
+      // console.log(
+      //   'prevProps.reducers.TransactionToSend',
+      //   prevProps.reducers.TransactionToSend
+      // );
       return true;
     }
     return false;
@@ -114,18 +116,46 @@ export class SendTransactionModal extends Component {
   sendEtherTransaction(e) {
     let web3 = this.props.web3.web3Instance;
     let tx = this.props.reducers.TransactionToSend;
+
     let date = new Date();
+
+    const BN = web3.utils.BN;
+    let amount = new BN(tx.value);
+    // let gasPrice = new BN(tx.gasPrice.toString());
+    let gasPrice = tx.gasPrice;
+    let maxGas = new BN('21000');
+
+    let { Wallets, WalletContracts } = this.props.reducers;
+    console.log(Wallets);
+    console.log(WalletContracts);
+    let combinedWallets = Object.keys(
+      combineWallets(Wallets, WalletContracts)
+    ).map(address => address);
+
+    console.log(combinedWallets);
+
+    let transactionType;
+    if (combinedWallets.includes(tx.to) && combinedWallets.includes(tx.from)) {
+      transactionType = 'Transfer between accounts';
+    }
+
     web3.eth
       .sendTransaction({
         from: tx.from,
         to: tx.to,
-        amount: tx.value,
-        gasPrice: tx.gasPrice,
+        value: amount,
+        gasPrice: gasPrice,
       })
-      .on('transactionHash', hash => {
+      .on('transactionHash', transactionHash => {
         this.props.addTransaction({
-          hash: hash,
-          value: { ...tx, dateSent: date, confirmationNumber: 'Pending' },
+          hash: transactionHash,
+          value: {
+            ...tx,
+            dateSent: date,
+            confirmationNumber: 'Pending',
+            transactionHash: transactionHash,
+            transactionType: transactionType,
+          },
         });
         this.props.displayGlobalNotification({
           display: true,
@@ -135,21 +165,9 @@ export class SendTransactionModal extends Component {
         // this.props.clearTransactionToSend();
         this.props.history.push('/accounts');
       })
-      .on('receipt', receipt => {
-        console.log('the receipt', receipt);
-        this.props.updateTransaction({
-          name: [receipt.transactionHash],
-          value: receipt,
-        });
-      })
+      .on('receipt', receipt => {})
       .on('confirmation', (confirmationNumber, receipt) => {
         let cn = confirmationNumber;
-        console.log('the cn', cn);
-        this.props.updateTransactionConfirmation({
-          name: [receipt.transactionHash],
-          value: cn,
-        });
-
         let msg;
         if (cn === 0 || cn === 12) {
           cn === 0
@@ -200,6 +218,8 @@ export class SendTransactionModal extends Component {
     });
 
     TokenContract.options.address = token.address;
+
+    let transactionType = 'Token sent';
 
     // TODO: update balances on successful send
 
