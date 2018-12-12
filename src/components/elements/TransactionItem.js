@@ -94,7 +94,7 @@ export class TransactionItem extends Component {
               classes="dapp-identicon dapp-tiny"
               title
               size="tiny"
-              seed={tx.from}
+              address={tx.from}
             />
             <Link
               to={{ pathname: '/send-from/' + tx.from }}
@@ -110,7 +110,7 @@ export class TransactionItem extends Component {
               classes="dapp-identicon dapp-tiny"
               title
               size="tiny"
-              seed={tx.to}
+              address={tx.to}
             />
             <Link
               to={{ pathname: '/send-from/' + tx.to }}

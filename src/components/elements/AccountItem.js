@@ -74,7 +74,7 @@ export class AccountItem extends Component {
             classes="dapp-identicon dapp-small"
             title
             size="small"
-            seed={this.props.address}
+            address={this.props.address}
           />
           <TokenListForItems
             addressType={this.props.addressType}

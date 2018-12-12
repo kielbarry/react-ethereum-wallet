@@ -137,7 +137,7 @@ export class ExecuteConstants extends Component {
           classes="dapp-identicon dapp-tiny"
           title
           size="tiny"
-          seed={address}
+          address={address}
         />
         <Link
           to={{ pathname: '/send-from/' + address }}

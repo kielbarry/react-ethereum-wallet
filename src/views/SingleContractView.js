@@ -406,10 +406,18 @@ export class SingleContractView extends Component {
     return (
       <div className="dapp-container accounts-page">
         <div className="dapp-sticky-bar dapp-container">
-          <Identicon classes="dapp-identicon" title seed={contract.address} />
+          <Identicon
+            classes="dapp-identicon"
+            title
+            address={contract.address}
+          />
         </div>
         <div className="accounts-page-summary">
-          <Identicon classes="dapp-identicon" title seed={contract.address} />
+          <Identicon
+            classes="dapp-identicon"
+            title
+            address={contract.address}
+          />
           <header>
             <h1>
               <em className="edit-name">{contract['contract-name']}</em>

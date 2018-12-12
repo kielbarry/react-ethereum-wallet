@@ -39,7 +39,7 @@ export const Origin = event => {
           classes="dapp-identicon dapp-tiny"
           title
           size="tiny"
-          seed={event.originalContractAddress}
+          address={event.originalContractAddress}
         />
         {event.originalContractName}
       </td>

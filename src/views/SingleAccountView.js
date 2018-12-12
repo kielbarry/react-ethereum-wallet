@@ -22,7 +22,7 @@ import { Identicon } from 'ethereum-react-components';
 export const StickyHeader = ({ sw }) => {
   return (
     <div className="dapp-sticky-bar dapp-container">
-      <Identicon classes="dapp-identicon" title seed={sw.address} />
+      <Identicon classes="dapp-identicon" title address={sw.address} />
     </div>
   );
 };
@@ -155,7 +155,7 @@ export class SingleAccountView extends Component {
         */}
 
         <div className="accounts-page-summary">
-          <Identicon classes="dapp-identicon" title seed={sw.address} />
+          <Identicon classes="dapp-identicon" title address={sw.address} />
           <header>
             <AccountDetails sw={sw} />
             {this.renderBalance()}

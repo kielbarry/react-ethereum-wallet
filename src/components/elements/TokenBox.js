@@ -114,7 +114,7 @@ export class TokenBox extends Component {
           classes="dapp-identicon dapp-small"
           title
           size="small"
-          seed={address}
+          address={address}
         />
         <h3>{token.name}</h3>
         <button

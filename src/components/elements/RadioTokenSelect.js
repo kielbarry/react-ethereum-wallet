@@ -66,7 +66,7 @@ export class RadioTokenSelect extends Component {
                     classes="dapp-identicon dapp-tiny"
                     title
                     size="tiny"
-                    seed={token}
+                    address={token}
                   />
                   <span className="token-name">{tokens[token].name}</span>
                   <span className="balance">

@@ -139,7 +139,7 @@ export class WalletDropdown extends Component {
           classes="dapp-identicon dapp-small"
           title
           size="small"
-          seed={this.state.fromWallet}
+          address={this.state.fromWallet}
         />
       </React.Fragment>
     );

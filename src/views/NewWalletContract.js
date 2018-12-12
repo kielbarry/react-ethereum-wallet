@@ -278,7 +278,7 @@ class NewWalletContract extends Component {
                     classes="dapp-identicon dapp-small"
                     title
                     size="small"
-                    seed={
+                    address={
                       index === 0
                         ? dcf.MainOwnerAddress
                         : typeof owners[index] == 'undefined'

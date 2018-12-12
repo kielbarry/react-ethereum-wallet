@@ -151,7 +151,7 @@ export class TransactionInfo extends Component {
               classes="dapp-identicon dapp-tiny"
               title
               size="tiny"
-              seed={tx[direction.toLowerCase()]}
+              address={tx[direction.toLowerCase()]}
             />
             <Link
               to={{ pathname: '/send-from/' + tx[direction.toLowerCase()] }}
