@@ -2,6 +2,7 @@
   "name": "react-ethereum-wallet",
   "version": "0.1.0",
   "private": true,
+  "hompage": "https://kielbarry.github.io/react-ethereum-wallet/",
   "dependencies": {
     "@material-ui/core": "^3.2.0",
     "@material-ui/icons": "^3.0.1",
@@ -9,14 +10,12 @@
     "babel-eslint": "^10.0.1",
     "blockies-identicon": "^0.1.0",
     "classnames": "^2.2.6",
-    "eslint-config-react-app": "^3.0.3",
-    "eslint-plugin-flowtype": "^2.50.3",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
     "ethereum-blockies-base64": "^1.0.2",
     "ethereum-qr-code": "^0.3.0",
+    "ethereum-react-components": "^1.2.5",
     "fetch-mock": "^7.2.5",
     "geopattern": "^1.2.3",
+    "gh-pages": "^1.1.0",
     "helmet": "^3.13.0",
     "i18n-react": "^0.6.4",
     "lint-staged": "^7.2.0",
@@ -65,16 +64,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "CI=TRUE react-scripts test --env=jsdom --no-coverage",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "babel-plugin-react-intl": "^2.4.0",
-    "eslint": "^5.0.0",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-prettier": "^2.6.2",
-    "eslint-plugin-react": "^7.10.0",
+    "eslint": "^5.10.0",
     "husky": "^1.0.0-rc.14",
     "prettier": "^1.14.2",
     "prettier-eslint": "^8.8.2",
@@ -91,7 +89,6 @@
   ],
   "extends": [
     "plugin:prettier/recommended",
-    "eslint:recommended",
     "plugin:react/recommended"
   ],
   "parserOptions": {

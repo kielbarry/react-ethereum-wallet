@@ -89,6 +89,7 @@ class NewWalletContract extends Component {
     this.selectWallet = this.selectWallet.bind(this);
     this.createContract = this.createContract.bind(this);
     this.checkIfImportableWallet = this.checkIfImportableWallet.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     let defaultWallet;
     let wallets = this.props.reducers.Wallets;
     for (var prop in wallets) {
@@ -187,7 +188,7 @@ class NewWalletContract extends Component {
     });
   }
 
-  handleChange = e => {
+  handleChange(e) {
     let buttonValue = e.target.value;
     let name = e.target.name;
     let obj = {};
@@ -237,7 +238,7 @@ class NewWalletContract extends Component {
       default:
         break;
     }
-  };
+  }
 
   // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
   makeID() {

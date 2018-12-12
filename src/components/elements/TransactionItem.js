@@ -87,7 +87,7 @@ export class TransactionItem extends Component {
     //TODO: transaction type
     return (
       <td className="account-name">
-        <h2>Transaction Type</h2>
+        <h2>{tx.transactionType ? tx.transactionType : 'Transaction Type'}</h2>
         <p>
           <span className="address dapp-shorten-text not-ens-name">
             <Identicon
