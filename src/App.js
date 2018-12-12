@@ -20,12 +20,10 @@ import * as WalletUtils from './utils/WalletUtils.js';
 
 // views
 import LandingPage from './views/LandingPage.js';
-
 import ViewContainer from './views/ViewContainer.js';
 
 // Modals
 import ModalContainer from './components/modals/ModalContainer.js';
-
 import NavBar from './components/Navbar';
 
 // stylesheets
