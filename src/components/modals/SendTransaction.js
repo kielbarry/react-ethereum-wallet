@@ -41,7 +41,7 @@ export const TransactionName = info => {
           classes="dapp-identicon dapp-small"
           title
           size="small"
-          seed={info.from}
+          address={info.from}
         />
         {info.from}
       </span>
@@ -296,7 +296,7 @@ export class SendTransactionModal extends Component {
                 classes="dapp-identicon dapp-tiny"
                 title
                 size="tiny"
-                seed={transaction.from}
+                address={transaction.from}
               />
               {/*{transaction.from}*/}
               {fromName ? fromName : transaction.from}
@@ -317,7 +317,7 @@ export class SendTransactionModal extends Component {
                 classes="dapp-identicon dapp-tiny"
                 title
                 size="tiny"
-                seed={transaction.to}
+                address={transaction.to}
               />
               {toName ? toName : transaction.to}
             </span>

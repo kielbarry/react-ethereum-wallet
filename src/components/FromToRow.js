@@ -89,7 +89,7 @@ export class Send extends Component {
             classes="dapp-identicon dapp-tiny"
             title
             size="tiny"
-            seed={this.state.toAddress}
+            address={this.state.toAddress}
           />
         ) : this.state.toIsAddress === null ||
           this.state.toIsAddress === undefined ? null : (

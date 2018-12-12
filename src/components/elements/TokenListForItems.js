@@ -129,7 +129,7 @@ export class TokenListForItems extends Component {
                   classes="dapp-identicon dapp-tiny"
                   title
                   size="tiny"
-                  seed={tokens[token].address}
+                  address={tokens[token].address}
                 />
               </li>
             ))}
