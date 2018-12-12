@@ -134,6 +134,9 @@ export class ModalContainer extends Component {
         {this.props.SelectedEvent ? (
           <EventInfo display={viewEventInfo} event={this.props.SelectedEvent} />
         ) : null}
+        {this.props.TransactionToSend ? (
+          <SendTransaction display={sendTransaction} />
+        ) : null}
         {/*}
         {this.props.TransactionToSend ? (
           <SendTransaction display={sendTransaction} />

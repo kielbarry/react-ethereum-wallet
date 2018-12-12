@@ -121,7 +121,8 @@ export class SendTransactionModal extends Component {
 
     const BN = web3.utils.BN;
     let amount = new BN(tx.value);
-    let gasPrice = new BN(tx.gasPrice.toString());
+    // let gasPrice = new BN(tx.gasPrice.toString());
+    let gasPrice = tx.gasPrice;
     let maxGas = new BN('21000');
 
     let { Wallets, WalletContracts } = this.props.reducers;
@@ -164,21 +165,9 @@ export class SendTransactionModal extends Component {
         // this.props.clearTransactionToSend();
         this.props.history.push('/accounts');
       })
-      .on('receipt', receipt => {
-        console.log('the receipt', receipt);
-        this.props.updateTransaction({
-          name: [receipt.transactionHash],
-          value: receipt,
-        });
-      })
+      .on('receipt', receipt => {})
       .on('confirmation', (confirmationNumber, receipt) => {
         let cn = confirmationNumber;
-        console.log('the cn', cn);
-        this.props.updateTransactionConfirmation({
-          name: [receipt.transactionHash],
-          value: cn,
-        });
-
         let msg;
         if (cn === 0 || cn === 12) {
           cn === 0
