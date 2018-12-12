@@ -28,21 +28,24 @@ export class LatestTransactions extends Component {
     this.sortTransactions = this.sortTransactions.bind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.transactions !== nextProps.transactions) {
-      this.filterSearchValue();
-      this.sortOptions();
-      this.sortTransactions();
-      return true;
-    }
-    if (this.state.filterOptions !== nextState.filterOptions) {
-      this.filterSearchValue();
-      this.sortOptions();
-      this.sortTransactions();
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   console.log(this.state.filterOptions)
+  //   console.log(prevState.filterOptions)
+  //   console.log(this.state)
+  //   if (this.props.transactions !== prevProps.transactions) {
+  //     this.filterSearchValue();
+  //     this.sortOptions();
+  //     this.sortTransactions();
+  //     return true;
+  //   }
+  //   if (this.state.filterOptions !== prevState.filterOptions) {
+  //     this.filterSearchValue();
+  //     this.sortOptions();
+  //     this.sortTransactions();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   fetchTransactions() {
     let transactions = this.state.filteredTransactions;
@@ -65,6 +68,7 @@ export class LatestTransactions extends Component {
   }
 
   sortOptions(e) {
+    console.log(this.state);
     let transactions = this.fetchTransactions();
     let field = this.state.filterOptions.sortOption;
 
@@ -94,6 +98,7 @@ export class LatestTransactions extends Component {
   filterSearchValue(e) {
     let transactions = this.fetchTransactions();
     console.log(transactions);
+    console.log(this.state.filterOptions);
     if (
       this.state.filterOptions.searchValue !== '' &&
       this.state.filterOptions.searchField !== 'none'
@@ -227,12 +232,14 @@ export class LatestTransactions extends Component {
     return (
       <i
         className={'icon-arrow-' + icon}
+        style={{ marginLeft: '20px' }}
         onClick={e => this.toggleSortDirection(e)}
       />
     );
   }
 
   renderTransactions() {
+    // console.log(this.state)
     // let transactions = this.state.transactions;
     let transactions;
     if (this.state.filteredTransactions.length !== 0) {

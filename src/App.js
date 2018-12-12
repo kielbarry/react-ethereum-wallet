@@ -3,7 +3,18 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // actions
-import * as Actions from './actions/actions.js';
+import {
+  fetchEthGasStationStats,
+  closeModal,
+  updateConnectedNetwork,
+  setWallets,
+  updateTotalBalance,
+  updateBlockHeader,
+  updateTransactionConfirmation,
+  updateTransaction,
+  createInitWalletContract,
+  updateEtherPrices,
+} from './actions/actions.js';
 import * as Utils from './utils/utils.js';
 import * as WalletUtils from './utils/WalletUtils.js';
 
@@ -13,7 +24,6 @@ import ViewContainer from './views/ViewContainer.js';
 
 // Modals
 import ModalContainer from './components/modals/ModalContainer.js';
-
 import NavBar from './components/Navbar';
 
 // stylesheets
@@ -39,65 +49,71 @@ export class App extends Component {
       15000
     );
     this.props.closeModal('displayEventInfo');
+
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
         let web3 = this.props.web3.web3Instance;
+        // do once to load on init, then repeat later to update balances
         try {
           Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
+          Utils.getAccounts(
+            web3,
+            this.props.setWallets,
+            this.props.updateTotalBalance
+          );
         } catch (err) {
-          console.error('network check not available');
+          console.error('error', err);
         }
+
+        try {
+          web3.eth.subscribe('newBlockHeaders', (err, b) => {
+            if (!err) {
+              this.props.updateBlockHeader({
+                gasLimit: b.gasLimit,
+                gasUsed: b.gasUsed,
+                number: b.number
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                size: b.size,
+                timestamp: b.timestamp,
+              });
+              web3.eth.net.getPeerCount().then(this.props.updatePeerCount);
+            }
+            // Utils.getAccounts(
+            //   web3,
+            //   this.props.setWallets,
+            //   this.props.updateTotalBalance
+            // );
+            Utils.updateTransactionConfirmation(
+              b,
+              web3,
+              this.props.Transactions,
+              this.props.updateTransactionConfirmation
+            );
+            Utils.updatePendingConfirmations(
+              b,
+              web3,
+              this.props.Transactions,
+              this.props.updateTransaction
+            );
+          });
+        } catch (err) {
+          console.warn('web3 provider not open', err);
+          return err;
+        }
+
+        //TODO: is this necessary? what was the purpose?
         // try {
-        Utils.getAccounts(
-          web3,
-          this.props.setWallets,
-          this.props.updateTotalBalance
-        );
+        //   this.props.createInitWalletContract(
+        //     WalletUtils.initWalletContact(web3)
+        //   );
         // } catch (err) {
         //   console.error('error', err);
         // }
-        try {
-          Utils.getNewBlockHeaders(
-            web3,
-            this.props.updateBlockHeader,
-            this.props.updatePeerCount
-          );
-        } catch (err) {
-          console.error('error', err);
-        }
-        //TODO: is this necessary? what was the purpose?
-        try {
-          this.props.createInitWalletContract(
-            WalletUtils.initWalletContact(web3)
-          );
-        } catch (err) {
-          console.error('error', err);
-        }
       }
     }, 1000);
   }
-
-  // componentDidMount() {
-  //   console.log('this.props', this.props);
-  //   console.log('this.props', this.props.history);
-  //   console.log('context', this.context);
-  //   if (performance.navigation.TYPE_RELOAD === 1) {
-  //     this.context.history.push('/accounts');
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (
-  //     prevProps.reducers.Web3Initializer !== this.props.reducers.Web3Initializer
-  //   ) {
-  //     // console.log(prevProps.reducers.Web3Initializer)
-  //     // console.log(this.props.reducers.Web3Initializer)
-  //     console.log(Web3Initializer);
-  //     // console.log(Web3Initializer.init)
-  //     console.log(Web3Initializer.init());
-  //   }
-  // }
 
   getCryptoComparePrices() {
     Utils.getCryptoComparePrices().then(exchangeRates => {
@@ -115,9 +131,6 @@ export class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Route exact path="/" component={LandingPage} />
-          {/*}
-            if web3 connected, display rest
-          */}
           <NavBar />
           <ViewContainer />
           <ModalContainer />
@@ -127,15 +140,23 @@ export class App extends Component {
   }
 }
 
-// const mapStateToProps = state => {
-//   return state;
-// };
 const mapStateToProps = state => ({
+  Transactions: state.reducers.Transactions,
   web3: state.web3,
 });
 
 export default connect(
   mapStateToProps,
-  // {},
-  { ...Actions }
+  {
+    fetchEthGasStationStats,
+    closeModal,
+    updateConnectedNetwork,
+    setWallets,
+    updateTotalBalance,
+    updateBlockHeader,
+    updateTransactionConfirmation,
+    updateTransaction,
+    createInitWalletContract,
+    updateEtherPrices,
+  }
 )(App);

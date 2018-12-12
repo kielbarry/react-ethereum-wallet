@@ -1,5 +1,9 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
+
+import * as Actions from '../actions/actions.js';
+import { bindActionCreators } from 'redux';
+
 // var Web3 = require('web3');
 import Web3 from 'web3';
 let newWeb3 = new Web3();
@@ -245,17 +249,16 @@ export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
 }
 
-export function getAccounts(web3, cb1, cb2) {
+export function getAccounts(web3, setWallets, updateTotalBalance) {
   try {
     web3.eth.getAccounts().then(accounts => {
       let totalBalance = 0;
-      // eslint-disable-next-line
       accounts.map(acc => {
         let account = acc;
         web3.eth.getBalance(acc, (err, balance) => {
-          cb1({ account, balance });
+          setWallets({ account, balance });
           totalBalance += Number(balance);
-          cb2(totalBalance);
+          updateTotalBalance(totalBalance);
         });
       });
     });
@@ -265,7 +268,86 @@ export function getAccounts(web3, cb1, cb2) {
   }
 }
 
-export function getNewBlockHeaders(web3, cb1, cb2) {
+export function listenForIncomingTransactions(web3, accounts) {
+  // console.log('listenForIncomingTransactions');
+  // try {
+  //   let subscription = web3.eth
+  //     .subscribe('pendingTransactions', (err, res) => {
+  //       if (err) console.log(err);
+  //       if (res) {
+  //         console.log(res);
+  //       }
+  //     })
+  //     .on('data', function(transaction) {
+  //       console.log(transaction);
+  //     })
+  //     .on('error', function(error) {
+  //       console.log(error);
+  //     });
+  // } catch (err) {
+  //   console.warn('err in listen');
+  // }
+}
+
+export function updatePendingConfirmations(
+  block,
+  web3,
+  transactions,
+  updateTransaction
+) {
+  if (!transactions) return;
+
+  let pending = Object.keys(transactions).filter(tx => {
+    return transactions[tx].confirmationNumber === 'Pending';
+  });
+
+  if (pending.length === 0) return;
+
+  let currentBlock = block.number;
+  pending.map((txHash, index) => {
+    web3.eth.getTransactionReceipt(txHash).then(receipt => {
+      if (receipt === null) return;
+      let confirmations = currentBlock - receipt.blockNumber;
+      receipt['confirmationNumber'] = confirmations;
+      updateTransaction({
+        name: [receipt.transactionHash],
+        value: receipt,
+      });
+    });
+  });
+}
+
+export function updateTransactionConfirmation(
+  block,
+  web3,
+  transactions,
+  updateTransactionConfirmation
+) {
+  if (!transactions) return;
+
+  let unconfirmed = Object.keys(transactions).filter(tx => {
+    return (
+      transactions[tx].confirmationNumber !== 'Pending' &&
+      transactions[tx].confirmationNumber < 12
+    );
+  });
+
+  if (unconfirmed.length === 0) return;
+
+  let currentBlock = block.number;
+  unconfirmed.map((txHash, index) => {
+    web3.eth.getTransaction(txHash, (error, tx) => {
+      if (error) console.warn('error with transaction hash: ', txHash);
+      let confirmations = currentBlock - tx.blockNumber;
+      updateTransactionConfirmation({
+        name: [txHash],
+        value: confirmations,
+      });
+    });
+  });
+}
+
+export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
   try {
     web3.eth.subscribe('newBlockHeaders', (err, b) => {
       if (!err)
