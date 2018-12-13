@@ -51,6 +51,16 @@ export class WalletDropdown extends Component {
     this.chooseWallet = this.chooseWallet.bind(this);
   }
 
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   if(this.props.disabled !== prevProps.disabled) {
+  //     return true;
+  //   }
+  //   if(this.props.fromWallet !== prevProps.fromWallet) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
   chooseWallet(e) {
     this.setState({ fromWallet: e.target.value });
 
@@ -103,6 +113,7 @@ export class WalletDropdown extends Component {
           name={config.selectName}
           onChange={e => this.chooseWallet(e)}
           value={this.state.fromWallet}
+          disabled={this.props.disabled}
         >
           {wallets.map(w => {
             return (

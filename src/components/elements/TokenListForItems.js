@@ -78,11 +78,13 @@ export class TokenListForItems extends Component {
     let address = this.props.address;
 
     let currentObservedTokens = new Set(Object.keys(this.props.ObservedTokens));
+    console.log(currentObservedTokens);
 
     let tokenCheck;
 
     //TODO: should extract this javascript into separate function
     // returns null html
+    console.log(this.props.addressType);
     if (this.props.addressType === 'Wallets') {
       tokenCheck = this.props.Wallets[address].tokens;
     } else if (this.props.addressType === 'WalletContracts') {
@@ -93,15 +95,21 @@ export class TokenListForItems extends Component {
 
     let currentWalletsTokens = tokenCheck ? tokenCheck : [];
 
+    console.log(currentObservedTokens);
+    console.log(currentWalletsTokens);
+    console.log(tokenCheck);
+
     if (
-      currentObservedTokens !== undefined &&
-      currentWalletsTokens !== undefined &&
+      // currentObservedTokens !== undefined || currentWalletsTokens !== undefined
+      // &&
       tokenCheck !== undefined
     ) {
       let trackedTokens = new Set(Object.keys(currentWalletsTokens));
+      console.log(trackedTokens);
       let untrackedTokens = Array.from(
         new Set([...currentObservedTokens].filter(x => !trackedTokens.has(x)))
       );
+      console.log(untrackedTokens);
       this.getTokenBalanceForAddress(untrackedTokens);
     }
 

@@ -25,7 +25,8 @@ import Web3 from 'web3';
 let newWeb3 = new Web3();
 
 export const Title = props => {
-  let value = newWeb3.utils.fromWei(props.tx.value, 'ETHER');
+  let value;
+  if (props.tx.value) value = newWeb3.utils.fromWei(props.tx.value, 'ETHER');
   return (
     <h1>
       Send

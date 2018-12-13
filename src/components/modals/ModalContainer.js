@@ -19,10 +19,6 @@ import EventInfo from './EventInfo.js';
 import JSONInterface from './JSONInterface.js';
 
 export class ModalContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     window.addEventListener('blur', e =>
       document.body.classList.add('app-blur')
@@ -136,9 +132,8 @@ export class ModalContainer extends Component {
         {this.props.SelectedEvent ? (
           <EventInfo display={viewEventInfo} event={this.props.SelectedEvent} />
         ) : null}
-        {Object.keys(txToSend).length && txToSend.constructor === Object ? (
-          <SendTransaction display={sendTransaction} />
-        ) : null}
+        {/*{Object.keys(txToSend).length && txToSend.constructor === Object ? (*/}
+        {txToSend.value ? <SendTransaction display={sendTransaction} /> : null}
         {/*}
         {this.props.TransactionToSend ? (
           <SendTransaction display={sendTransaction} />

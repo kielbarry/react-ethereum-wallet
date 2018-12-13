@@ -157,6 +157,14 @@ export const tokenInterface = [
     ],
     type: 'function',
   },
+  {
+    constant: true,
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', type: 'uint256' }],
+    payable: false,
+    type: 'function',
+  },
 ];
 
 // TokenContract = new web3.eth.Contract(tokenInterface);

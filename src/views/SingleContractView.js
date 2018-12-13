@@ -389,6 +389,10 @@ export class SingleContractView extends Component {
     //   contractFunctions,
     //   contractConstants,
     // } = this.props.reducers.ObservedContracts[contract.address];
+
+    let walletContracts = Object.keys(this.props.reducers.WalletContracts);
+    let obseredContracts = Object.keys(this.props.reducers.WalletContracts);
+
     let logs = contract.logs ? contract.logs : undefined;
     let contractFunctions = contract.contractFunctions
       ? contract.contractFunctions

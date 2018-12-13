@@ -39,37 +39,37 @@ export class DeployToken extends Component {
 
   constructor(props) {
     super(props);
-    let { Wallets, WalletContracts } = this.props.reducers;
+    // let { Wallets, WalletContracts } = this.props.reducers;
+    let { Wallets, WalletContracts } = this.props;
     console.log(ReplicateBinanceToken);
     let combinedWallets = combineWallets(Wallets, WalletContracts);
     this.state = {
       deployingAddress: combinedWallets[0].address,
+      // disabledWallet: false,
+      disabledWallet: '',
     };
     this.deployBinanceToken = this.deployBinanceToken.bind(this);
     this.returnDeployTokenAddress = this.returnDeployTokenAddress.bind(this);
+
+    console.log(this.state.deployingAddress);
   }
 
   shouldComponentUpdate() {
     return false;
   }
 
+  componentDidMount() {
+    this.setState({ disabledWallet: false }, console.log);
+  }
+
   deployBinanceToken() {
+    this.setState({ disabledWallet: true });
     let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     if (!web3) {
       return;
     }
-
-    console.log(ReplicateBinanceToken.ABI);
-
     let code = ReplicateBinanceToken.ABI;
-
-    // uint256 initialSupply,
-    //     string tokenName,
-    //     uint8 decimalUnits,
-    //     string tokenSymbol
-
     let args = [18000000, 'Asdf', 18, 'bnb0'];
-
     let options = {
       data: code,
       // arguments: '',
@@ -77,12 +77,8 @@ export class DeployToken extends Component {
       from: this.state.deployingAddress,
     };
 
-    console.log(ReplicateBinanceToken.jsonInterface);
     let jsonInterface = ReplicateBinanceToken.jsonInterface;
     let contract = new web3.eth.Contract(jsonInterface);
-
-    console.log(options);
-    console.log(this.state);
 
     contract
       .deploy({
@@ -102,8 +98,6 @@ export class DeployToken extends Component {
         });
       })
       .on('transactionHash', transactionHash => {
-        console.log('transactionHash', transactionHash);
-        // this.props.updatePendingContracts({ name: transactionHash, value: {} });
         this.props.displayGlobalNotification({
           display: true,
           type: 'warning',
@@ -111,71 +105,29 @@ export class DeployToken extends Component {
         });
       })
       .on('receipt', receipt => {
-        console.log('reecipt', receipt);
-        web3.eth
-          .call({
-            to: receipt.contractAddress.replace(' ', ''), // contract address
-            // data: "0xc6888fa10000000000000000000000000000000000000000000000000000000000000003"
-            data: '0x70a08231000000000000000000000000', //+ account.substring(2).replace(' ', '')
-          })
-          .then(result => {
-            console.log('result');
+        contract.options.address = receipt.contractAddress;
+        contract.methods['totalSupply']()
+          .call()
+          .then(totalSupply => {
+            console.log('totalSupply', totalSupply);
             let token = {
               address: receipt.contractAddress,
               name: 'Asdf',
               symbol: 'bnb0',
               decimals: '18',
             };
-            let tokenAmt = web3.utils.toBN(result);
             this.props.addObservedToken({
               address: token.address,
               value: Object.assign({}, token, {
-                amount: web3.utils.fromWei(tokenAmt, 'ether'),
+                totalSupply: totalSupply,
               }),
-            });
-            this.props.displayGlobalNotification({
-              display: true,
-              type: 'success',
-              msg: 'Added fake binance token',
             });
           });
       });
-
-    // web3.eth
-    //   .call({
-    //     to: address.replace(' ', ''), // contract address
-    //     // data: "0xc6888fa10000000000000000000000000000000000000000000000000000000000000003"
-    //     data: '0x70a08231000000000000000000000000', //+ account.substring(2).replace(' ', '')
-    //   })
-    //   .then(result => {
-    //     let tokenAmt = web3.utils.toBN(result);
-    //     // if (!tokenAmt.isZero()) {
-    //     this.props.addObservedToken({
-    //       address: token.address,
-    //       value: Object.assign({}, token, {
-    //         amount: web3.utils.fromWei(tokenAmt, 'ether'),
-    //       }),
-    //     });
-    //     this.props.displayGlobalNotification({
-    //       display: true,
-    //       type: 'success',
-    //       msg: 'Added custom token',
-    //     });
-    //     // }
-    //   });
   }
 
   returnDeployTokenAddress(e) {
-    // console.log(e)
-    // console.log(e.target)
-    // console.log(e.target.value)
-    // console.log(this.props)
-    // console.log(this.props.deployBinanceToken)
-    // console.log(this.deployBinanceToken)
-    this.setState(
-      { deployingAddress: e.target.value },
-      console.log(this.state)
-    );
+    this.setState({ deployingAddress: e.target.value });
   }
 
   renderAddTokenButton() {
@@ -203,6 +155,7 @@ export class DeployToken extends Component {
             style={{ display: 'inline-block', marginLeft: '20px' }}
           >
             <WalletDropdown
+              disabled={this.state.disabledWallet}
               dropdownConfig={dropdownConfig}
               returnDeployTokenAddress={this.returnDeployTokenAddress}
             />
@@ -233,9 +186,15 @@ export class DeployToken extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+// const mapStateToProps = state => {
+//   return state;
+// };
+
+const mapStateToProps = state => ({
+  Wallets: state.reducers.Wallets,
+  WalletContracts: state.reducers.WalletContracts,
+  web3: state.web3,
+});
 
 export default compose(
   withStyles(styles, { name: 'CustomContracts' }),
