@@ -52,8 +52,12 @@ export class WalletDropdown extends Component {
   }
 
   chooseWallet(e) {
-    console.log(this.state.dropdownConfig);
     this.setState({ fromWallet: e.target.value });
+
+    if (this.state.dropdownConfig.component === 'deployToken') {
+      this.props.returnDeployTokenAddress(e);
+    }
+
     if (this.state.dropdownConfig.component === 'Send') {
       this.props.updateTransactionToSend({
         name: e.target.getAttribute('name'),

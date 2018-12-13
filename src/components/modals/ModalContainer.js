@@ -106,6 +106,8 @@ export class ModalContainer extends Component {
       'dapp-modal-overlay': modals.displayEventInfo || false,
     });
 
+    let txToSend = this.props.TransactionToSend;
+
     return (
       <React.Fragment>
         <ToastContainer
@@ -134,7 +136,7 @@ export class ModalContainer extends Component {
         {this.props.SelectedEvent ? (
           <EventInfo display={viewEventInfo} event={this.props.SelectedEvent} />
         ) : null}
-        {this.props.TransactionToSend ? (
+        {Object.keys(txToSend).length && txToSend.constructor === Object ? (
           <SendTransaction display={sendTransaction} />
         ) : null}
         {/*}

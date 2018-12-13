@@ -2,6 +2,7 @@ import React from 'react';
 
 import CustomContracts from '../components/CustomContracts.js';
 import CustomTokens from '../components/CustomTokens.js';
+import DeployToken from '../components/DeployToken.js';
 
 const Title = () => {
   return (
@@ -17,6 +18,7 @@ const ContractsView = () => {
       <Title />
       <CustomContracts />
       <CustomTokens />
+      <DeployToken />
     </div>
   );
 };

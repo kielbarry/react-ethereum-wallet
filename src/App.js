@@ -80,11 +80,11 @@ export class App extends Component {
               });
               web3.eth.net.getPeerCount().then(this.props.updatePeerCount);
             }
-            // Utils.getAccounts(
-            //   web3,
-            //   this.props.setWallets,
-            //   this.props.updateTotalBalance
-            // );
+            Utils.getAccounts(
+              web3,
+              this.props.setWallets,
+              this.props.updateTotalBalance
+            );
             Utils.updateTransactionConfirmation(
               b,
               web3,

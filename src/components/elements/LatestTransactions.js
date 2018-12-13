@@ -86,13 +86,16 @@ export class LatestTransactions extends Component {
   }
 
   updateSearchValue(e) {
-    this.setState({
-      filterOptions: {
-        ...this.state.filterOptions,
-        searchValue: e.target.value,
+    console.log(e.target.value);
+    this.setState(
+      {
+        filterOptions: {
+          ...this.state.filterOptions,
+          searchValue: e.target.value,
+        },
       },
-    });
-    this.filterSearchValue();
+      this.filterSearchValue()
+    );
   }
 
   filterSearchValue(e) {
@@ -122,7 +125,7 @@ export class LatestTransactions extends Component {
         searchField: e.target.value,
       },
     });
-    this.filterSearchValue();
+    // this.filterSearchValue();
   }
 
   toggleSortDirection(e) {

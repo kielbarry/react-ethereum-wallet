@@ -71,9 +71,9 @@ export class SendTransactionModal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      userEnteredGas: '',
-    };
+    // this.state = {
+    //   userEnteredGas: '',
+    // };
 
     this.cancelFunction = this.cancelFunction.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
