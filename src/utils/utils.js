@@ -1,11 +1,22 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
 
-import * as Actions from '../actions/actions.js';
-import { bindActionCreators } from 'redux';
-
 import Web3 from 'web3';
 let newWeb3 = new Web3();
+
+export function updateTokenbalances(accounts, wallets, TokenContract) {
+  let addresses = Object.assign({}, accounts, wallets);
+
+  Object.keys(addresses).map(address => {
+    let balance;
+    TokenContract.methods['balanceOf'](address)
+      .call()
+      .then(res => {
+        console.log('res', res);
+        balance = res;
+      });
+  });
+}
 
 export function displayPriceFormatter2(props, balance, currencyOverride) {
   if (balance === undefined || isNaN(balance) || balance === null) balance = 0;

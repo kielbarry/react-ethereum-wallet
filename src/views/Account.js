@@ -43,7 +43,6 @@ export class AccountView extends Component {
 }
 
 const mapStateToProps = state => ({
-  // return state;
   Transactions: state.reducers.Transactions,
 });
 

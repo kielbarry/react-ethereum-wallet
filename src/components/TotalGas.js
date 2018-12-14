@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Utils from '../utils/utils.js';
+import { displayPriceFormatter } from '../utils/utils.js';
 import Web3 from 'web3';
+
+const TokenInfo = props => {
+  let tx = props.transaction;
+  return (
+    <React.Fragment>
+      <span className="amount">
+        &nbsp;
+        {tx.tokenAmount}
+      </span>
+      &nbsp;
+      {tx.tokenToSend.symbol}
+    </React.Fragment>
+  );
+};
 
 export class TotalGas extends Component {
   render() {
     let tx = this.props.TransactionToSend;
     let val = Number(tx.value);
-    let gas = tx.gasPrice;
-
-    let total = !tx.sendToken ? val + gas : gas;
-
+    let total = !tx.sendToken ? val + tx.gasPrice : tx.gasPrice;
     total = !isNaN(total) ? total : 0;
-
     let web3 = new Web3();
     total = web3.utils.toBN(total);
     return (
@@ -20,24 +30,14 @@ export class TotalGas extends Component {
         <div className="col col-12 mobile-full">
           <h3>total</h3>
           {!tx.sendToken ? (
-            // will exist if provider connected, will be removing
             <span className="amount">
-              {this.props.web3 && this.props.web3.web3Instance
-                ? ' ' +
-                  Utils.displayPriceFormatter(this.props, total) +
-                  ' ' +
-                  this.props.reducers.currency
-                : 0 + ' ' + this.props.reducers.currency}
+              {' ' +
+                displayPriceFormatter(this.props, total) +
+                ' ' +
+                this.props.reducers.currency}
             </span>
           ) : (
-            <React.Fragment>
-              <span className="amount">
-                &nbsp;
-                {tx.tokenAmount}
-              </span>
-              &nbsp;
-              {tx.tokenToSend.symbol}
-            </React.Fragment>
+            <TokenInfo transaction={tx} />
           )}
           <br />
           Estimated Fee: &nbsp;

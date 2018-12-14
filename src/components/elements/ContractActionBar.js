@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import ActionBarItem from './ActionBarItem';
+
 // import * as Actions from '../../actions/actions.js';
 import {
   displayGlobalNotification,
@@ -10,21 +12,6 @@ import {
   displayModal,
   updateJSON,
 } from '../../actions/actions.js';
-
-const ListItem = props => {
-  return (
-    <li>
-      <a
-        href={props.href}
-        title={props.title}
-        target="noopener noreferrer _blank"
-      >
-        <i className={props.icon} />
-        {props.text}
-      </a>
-    </li>
-  );
-};
 
 export class ContractActionBar extends Component {
   displayCopiedNotification(e) {
@@ -54,13 +41,13 @@ export class ContractActionBar extends Component {
       <aside className="dapp-actionbar">
         <nav>
           <ul>
-            <ListItem
+            <ActionBarItem
               href={transferEtherAddress}
               title={address}
               icon="icon-arrow-down"
               text=" Transfer Ether &amp; Tokens"
             />
-            <ListItem
+            <ActionBarItem
               href={etherScanAddress}
               icon="icon-info"
               text="View on Etherscan"
