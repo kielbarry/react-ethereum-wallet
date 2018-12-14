@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -126,6 +127,21 @@ export class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  Transactions: PropTypes.object,
+  updatePeerCount: PropTypes.func,
+  fetchEthGasStationStats: PropTypes.func,
+  closeModal: PropTypes.func,
+  updateConnectedNetwork: PropTypes.func,
+  setWallets: PropTypes.func,
+  updateTotalBalance: PropTypes.func,
+  updateBlockHeader: PropTypes.func,
+  updateTransactionConfirmation: PropTypes.func,
+  updateTransaction: PropTypes.func,
+  createInitWalletContract: PropTypes.func,
+  updateEtherPrices: PropTypes.func,
+};
 
 const mapStateToProps = state => ({
   Transactions: state.reducers.Transactions,

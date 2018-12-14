@@ -18,10 +18,10 @@ import NotFound from './NotFound';
 import { displayPriceFormatter } from '../utils/utils';
 import * as Actions from '../actions/actions';
 
-export const StickyHeader = ({ sw }) => {
+export const StickyHeader = ({ address }) => {
   return (
     <div className="dapp-sticky-bar dapp-container">
-      <Identicon classes="dapp-identicon" title address={sw.address} />
+      <Identicon classes="dapp-identicon" title address={address} />
     </div>
   );
 };
@@ -133,7 +133,7 @@ export class SingleAccountView extends Component {
     const sw = this.props.reducers.selectedWallet;
     return (
       <div className="dapp-container accounts-page">
-        <StickyHeader sw={sw} />
+        <StickyHeader address={sw.address} />
         {/*
         <EditableName addressType="address" />
         <EditableName addressType="address" />

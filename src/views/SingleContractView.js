@@ -14,26 +14,26 @@ import LatestTransactions from '../components/elements/LatestTransactions';
 import { displayPriceFormatter } from '../utils/utils';
 import * as Actions from '../actions/actions';
 
-import NotFound from './NotFound.js';
+import NotFound from './NotFound';
 
-const StickyBar = props => {
+const StickyBar = ({ address }) => {
   return (
     <div className="dapp-sticky-bar dapp-container">
-      <Identicon classes="dapp-identicon" title address={props.address} />
+      <Identicon classes="dapp-identicon" title address={address} />
     </div>
   );
 };
 
-const StatelessSummary = props => {
+const StatelessSummary = ({ contract }) => {
   return (
     <React.Fragment>
       <h1>
-        <em className="edit-name">{props.contract['contract-name']}</em>
+        <em className="edit-name">{contract['contract-name']}</em>
         <i className="edit-icon icon-pencil" />
       </h1>
       <h2 className="copyable-address">
         <i className="icon-key" title="Account" />
-        <span>{props.contract.address}</span>
+        <span>{contract.address}</span>
       </h2>
       <div className="clear" />
     </React.Fragment>
@@ -80,9 +80,11 @@ export class SingleContractView extends Component {
   }
 
   displayEventModal(e, log) {
+    /* eslint no-param-reassign: ["error", { "props": false }] */
     log.originalContractName = this.props.reducers.selectedContract.contract[
       'contract-name'
     ];
+    /* eslint no-param-reassign: ["error", { "props": false }] */
     log.originalContractAddress = this.props.reducers.selectedContract.contract.address;
 
     this.props.updateSelectedEvent(log);
@@ -95,7 +97,6 @@ export class SingleContractView extends Component {
   }
 
   updateContractWithMethods(contract, contractFunctions, contractConstants) {
-    console.log('is deployed contract', contract.deployedWalletContract);
     if (!contract.deployedWalletContract) {
       this.props.addObservedContractFunctions({
         address: contract.address,
@@ -316,7 +317,7 @@ export class SingleContractView extends Component {
   }
 
   renderSummary() {
-    const contract = this.props.reducers.selectedContract.contract;
+    const { contract } = this.props.reducers.selectedContract;
     return (
       <div className="accounts-page-summary">
         <Identicon classes="dapp-identicon" title address={contract.address} />
@@ -336,7 +337,7 @@ export class SingleContractView extends Component {
   }
 
   renderEvents() {
-    const contract = this.props.reducers.selectedContract.contract;
+    const { contract } = this.props.reducers.selectedContract;
     const logs = contract.logs ? contract.logs : undefined;
     return (
       <React.Fragment>
@@ -363,7 +364,7 @@ export class SingleContractView extends Component {
   }
 
   renderAccountTransactions() {
-    const address = this.props.reducers.selectedContract.contract.address;
+    const { address } = this.props.reducers.selectedContract.contract;
     const transactions = this.props.reducers.Transactions;
     const accountTxns = {};
     Object.keys(transactions).map(hash => {
@@ -388,7 +389,7 @@ export class SingleContractView extends Component {
   }
 
   renderSingleContract() {
-    const contract = this.props.reducers.selectedContract.contract;
+    const { contract } = this.props.reducers.selectedContract;
 
     const logs = contract.logs ? contract.logs : undefined;
     const contractFunctions = contract.contractFunctions

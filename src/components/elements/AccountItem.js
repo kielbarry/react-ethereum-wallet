@@ -39,7 +39,7 @@ export class AccountItem extends Component {
   }
 
   renderBalance() {
-    const wallet = this.props.wallet;
+    const { wallet } = this.props;
     return (
       <React.Fragment>
         <NumberFormat
@@ -72,8 +72,8 @@ export class AccountItem extends Component {
   }
 
   renderName() {
-    const number = this.props.number;
-    const name = this.props.wallet.name;
+    const { number } = this.props;
+    const { name } = this.props.wallet;
     return (
       <h3 className="not-ens-name">
         <i className={this.props.icon} title="Account" />
@@ -84,7 +84,7 @@ export class AccountItem extends Component {
   }
 
   render() {
-    const address = this.props.address;
+    const { address } = this.props;
     const AccountURL = `/account/${address}`;
 
     return (
@@ -98,7 +98,7 @@ export class AccountItem extends Component {
             classes="dapp-identicon dapp-small"
             title
             size="small"
-            address={this.props.address}
+            address={address}
           />
           {this.renderTokens()}
           {this.renderName()}

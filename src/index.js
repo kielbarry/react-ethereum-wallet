@@ -7,9 +7,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import ErrorBoundary from './errorBoundaries/ErrorBoundary';
-import { store, persistor } from './store/store.js';
+import { store, persistor } from './store/store';
 // web3Init
-import getWeb3 from './web3/getWeb3.js';
+import getWeb3 from './web3/getWeb3';
 
 getWeb3.catch(err => console.warn('Error in web3 initialization.', err));
 

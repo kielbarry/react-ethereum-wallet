@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import FromToRow from '../components/FromToRow';
 import AmountRow from '../components/AmountRow';
@@ -21,8 +22,6 @@ const Title = () => {
 };
 
 export class Send extends Component {
-  // TODO replace fromWallet with the from field from reducer TransactionToSend
-
   constructor(props) {
     super(props);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
@@ -32,10 +31,9 @@ export class Send extends Component {
   }
 
   validateSendingEther(tx) {
-    console.log('in validateSendingEther');
     let msg;
     let valid = true;
-    const totalBalance = this.props.reducers.totalBalance;
+    const { totalBalance } = this.props.reducers;
     if (!tx.value) {
       msg = "Oops! You'll need  to specify an amount to send";
       valid = false;
@@ -147,6 +145,12 @@ export class Send extends Component {
     );
   }
 }
+
+Send.propTypes = {
+  updateTransactionToSend: PropTypes.func,
+  displayGlobalNotification: PropTypes.func,
+  displayModal: PropTypes.func,
+};
 
 const mapStateToProps = state => {
   return state;

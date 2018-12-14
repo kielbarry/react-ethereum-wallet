@@ -67,16 +67,6 @@ export function floatToTime(input) {
   return str;
 }
 
-export function getFullTime(string) {
-  let h = getHours(string);
-  const amORpm = h > 12 ? 'PM' : 'AM';
-  if (h > 12) h %= 12;
-
-  return `${getDayOfWeek(string)}, ${getMonthName(string)} ${getDate(
-    string
-  )}, ${getYear(string)} ${h}:${getMinutes(string)} ${amORpm}`;
-}
-
 export function getMinutes(string) {
   const d = new Date(string);
   return d.getMinutes();
@@ -106,11 +96,6 @@ export function getDayOfWeek(string) {
   return days[d.getDay()];
 }
 
-export function getDate(string) {
-  const d = new Date(string);
-  return d.getDate();
-}
-
 export function getMonthName(string) {
   const monthNames = [
     'January',
@@ -128,6 +113,21 @@ export function getMonthName(string) {
   ];
   const d = new Date();
   return monthNames[d.getMonth()];
+}
+
+export function getDate(string) {
+  const d = new Date(string);
+  return d.getDate();
+}
+
+export function getFullTime(string) {
+  let h = getHours(string);
+  const amORpm = h > 12 ? 'PM' : 'AM';
+  if (h > 12) h %= 12;
+
+  return `${getDayOfWeek(string)}, ${getMonthName(string)} ${getDate(
+    string
+  )}, ${getYear(string)} ${h}:${getMinutes(string)} ${amORpm}`;
 }
 
 export function toNotWei(totalBalance, currency) {
