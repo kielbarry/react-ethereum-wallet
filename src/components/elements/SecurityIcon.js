@@ -28,7 +28,6 @@ export const SecurityIcon = props => {
   const divStyle = {
     backgroundImage: `url(${icon})`,
   };
-
   function updateToTransaction(e) {
     e.stopPropagation();
     updateTransactionToSend({
@@ -36,7 +35,7 @@ export const SecurityIcon = props => {
       value: props.hash,
     });
   }
-  const { classes } = this.props;
+  const { classes } = props;
   return (
     <React.Fragment>
       <ToolTip classes={classes} icon={icon} divStyle={divStyle} />
