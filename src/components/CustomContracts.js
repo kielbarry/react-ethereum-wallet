@@ -3,21 +3,12 @@ import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 import ContractItem from './elements/ContractItem.js';
+import ButtonDescription from './ButtonDescription.js';
 import { displayModal } from './../actions/actions.js';
 
-const ContractDescription = () => {
-  return (
-    <React.Fragment>
-      <h2>Custom Contracts</h2>
-      <p>
-        To watch and interact with a contract already deployed on the
-        blockchain, you need to know its address and the description of its
-        interface in JSON format.
-      </p>
-      <div className="dapp-clear-fix" />
-    </React.Fragment>
-  );
-};
+const buttonTitle = 'Custom Contracts';
+const buttonDescription =
+  'To watch and interact with a contract already deployed on the blockchain, you need to know its address and the description of its interface in JSON format.';
 
 export class CustomContracts extends Component {
   shouldComponentUpdate(prevProps, prevState) {
@@ -64,7 +55,10 @@ export class CustomContracts extends Component {
   render() {
     return (
       <div className="contracts-view-custom-contracts">
-        <ContractDescription />
+        <ButtonDescription
+          title={buttonTitle}
+          description={buttonDescription}
+        />
         {this.renderObservedContracts()}
         {this.renderWatchContractButton()}
       </div>

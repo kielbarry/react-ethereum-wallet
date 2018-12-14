@@ -2,24 +2,12 @@ import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import TokenBox from './elements/TokenBox.js';
+import ButtonDescription from './ButtonDescription.js';
 import { displayModal, fetchTokensForAutoScan } from './../actions/actions.js';
 
-// snapshotted
-const TokenDescription = () => {
-  return (
-    <React.Fragment>
-      <h2>Custom Tokens</h2>
-      <p>
-        Tokens are currencies and other fungibles built on the Ethereum
-        platform. In order for accounts to watch for tokens and send them, you
-        have to add their address to this list. You can create your own token by
-        simply modifying this example of a custom token contract or learning
-        more about Ethereum Tokens.
-      </p>
-      <div className="dapp-clear-fix" />
-    </React.Fragment>
-  );
-};
+const buttonTitle = 'Custom Tokens';
+const buttonDescription =
+  'Tokens are currencies and other fungibles built on the Ethereum platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifying this example of a custom token contract or learning more about Ethereum Tokens.';
 
 export class CustomTokens extends Component {
   shouldComponentUpdate(prevProps, prevState) {
@@ -61,6 +49,7 @@ export class CustomTokens extends Component {
     );
   }
 
+  // TODO: use utility combineWallets
   autoScanTokens(e) {
     let wallets = this.props.Wallets;
     let oc = this.props.ObservedContracts;
@@ -101,7 +90,10 @@ export class CustomTokens extends Component {
   render() {
     return (
       <div className="contracts-view-custom-tokens">
-        <TokenDescription />
+        <ButtonDescription
+          title={buttonTitle}
+          description={buttonDescription}
+        />
         {this.renderObservedTokens()}
         {this.renderAddTokenButton()}
         {this.renderAutoScan()}

@@ -2,22 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ContractItem from './elements/ContractItem.js';
+import ButtonDescription from './ButtonDescription.js';
 import { Link } from 'react-router-dom';
 
-// snapshotted
-const WalletDescription = () => {
-  return (
-    <React.Fragment>
-      <h2>Wallet Contracts</h2>
-      <p>
-        These contracts are stored on the blockchain and can hold and secure
-        Ether. They can have multiple accounts as owners and keep a full log of
-        all transactions.
-      </p>
-      <div className="dapp-clear-fix" />
-    </React.Fragment>
-  );
-};
+const buttonTitle = 'Wallet Contracts';
+const buttonDescription =
+  'These contracts are stored on the blockchain and can hold and secure Ether. They can have multiple accounts as owners and keep a full log of all transactions.';
 
 // snapshooted
 const WalletLink = () => {
@@ -35,7 +25,7 @@ const WalletLink = () => {
   );
 };
 
-class DeployedWallets extends Component {
+export class DeployedWallets extends Component {
   renderWalletBoxList() {
     const icon = 'icon-eye';
     let {
@@ -77,7 +67,10 @@ class DeployedWallets extends Component {
   render() {
     return (
       <React.Fragment>
-        <WalletDescription />
+        <ButtonDescription
+          title={buttonTitle}
+          description={buttonDescription}
+        />
         {this.renderWalletBoxList()}
         <WalletLink />
       </React.Fragment>

@@ -5,6 +5,7 @@ import TokenBox from './elements/TokenBox.js';
 import { ContractSectionList } from './../constants/FieldConstants.js';
 import { ReplicateBinanceToken } from './../constants/DevConstants.js';
 import WalletDropdown from '../components/elements/WalletDropdown.js';
+import ButtonDescription from './ButtonDescription.js';
 import * as Actions from './../actions/actions.js';
 import * as Utils from '../utils/utils.js';
 import { combineWallets, sortByBalance } from '../utils/helperFunctions.js';
@@ -23,15 +24,8 @@ const styles = theme => ({
   },
 });
 
-const TokenDescription = () => {
-  return (
-    <React.Fragment>
-      <h2>Deploy Token</h2>
-      <p>This feature is for testing in development</p>
-      <div className="dapp-clear-fix" />
-    </React.Fragment>
-  );
-};
+const buttonTitle = 'Deploy Token';
+const buttonDescription = 'This feature is for testing in development';
 
 export class DeployToken extends Component {
   constructor(props) {
@@ -158,21 +152,17 @@ export class DeployToken extends Component {
     );
   }
 
-  renderAddTokenRow() {
-    return (
-      <div className="container row">
-        {this.renderButton()}
-        {this.renderWallet()}
-      </div>
-    );
-  }
-
   render() {
     return (
       <div className="contracts-view-custom-tokens">
-        <TokenDescription />
-        {this.renderAddTokenRow()}
-        {this.renderAddTokenRow()}
+        <ButtonDescription
+          title={buttonTitle}
+          description={buttonDescription}
+        />
+        <div className="container row">
+          {this.renderButton()}
+          {this.renderWallet()}
+        </div>
       </div>
     );
   }
