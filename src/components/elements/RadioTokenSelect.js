@@ -12,9 +12,6 @@ export class RadioTokenSelect extends Component {
 
   chooseToken(e) {
     let tokens = this.props.tokens;
-    console.log(e.target);
-    console.log(tokens[e.target.value]);
-    console.log(this.props.wallet);
     if (e.target.value === 'ether') {
       this.props.updateTokenToSend({
         sendToken: false,
@@ -28,56 +25,69 @@ export class RadioTokenSelect extends Component {
     }
   }
 
-  render() {
+  renderEtherChoice() {
+    return (
+      <li onClick={e => this.chooseToken(e)}>
+        <input
+          type="radio"
+          id="ether"
+          value="ether"
+          name="choose-token"
+          onClick={e => {
+            this.chooseToken(e);
+          }}
+        />
+        <label htmlFor="ether">
+          <span className="ether-symbol">Ξ</span>
+          <span className="token-name">ETHER</span>
+          <span className="balance">TODO</span>
+        </label>
+      </li>
+    );
+  }
+
+  renderTokensChoice() {
     let tokens = this.props.tokens;
     let wallet = this.props.wallet;
     return (
+      <React.Fragment>
+        {Object.keys(tokens).map(token => (
+          <li key={shortid.generate()}>
+            <input
+              type="radio"
+              id={'token-' + tokens[token].address}
+              value={tokens[token].address}
+              name="choose-token"
+              onClick={e => {
+                this.chooseToken(e);
+              }}
+            />
+            <label htmlFor={'token-' + tokens[token].address}>
+              <Identicon
+                classes="dapp-identicon dapp-tiny"
+                title
+                size="tiny"
+                address={token}
+              />
+              <span className="token-name">{tokens[token].name}</span>
+              <span className="balance">
+                {tokens[token].balance}
+                &nbsp;
+                {tokens[token].symbol}
+              </span>
+            </label>
+          </li>
+        ))}
+      </React.Fragment>
+    );
+  }
+
+  render() {
+    let tokens = this.props.tokens;
+    return (
       <ul className="select-token">
-        <li onClick={e => this.chooseToken(e)}>
-          <input
-            type="radio"
-            id="ether"
-            value="ether"
-            name="choose-token"
-            onClick={e => {
-              this.chooseToken(e);
-            }}
-          />
-          <label htmlFor="ether">
-            <span className="ether-symbol">Ξ</span>
-            <span className="token-name">ETHER</span>
-            <span className="balance">TODO</span>
-          </label>
-        </li>
-        {tokens
-          ? Object.keys(tokens).map(token => (
-              <li key={shortid.generate()}>
-                <input
-                  type="radio"
-                  id={'token-' + tokens[token].address}
-                  value={tokens[token].address}
-                  name="choose-token"
-                  onClick={e => {
-                    this.chooseToken(e);
-                  }}
-                />
-                <label htmlFor={'token-' + tokens[token].address}>
-                  <Identicon
-                    classes="dapp-identicon dapp-tiny"
-                    title
-                    size="tiny"
-                    address={token}
-                  />
-                  <span className="token-name">{tokens[token].name}</span>
-                  <span className="balance">
-                    {tokens[token].balance}
-                    &nbsp;
-                    {tokens[token].symbol}
-                  </span>
-                </label>
-              </li>
-            ))
-          : null}
+        {this.renderEtherChoice()}
+        {tokens ? this.renderTokensChoice() : null}
       </ul>
     );
   }

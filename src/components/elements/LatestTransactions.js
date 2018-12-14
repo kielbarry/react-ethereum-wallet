@@ -4,6 +4,48 @@ import shortid from 'shortid';
 
 import TransactionItem from './TransactionItem';
 
+const sortOptionsArr = [
+  {
+    displayName: 'Confirmations',
+    txKey: 'confirmationNumber',
+  },
+  {
+    displayName: 'Date',
+    txKey: 'dateSent',
+  },
+  {
+    displayName: 'Nonce (experimental)',
+    txKey: 'none',
+  },
+  {
+    displayName: 'Amount',
+    txKey: 'value',
+  },
+  {
+    displayName: 'Gas Used',
+    txKey: 'gasUsed',
+  },
+  {
+    displayName: 'Block Number',
+    txKey: 'blockNumber',
+  },
+];
+
+const searchOptionsArr = [
+  {
+    displayName: 'To',
+    txKey: 'to',
+  },
+  {
+    displayName: 'From',
+    txKey: 'from',
+  },
+  {
+    displayName: 'TransactionType (experimental)',
+    txKey: 'transactionType',
+  },
+];
+
 export class LatestTransactions extends Component {
   constructor(props) {
     super(props);
@@ -145,20 +187,6 @@ export class LatestTransactions extends Component {
   }
 
   renderSearchField() {
-    let optionsArr = [
-      {
-        displayName: 'To',
-        txKey: 'to',
-      },
-      {
-        displayName: 'From',
-        txKey: 'from',
-      },
-      {
-        displayName: 'TransactionType (experimental)',
-        txKey: 'transactionType',
-      },
-    ];
     return (
       <React.Fragment>
         <h2>Latest transactions</h2>
@@ -175,7 +203,7 @@ export class LatestTransactions extends Component {
           value={this.state.filterOptions.searchField}
         >
           <option key={shortid.generate()} value={'none'} />
-          {optionsArr.map((val, i) => (
+          {searchOptionsArr.map((val, i) => (
             <option key={shortid.generate()} value={val['txKey']}>
               {val['displayName']}
             </option>
@@ -186,32 +214,6 @@ export class LatestTransactions extends Component {
   }
 
   renderSortOptions() {
-    let optionsArr = [
-      {
-        displayName: 'Confirmations',
-        txKey: 'confirmationNumber',
-      },
-      {
-        displayName: 'Date',
-        txKey: 'dateSent',
-      },
-      {
-        displayName: 'Nonce (experimental)',
-        txKey: 'none',
-      },
-      {
-        displayName: 'Amount',
-        txKey: 'value',
-      },
-      {
-        displayName: 'Gas Used',
-        txKey: 'gasUsed',
-      },
-      {
-        displayName: 'Block Number',
-        txKey: 'blockNumber',
-      },
-    ];
     return (
       <React.Fragment>
         <select
@@ -220,7 +222,7 @@ export class LatestTransactions extends Component {
           value={this.state.filterOptions.sortOption}
         >
           <option key={shortid.generate()} value={'none'} />
-          {optionsArr.map((val, i) => (
+          {sortOptionsArr.map((val, i) => (
             <option key={shortid.generate()} value={val['txKey']}>
               {val['displayName']}
             </option>

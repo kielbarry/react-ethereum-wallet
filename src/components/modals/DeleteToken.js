@@ -3,7 +3,16 @@ import { connect } from 'react-redux';
 
 import { closeModal, deleteToken } from '../../actions/actions.js';
 
-class DeleteToken extends Component {
+const Name = props => {
+  return (
+    <p>
+      Do you want to remove the token &nbps;
+      <strong>{props.name}</strong> from your list?
+    </p>
+  );
+};
+
+export class DeleteToken extends Component {
   constructor(props) {
     super(props);
     this.cancelFunction = this.cancelFunction.bind(this);
@@ -26,27 +35,30 @@ class DeleteToken extends Component {
     this.props.closeModal('displayDeleteToken');
   }
 
+  renderButtons() {
+    return (
+      <div className="dapp-modal-buttons">
+        <button className="cancel" onClick={e => this.cancelFunction(e)}>
+          Cancel
+        </button>
+        <button
+          className="ok dapp-primary-button"
+          onClick={e => this.deleteToken(e)}
+        >
+          OK
+        </button>
+      </div>
+    );
+  }
+
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container" style={divStyle}>
-          <p>
-            Do you want to remove the token{' '}
-            <strong>{this.props.token.name}</strong> from your list?
-          </p>
-          <div className="dapp-modal-buttons">
-            <button className="cancel" onClick={e => this.cancelFunction(e)}>
-              Cancel
-            </button>
-            <button
-              className="ok dapp-primary-button"
-              onClick={e => this.deleteToken(e)}
-            >
-              OK
-            </button>
-          </div>
+          <Name name={this.props.token.name} />
+          {this.renderButtons()}
         </section>
       </div>
     );

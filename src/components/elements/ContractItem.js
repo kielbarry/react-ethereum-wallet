@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { selectedContract } from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
 import * as Utils from '../../utils/utils.js';
+import { makeID } from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
 
@@ -15,14 +16,13 @@ class ContractItem extends Component {
   constructor(props) {
     super(props);
     this.openAccountPage = this.openAccountPage.bind(this);
-    this.makeID = this.makeID.bind(this);
 
     this.state = {
-      fakeAddress: this.makeID(),
+      fakeAddress: makeID(),
     };
     this.fakeAddressInterval = setInterval(() => {
       this.setState({
-        fakeAddress: this.makeID(),
+        fakeAddress: makeID(),
       });
     }, 50);
   }
@@ -72,15 +72,6 @@ class ContractItem extends Component {
         <span> {this.props.reducers.currency} </span>
       </React.Fragment>
     );
-  }
-
-  makeID() {
-    var text = '';
-    var possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
   }
 
   //snapshotted

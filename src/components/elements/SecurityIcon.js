@@ -4,6 +4,25 @@ import { Link } from 'react-router-dom';
 import makeBlockie from 'ethereum-blockies-base64';
 import { updateTransactionToSend } from '../../actions/actions.js';
 
+const ToolTip = props => {
+  return (
+    <span
+      className={props.classes}
+      title="This is a security icon.  If there were any change to the address, 
+    the resulting icon would be a completely different one"
+      src={props.icon}
+      style={props.divStyle}
+    >
+      <img
+        src={props.icon}
+        style={props.divStyle}
+        className="identicon-pixel"
+        alt=""
+      />
+    </span>
+  );
+};
+
 export const SecurityIcon = props => {
   const icon = makeBlockie(props.hash);
   let divStyle = {
@@ -17,18 +36,10 @@ export const SecurityIcon = props => {
       value: props.hash,
     });
   }
-
+  const { classes } = this.props;
   return (
     <React.Fragment>
-      <span
-        className={props.classes}
-        title="This is a security icon.  If there were any change to the address, 
-      the resulting icon would be a completely different one"
-        src={icon}
-        style={divStyle}
-      >
-        <img src={icon} style={divStyle} className="identicon-pixel" alt="" />
-      </span>
+      <ToolTip classes={classes} icon={icon} divStyle={divStyle} />
       {props.type === 'transactionHref' ? (
         <Link
           to={{ pathname: '/send-from/' + props.hash }}

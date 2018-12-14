@@ -7,6 +7,8 @@ import { updateCurrency } from '../../actions/actions.js';
 
 import '../../stylesheets/mergedstyles.css';
 
+const selectableUnits = ['ether', 'finney', 'btc', 'usd', 'eur', 'gbp', 'brl'];
+
 class SelectableUnit extends Component {
   constructor(props) {
     super(props);
@@ -37,39 +39,33 @@ class SelectableUnit extends Component {
     }
   }
 
+  renderList() {
+    return (
+      <React.Fragment>
+        {selectableUnits.map(item => (
+          <li key={shortid.generate()}>
+            <button data-value={item} onClick={this.unitSelected}>
+              {item.toUpperCase()}
+            </button>
+          </li>
+        ))}
+      </React.Fragment>
+    );
+  }
+
   render() {
-    let selectableUnits = [
-      'ether',
-      'finney',
-      'btc',
-      'usd',
-      'eur',
-      'gbp',
-      'brl',
-    ];
     let cn = require('classnames');
     let newClasses = cn({
       'simple-modal': true,
       animate: this.state.displaySU,
     });
-
     return (
       <div
         id="selectableUnitDrawer"
         className={newClasses}
         ref={node => (this.node = node)}
       >
-        <ul>
-          {selectableUnits.map(item => {
-            return (
-              <li key={shortid.generate()}>
-                <button data-value={item} onClick={this.unitSelected}>
-                  {item.toUpperCase()}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <ul>{this.renderList()}</ul>
       </div>
     );
   }
