@@ -18,22 +18,4 @@ describe('wallet html', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
-
-  // it('renders wallet link', () => {
-  //   const tree = renderer
-  //     .create(
-  //       <StaticRouter location="someLocation">
-  //         <Link
-  //           to={{ pathname: '/wallet/new' }}
-  //           className="wallet-box create add-contract"
-  //         >
-  //           <div className="account-pattern">+</div>
-  //           <h3>ADD WALLET CONTRACT</h3>
-  //         </Link>
-  //         <div className="dapp-clear-fix" />
-  //       </StaticRouter>
-  //     )
-  //     .toJSON();
-  //   expect(tree).toMatchSnapshot();
-  // });
 });
