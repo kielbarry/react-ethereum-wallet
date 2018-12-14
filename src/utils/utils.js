@@ -4,7 +4,6 @@ import isFinite from 'lodash/isFinite';
 import * as Actions from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
 
-// var Web3 = require('web3');
 import Web3 from 'web3';
 let newWeb3 = new Web3();
 
@@ -131,21 +130,18 @@ export function getMonthName(string) {
 }
 
 export function toNotWei(totalBalance, currency) {
-  let web3 = new Web3();
   return currency === 'FINNEY'
-    ? web3.utils.fromWei(totalBalance, 'finney')
-    : web3.utils.fromWei(totalBalance, 'ether');
+    ? newWeb3.utils.fromWei(totalBalance, 'finney')
+    : newWeb3.utils.fromWei(totalBalance, 'ether');
 }
 
 export function displayPriceFormatter(props, balance, currencyOverride) {
   if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
-  let web3 = props.web3.web3Instance;
   let currency = currencyOverride ? 'ETHER' : props.reducers.currency;
   let totalBalance = balance.toString();
   let exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;
   let displayPrice;
-  // = toNotWei(totalBalance, currency);
   if (currency === 'FINNEY') {
     displayPrice = newWeb3.utils.fromWei(totalBalance, 'finney');
   } else {
@@ -345,23 +341,4 @@ export function updateTransactionConfirmation(
       });
     });
   });
-}
-
-export function getNewBlockHeaders(web3, cb1, cb2, transactions, cb3) {
-  try {
-    web3.eth.subscribe('newBlockHeaders', (err, b) => {
-      if (!err)
-        cb1({
-          gasLimit: b.gasLimit,
-          gasUsed: b.gasUsed,
-          number: b.number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-          size: b.size,
-          timestamp: b.timestamp,
-        });
-      web3.eth.net.getPeerCount().then(peerCount => cb2(peerCount));
-    });
-  } catch (err) {
-    console.warn('web3 provider not open');
-    return err;
-  }
 }

@@ -11,7 +11,6 @@ import { EthAddress, Identicon } from 'ethereum-react-components';
 export class TokenBox extends Component {
   constructor(props) {
     super(props);
-    this.invokeContractMethod = this.invokeContractMethod.bind(this);
     this.deleteTokenModal = this.deleteTokenModal.bind(this);
   }
 

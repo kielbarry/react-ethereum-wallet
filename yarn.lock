@@ -4699,9 +4699,10 @@ ethereum-qr-code@^0.3.0:
     bignumber.js "4.1.0"
     qrcode "0.9.0"
 
-ethereum-react-components@^1.2.5:
+ethereum-react-components@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/ethereum-react-components/-/ethereum-react-components-1.2.6.tgz#cf903cdd8234477fb00cfa55e3b95dc837f3bf09"
+  integrity sha512-V0A7OzupcKZRc5+ZX+JC97oqP7RACzSi/j06PPpLqsdIIsb2TRe76FF4fivgx6U0vrRW/E2lbKZ6jDfx1SUfXQ==
   dependencies:
     axios "^0.18.0"
     cross-env "^5.2.0"

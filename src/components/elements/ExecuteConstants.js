@@ -45,22 +45,7 @@ export class ExecuteConstants extends Component {
       contractInfo.contractAddress
     );
 
-    // Couldn't decode bool from ABI
-    // reliably recreate it?
-    // can maybe make a PR
-
-    // dot test on test net for ENS
-    // get ens address
-    // resolver contract is only on the mainnet
-    // http://docs.ens.domains/en/latest/introduction.html
-
-    // breakout readme for open fashion
-    // gear for easy dev / easy getting started for contributions
-    // there will be more eyeballs soon
-
     contract.options['address'] = contractInfo.contractAddress;
-    console.log(contractInfo);
-    console.log(contract.options);
 
     try {
       contract.methods[funcName](...inputs)
@@ -73,7 +58,7 @@ export class ExecuteConstants extends Component {
       this.props.displayGlobalNotification({
         display: true,
         type: 'error',
-        msg: 'errarrrrr',
+        msg: err,
       });
     }
   }
@@ -122,10 +107,6 @@ export class ExecuteConstants extends Component {
   updateToTransaction(e) {
     e.stopPropagation();
     console.warn('todo: moved from security icon and need to pudate');
-    // this.props.updateTransactionToSend({
-    //   name: 'to',
-    //   value: props.hash,
-    // });
   }
 
   // snapshotted

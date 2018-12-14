@@ -3,12 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectedWallet } from '../../actions/actions.js';
 import * as Utils from '../../utils/utils.js';
-// import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
 import TokenListForItems from './TokenListForItems.js';
 import { EthAddress, Identicon } from 'ethereum-react-components';
-
-// import shortid from 'shortid';
 
 export const Balance = props => {
   let wallet = props.wallet;
@@ -131,21 +128,8 @@ export class AccountItem extends Component {
               address={this.props.address}
             />
           ) : null}
-
           {this.renderName()}
-
-          {/*}
-          <Balance 
-            key={shortid.generate()}
-            reducers={this.props.reducers}
-            wallet={this.props.wallet}
-            web3={this.props.web3}
-            currency={this.props.currency}
-          />
-          */}
-
           {this.renderBalance()}
-
           <EthAddress short classes="account-id" address={address} />
         </Link>
       </React.Fragment>

@@ -181,35 +181,18 @@ export class SingleContractView extends Component {
         return input.value;
       });
 
-      console.log(
-        'method: ',
-        method,
-        ' Args: ',
-        ...args,
-        ' name: ',
-        method.name
-      );
+      console.log('method: ', method);
+      console.log('args: ', ...args);
+      console.log('name: ', method.name);
 
       try {
-        contractInstance.methods[method.name](...args).call((err, res) => {
-          err
-            ? ((method.outputs[0].value = ''),
-              console.warn('error in contract call', err))
-            : method.outputs.length === 1
-            ? (method.outputs[0].value = res)
-            : method.outputs.map(
-                (output, i) => (method.outputs[i].value = res[i])
-              );
+        contractInstance.methods[method.name](...args).call(res => {
+          method.outputs.map((output, i) => (method.outputs[i].value = res[i]));
         });
       } catch (err) {
-        console.warn(
-          'method: ',
-          method,
-          ' Args: ',
-          ...args,
-          ' name: ',
-          method.name
-        );
+        console.warn('method: ', method);
+        console.warn('args: ', ...args);
+        console.warn('name: ', method.name);
         console.warn(err);
       }
 

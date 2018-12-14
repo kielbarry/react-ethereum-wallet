@@ -36,20 +36,17 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.getCryptoComparePrices = this.getCryptoComparePrices.bind(this);
-
     this.getCryptoComparePrices();
     this.CryptoCompareInterval = setInterval(
       () => this.getCryptoComparePrices(),
       15000
     );
-
     this.props.fetchEthGasStationStats();
     this.GasInterval = setInterval(
       () => this.props.fetchEthGasStationStats(),
       15000
     );
     this.props.closeModal('displayEventInfo');
-
     let web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -65,7 +62,6 @@ export class App extends Component {
         } catch (err) {
           console.error('error', err);
         }
-
         try {
           web3.eth.subscribe('newBlockHeaders', (err, b) => {
             if (!err) {
@@ -102,15 +98,6 @@ export class App extends Component {
           console.warn('web3 provider not open', err);
           return err;
         }
-
-        //TODO: is this necessary? what was the purpose?
-        // try {
-        //   this.props.createInitWalletContract(
-        //     WalletUtils.initWalletContact(web3)
-        //   );
-        // } catch (err) {
-        //   console.error('error', err);
-        // }
       }
     }, 1000);
   }
