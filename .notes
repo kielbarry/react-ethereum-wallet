@@ -2,3 +2,7 @@ Contract Events -> too much state
 
 buttonDescription has different padding for deploy wallet than add token or add contract
 -> fix this
+
+make utils for duplicate code when executing contract functions
+
+same for getTokenBalanceForAddress on tokenListItems?

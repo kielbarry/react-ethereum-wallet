@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ExecuteConstants from './ExecuteConstants.js';
-import ExecuteFunctions from './ExecuteFunctions.js';
+import ExecuteConstants from './ExecuteConstants';
+import ExecuteFunctions from './ExecuteFunctions';
 
 export class ExecutableContract extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export class ExecutableContract extends Component {
   }
 
   render() {
-    let show = this.state.showContractFunctions;
+    const show = this.state.showContractFunctions;
     let divStyle;
     show === undefined || show
       ? (divStyle = { display: 'block' })

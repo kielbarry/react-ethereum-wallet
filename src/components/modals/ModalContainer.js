@@ -5,18 +5,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // actions
-// import * as Actions from '../../actions/actions.js';
-import { displayGlobalNotification } from '../../actions/actions.js';
+// import * as Actions from '../../actions/actions';
+import { displayGlobalNotification } from '../../actions/actions';
 // Modals
-// import NoConnection from './NoConnection.js';
-import WatchContract from './WatchContract.js';
-import WatchToken from './WatchToken.js';
-import DeleteToken from './DeleteToken.js';
-import SendTransaction from './SendTransaction.js';
-import TransactionInfo from './TransactionInfo.js';
-import QRCode from './QRCode.js';
-import EventInfo from './EventInfo.js';
-import JSONInterface from './JSONInterface.js';
+// import NoConnection from './NoConnection';
+import WatchContract from './WatchContract';
+import WatchToken from './WatchToken';
+import DeleteToken from './DeleteToken';
+import SendTransaction from './SendTransaction';
+import TransactionInfo from './TransactionInfo';
+import QRCode from './QRCode';
+import EventInfo from './EventInfo';
+import JSONInterface from './JSONInterface';
 
 export class ModalContainer extends Component {
   componentDidMount() {
@@ -33,8 +33,8 @@ export class ModalContainer extends Component {
       this.props.globalNotification !== prevProps.globalNotification.display &&
       this.props.globalNotification.display === true
     ) {
-      let notification = this.props.globalNotification;
-      let toastConfig = {
+      const notification = this.props.globalNotification;
+      const toastConfig = {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -71,38 +71,38 @@ export class ModalContainer extends Component {
   }
 
   render() {
-    let modals = this.props.modals;
+    const modals = this.props.modals;
 
-    let watchContract = cn({
+    const watchContract = cn({
       'dapp-modal-overlay': modals.displayWatchContract || false,
     });
-    let watchToken = cn({
+    const watchToken = cn({
       'dapp-modal-overlay': modals.displayWatchToken || false,
     });
-    let deleteToken = cn({
+    const deleteToken = cn({
       'dapp-modal-overlay': modals.displayDeleteToken || false,
     });
 
-    let viewTransaction = cn({
+    const viewTransaction = cn({
       'dapp-modal-overlay': modals.displayTransaction || false,
     });
 
-    let JsonInterface = cn({
+    const JsonInterface = cn({
       'dapp-modal-overlay': modals.displayJSONInterface || false,
     });
-    let qrCode = cn({
+    const qrCode = cn({
       'dapp-modal-overlay': modals.displayQRCode || false,
     });
 
-    let sendTransaction = cn({
+    const sendTransaction = cn({
       'dapp-modal-overlay': modals.displaySendTransaction || false,
     });
 
-    let viewEventInfo = cn({
+    const viewEventInfo = cn({
       'dapp-modal-overlay': modals.displayEventInfo || false,
     });
 
-    let txToSend = this.props.TransactionToSend;
+    const txToSend = this.props.TransactionToSend;
 
     return (
       <React.Fragment>
@@ -117,7 +117,7 @@ export class ModalContainer extends Component {
           draggable
           pauseOnHover
         />
-        {/*<NoConnection connection={this.props.web3} />*/}
+        {/* <NoConnection connection={this.props.web3} /> */}
         <WatchToken display={watchToken} />
         <WatchContract display={watchContract} />
         {this.props.TokenToDelete ? (
@@ -132,9 +132,9 @@ export class ModalContainer extends Component {
         {this.props.SelectedEvent ? (
           <EventInfo display={viewEventInfo} event={this.props.SelectedEvent} />
         ) : null}
-        {/*{Object.keys(txToSend).length && txToSend.constructor === Object ? (*/}
+        {/* {Object.keys(txToSend).length && txToSend.constructor === Object ? ( */}
         {txToSend.value ? <SendTransaction display={sendTransaction} /> : null}
-        {/*}
+        {/* }
         {this.props.TransactionToSend ? (
           <SendTransaction display={sendTransaction} />
         ) : null}

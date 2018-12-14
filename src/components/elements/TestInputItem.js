@@ -39,7 +39,7 @@ class TestInputItem extends Component {
   }
 
   render() {
-    let field = this.props.field;
+    const field = this.props.field;
     return (
       <React.Fragment>
         {field.editor === 'textarea'

@@ -111,14 +111,14 @@ export class LatestTransactions extends Component {
 
   sortOptions(e) {
     console.log(this.state);
-    let transactions = this.fetchTransactions();
-    let field = this.state.filterOptions.sortOption;
+    const transactions = this.fetchTransactions();
+    const field = this.state.filterOptions.sortOption;
 
     if (
       this.state.filterOptions.sortOption !== 'none' &&
       this.state.filterOptions.sortOption !== ''
     ) {
-      let sorted = transactions.sort((a, b) => {
+      const sorted = transactions.sort((a, b) => {
         return b[field] - a[field];
       });
       this.setState({ filteredTransactions: sorted });
@@ -141,16 +141,16 @@ export class LatestTransactions extends Component {
   }
 
   filterSearchValue(e) {
-    let transactions = this.fetchTransactions();
+    const transactions = this.fetchTransactions();
     console.log(transactions);
     console.log(this.state.filterOptions);
     if (
       this.state.filterOptions.searchValue !== '' &&
       this.state.filterOptions.searchField !== 'none'
     ) {
-      let filteredArr = transactions.filter(tx => {
-        let txValue = tx[this.state.filterOptions.searchField].toLowerCase();
-        let searchValue = this.state.filterOptions.searchValue.toLowerCase();
+      const filteredArr = transactions.filter(tx => {
+        const txValue = tx[this.state.filterOptions.searchField].toLowerCase();
+        const searchValue = this.state.filterOptions.searchValue.toLowerCase();
         return txValue.includes(searchValue);
       });
       console.log(filteredArr);
@@ -202,10 +202,10 @@ export class LatestTransactions extends Component {
           onChange={e => this.selectSearchField(e)}
           value={this.state.filterOptions.searchField}
         >
-          <option key={shortid.generate()} value={'none'} />
+          <option key={shortid.generate()} value="none" />
           {searchOptionsArr.map((val, i) => (
-            <option key={shortid.generate()} value={val['txKey']}>
-              {val['displayName']}
+            <option key={shortid.generate()} value={val.txKey}>
+              {val.displayName}
             </option>
           ))}
         </select>
@@ -221,10 +221,10 @@ export class LatestTransactions extends Component {
           onChange={e => this.selectSortOption(e)}
           value={this.state.filterOptions.sortOption}
         >
-          <option key={shortid.generate()} value={'none'} />
+          <option key={shortid.generate()} value="none" />
           {sortOptionsArr.map((val, i) => (
-            <option key={shortid.generate()} value={val['txKey']}>
-              {val['displayName']}
+            <option key={shortid.generate()} value={val.txKey}>
+              {val.displayName}
             </option>
           ))}
         </select>
@@ -233,10 +233,10 @@ export class LatestTransactions extends Component {
   }
 
   renderDirectionalIcon() {
-    let icon = this.state.filterOptions.ascending ? 'up' : 'down';
+    const icon = this.state.filterOptions.ascending ? 'up' : 'down';
     return (
       <i
-        className={'icon-arrow-' + icon}
+        className={`icon-arrow-${icon}`}
         style={{ marginLeft: '20px' }}
         onClick={e => this.toggleSortDirection(e)}
       />

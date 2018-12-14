@@ -5,13 +5,12 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import ActionBarItem from './ActionBarItem';
 
-// import * as Actions from '../../actions/actions.js';
 import {
   displayGlobalNotification,
   updateQRCode,
   displayModal,
   updateJSON,
-} from '../../actions/actions.js';
+} from '../../actions/actions';
 
 export class ContractActionBar extends Component {
   displayCopiedNotification(e) {
@@ -34,9 +33,9 @@ export class ContractActionBar extends Component {
   }
 
   render() {
-    let address = this.props.contract.address;
-    let transferEtherAddress = '/send/' + address;
-    let etherScanAddress = 'https://etherscan.io/address/' + address;
+    const address = this.props.contract.address;
+    const transferEtherAddress = `/send/${address}`;
+    const etherScanAddress = `https://etherscan.io/address/${address}`;
     return (
       <aside className="dapp-actionbar">
         <nav>

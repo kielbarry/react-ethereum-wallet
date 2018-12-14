@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CustomContracts from '../components/CustomContracts.js';
-import CustomTokens from '../components/CustomTokens.js';
-import DeployToken from '../components/DeployToken.js';
+import CustomContracts from '../components/CustomContracts';
+import CustomTokens from '../components/CustomTokens';
+import DeployToken from '../components/DeployToken';
 
 const Title = () => {
   return (

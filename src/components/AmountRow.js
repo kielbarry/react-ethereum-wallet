@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RadioTokenSelect from './elements/RadioTokenSelect.js';
-import { updateTransactionToSend } from '../actions/actions.js';
-import { displayPriceFormatter } from '../utils/utils.js';
 import Web3 from 'web3';
+import RadioTokenSelect from './elements/RadioTokenSelect';
+import { updateTransactionToSend } from '../actions/actions';
+import { displayPriceFormatter } from '../utils/utils';
 
 export class AmountRow extends Component {
   constructor(props) {
@@ -18,21 +18,21 @@ export class AmountRow extends Component {
   handleOnKeyUp(e) {
     // TODO:validate inputs here
     // let web3 = this.props.web3.web3Instance;
-    let tx = this.props.TransactionToSend;
+    const tx = this.props.TransactionToSend;
     let target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
-    //TODO: still not to validate, but allow single decimal
+    // TODO: still not to validate, but allow single decimal
     if (targetValue.includes('.')) {
-      let web3 = new Web3();
-      let eth = targetValue.split('.')[0];
+      const web3 = new Web3();
+      const eth = targetValue.split('.')[0];
 
-      let wei = web3.utils.toWei(eth, 'ether');
-      let subEth = targetValue.split('.')[1];
+      const wei = web3.utils.toWei(eth, 'ether');
+      const subEth = targetValue.split('.')[1];
     }
 
     if (target === 'value' && this.props.web3 && targetValue && !tx.sendToken) {
-      let web3 = this.props.web3.web3Instance;
+      const web3 = this.props.web3.web3Instance;
       targetValue = web3.utils.toWei(targetValue, 'ETHER');
     }
 
@@ -47,7 +47,7 @@ export class AmountRow extends Component {
   }
 
   toggleCheckbox(e) {
-    let wallet = this.props.TransactionToSend;
+    const wallet = this.props.TransactionToSend;
     this.props.updateTransactionToSend({
       name: 'value',
       value: this.state.checkbox ? this.props.Wallets[wallet.from] : 0,
@@ -83,14 +83,14 @@ export class AmountRow extends Component {
   }
 
   renderAmountSummary() {
-    let tx = this.props.TransactionToSend;
-    let currency = this.props.reducers.currency;
+    const tx = this.props.TransactionToSend;
+    const currency = this.props.reducers.currency;
     return (
       <p className="send-info">
         You want to send
         <strong>
           {!tx.sendToken ? (
-            ' ' + displayPriceFormatter(this.props, tx.value) + ' ' + currency
+            ` ${displayPriceFormatter(this.props, tx.value)} ${currency}`
           ) : (
             <React.Fragment>
               &nbsp; {tx.tokenAmount}
@@ -104,31 +104,32 @@ export class AmountRow extends Component {
   }
 
   renderEtherBalance() {
-    let wallets = this.props.Wallets;
-    let wallet = this.props.TransactionToSend.from;
-    let currency = this.props.reducers.currency;
-    let balance = wallets[wallet].balance;
+    const wallets = this.props.Wallets;
+    const wallet = this.props.TransactionToSend.from;
+    const currency = this.props.reducers.currency;
+    const balance = wallets[wallet].balance;
     return (
       <div className="token-ether">
         <span className="ether-symbol">Ξ</span>
         <span className="token-name">ETHER</span>
         <span className="balance">
-          {' ' +
-            displayPriceFormatter(this.props, balance) +
-            ' ' +
-            currency +
-            ' (' +
-            displayPriceFormatter(this.props, balance, 'ETHER') +
-            'ETHER)'}
+          {` ${displayPriceFormatter(
+            this.props,
+            balance
+          )} ${currency} (${displayPriceFormatter(
+            this.props,
+            balance,
+            'ETHER'
+          )}ETHER)`}
         </span>
       </div>
     );
   }
 
   renderEtherDropDown() {
-    let wallets = this.props.Wallets;
-    let wallet = this.props.TransactionToSend.from;
-    let tokens = wallets[wallet] ? wallets[wallet].tokens : undefined;
+    const wallets = this.props.Wallets;
+    const wallet = this.props.TransactionToSend.from;
+    const tokens = wallets[wallet] ? wallets[wallet].tokens : undefined;
     return (
       <div className="col col-6 mobile-full">
         <br />

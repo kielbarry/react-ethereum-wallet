@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../../actions/actions.js';
+import * as Actions from '../../actions/actions';
 
 class QRCode extends Component {
   shouldComponentUpdate(prevProps, prevState) {
@@ -19,8 +19,9 @@ class QRCode extends Component {
       this.props.closeModal('displayQRCode');
     }
   }
+
   render() {
-    var QRCode = require('qrcode.react');
+    const QRCode = require('qrcode.react');
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
     return (
@@ -32,11 +33,11 @@ class QRCode extends Component {
       >
         <section className="dapp-modal-container">
           <p />
-          {/*<p>*/}
+          {/* <p> */}
           <div id="qrcode">
             <QRCode value={this.props.hash} />
           </div>
-          {/*</p>*/}
+          {/* </p> */}
           <p />
           <p> Point a compatible mobile app to this code </p>
         </section>

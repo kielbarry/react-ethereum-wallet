@@ -1,7 +1,7 @@
+import Web3 from 'web3';
 import { actionTypes } from './actionTypes.js';
 // import io from 'socket.io-client';
 // let socket = io('wss://streamer.cryptocompare.com')
-import Web3 from 'web3';
 
 // const web3 = new Web3('ws://127.0.0.1:8546');
 const web3 = new Web3(
@@ -211,7 +211,7 @@ export const fetchTokensForAutoScan = accounts => {
   };
   return dispatch => {
     dispatch(requestTokens(accounts));
-    let tokenListURL =
+    const tokenListURL =
       'https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/dist/tokens/eth/tokens-eth.json';
 
     return fetch(tokenListURL)
@@ -237,9 +237,9 @@ export const fetchTokensForAutoScan = accounts => {
             // let web3 = new Web3('ws://127.0.0.1:8546');
 
             // balanceOf(address)
-            const callData =
-              '0x70a08231000000000000000000000000' +
-              account.substring(2).replace(' ', '');
+            const callData = `0x70a08231000000000000000000000000${account
+              .substring(2)
+              .replace(' ', '')}`;
 
             async function sendTransactionPromise(params) {
               return new Promise((resolve, reject) => {
@@ -272,7 +272,7 @@ export const fetchTokensForAutoScan = accounts => {
 
                     return null;
                   })
-                  .catch(function(error) {
+                  .catch(error => {
                     console.error(error);
                     dispatch(updateErrChecked((errChecked += 1)));
                     errChecked += 1;

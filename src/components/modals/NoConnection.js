@@ -26,11 +26,11 @@ class NoConnection extends Component {
   }
 
   render() {
-    var cn = require('classnames');
-    var newClasses = cn({
+    const cn = require('classnames');
+    const newClasses = cn({
       'dapp-modal-overlay': this.state.noConnection,
     });
-    let newStyle = {
+    const newStyle = {
       display: !this.state.noConnection ? 'none' : 'block',
     };
     return (

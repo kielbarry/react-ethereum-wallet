@@ -1,9 +1,8 @@
-import * as Actions from './actions.js';
-import * as Constants from '../constants/ActionsTestConstants.js';
-
 import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import * as Constants from '../constants/ActionsTestConstants.js';
+import * as Actions from './actions.js';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -13,7 +12,7 @@ describe('actions', () => {
     fetchMock.restore();
   });
 
-  //TODO: UPDATE_ACCOUNT_TOKEN_BALANCE
+  // TODO: UPDATE_ACCOUNT_TOKEN_BALANCE
   // updateAccountTokenBalance
 
   it('should create action for setEthereumProviderConfig', async () => {

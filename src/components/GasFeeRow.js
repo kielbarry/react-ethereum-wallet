@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // import * as Actions from '../actions/actions.js';
-import { updateTransactionToSend } from '../actions/actions.js';
-import { floatToTime } from '../utils/utils.js';
+import { updateTransactionToSend } from '../actions/actions';
+import { floatToTime } from '../utils/utils';
 
 export class GasFeeRow extends Component {
   constructor(props) {
-    //TODO need to init gas
-    //TODO where was estimate gas being called?!
+    // TODO need to init gas
+    // TODO where was estimate gas being called?!
 
     super(props);
     this.state = {
@@ -27,8 +27,8 @@ export class GasFeeRow extends Component {
   }
 
   estimateGas() {
-    let web3 = this.props.web3.web3Instance;
-    let tx = this.props.TransactionToSend;
+    const web3 = this.props.web3.web3Instance;
+    const tx = this.props.TransactionToSend;
     web3.eth.estimateGas(
       {
         to: tx.to,
@@ -54,7 +54,7 @@ export class GasFeeRow extends Component {
   }
 
   renderFeePriority() {
-    let GasStats = this.props.GasStats;
+    const GasStats = this.props.GasStats;
     return (
       <div className="col col-7 mobile-full">
         <h3>Select Fee</h3>
@@ -70,7 +70,7 @@ export class GasFeeRow extends Component {
   }
 
   renderEstimateTime() {
-    let GasStats = this.props.GasStats;
+    const GasStats = this.props.GasStats;
     return (
       <div className="col col-5 mobile-full send-info">
         <br />

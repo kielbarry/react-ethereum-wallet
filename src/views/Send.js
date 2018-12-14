@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import FromToRow from '../components/FromToRow.js';
-import AmountRow from '../components/AmountRow.js';
-import GasFeeRow from '../components/GasFeeRow.js';
-import TotalGas from '../components/TotalGas.js';
+import FromToRow from '../components/FromToRow';
+import AmountRow from '../components/AmountRow';
+import GasFeeRow from '../components/GasFeeRow';
+import TotalGas from '../components/TotalGas';
 
 import {
   updateTransactionToSend,
   displayGlobalNotification,
   displayModal,
-} from '../actions/actions.js';
+} from '../actions/actions';
 
 const Title = () => {
   return (
@@ -21,7 +21,7 @@ const Title = () => {
 };
 
 export class Send extends Component {
-  //TODO replace fromWallet with the from field from reducer TransactionToSend
+  // TODO replace fromWallet with the from field from reducer TransactionToSend
 
   constructor(props) {
     super(props);
@@ -35,14 +35,14 @@ export class Send extends Component {
     console.log('in validateSendingEther');
     let msg;
     let valid = true;
-    let totalBalance = this.props.reducers.totalBalance;
+    const totalBalance = this.props.reducers.totalBalance;
     if (!tx.value) {
       msg = "Oops! You'll need  to specify an amount to send";
       valid = false;
       this.props.displayGlobalNotification({
         display: true,
         type: 'info',
-        msg: msg,
+        msg,
       });
     }
     if (tx.amount > totalBalance) {
@@ -52,7 +52,7 @@ export class Send extends Component {
       this.props.displayGlobalNotification({
         display: true,
         type: 'warning',
-        msg: msg,
+        msg,
       });
     }
     if (valid) this.props.displayModal('displaySendTransaction');
@@ -60,15 +60,15 @@ export class Send extends Component {
 
   validateSendingTokens(tx) {
     console.log('in validateSendingTokens');
-    let valid = true;
-    let web3 = this.props.web3.web3Instance;
+    const valid = true;
+    const web3 = this.props.web3.web3Instance;
     if (valid) this.props.displayModal('displaySendTransaction');
   }
 
   validateForm(tx) {
     let msg;
     let valid = true;
-    let web3 = this.props.web3.web3Instance;
+    const web3 = this.props.web3.web3Instance;
 
     if (!web3.utils.isAddress(tx.to)) {
       msg =
@@ -77,7 +77,7 @@ export class Send extends Component {
       this.props.displayGlobalNotification({
         display: true,
         type: 'error',
-        msg: msg,
+        msg,
       });
     }
     if (!web3.utils.isAddress(tx.from)) {
@@ -87,7 +87,7 @@ export class Send extends Component {
       this.props.displayGlobalNotification({
         display: true,
         type: 'error',
-        msg: msg,
+        msg,
       });
     }
 
@@ -101,11 +101,11 @@ export class Send extends Component {
   handleOnKeyUp(e) {
     // TODO:validate inputs here
     // let web3 = this.props.web3.web3Instance;
-    let target = e.target.getAttribute('name');
+    const target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
     if (target === 'value' && this.props.web3 && targetValue) {
-      let web3 = this.props.web3.web3Instance;
+      const web3 = this.props.web3.web3Instance;
       targetValue = web3.utils.toWei(targetValue, 'ETHER');
     }
     this.props.updateTransactionToSend({

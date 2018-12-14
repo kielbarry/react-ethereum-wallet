@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { displayPriceFormatter } from '../utils/utils.js';
 import Web3 from 'web3';
-let web3 = new Web3();
+import { displayPriceFormatter } from '../utils/utils';
 
-const TokenInfo = props => {
-  let tx = props.transaction;
+const web3 = new Web3();
+
+const TokenInfo = ({ tx }) => {
   return (
     <React.Fragment>
       <span className="amount">
@@ -18,11 +18,11 @@ const TokenInfo = props => {
   );
 };
 
-const EstimatedFee = props => {
+const EstimatedFee = ({ total }) => {
   return (
     <React.Fragment>
       Estimated Fee: &nbsp;
-      {web3.utils.fromWei(props.total, 'ether')}
+      {web3.utils.fromWei(total, 'ether')}
       &nbsp; ETHER
     </React.Fragment>
   );
@@ -30,16 +30,15 @@ const EstimatedFee = props => {
 
 export class TotalGas extends Component {
   renderTotal(total) {
-    let tx = this.props.TransactionToSend;
+    const tx = this.props.TransactionToSend;
     return (
       <React.Fragment>
         <h3>Total</h3>
         {!tx.sendToken ? (
           <span className="amount">
-            {' ' +
-              displayPriceFormatter(this.props, total) +
-              ' ' +
-              this.props.reducers.currency}
+            {` ${displayPriceFormatter(this.props, total)} ${
+              this.props.reducers.currency
+            }`}
           </span>
         ) : (
           <TokenInfo transaction={tx} />
@@ -49,8 +48,8 @@ export class TotalGas extends Component {
   }
 
   render() {
-    let tx = this.props.TransactionToSend;
-    let val = Number(tx.value);
+    const tx = this.props.TransactionToSend;
+    const val = Number(tx.value);
     let total = !tx.sendToken ? val + tx.gasPrice : tx.gasPrice;
     total = !isNaN(total) ? total : 0;
     total = web3.utils.toBN(total);

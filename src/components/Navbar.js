@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import SU from './elements/SelectableUnit.js';
 import { Link } from 'react-router-dom';
 import '../stylesheets/navbar.css';
-import { NavFields } from '../constants/FieldConstants.js';
 
 import Tooltip from '@material-ui/core/Tooltip';
 import SettingsSharp from '@material-ui/icons/SettingsSharp';
 import IconButton from '@material-ui/core/IconButton';
 
-import { displayPriceFormatter } from '../utils/utils.js';
-
 import NumberFormat from 'react-number-format';
+import { displayPriceFormatter } from '../utils/utils';
+
+import { NavFields } from '../constants/FieldConstants';
+import SU from './elements/SelectableUnit';
 
 const HeaderField = field => {
   return (
@@ -54,7 +54,7 @@ export class NavBar extends Component {
       this.interval = setInterval(() => {
         time += 1;
         let text = 's since last block';
-        if (3600 > time > 59) {
+        if (time < 3600 > 59) {
           time = Math.floor(time / 60);
           text = ' minutes since last block';
         }
@@ -73,7 +73,7 @@ export class NavBar extends Component {
   }
 
   handleScroll() {
-    let scrollPosition = window.scrollY;
+    const scrollPosition = window.scrollY;
     if (scrollPosition > 150) {
       this.setState({ small: true, sticky: true });
     } else if (scrollPosition > 48) {
@@ -114,8 +114,8 @@ export class NavBar extends Component {
               this.props,
               this.props.reducers.totalBalance
             )}
-            displayType={'text'}
-            thousandSeparator={true}
+            displayType="text"
+            thousandSeparator
           />
           &nbsp;
           <span className="inline-form" name="unit">
@@ -163,8 +163,8 @@ export class NavBar extends Component {
   }
 
   render() {
-    var cn = require('classnames');
-    var newStyles = cn({
+    const cn = require('classnames');
+    const newStyles = cn({
       'dapp-header': true,
       'dapp-sticky-bar': true,
       'dapp-small': this.state.small,

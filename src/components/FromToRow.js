@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import WalletDropdown from '../components/elements/WalletDropdown.js';
-import { updateTransactionToSend } from '../actions/actions.js';
-
 import { Identicon } from 'ethereum-react-components';
-
-import * as Utils from '../utils/utils.js';
-
-import { combineWallets, sortByBalance } from '../utils/helperFunctions.js';
 import Web3 from 'web3';
-let web3 = new Web3();
+import WalletDropdown from './elements/WalletDropdown';
+import { updateTransactionToSend } from '../actions/actions';
+
+import * as Utils from '../utils/utils';
+
+import { combineWallets, sortByBalance } from '../utils/helperFunctions';
+
+const web3 = new Web3();
 
 export class Send extends Component {
-  //TODO replace fromWallet with the from field from reducer TransactionToSend
+  // TODO replace fromWallet with the from field from reducer TransactionToSend
   constructor(props) {
     super(props);
-    let wallets = this.props.Wallets;
+    const wallets = this.props.Wallets;
 
-    let { Wallets, WalletContracts } = this.props;
+    const { Wallets, WalletContracts } = this.props;
     console.log(Wallets);
     console.log(WalletContracts);
 
-    let combinedWallets = combineWallets(Wallets, WalletContracts);
+    const combinedWallets = combineWallets(Wallets, WalletContracts);
 
     this.props.updateTransactionToSend({
       name: 'from',
@@ -38,9 +38,10 @@ export class Send extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkIsAddress = this.checkIsAddress.bind(this);
   }
+
   handleInputChange(e) {
     // TODO:validate inputs here
-    let target = e.target.getAttribute('name');
+    const target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
     if (target === 'value' && targetValue) {
@@ -58,7 +59,7 @@ export class Send extends Component {
   }
 
   checkIsAddress() {
-    let isAddress =
+    const isAddress =
       this.state.toAddress !== '' && this.state.toAddress !== undefined
         ? web3.utils.isAddress(this.state.toAddress)
         : this.state.toAddress !== '' || this.state.toAddress !== undefined
@@ -68,7 +69,7 @@ export class Send extends Component {
   }
 
   renderFrom() {
-    let dropdownConfig = {
+    const dropdownConfig = {
       component: 'Send',
       selectClassName: 'send-from',
       selectName: 'from',
@@ -103,8 +104,8 @@ export class Send extends Component {
   }
 
   renderTo() {
-    let cn = require('classnames');
-    let newClasses = cn({
+    const cn = require('classnames');
+    const newClasses = cn({
       to: true,
       'dapp-error': this.state.toIsAddress === false,
     });
@@ -117,7 +118,7 @@ export class Send extends Component {
             name="to"
             placeholder="0x000000.."
             className={newClasses}
-            autoFocus={true}
+            autoFocus
             // value={tx.to}
             onChange={e => this.handleInputChange(e)}
             onKeyUp={e => this.handleInputChange(e)}
@@ -129,7 +130,7 @@ export class Send extends Component {
   }
 
   render() {
-    let dropdownConfig = {
+    const dropdownConfig = {
       component: 'Send',
       selectClassName: 'send-from',
       selectName: 'from',

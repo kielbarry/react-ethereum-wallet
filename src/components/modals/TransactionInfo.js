@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as Utils from '../../utils/utils.js';
-import * as Actions from '../../actions/actions.js';
-
 import { EthAddress, Identicon } from 'ethereum-react-components';
-
 import Web3 from 'web3';
-let web3 = new Web3();
+import * as Utils from '../../utils/utils';
+import * as Actions from '../../actions/actions';
+
+const web3 = new Web3();
 
 export const Header = props => {
-  let nw = props.network;
-  let hash = props.txHash;
+  const nw = props.network;
+  const hash = props.txHash;
   return (
     <h1>
       Transaction
       <a
-        href={'http://' + nw + ' .etherscan.io/tx/' + hash}
+        href={`http://${nw} .etherscan.io/tx/${hash}`}
         target="_blank"
         style={{ fontSize: '0.4em' }}
         rel="noopener noreferrer"
@@ -28,10 +27,10 @@ export const Header = props => {
 };
 
 export const DateRow = props => {
-  let today = new Date();
-  let txDate = new Date(props.tx.dateSent);
-  var timeDiff = Math.abs(txDate.getTime() - today.getTime());
-  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  const today = new Date();
+  const txDate = new Date(props.tx.dateSent);
+  const timeDiff = Math.abs(txDate.getTime() - today.getTime());
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
     <p>
       {Utils.getMonthName(props.tx.dateSent)}
@@ -44,7 +43,7 @@ export const DateRow = props => {
 
 export const Fee = props => {
   // TODO: from wei or from gWei
-  let fee = web3.utils.fromWei(props.gasUsed.toString(), 'ETHER');
+  const fee = web3.utils.fromWei(props.gasUsed.toString(), 'ETHER');
   return (
     <tr>
       <td>Fee paid</td>
@@ -130,8 +129,8 @@ export class TransactionInfo extends Component {
   }
 
   renderSentAmount() {
-    let tx = this.props.transaction;
-    let amount = web3.utils.fromWei(tx.value.toString(), 'ETHER');
+    const tx = this.props.transaction;
+    const amount = web3.utils.fromWei(tx.value.toString(), 'ETHER');
     return (
       <tr>
         <td>Amount</td>
@@ -141,7 +140,7 @@ export class TransactionInfo extends Component {
   }
 
   renderAddress(tx, direction) {
-    //TODO: conditional update transaction inside handleRoute
+    // TODO: conditional update transaction inside handleRoute
     return (
       <tr>
         <td>{direction}</td>
@@ -154,7 +153,7 @@ export class TransactionInfo extends Component {
               address={tx[direction.toLowerCase()]}
             />
             <Link
-              to={{ pathname: '/send-from/' + tx[direction.toLowerCase()] }}
+              to={{ pathname: `/send-from/${tx[direction.toLowerCase()]}` }}
               title={tx[direction.toLowerCase()]}
               onClick={this.handleRoute}
             >
@@ -167,11 +166,11 @@ export class TransactionInfo extends Component {
   }
 
   render() {
-    //TODO: gas paid versus fee
+    // TODO: gas paid versus fee
 
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
-    let tx = this.props.transaction;
+    const tx = this.props.transaction;
     console.log(this.props);
     console.log(this.props.transaction);
 

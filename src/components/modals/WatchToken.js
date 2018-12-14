@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
-import TokenBox from '../elements/TokenBox.js';
-import TestInputItem from '../elements/TestInputItem.js';
-import * as Actions from '../../actions/actions.js';
+import { tokenInterface } from '../../constants/TokenInterfaceConstant';
+import TokenBox from '../elements/TokenBox';
+import TestInputItem from '../elements/TestInputItem';
+import * as Actions from '../../actions/actions';
 
 class WatchToken extends Component {
   constructor(props) {
@@ -47,10 +47,10 @@ class WatchToken extends Component {
   }
 
   getTokenContractInfo(address) {
-    let web3 = this.props.web3.web3Instance;
-    let TokenContract = new web3.eth.Contract(tokenInterface);
+    const web3 = this.props.web3.web3Instance;
+    const TokenContract = new web3.eth.Contract(tokenInterface);
     TokenContract.options.address = address;
-    this.setState({ address: address });
+    this.setState({ address });
     this.props.updateTokenToWatch({
       name: 'address',
       value: address,
@@ -62,14 +62,14 @@ class WatchToken extends Component {
   }
 
   handleOnKeyUp(e) {
-    //TODO: this is getting called twice when using copy/paste with keyboard shortcuts
+    // TODO: this is getting called twice when using copy/paste with keyboard shortcuts
 
     // TODO:validate inputs here
 
-    let name = e.target.getAttribute('name');
-    let value = e.target.value;
+    const name = e.target.getAttribute('name');
+    const value = e.target.value;
 
-    let web3 = this.props.web3.web3Instance;
+    const web3 = this.props.web3.web3Instance;
     // TODO: checks coin symbol against MEW list?
     // var l = e.currentTarget.value.length;
     // if (!tokenAddress && l > 2 && l < 6) {
@@ -86,9 +86,9 @@ class WatchToken extends Component {
     //   return;
 
     if (name === 'address' && value.length === 42) {
-      let isAddress = web3.utils.isAddress(value);
-      let toCheckSum = web3.utils.toChecksumAddress(value);
-      let isCheckSummed = web3.utils.checkAddressChecksum(toCheckSum);
+      const isAddress = web3.utils.isAddress(value);
+      const toCheckSum = web3.utils.toChecksumAddress(value);
+      const isCheckSummed = web3.utils.checkAddressChecksum(toCheckSum);
       if (isAddress && isCheckSummed) {
         this.getTokenContractInfo(value);
         return;
@@ -97,7 +97,7 @@ class WatchToken extends Component {
 
     this.setState({ [name]: value });
     this.props.updateTokenToWatch({
-      name: name,
+      name,
       value: e.target.value,
     });
   }
@@ -109,8 +109,8 @@ class WatchToken extends Component {
 
   submitFunction(e) {
     let web3;
-    let token = this.props.reducers.TokenToWatch;
-    let address = token.address;
+    const token = this.props.reducers.TokenToWatch;
+    const address = token.address;
     if (this.props.web3.web3Instance) {
       this.props.addObservedToken({
         address: token.address,
@@ -130,10 +130,10 @@ class WatchToken extends Component {
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
-    var GeoPattern = require('geopattern');
-    var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-    let iconStyle = { backgroundImage: pattern.toDataUrl() };
-    let TokenToWatch = this.props.reducers.TokenToWatch;
+    const GeoPattern = require('geopattern');
+    const pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
+    const iconStyle = { backgroundImage: pattern.toDataUrl() };
+    const TokenToWatch = this.props.reducers.TokenToWatch;
 
     return (
       <div className={this.props.display} style={divStyle}>

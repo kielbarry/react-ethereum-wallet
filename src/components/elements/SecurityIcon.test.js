@@ -18,8 +18,8 @@ describe('account information', () => {
 
   const hash = '0x0000000000000000000000000000000000000000';
   const icon = makeBlockie(hash);
-  let divStyle = {
-    backgroundImage: 'url(' + icon + ')',
+  const divStyle = {
+    backgroundImage: `url(${icon})`,
   };
 
   it('renders security icon without link', () => {
@@ -28,7 +28,7 @@ describe('account information', () => {
         <React.Fragment>
           <span
             className="dapp-identicon dapp-small"
-            title="This is a security icon.  If there were any change to the address, 
+            title="This is a security icon.  If there were any change to the address,
             the resulting icon would be a completely different one"
             src={icon}
             style={divStyle}
@@ -52,7 +52,7 @@ describe('account information', () => {
         <React.Fragment>
           <span
             className="dapp-identicon dapp-small"
-            title="This is a security icon.  If there were any change to the address, 
+            title="This is a security icon.  If there were any change to the address,
             the resulting icon would be a completely different one"
             src={icon}
             style={divStyle}
@@ -66,7 +66,7 @@ describe('account information', () => {
           </span>
           <StaticRouter context={{}}>
             <Link
-              to={{ pathname: '/send-from/' + hash }}
+              to={{ pathname: `/send-from/${hash}` }}
               title={hash}
               onClick={() => {
                 return {

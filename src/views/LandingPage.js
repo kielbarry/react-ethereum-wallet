@@ -23,8 +23,8 @@ import OfflineBoltSharp from '@material-ui/icons/OfflineBoltSharp';
 import Slide from '@material-ui/core/Slide';
 import green from '@material-ui/core/colors/green';
 
-import * as Actions from '../actions/actions.js';
-import * as Constants from './LandingPageTestConstants.js';
+import * as Actions from '../actions/actions';
+import * as Constants from './LandingPageTestConstants';
 
 // import * as bluetooth from 'node-bluetooth'
 
@@ -152,7 +152,7 @@ export class LandingPage extends Component {
   }
 
   itemSelected(e) {
-    let type = e.target.getAttribute('name');
+    const type = e.target.getAttribute('name');
     if (type === 'provider')
       this.setState({ selectedProvider: e.target.value });
     if (type === 'network') this.setState({ selectedNetwork: e.target.value });
@@ -161,7 +161,7 @@ export class LandingPage extends Component {
 
   // snapshotted
   renderLink(name) {
-    let provInfo = this.state.providers[name];
+    const provInfo = this.state.providers[name];
     return (
       <li>
         <a href={provInfo.link} target="_blank" rel="noopener noreferrer">
@@ -200,7 +200,7 @@ export class LandingPage extends Component {
   renderIntroduction() {
     const { classes } = this.props;
     return (
-      <div className={'introduction container ' + classes.container}>
+      <div className={`introduction container ${classes.container}`}>
         <Button
           variant="contained"
           color="primary"
@@ -220,7 +220,7 @@ export class LandingPage extends Component {
   }
 
   renderImage() {
-    let prov = this.state.selectedProvider;
+    const prov = this.state.selectedProvider;
     return (
       <Slide
         direction="up"
@@ -239,9 +239,9 @@ export class LandingPage extends Component {
 
   renderProvider() {
     const { classes } = this.props;
-    let providers = this.state.providers;
+    const providers = this.state.providers;
     return (
-      <div className={'select-provider container ' + classes.container}>
+      <div className={`select-provider container ${classes.container}`}>
         <div className={classes.column}>Please select your provider:</div>
         <FormControl required className={classes.formControl}>
           <InputLabel htmlFor="provider-required">Provider</InputLabel>
@@ -274,10 +274,10 @@ export class LandingPage extends Component {
 
   renderSelectPort() {
     const { classes } = this.props;
-    let prov = this.state.selectedProvider;
+    const prov = this.state.selectedProvider;
     return (
       <Collapse in={prov === 'Geth' || prov === 'Parity' || prov === 'Ganache'}>
-        <div className={'select-port container ' + classes.container}>
+        <div className={`select-port container ${classes.container}`}>
           <div className={classes.column}>Please select your port:</div>
           <FormControl required className={classes.formControl}>
             <TextField
@@ -311,12 +311,12 @@ export class LandingPage extends Component {
 
   renderNetwork() {
     const { classes } = this.props;
-    let networks = this.state.networks;
-    let prov = this.state.selectedProvider;
-    let port = this.state.selectedPort;
+    const networks = this.state.networks;
+    const prov = this.state.selectedProvider;
+    const port = this.state.selectedPort;
     return (
       <Collapse in={prov === 'Metamask' || prov === 'Infura' || port !== ''}>
-        <div className={'select-network container ' + classes.container}>
+        <div className={`select-network container ${classes.container}`}>
           <div className={classes.column}>Please select your network:</div>
           <FormControl required className={classes.formControl}>
             <InputLabel htmlFor="network-required">Network</InputLabel>
@@ -388,7 +388,7 @@ export class LandingPage extends Component {
   renderButtons() {
     const { classes } = this.props;
     return (
-      <div className={'container buttonContainer ' + classes.container}>
+      <div className={`container buttonContainer ${classes.container}`}>
         <Button
           variant="contained"
           color="primary"

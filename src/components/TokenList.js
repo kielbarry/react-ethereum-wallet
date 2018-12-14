@@ -9,7 +9,7 @@ import shortid from 'shortid';
 export class TokenList extends Component {
   // TODO: turn these renders into stateless
   renderIdentity(token) {
-    let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    const tokens = this.props.reducers.selectedWallet.wallet.tokens;
     return (
       <td>
         <Identicon
@@ -24,7 +24,7 @@ export class TokenList extends Component {
   }
 
   renderInfo(token) {
-    let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    const tokens = this.props.reducers.selectedWallet.wallet.tokens;
     return (
       <td>
         {tokens[token].balance}
@@ -35,12 +35,12 @@ export class TokenList extends Component {
   }
 
   renderLink(token) {
-    let sw = this.props.reducers.selectedWallet;
-    let sendUrl = sw.address + '/';
+    const sw = this.props.reducers.selectedWallet;
+    const sendUrl = `${sw.address}/`;
     return (
       <td>
         <Link
-          to={{ pathname: '/send-token/' + sendUrl + token }}
+          to={{ pathname: `/send-token/${sendUrl}${token}` }}
           title="sendUrlForToken"
         >
           <i className="icon-arrow-up">&nbsp;</i>
@@ -51,8 +51,8 @@ export class TokenList extends Component {
   }
 
   render() {
-    //TODO: what if selected contract
-    let tokens = this.props.reducers.selectedWallet.wallet.tokens;
+    // TODO: what if selected contract
+    const tokens = this.props.reducers.selectedWallet.wallet.tokens;
     return (
       <table className="token-list dapp-zebra">
         <tbody>

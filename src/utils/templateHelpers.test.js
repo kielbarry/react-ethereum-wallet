@@ -14,7 +14,7 @@ describe('template functions', () => {
   //   const testAddressesInputs = ['0x11a8e225e740F283601cC0E8e0f8D56740896B54']
   //   const testAddressesExpectedOutputs =[true]
 
-  it(`is a TODO, maybe delete all template helpers`, () => {
+  it('is a TODO, maybe delete all template helpers', () => {
     expect('TODO').toBe('TODO');
   });
 

@@ -7,8 +7,8 @@ import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { Inputs } from '../elements/inputs/Inputs.js';
-import { SecurityIcon } from '../elements/SecurityIcon.js';
+import { Inputs } from './inputs/Inputs';
+import { SecurityIcon } from './SecurityIcon';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -27,7 +27,7 @@ describe('renders executable constants', () => {
     };
     const tree = renderer
       .create(
-        <tr key={'1'}>
+        <tr key="1">
           <td>
             <h3> Function Name</h3>
             <React.Fragment>
@@ -49,7 +49,7 @@ describe('renders executable constants', () => {
   it('renders functions without inputs', () => {
     const tree = renderer
       .create(
-        <tr key={'2'}>
+        <tr key="2">
           <td>
             <h3> Function Name</h3>
           </td>
@@ -66,8 +66,8 @@ describe('renders executable constants', () => {
           <StaticRouter context={{}}>
             <SecurityIcon
               type="transactionHref"
-              classes={'dapp-identicon dapp-tiny'}
-              hash={'0x0000000000000000000000000000000000000000'}
+              classes="dapp-identicon dapp-tiny"
+              hash="0x0000000000000000000000000000000000000000"
             />
           </StaticRouter>
         </span>
@@ -82,7 +82,7 @@ describe('renders executable constants', () => {
         <React.Fragment>
           YES
           <em>
-            <span className={'icon icon-check'} />
+            <span className="icon icon-check" />
           </em>
         </React.Fragment>
       )
@@ -96,7 +96,7 @@ describe('renders executable constants', () => {
         <React.Fragment>
           NO
           <em>
-            <span className={'icon icon-ban'} />
+            <span className="icon icon-ban" />
           </em>
         </React.Fragment>
       )
@@ -113,9 +113,9 @@ describe('renders executable constants', () => {
 
     const tree = renderer
       .create(
-        <tr key={'1'}>
+        <tr key="1">
           <td>
-            <dl className={'constant-testFunc dapp-zebra'}>
+            <dl className="constant-testFunc dapp-zebra">
               <React.Fragment>
                 <dt>Func Name</dt>
                 <dd className="output">output.value</dd>
@@ -131,9 +131,9 @@ describe('renders executable constants', () => {
   it('renders functions without outputs', () => {
     const tree = renderer
       .create(
-        <tr key={'2'}>
+        <tr key="2">
           <td>
-            <dl className={'constant-testFunc dapp-zebra'} />
+            <dl className="constant-testFunc dapp-zebra" />
           </td>
         </tr>
       )

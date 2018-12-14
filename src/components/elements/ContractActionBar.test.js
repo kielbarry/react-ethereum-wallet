@@ -16,8 +16,8 @@ describe('account information', () => {
   });
 
   const address = '0x0000000000000000000000000000000000000000';
-  const transferEtherAddress = '/send/' + address;
-  const etherScanAddress = 'https://etherscan.io/address/' + address;
+  const transferEtherAddress = `/send/${address}`;
+  const etherScanAddress = `https://etherscan.io/address/${address}`;
 
   it('renders contract action bar', () => {
     const tree = renderer

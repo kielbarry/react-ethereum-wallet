@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../../../actions/actions.js';
+import * as Actions from '../../../actions/actions';
 
 export class Inputs extends Component {
   renderAddress(input) {
@@ -17,6 +17,7 @@ export class Inputs extends Component {
       </React.Fragment>
     );
   }
+
   renderBool(input) {
     return (
       <React.Fragment>
@@ -31,6 +32,7 @@ export class Inputs extends Component {
       </React.Fragment>
     );
   }
+
   renderBytes(input) {
     return (
       <React.Fragment>
@@ -46,6 +48,7 @@ export class Inputs extends Component {
       </React.Fragment>
     );
   }
+
   renderInt(input) {
     return (
       <React.Fragment>
@@ -61,6 +64,7 @@ export class Inputs extends Component {
       </React.Fragment>
     );
   }
+
   renderJson(input) {
     return (
       <React.Fragment>
@@ -78,6 +82,7 @@ export class Inputs extends Component {
       </React.Fragment>
     );
   }
+
   renderString(input) {
     return (
       <React.Fragment>
@@ -92,6 +97,7 @@ export class Inputs extends Component {
       </React.Fragment>
     );
   }
+
   renderUint(input) {
     return (
       <React.Fragment>
@@ -110,11 +116,11 @@ export class Inputs extends Component {
   }
 
   render() {
-    let input = {
+    const input = {
       ...this.props.data,
       index: this.props.index,
     };
-    let type = this.props.data.type.match(/[a-z]+/i)[0];
+    const type = this.props.data.type.match(/[a-z]+/i)[0];
     return (
       <React.Fragment>
         {type === 'address'

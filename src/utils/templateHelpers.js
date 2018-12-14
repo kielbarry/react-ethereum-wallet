@@ -1,28 +1,28 @@
 /**
 Helper functions
-**/
+* */
 
 /**
 Global template helpers
-**/
+* */
 
 /**
 A simple template helper to log objects in the console.
-**/
+* */
 export function debug(object) {
   console.log(object);
 }
 
 /**
 Check if in mist
-**/
+* */
 export function isMist() {
   return window.mistMode === undefined && window.mist !== undefined;
 }
 
 /**
 Check if in mist and in mist mode
-**/
+* */
 export function isWalletMode() {
   // also show network info in normal browsers
   return window.mistMode === 'wallet' || window.mist === undefined;
@@ -30,15 +30,15 @@ export function isWalletMode() {
 
 /**
 Check if wallet was loaded from browser other than Mist
-**/
+* */
 export function isBrowserMode() {
   return window.mist === undefined;
 }
 
 /**
 Check if currency unit is an ether unit
-**/
-//TODO
+* */
+// TODO
 export function isEtherUnit() {
   // var unit = EthTools.getUnit();
   // return !(
@@ -52,8 +52,8 @@ export function isEtherUnit() {
 
 /**
 Check if wallet has vulnerabilities
-**/
-//TODO
+* */
+// TODO
 // isVulnerable(address) {
 //   var account = _.isString(address)
 //     ? Helpers.getAccountByAddress(address)
@@ -94,22 +94,22 @@ Check if wallet has vulnerabilities
 
 /**
 Return the current unit
-**/
-//TODO
+* */
+// TODO
 export function unit() {
   return EthTools.getUnit();
 }
 
 /**
 Return the latest block
-**/
+* */
 export async function latestBlock(web3) {
   return web3.eth.getBlock('latest');
 }
 
 /**
 Returns a list of accounts and wallets sorted by balance
-**/
+* */
 // TODO
 // Template.registerHelper('selectAccounts', function(hideWallets) {
 //   var accounts = EthAccounts.find(
@@ -142,7 +142,7 @@ Returns a list of accounts and wallets sorted by balance
 
 /**
 Check if the given wallet is a watch only wallet, by checking if we are one of owners in the wallet.
-**/
+* */
 // TODO
 // Template.registerHelper('isWatchOnly', Helpers.isWatchOnly);
 
@@ -150,7 +150,7 @@ Check if the given wallet is a watch only wallet, by checking if we are one of o
 Return the right wallet icon
 
 @method (walletIcon)
-**/
+* */
 
 // TODO
 // Template.registerHelper('walletIcon', function() {
@@ -203,7 +203,7 @@ Formats a timestamp to any format given.
 @param {String} format       the format string, can also be "iso", to format to ISO string, or "fromnow"
 //@param {Boolean} realTime    Whether or not this helper should re-run every 10s
 @return {String} The formated time
-**/
+* */
 // TODO
 // Template.registerHelper('formatTime', Helpers.formatTime);
 
@@ -217,7 +217,7 @@ Formats a given transactions balance
 @param {Object} exchangeRates  the exchange rates to use
 @param {String} unit  the unit to format to
 @return {String} The formated value
-**/
+* */
 // TODO
 // Template.registerHelper(
 //   'formatTransactionBalance',
@@ -230,7 +230,7 @@ Formats address to a CaseChecksum
 @method toChecksumAddress
 @param {String} address             The address
 @return {String} checksumAddress    The returned, checksummed address
-**/
+* */
 export function toChecksumAddress(web3, address) {
   return typeof address === 'string' || address instanceof String
     ? web3.utils.toChecksumAddress(address)
@@ -243,7 +243,7 @@ Takes a camelcase and shows it with spaces
 @method toSentence
 @param {string} camelCase    A name in CamelCase or snake_case format
 @return {string} sentence    The same name with spaces
-**/
+* */
 // TODO
 // Template.registerHelper('toSentence', Helpers.toSentence);
 
@@ -251,7 +251,7 @@ Takes a camelcase and shows it with spaces
 Check if on main network
 
 @method (isMainNetwork)
-**/
+* */
 
 // TODO
 // Template.registerHelper('isMainNetwork', function() {

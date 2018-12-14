@@ -4,7 +4,7 @@ import web3Reducer from '../web3/web3Reducer';
 // import Web3Initializer from '../web3/Web3Initializer';
 
 const appReducer = combineReducers({
-  reducers: reducers,
+  reducers,
   web3: web3Reducer,
   // Web3Initializer,
 });

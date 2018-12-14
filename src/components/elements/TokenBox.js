@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { displayModal, tokenToDelete } from '../../actions/actions.js';
-
-import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
-
-import { makeID } from '../../utils/helperFunctions.js';
-
 import { EthAddress, Identicon } from 'ethereum-react-components';
+import { displayModal, tokenToDelete } from '../../actions/actions';
+
+import { tokenInterface } from '../../constants/TokenInterfaceConstant';
+
+import { makeID } from '../../utils/helperFunctions';
 
 export class TokenBox extends Component {
   constructor(props) {
@@ -20,7 +19,7 @@ export class TokenBox extends Component {
   }
 
   renderBalance() {
-    let token = this.props.token;
+    const token = this.props.token;
     return (
       <span className="account-balance">
         {token.totalSupply}
@@ -30,12 +29,12 @@ export class TokenBox extends Component {
   }
 
   render() {
-    var GeoPattern = require('geopattern');
-    var pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-    let iconStyle = { backgroundImage: pattern.toDataUrl() };
-    let token = this.props.token;
+    const GeoPattern = require('geopattern');
+    const pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
+    const iconStyle = { backgroundImage: pattern.toDataUrl() };
+    const token = this.props.token;
 
-    let address =
+    const address =
       token === {} || token.address === '' ? makeID() : token.address;
 
     return (

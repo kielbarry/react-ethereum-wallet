@@ -5,10 +5,10 @@ import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { SecurityIcon } from '../components/elements/SecurityIcon';
+
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-
-import { SecurityIcon } from '../components/elements/SecurityIcon.js';
 
 describe('title html', () => {
   afterEach(() => {
@@ -22,7 +22,7 @@ describe('title html', () => {
           <SecurityIcon
             type="singleAccountView"
             classes="dapp-identicon"
-            hash={'0x0000000000000000000000000000000000000000'}
+            hash="0x0000000000000000000000000000000000000000"
           />
         </div>
       )
@@ -43,7 +43,7 @@ describe('account information', () => {
           </h1>
           <h2 className="copyable-address">
             <i className="icon-key" title="Account" />
-            <span>{'0x0000000000000000000000000000000000000000'}</span>
+            <span>0x0000000000000000000000000000000000000000</span>
           </h2>
           <div className="clear" />
         </React.Fragment>

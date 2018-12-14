@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { ContractSectionList } from '../constants/FieldConstants.js';
+import { ContractSectionList } from '../constants/FieldConstants';
 
 describe('custom contracts html', () => {
   const CC = ContractSectionList.CustomContracts;

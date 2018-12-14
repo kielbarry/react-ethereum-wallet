@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectedWallet } from '../../actions/actions.js';
-import { displayPriceFormatter } from '../../utils/utils.js';
 import NumberFormat from 'react-number-format';
-import TokenListForItems from './TokenListForItems.js';
 import { EthAddress, Identicon } from 'ethereum-react-components';
+import { selectedWallet } from '../../actions/actions';
+import { displayPriceFormatter } from '../../utils/utils';
+import TokenListForItems from './TokenListForItems';
 
 export class AccountItem extends Component {
   constructor(props) {
@@ -39,14 +39,14 @@ export class AccountItem extends Component {
   }
 
   renderBalance() {
-    let wallet = this.props.wallet;
+    const wallet = this.props.wallet;
     return (
       <React.Fragment>
         <NumberFormat
           className="account-balance"
           value={displayPriceFormatter(this.props, wallet.balance)}
-          displayType={'text'}
-          thousandSeparator={true}
+          displayType="text"
+          thousandSeparator
         />
         <span> {this.props.currency} </span>
       </React.Fragment>
@@ -54,9 +54,9 @@ export class AccountItem extends Component {
   }
 
   renderTokens() {
-    let ot = this.props.ObservedTokens;
-    let tokenList = this.props.wallet.tokens;
-    let displayTokens =
+    const ot = this.props.ObservedTokens;
+    const tokenList = this.props.wallet.tokens;
+    const displayTokens =
       (Object.keys(ot).length !== 0 && ot.constructor === Object) ||
       tokenList !== undefined;
     return (
@@ -72,20 +72,20 @@ export class AccountItem extends Component {
   }
 
   renderName() {
-    let number = this.props.number;
-    let name = this.props.wallet.name;
+    const number = this.props.number;
+    const name = this.props.wallet.name;
     return (
       <h3 className="not-ens-name">
         <i className={this.props.icon} title="Account" />
         &nbsp;
-        {!name ? 'Account ' + number : name}
+        {!name ? `Account ${number}` : name}
       </h3>
     );
   }
 
   render() {
-    let address = this.props.address;
-    const AccountURL = '/account/' + address;
+    const address = this.props.address;
+    const AccountURL = `/account/${address}`;
 
     return (
       <React.Fragment>

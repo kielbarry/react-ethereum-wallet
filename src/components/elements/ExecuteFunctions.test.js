@@ -7,9 +7,9 @@ import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { WalletDropdown } from './WalletDropdown.js';
-import { Inputs } from '../elements/inputs/Inputs.js';
-import { SecurityIcon } from '../elements/SecurityIcon.js';
+import { WalletDropdown } from './WalletDropdown';
+import { Inputs } from './inputs/Inputs';
+import { SecurityIcon } from './SecurityIcon';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -50,14 +50,14 @@ describe('renders executable functions', () => {
             onChange={() => {}}
           >
             <option
-              key={'1'}
+              key="1"
               disabled=""
               name="pickFunctionDefault"
               value="pickFunctionDefault"
             >
               Pick a function
             </option>
-            <option key={'2'} value={'Function Name'}>
+            <option key="2" value="Function Name">
               Function Name
             </option>
           </select>
@@ -79,7 +79,7 @@ describe('renders executable functions', () => {
             onChange={() => {}}
           >
             <option
-              key={'3'}
+              key="3"
               disabled=""
               name="pickFunctionDefault"
               value="pickFunctionDefault"
@@ -114,14 +114,14 @@ describe('renders executable functions', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  //TODO: import dropdown snapshot
+  // TODO: import dropdown snapshot
   it('renders executable function', () => {
     const tree = renderer
       .create(
         <React.Fragment>
           <hr className="dapp-clear-fix" />
           <h4> Execute from </h4>
-          {/*{this.renderAccountDropdown()}*/}
+          {/* {this.renderAccountDropdown()} */}
           <button className="dapp-block-button execute" onClick={() => {}}>
             Execute
           </button>
@@ -136,7 +136,7 @@ describe('renders executable functions', () => {
     const tree = renderer
       .create(
         <div className="col col-4 mobile-full contract-functions">
-          {/*}
+          {/* }
         {this.renderSelectFunction()}
         {this.renderFunctionInputs()}
         {this.renderIsExecutable()}

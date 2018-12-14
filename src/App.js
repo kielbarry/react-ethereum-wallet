@@ -15,22 +15,22 @@ import {
   createInitWalletContract,
   updateEtherPrices,
 } from './actions/actions.js';
-import * as Utils from './utils/utils.js';
-import * as WalletUtils from './utils/WalletUtils.js';
+import * as Utils from './utils/utils';
+import * as WalletUtils from './utils/WalletUtils';
 
 // views
-import LandingPage from './views/LandingPage.js';
-import ViewContainer from './views/ViewContainer.js';
+import LandingPage from './views/LandingPage';
+import ViewContainer from './views/ViewContainer';
 
 // Modals
-import ModalContainer from './components/modals/ModalContainer.js';
+import ModalContainer from './components/modals/ModalContainer';
 import NavBar from './components/Navbar';
 
 // stylesheets
 import './stylesheets/mergedstyles.css';
 import './App.css';
 
-import Web3Initializer from './web3/Web3Initializer.js';
+import Web3Initializer from './web3/Web3Initializer';
 
 export class App extends Component {
   constructor(props) {
@@ -47,10 +47,10 @@ export class App extends Component {
       15000
     );
     this.props.closeModal('displayEventInfo');
-    let web3Returned = setInterval(() => {
+    const web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
-        let web3 = this.props.web3.web3Instance;
+        const web3 = this.props.web3.web3Instance;
         // do once to load on init, then repeat later to update balances
         try {
           Utils.checkNetwork(web3, this.props.updateConnectedNetwork);

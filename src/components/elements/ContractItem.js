@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectedContract } from '../../actions/actions.js';
-import SecurityIcon from './SecurityIcon.js';
-import { displayPriceFormatter } from '../../utils/utils.js';
-import { makeID } from '../../utils/helperFunctions.js';
-import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
-
-import TokenListForItems from './TokenListForItems.js';
-
 import { EthAddress, Identicon } from 'ethereum-react-components';
+import { selectedContract } from '../../actions/actions';
+import SecurityIcon from './SecurityIcon';
+import { displayPriceFormatter } from '../../utils/utils';
+import { makeID } from '../../utils/helperFunctions';
+import * as Actions from '../../actions/actions';
+
+import TokenListForItems from './TokenListForItems';
 
 class ContractItem extends Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class ContractItem extends Component {
   }
 
   openAccountPage(e) {
-    let obj = {
+    const obj = {
       contract: this.props.contract,
       currency: this.props.reducers.currency,
       exchangeRates: this.props.reducers.exchangeRates,
@@ -47,28 +46,28 @@ class ContractItem extends Component {
     });
   }
 
-  //snapshotted
+  // snapshotted
   renderBalance() {
-    let contract = this.props.contract;
+    const contract = this.props.contract;
     return (
       <React.Fragment>
         <NumberFormat
           className="account-balance"
           value={displayPriceFormatter(this.props, contract.balance)}
-          displayType={'text'}
-          thousandSeparator={true}
+          displayType="text"
+          thousandSeparator
         />
         <span> {this.props.reducers.currency} </span>
       </React.Fragment>
     );
   }
 
-  //snapshotted
+  // snapshotted
   renderPendingProgress() {
-    let percent = this.props.contract.confirmationNumber / 12;
+    const percent = this.props.contract.confirmationNumber / 12;
     return (
       <div className="dapp-progress">
-        <div className="dapp-bar" style={{ width: { percent } + '%' }} />
+        <div className="dapp-bar" style={{ width: `${{ percent }}%` }} />
       </div>
     );
   }
@@ -78,7 +77,7 @@ class ContractItem extends Component {
       <React.Fragment>
         <SecurityIcon
           type="contractItem"
-          classes={'dapp-identicon dapp-small dapp-icon-loading'}
+          classes="dapp-identicon dapp-small dapp-icon-loading"
           hash={this.state.fakeAddress}
         />
       </React.Fragment>
@@ -95,7 +94,7 @@ class ContractItem extends Component {
   }
 
   renderName() {
-    let contract = this.props.contract;
+    const contract = this.props.contract;
     let pending = this.props.pending;
     pending ? (pending = true) : (pending = false);
     return (
@@ -126,7 +125,7 @@ class ContractItem extends Component {
           Creating
           <span>...</span>
         </span>
-        {/*<span className="account-id creating" />*/}
+        {/* <span className="account-id creating" /> */}
         <EthAddress
           short
           classes="account-id creating"
@@ -137,7 +136,7 @@ class ContractItem extends Component {
   }
 
   render() {
-    let contract = this.props.contract;
+    const contract = this.props.contract;
     let pending = this.props.pending;
 
     pending ? (pending = true) : (pending = false);
@@ -169,7 +168,7 @@ class ContractItem extends Component {
             <React.Fragment>
               <SecurityIcon
                 type="contractItem"
-                classes={'dapp-identicon dapp-small'}
+                classes="dapp-identicon dapp-small"
                 hash={address}
               />
             </React.Fragment>

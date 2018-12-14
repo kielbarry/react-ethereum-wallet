@@ -1,16 +1,16 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { AccountItem } from './elements/AccountItem.js';
 
 import { StaticRouter } from 'react-router';
 import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import Web3 from 'web3';
+import { AccountItem } from './elements/AccountItem';
+
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-
-import Web3 from 'web3';
 
 describe('Addresses html', () => {
   afterEach(() => {
@@ -29,10 +29,10 @@ describe('Addresses html', () => {
       .create(
         <StaticRouter context={{}}>
           <AccountItem
-            key={'0x0000000000000000000000000000000000000000'}
+            key="0x0000000000000000000000000000000000000000"
             number={0}
             icon="icon-key"
-            address={'0x0000000000000000000000000000000000000000'}
+            address="0x0000000000000000000000000000000000000000"
             wallet={{
               '0x0000000000000000000000000000000000000000': { balance: 0 },
             }}

@@ -21,8 +21,8 @@ describe('renders contract action bar', () => {
           <NumberFormat
             className="account-balance"
             value={0}
-            displayType={'text'}
-            thousandSeparator={true}
+            displayType="text"
+            thousandSeparator
           />
           <span> 'ETHER' </span>
         </React.Fragment>
@@ -35,7 +35,7 @@ describe('renders contract action bar', () => {
     const tree = renderer
       .create(
         <div className="dapp-progress">
-          <div className="dapp-bar" style={{ width: 50 + '%' }} />
+          <div className="dapp-bar" style={{ width: `${50}%` }} />
         </div>
       )
       .toJSON();

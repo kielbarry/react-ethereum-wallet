@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import LatestTransactions from '../components/elements/LatestTransactions.js';
-import NoMatchingTransaction from '../components/elements/NoMatchingTransaction.js';
+import LatestTransactions from '../components/elements/LatestTransactions';
+import NoMatchingTransaction from '../components/elements/NoMatchingTransaction';
 
-import Addresses from '../components/Addresses.js';
-import DeployedWallets from '../components/DeployedWallets.js';
+import Addresses from '../components/Addresses';
+import DeployedWallets from '../components/DeployedWallets';
 
 // snapshotted
 const Title = () => {
@@ -28,7 +28,7 @@ const StatelessPageContent = () => {
 
 export class AccountView extends Component {
   render() {
-    let txs = this.props.Transactions;
+    const txs = this.props.Transactions;
     return (
       <div className="dapp-container account-page">
         <StatelessPageContent />

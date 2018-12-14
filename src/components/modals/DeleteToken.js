@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { closeModal, deleteToken } from '../../actions/actions.js';
+import { closeModal, deleteToken } from '../../actions/actions';
 
 const Name = props => {
   return (

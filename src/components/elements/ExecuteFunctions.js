@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Inputs from '../elements/inputs/Inputs.js';
-import WalletDropdown from './WalletDropdown.js';
-import * as Helpers from '../../utils/helperFunctions.js';
-import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
+import Inputs from './inputs/Inputs';
+import WalletDropdown from './WalletDropdown';
+import * as Helpers from '../../utils/helperFunctions';
+import * as Actions from '../../actions/actions';
 
 export class ExecuteFunctions extends Component {
   constructor(props) {
@@ -20,20 +20,20 @@ export class ExecuteFunctions extends Component {
   }
 
   chooseFunction(e) {
-    let contract = this.state.reducers.selectedContract.contract;
-    let functions = this.state.reducers.ObservedContracts[contract.address];
+    const contract = this.state.reducers.selectedContract.contract;
+    const functions = this.state.reducers.ObservedContracts[contract.address];
     if (e.target.value === 'pickFunctionDefault') {
       this.setState({ chosenFunction: 'Pick A Function' });
       this.props.emptySelectedFunction({});
       return;
     }
-    let func = functions.contractFunctions[e.target.selectedIndex - 1];
+    const func = functions.contractFunctions[e.target.selectedIndex - 1];
     if (func.name === e.target.value) {
-      func['contractAddress'] = contract.address;
+      func.contractAddress = contract.address;
       this.setState({ chosenFunction: e.target.value });
       this.props.updateSelectedFunction(func);
     } else {
-      //TODO: global
+      // TODO: global
       /*
       Transaction sent in green
       Returned error: authentication needed: password or unlock
@@ -50,23 +50,23 @@ export class ExecuteFunctions extends Component {
   }
 
   executeContractFunction(e) {
-    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     if (!web3) {
       return;
     }
     const BN = web3.utils.BN;
-    let contractInfo = this.props.reducers.selectedContract.contract;
-    let jsonInterface = contractInfo.jsonInterface;
-    let funcName = this.props.selectedFunction.name;
+    const contractInfo = this.props.reducers.selectedContract.contract;
+    const jsonInterface = contractInfo.jsonInterface;
+    const funcName = this.props.selectedFunction.name;
 
-    let inputs = this.props.selectedFunction.inputs.map(inp => {
+    const inputs = this.props.selectedFunction.inputs.map(inp => {
       return inp.type.includes('int')
         ? new BN(web3.utils.toWei(inp.value.replace(',', '.')))
         : inp.value;
     });
 
-    let execWallet = this.props.selectedFunction.executingWallet;
-    let contract = new web3.eth.Contract(JSON.parse(jsonInterface));
+    const execWallet = this.props.selectedFunction.executingWallet;
+    const contract = new web3.eth.Contract(JSON.parse(jsonInterface));
     contract.options.address = contractInfo.contractAddress;
 
     try {
@@ -94,7 +94,7 @@ export class ExecuteFunctions extends Component {
   }
 
   renderAccountDropdown() {
-    let dropdownConfig = {
+    const dropdownConfig = {
       component: 'ExecuteFunctions',
       selectClassName: '',
       selectName: 'dapp-select-account',
@@ -108,8 +108,8 @@ export class ExecuteFunctions extends Component {
 
   // snapshotted
   renderSelectFunction() {
-    let contract = this.state.reducers.selectedContract.contract;
-    let functions = this.state.reducers.ObservedContracts[contract.address]
+    const contract = this.state.reducers.selectedContract.contract;
+    const functions = this.state.reducers.ObservedContracts[contract.address]
       .contractFunctions;
     return (
       <React.Fragment>
@@ -145,9 +145,10 @@ export class ExecuteFunctions extends Component {
 
   // snapshotted
   renderFunctionInputs() {
-    let contract = this.props.reducers.selectedContract.contract;
-    let selectedFunction = this.props.reducers.selectedFunction;
-    let inputs = selectedFunction !== undefined ? selectedFunction.inputs : [];
+    const contract = this.props.reducers.selectedContract.contract;
+    const selectedFunction = this.props.reducers.selectedFunction;
+    const inputs =
+      selectedFunction !== undefined ? selectedFunction.inputs : [];
     return (
       <React.Fragment>
         {inputs
@@ -167,10 +168,10 @@ export class ExecuteFunctions extends Component {
   }
 
   renderIsExecutable() {
-    let executable = this.props.reducers.selectedFunction
+    const executable = this.props.reducers.selectedFunction
       ? this.props.reducers.selectedFunction
       : {};
-    let bool =
+    const bool =
       Object.keys(executable).length === 0 && executable.constructor === Object;
     return (
       <React.Fragment>

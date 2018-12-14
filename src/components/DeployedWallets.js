@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import ContractItem from './elements/ContractItem.js';
-import ButtonDescription from './ButtonDescription.js';
 import { Link } from 'react-router-dom';
+import ContractItem from './elements/ContractItem';
+import ButtonDescription from './ButtonDescription';
 
 const buttonTitle = 'Wallet Contracts';
 const buttonDescription =
@@ -28,11 +28,11 @@ const WalletLink = () => {
 export class DeployedWallets extends Component {
   renderWalletBoxList() {
     const icon = 'icon-eye';
-    let {
+    const {
       ContractsPendingConfirmations,
       WalletContracts,
     } = this.props.reducers;
-    let contracts = Object.assign(
+    const contracts = Object.assign(
       {},
       ContractsPendingConfirmations,
       WalletContracts
@@ -46,10 +46,10 @@ export class DeployedWallets extends Component {
               number={i + 1}
               icon={icon}
               pending={
-                Object.keys(contracts[address]).length === 0 &&
-                contracts[address].constructor === Object
-                  ? true
-                  : false
+                !!(
+                  Object.keys(contracts[address]).length === 0 &&
+                  contracts[address].constructor === Object
+                )
               }
               contract={contracts[address]}
               address={address}

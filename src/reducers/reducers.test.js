@@ -1,13 +1,12 @@
-import * as Constants from '../constants/ActionsTestConstants.js';
-
 import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { assert } from 'chai';
 import reducers, { initialState } from './reducers';
 
-//todo: delete
-import { assert } from 'chai';
+// todo: delete
+import * as Constants from '../constants/ActionsTestConstants.js';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -676,7 +675,7 @@ describe('observeContacts reducers', () => {
         [action.payload.address]: {
           ...state.ObservedContracts[action.payload.address],
           logs: [
-            ...state.ObservedContracts[action.payload.address]['logs'],
+            ...state.ObservedContracts[action.payload.address].logs,
             action.payload,
           ],
         },

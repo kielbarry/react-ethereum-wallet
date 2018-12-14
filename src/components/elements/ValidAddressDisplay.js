@@ -26,8 +26,8 @@ export class ValidAddressDisplay extends Component {
   }
 
   render() {
-    let cn = require('classnames');
-    let newClasses = cn({
+    const cn = require('classnames');
+    const newClasses = cn({
       to: true,
       'dapp-error': this.state.toIsAddress === false,
     });
@@ -38,7 +38,7 @@ export class ValidAddressDisplay extends Component {
           name="to"
           placeholder="0x000000.."
           className={newClasses}
-          autoFocus={true}
+          autoFocus
           // value={tx.to}
           // onChange={e => this.handleInputChange(e)}
           // onKeyUp={e => this.handleInputChange(e)}

@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
-import { selectedWallet } from '../../actions/actions.js';
-import * as Utils from '../../utils/utils.js';
-import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
-
-import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
-
 import { Identicon } from 'ethereum-react-components';
+import { selectedWallet } from '../../actions/actions';
+import * as Utils from '../../utils/utils';
+import * as Actions from '../../actions/actions';
+
+import { tokenInterface } from '../../constants/TokenInterfaceConstant';
 
 export class TokenListForItems extends Component {
   constructor(props) {
@@ -18,16 +17,16 @@ export class TokenListForItems extends Component {
   }
 
   getTokenBalanceForAddress(untrackedTokens) {
-    let walletAddress = this.props.address;
-    let ObservedTokens = this.props.ObservedTokens;
+    const walletAddress = this.props.address;
+    const ObservedTokens = this.props.ObservedTokens;
 
     // if observedTokens Empty
     // or if no tokens in walletaddress
     // then return
-    if (ObservedTokens)
+    if (ObservedTokens) {
       untrackedTokens.map(tokenAddress => {
-        let web3 = this.props.web3.web3Instance;
-        let TokenContract = new web3.eth.Contract(tokenInterface);
+        const web3 = this.props.web3.web3Instance;
+        const TokenContract = new web3.eth.Contract(tokenInterface);
         TokenContract.options.address = tokenAddress;
 
         try {
@@ -39,14 +38,14 @@ export class TokenListForItems extends Component {
                 return;
               }
 
-              let tokenResult = ObservedTokens[tokenAddress];
-              tokenResult['balance'] = result;
+              const tokenResult = ObservedTokens[tokenAddress];
+              tokenResult.balance = result;
 
               if (this.props.addressType === 'Wallets') {
                 this.props.updateAccountTokenBalance({
                   account: walletAddress,
                   value: tokenResult,
-                  tokenAddress: tokenAddress,
+                  tokenAddress,
                 });
                 return;
               }
@@ -54,9 +53,8 @@ export class TokenListForItems extends Component {
                 this.props.updateContractTokenBalance({
                   account: walletAddress,
                   value: tokenResult,
-                  tokenAddress: tokenAddress,
+                  tokenAddress,
                 });
-                return;
               }
             });
         } catch (err) {
@@ -68,17 +66,20 @@ export class TokenListForItems extends Component {
           });
         }
       });
+    }
   }
 
   render() {
-    let address = this.props.address;
+    const address = this.props.address;
 
-    let currentObservedTokens = new Set(Object.keys(this.props.ObservedTokens));
+    const currentObservedTokens = new Set(
+      Object.keys(this.props.ObservedTokens)
+    );
     console.log(currentObservedTokens);
 
     let tokenCheck;
 
-    //TODO: should extract this javascript into separate function
+    // TODO: should extract this javascript into separate function
     // returns null html
     console.log(this.props.addressType);
     if (this.props.addressType === 'Wallets') {
@@ -89,7 +90,7 @@ export class TokenListForItems extends Component {
       return null;
     }
 
-    let currentWalletsTokens = tokenCheck ? tokenCheck : [];
+    const currentWalletsTokens = tokenCheck || [];
 
     console.log(currentObservedTokens);
     console.log(currentWalletsTokens);
@@ -100,16 +101,16 @@ export class TokenListForItems extends Component {
       // &&
       tokenCheck !== undefined
     ) {
-      let trackedTokens = new Set(Object.keys(currentWalletsTokens));
+      const trackedTokens = new Set(Object.keys(currentWalletsTokens));
       console.log(trackedTokens);
-      let untrackedTokens = Array.from(
+      const untrackedTokens = Array.from(
         new Set([...currentObservedTokens].filter(x => !trackedTokens.has(x)))
       );
       console.log(untrackedTokens);
       this.getTokenBalanceForAddress(untrackedTokens);
     }
 
-    let tokens = tokenCheck;
+    const tokens = tokenCheck;
     console.log('renders countAmount / walletContracts+wallets ', tokens);
 
     return (
@@ -119,14 +120,9 @@ export class TokenListForItems extends Component {
           : Object.keys(tokens).map(token => (
               <li
                 key={shortid.generate()}
-                data-tooltip={
-                  tokens[token].name +
-                  ' (' +
-                  tokens[token].balance +
-                  ' ' +
-                  tokens[token].symbol +
-                  ')'
-                }
+                data-tooltip={`${tokens[token].name} (${
+                  tokens[token].balance
+                } ${tokens[token].symbol})`}
                 className="simptip-position-right simptip-movable"
               >
                 <Identicon

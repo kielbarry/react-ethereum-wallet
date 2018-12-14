@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
 // views
-import AccountView from './Account.js';
-import SingleAccountView from './SingleAccountView.js';
-import SingleContractView from './SingleContractView.js';
-import ContractsView from './Contracts.js';
-import SendContractForm from './Send.js';
-import NewWalletContract from './NewWalletContract.js';
+import AccountView from './Account';
+import SingleAccountView from './SingleAccountView';
+import SingleContractView from './SingleContractView';
+import ContractsView from './Contracts';
+import SendContractForm from './Send';
+import NewWalletContract from './NewWalletContract';
 
 class ViewContainer extends Component {
   render() {

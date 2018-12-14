@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import makeBlockie from 'ethereum-blockies-base64';
-import { updateTransactionToSend } from '../../actions/actions.js';
+import { updateTransactionToSend } from '../../actions/actions';
 
 const ToolTip = props => {
   return (
     <span
       className={props.classes}
-      title="This is a security icon.  If there were any change to the address, 
+      title="This is a security icon.  If there were any change to the address,
     the resulting icon would be a completely different one"
       src={props.icon}
       style={props.divStyle}
@@ -25,8 +25,8 @@ const ToolTip = props => {
 
 export const SecurityIcon = props => {
   const icon = makeBlockie(props.hash);
-  let divStyle = {
-    backgroundImage: 'url(' + icon + ')',
+  const divStyle = {
+    backgroundImage: `url(${icon})`,
   };
 
   function updateToTransaction(e) {
@@ -42,7 +42,7 @@ export const SecurityIcon = props => {
       <ToolTip classes={classes} icon={icon} divStyle={divStyle} />
       {props.type === 'transactionHref' ? (
         <Link
-          to={{ pathname: '/send-from/' + props.hash }}
+          to={{ pathname: `/send-from/${props.hash}` }}
           title={props.hash}
           onClick={e => updateToTransaction(e)}
         >
@@ -53,7 +53,7 @@ export const SecurityIcon = props => {
       )}
       {props.type === 'accountRoute' ? (
         <Link
-          to={{ pathname: '/account/' + props.hash }}
+          to={{ pathname: `/account/${props.hash}` }}
           title={props.hash}
           // onClick={e => updateToTransaction(e)}
         >

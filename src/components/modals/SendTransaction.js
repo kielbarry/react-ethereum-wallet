@@ -3,26 +3,16 @@ import { connect } from 'react-redux';
 
 import { withRouter } from 'react-router';
 
-// import InputItem from '../elements/InputItem.js';
-// import TestInputItem from '../elements/TestInputItem.js';
-import SecurityIcon from '../elements/SecurityIcon.js';
-import * as Actions from '../../actions/actions.js';
-
-import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
-
-//List of actions actually used
-// closeModal
-// addTransaction
-// displayGlobalNotification
-// clearTransactionToSend
-// updateTransaction
-// updateTransactionConfirmation
-
-import { tokenInterface } from '../../constants/TokenInterfaceConstant.js';
 import { Identicon } from 'ethereum-react-components';
-
 import Web3 from 'web3';
-let newWeb3 = new Web3();
+import SecurityIcon from '../elements/SecurityIcon';
+import * as Actions from '../../actions/actions';
+
+import { combineWallets, sortByBalance } from '../../utils/helperFunctions';
+
+import { tokenInterface } from '../../constants/TokenInterfaceConstant';
+
+const newWeb3 = new Web3();
 
 export const Title = props => {
   let value;
@@ -115,21 +105,21 @@ export class SendTransactionModal extends Component {
   }
 
   sendEtherTransaction(e) {
-    let web3 = this.props.web3.web3Instance;
-    let tx = this.props.reducers.TransactionToSend;
+    const web3 = this.props.web3.web3Instance;
+    const tx = this.props.reducers.TransactionToSend;
 
-    let date = new Date();
+    const date = new Date();
 
     const BN = web3.utils.BN;
-    let amount = new BN(tx.value);
+    const amount = new BN(tx.value);
     // let gasPrice = new BN(tx.gasPrice.toString());
-    let gasPrice = tx.gasPrice;
-    let maxGas = new BN('21000');
+    const gasPrice = tx.gasPrice;
+    const maxGas = new BN('21000');
 
-    let { Wallets, WalletContracts } = this.props.reducers;
+    const { Wallets, WalletContracts } = this.props.reducers;
     console.log(Wallets);
     console.log(WalletContracts);
-    let combinedWallets = Object.keys(
+    const combinedWallets = Object.keys(
       combineWallets(Wallets, WalletContracts)
     ).map(address => address);
 
@@ -145,7 +135,7 @@ export class SendTransactionModal extends Component {
         from: tx.from,
         to: tx.to,
         value: amount,
-        gasPrice: gasPrice,
+        gasPrice,
       })
       .on('transactionHash', transactionHash => {
         this.props.addTransaction({
@@ -154,8 +144,8 @@ export class SendTransactionModal extends Component {
             ...tx,
             dateSent: date,
             confirmationNumber: 'Pending',
-            transactionHash: transactionHash,
-            transactionType: transactionType,
+            transactionHash,
+            transactionType,
           },
         });
         this.props.displayGlobalNotification({
@@ -168,7 +158,7 @@ export class SendTransactionModal extends Component {
       })
       .on('receipt', receipt => {})
       .on('confirmation', (confirmationNumber, receipt) => {
-        let cn = confirmationNumber;
+        const cn = confirmationNumber;
         let msg;
         if (cn === 0 || cn === 12) {
           cn === 0
@@ -178,7 +168,7 @@ export class SendTransactionModal extends Component {
           this.props.displayGlobalNotification({
             display: true,
             type: 'success',
-            msg: msg,
+            msg,
           });
         }
       })
@@ -198,45 +188,46 @@ export class SendTransactionModal extends Component {
 
     // Or should I just subscribe to Transfer Event?!
 
-    //TODO: need to use data field with the following?
+    // TODO: need to use data field with the following?
     // 0xa9059cbb00000000000000000000000065b42142606a9d46d05ea5205ad4b610a9130e92000000000000000000000000000000000000000000000001158e460913d00000
 
-    let addresses = this.props.reducers.Wallets;
-    let walletContracts = this.props.reducers.walletContracts;
-    let wallets = Object.keys(Object.assign({}, addresses, walletContracts));
+    const addresses = this.props.reducers.Wallets;
+    const walletContracts = this.props.reducers.walletContracts;
+    const wallets = Object.keys(Object.assign({}, addresses, walletContracts));
 
     // TokenContract.methods['balanceOf'](tx.to)
     // TokenContract.methods['balanceOf'](tx.from)
   }
 
   sendTokenTransaction(e) {
-    let tx = this.props.reducers.TransactionToSend;
-    let token = tx.tokenToSend;
+    const tx = this.props.reducers.TransactionToSend;
+    const token = tx.tokenToSend;
 
-    let web3 = this.props.web3.web3Instance;
-    let TokenContract = new web3.eth.Contract(tokenInterface, {
+    const web3 = this.props.web3.web3Instance;
+    const TokenContract = new web3.eth.Contract(tokenInterface, {
       from: tx.from,
     });
 
     TokenContract.options.address = token.address;
 
-    let transactionType = 'Token sent';
+    const transactionType = 'Token sent';
 
     // TODO: update balances on successful send
 
     try {
-      //TODO need this?
+      // TODO need this?
 
-      //.encodeABI();
+      // .encodeABI();
 
-      TokenContract.methods['transfer'](tx.to, tx.tokenAmount)
+      TokenContract.methods
+        .transfer(tx.to, tx.tokenAmount)
         .call()
         .then(res => {
           // yup returns nothing
 
           console.log('Res', res);
 
-          //TODO: add to transaction list
+          // TODO: add to transaction list
           // name the category is {token name} - Token transfer
 
           this.updateTokenBalances(TokenContract);
@@ -253,11 +244,11 @@ export class SendTransactionModal extends Component {
   }
 
   sendTransaction(e) {
-    //TODO: reset data values in inputs
+    // TODO: reset data values in inputs
     e.preventDefault();
     // let web3 = this.props.web3.web3Instance;
     // let date = new Date();
-    let tx = this.props.reducers.TransactionToSend;
+    const tx = this.props.reducers.TransactionToSend;
     !tx.sendToken ? this.sendEtherTransaction(e) : this.sendTokenTransaction(e);
     // console.log(tx);
   }
@@ -269,24 +260,29 @@ export class SendTransactionModal extends Component {
 
   returnAccountName(address) {
     // let transaction = this.props.reducers.TransactionToSend;
-    let wallets = this.props.reducers.Wallets;
-    let walletArray = Object.keys(wallets).map(key => key);
-    let walletContracts = this.props.reducers.WalletContracts;
-    let walletContractArray = Object.keys(walletContracts).map(key => key);
-    let observedContracts = this.props.reducers.ObservedContracts;
-    let observedContractsArray = Object.keys(observedContracts).map(key => key);
-    let observedTokens = this.props.reducers.ObservedTokens;
-    let observedTokensArray = Object.keys(observedTokens).map(key => key);
+    const wallets = this.props.reducers.Wallets;
+    const walletArray = Object.keys(wallets).map(key => key);
+    const walletContracts = this.props.reducers.WalletContracts;
+    const walletContractArray = Object.keys(walletContracts).map(key => key);
+    const observedContracts = this.props.reducers.ObservedContracts;
+    const observedContractsArray = Object.keys(observedContracts).map(
+      key => key
+    );
+    const observedTokens = this.props.reducers.ObservedTokens;
+    const observedTokensArray = Object.keys(observedTokens).map(key => key);
     let name;
     if (walletArray.includes(address)) {
       name = wallets[address].name;
-      name ? name : 'Account ' + wallets[address].number;
+      name || `Account ${wallets[address].number}`;
       return name;
-    } else if (walletContractArray.includes(address)) {
+    }
+    if (walletContractArray.includes(address)) {
       return walletContracts[address]['contract-name'];
-    } else if (observedContractsArray.includes(address)) {
+    }
+    if (observedContractsArray.includes(address)) {
       return observedContracts[address]['contract-name'];
-    } else if (observedTokensArray.includes(address)) {
+    }
+    if (observedTokensArray.includes(address)) {
       return observedTokens[address].name;
     }
     return name;
@@ -295,15 +291,15 @@ export class SendTransactionModal extends Component {
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
-    let transaction = this.props.reducers.TransactionToSend;
-    let fromName = this.returnAccountName(transaction.from);
-    let toName = this.returnAccountName(transaction.to);
+    const transaction = this.props.reducers.TransactionToSend;
+    const fromName = this.returnAccountName(transaction.from);
+    const toName = this.returnAccountName(transaction.to);
 
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container send-transaction-info">
           <Title tx={transaction} />
-          {/*<TransactionName info={transaction} />*/}
+          {/* <TransactionName info={transaction} /> */}
           <p>
             <span className="address dapp-shorten-text not-ens-name">
               {/*
@@ -319,15 +315,15 @@ export class SendTransactionModal extends Component {
                 size="tiny"
                 address={transaction.from}
               />
-              {/*{transaction.from}*/}
-              {fromName ? fromName : transaction.from}
+              {/* {transaction.from} */}
+              {fromName || transaction.from}
             </span>
           </p>
           <i className="icon-arrow-down" />
-          {/*<TransactionName info={transaction} />*/}
+          {/* <TransactionName info={transaction} /> */}
           <p>
             <span className="address dapp-shorten-text not-ens-name">
-              {/*}
+              {/* }
               <SecurityIcon
                 type="transactionHref"
                 classes={'dapp-identicon dapp-tiny'}
@@ -340,7 +336,7 @@ export class SendTransactionModal extends Component {
                 size="tiny"
                 address={transaction.to}
               />
-              {toName ? toName : transaction.to}
+              {toName || transaction.to}
             </span>
           </p>
           <hr />
@@ -354,7 +350,7 @@ export class SendTransactionModal extends Component {
               Estimated required gas {transaction.estimatedGas}
               <br />
             </small>
-            {/*<GasInfo/>*/}
+            {/* <GasInfo/> */}
             <small>
               Provide gas:
               <input type="number" min="21000" className="gas dapp-tiny" />

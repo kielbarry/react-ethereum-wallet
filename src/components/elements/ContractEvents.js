@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Utils from '../../utils/utils.js';
-import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
+import * as Utils from '../../utils/utils';
+import * as Actions from '../../actions/actions';
 
 const DateFormat = props => {
   return (
@@ -45,20 +45,18 @@ export class ContractEvents extends Component {
   }
 
   displayEventModal(e, log) {
-    log['originalContractName'] = this.props.reducers.selectedContract.contract[
+    log.originalContractName = this.props.reducers.selectedContract.contract[
       'contract-name'
     ];
-    log[
-      'originalContractAddress'
-    ] = this.props.reducers.selectedContract.contract.address;
+    log.originalContractAddress = this.props.reducers.selectedContract.contract.address;
 
     this.props.updateSelectedEvent(log);
     this.props.displayModal('displayEventInfo');
   }
 
   render() {
-    let contract = this.props.reducers.selectedContract.contract;
-    let logs = this.props.reducers.ObservedContracts[contract.address].logs;
+    const contract = this.props.reducers.selectedContract.contract;
+    const logs = this.props.reducers.ObservedContracts[contract.address].logs;
     return (
       <table className="dapp-zebra transactions">
         <tbody>

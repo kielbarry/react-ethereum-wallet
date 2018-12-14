@@ -14,8 +14,8 @@ describe('renders selectable unit', () => {
   });
 
   it('renders dropdown', () => {
-    let cn = require('classnames');
-    let newClasses = cn({
+    const cn = require('classnames');
+    const newClasses = cn({
       'simple-modal': true,
       animate: false,
     });

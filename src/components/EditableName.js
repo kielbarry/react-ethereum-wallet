@@ -5,27 +5,28 @@ import clickOutside from 'react-click-outside';
 
 import ContentEditable from 'react-contenteditable';
 // utils and actions
-import * as Utils from '../utils/utils.js';
-// import * as Actions from '../actions/actions.js';
+import * as Utils from '../utils/utils';
+// import * as Actions from '../actions/actions';
 import {
   updateContractName,
   updateWalletContractName,
   updateAddressName,
 } from '../actions/actions.js';
+
 export class EditableName extends Component {
   constructor(props) {
     super(props);
 
     // TODO: logic for contracts
-    let wallet = this.props.reducers.selectedWallet;
-    let walletName = wallet.wallet.name;
+    const wallet = this.props.reducers.selectedWallet;
+    const walletName = wallet.wallet.name;
     console.log(walletName);
     this.state = {
-      //<<<<<<< Updated upstream
+      // <<<<<<< Updated upstream
       contentEditable: false,
       newName: '',
       html: `
-            ${walletName ? walletName : 'Account ' + wallet.number} 
+            ${walletName || `Account ${wallet.number}`} 
           `,
     };
     this.toggleEditability = this.toggleEditability.bind(this);
@@ -49,7 +50,7 @@ export class EditableName extends Component {
   }
 
   handleChange = e => {
-    let wallet = this.props.reducers.selectedWallet;
+    const wallet = this.props.reducers.selectedWallet;
     this.setState({
       newName: e.target.value,
     });
@@ -60,7 +61,7 @@ export class EditableName extends Component {
   };
 
   handleClickOutside(e) {
-    let id = e.target.getAttribute('id');
+    const id = e.target.getAttribute('id');
     e.target.getAttribute('id') !== 'editableName'
       ? this.setState({ contentEditable: false })
       : this.toggleEditability(e);
@@ -74,7 +75,7 @@ export class EditableName extends Component {
       });
     }
     {
-      /*}
+      /* }
 =======
       // contentEditable: false,
       contentEditable: true,
@@ -104,14 +105,14 @@ export class EditableName extends Component {
   }
 
   render() {
-    let type = this.props.addressType;
-    let wallet =
+    const type = this.props.addressType;
+    const wallet =
       type === 'address'
         ? this.props.reducers.selectedWallet
         : this.props.reducers.selectedContract;
     return (
       <h1>
-        {/*<<<<<<< Updated upstream*/}
+        {/* <<<<<<< Updated upstream */}
         <ContentEditable
           id="editableName"
           className="edit-name"
@@ -121,7 +122,7 @@ export class EditableName extends Component {
           onChange={this.handleChange} // handle innerHTML change
           tagName="em" // Use a custom HTML tag (uses a div by default)
         />
-        {/*}
+        {/* }
 =======
         {wallet !== undefined && wallet !== '' ? (
           <input className="edit-name" onChange={e => this.updateName(e, wallet)} />

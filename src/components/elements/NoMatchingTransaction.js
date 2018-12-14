@@ -1,4 +1,5 @@
 import React from 'react';
+
 export const NoMatchingTransaction = () => {
   return (
     <table className="dapp-zebra transactions">

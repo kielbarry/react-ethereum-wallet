@@ -1,11 +1,11 @@
-import { store } from '../store/store.js';
 import Web3 from 'web3';
+import { store } from '../store/store.js';
 
-let ethereumConnection = null;
+const ethereumConnection = null;
 
 export default class Web3Initializer {
   static init() {
-    let config = store.getState().reducers.Web3Initializer;
+    const config = store.getState().reducers.Web3Initializer;
     let ProviderNetwork = '';
 
     console.log('ethereumConnection', ethereumConnection);
@@ -28,15 +28,14 @@ export default class Web3Initializer {
     }
 
     console.log('here is config', config);
-    let prov = config.selectedProvider.toLowerCase();
+    const prov = config.selectedProvider.toLowerCase();
     if (prov === 'geth' || prov === 'parity' || prov === 'ganache') {
-      ProviderNetwork = 'ws://127.0.0.1:' + config.selectedPort;
+      ProviderNetwork = `ws://127.0.0.1:${config.selectedPort}`;
     }
     if (prov.toLowerCase() === 'metamask') {
     }
     if (prov.toLowerCase() === 'infura') {
-      ProviderNetwork =
-        'wss://' + config.selectedNetwork.toLowerCase() + '.infura.io/ws';
+      ProviderNetwork = `wss://${config.selectedNetwork.toLowerCase()}.infura.io/ws`;
     }
 
     return ProviderNetwork;

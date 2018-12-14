@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { ContractSectionList } from '../constants/FieldConstants.js';
-import { TokenBox } from './elements/TokenBox.js';
+import { ContractSectionList } from '../constants/FieldConstants';
+import { TokenBox } from './elements/TokenBox';
 
 describe('custom contracts html', () => {
   const CT = ContractSectionList.CustomTokens;
@@ -24,7 +24,7 @@ describe('custom contracts html', () => {
         <React.Fragment>
           <button className="wallet-box-list">
             <TokenBox
-              key={'0x0000000000000000000000000000000000000000'}
+              key="0x0000000000000000000000000000000000000000"
               token={{
                 address: '0x0000000000000000000000000000000000000000',
                 name: 'fakeToken',

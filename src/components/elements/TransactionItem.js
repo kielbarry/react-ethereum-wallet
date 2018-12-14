@@ -3,30 +3,26 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
-import {
-  updateSelectedTransaction,
-  displayModal,
-} from '../../actions/actions.js';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { Identicon } from 'ethereum-react-components';
+import { updateSelectedTransaction, displayModal } from '../../actions/actions';
 
 import {
   getMonthName,
   getDate,
   displayPriceFormatter,
-} from '../../utils/utils.js';
-import LinearProgress from '@material-ui/core/LinearProgress';
-
-import { Identicon } from 'ethereum-react-components';
+} from '../../utils/utils';
 
 // snapshotted
 const TransactionInfo = props => {
-  let cn = props.tx.confirmationNumber;
+  const cn = props.tx.confirmationNumber;
   return (
     <td className="info">
       {cn === 'Pending'
         ? 'Pending...'
         : cn > 12
         ? '12 of 12 Confirmations'
-        : cn + ' of 12 Confirmations'}
+        : `${cn} of 12 Confirmations`}
     </td>
   );
 };
@@ -100,7 +96,7 @@ export class TransactionItem extends Component {
           address={address}
         />
         <Link
-          to={{ pathname: '/send-from/' + address }}
+          to={{ pathname: `/send-from/${address}` }}
           title={address}
           onClick={e => this.updateToTransaction(e)}
         >
@@ -112,7 +108,7 @@ export class TransactionItem extends Component {
 
   // snapshotted
   renderTransactionType(tx) {
-    //TODO: transaction type
+    // TODO: transaction type
     return (
       <td className="account-name">
         <h2>{tx.transactionType ? tx.transactionType : 'Transaction Type'}</h2>
@@ -129,13 +125,13 @@ export class TransactionItem extends Component {
   renderTransactionAmount(tx) {
     return (
       <td className="transaction-amount minus">
-        - {displayPriceFormatter(this.props, tx.value, 'ETHER') + ' ETHER'}
+        - {`${displayPriceFormatter(this.props, tx.value, 'ETHER')} ETHER`}
       </td>
     );
   }
 
   render() {
-    let tx = this.props.transaction;
+    const tx = this.props.transaction;
     return (
       <tr
         className={tx.confirmationNumber === 'Pending' ? 'unconfirmed' : ''}

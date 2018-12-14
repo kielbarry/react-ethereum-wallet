@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 
 import { StaticRouter } from 'react-router';
 
-import { SecurityIcon } from '../elements/SecurityIcon.js';
+import { SecurityIcon } from './SecurityIcon';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -22,9 +22,7 @@ describe('renders latest transactions', () => {
       .create(
         <td
           className="time simptip-position-right simptip-movable"
-          data-tool-tip={
-            'Fri Nov 16 2018 12:57:18 GMT+0100 (Central European Standard Time)'
-          }
+          data-tool-tip="Fri Nov 16 2018 12:57:18 GMT+0100 (Central European Standard Time)"
         >
           <h2>Nov</h2>
           <p>16</p>
@@ -101,10 +99,10 @@ describe('renders latest transactions', () => {
     const tree = renderer
       .create(
         <tr
-          className={'unconfirmed'}
-          key={'0x0000000000000000000000000000000000000000'}
-          data-transaction-hash={'0x0000000000000000000000000000000000000000'}
-          data-block-hash={'0x0000000000000000000000000000000000000000'}
+          className="unconfirmed"
+          key="0x0000000000000000000000000000000000000000"
+          data-transaction-hash="0x0000000000000000000000000000000000000000"
+          data-block-hash="0x0000000000000000000000000000000000000000"
           onClick={() => {}}
         >
           {/*
@@ -125,10 +123,10 @@ describe('renders latest transactions', () => {
     const tree = renderer
       .create(
         <tr
-          className={''}
-          key={'0x0000000000000000000000000000000000000000'}
-          data-transaction-hash={'0x0000000000000000000000000000000000000000'}
-          data-block-hash={'0x0000000000000000000000000000000000000000'}
+          className=""
+          key="0x0000000000000000000000000000000000000000"
+          data-transaction-hash="0x0000000000000000000000000000000000000000"
+          data-block-hash="0x0000000000000000000000000000000000000000"
           onClick={() => {}}
         >
           {/*

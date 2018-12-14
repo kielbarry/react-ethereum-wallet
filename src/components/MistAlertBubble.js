@@ -13,8 +13,8 @@ export class MistAlertBubble extends Component {
   }
 
   renderMistAlertBubble() {
-    var cn = require('classnames');
-    var newStyles = cn({
+    const cn = require('classnames');
+    const newStyles = cn({
       'show-alert': true,
       'alert-bubble': true,
       'is-hidden': this.state.displayAlertMessage,
@@ -30,8 +30,8 @@ export class MistAlertBubble extends Component {
   }
 
   renderMistAlert() {
-    var cn = require('classnames');
-    var newStyles = cn({
+    const cn = require('classnames');
+    const newStyles = cn({
       'alert-banner': true,
       'is-hidden': !this.state.displayAlertMessage,
     });

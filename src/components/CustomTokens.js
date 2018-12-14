@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
-import TokenBox from './elements/TokenBox.js';
-import ButtonDescription from './ButtonDescription.js';
-import { displayModal, fetchTokensForAutoScan } from './../actions/actions.js';
+import TokenBox from './elements/TokenBox';
+import ButtonDescription from './ButtonDescription';
+import { displayModal, fetchTokensForAutoScan } from '../actions/actions';
 
 const buttonTitle = 'Custom Tokens';
 const buttonDescription =
@@ -19,7 +19,7 @@ export class CustomTokens extends Component {
 
   // snapshotted
   renderObservedTokens() {
-    let ot = this.props.ObservedTokens;
+    const ot = this.props.ObservedTokens;
     if (ot !== undefined && Object.keys(ot).length !== 0) {
       return (
         <React.Fragment>
@@ -51,9 +51,9 @@ export class CustomTokens extends Component {
 
   // TODO: use utility combineWallets
   autoScanTokens(e) {
-    let wallets = this.props.Wallets;
-    let oc = this.props.ObservedContracts;
-    let addresses = [
+    const wallets = this.props.Wallets;
+    const oc = this.props.ObservedContracts;
+    const addresses = [
       ...Object.keys(wallets),
       ...Object.keys(oc).map(key => {
         return oc[key].address;

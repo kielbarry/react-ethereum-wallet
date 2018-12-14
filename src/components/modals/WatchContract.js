@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // import InputItem from '../elements/InputItem.jsx';
-import TestInputItem from '../elements/TestInputItem.js';
-import * as Actions from '../../actions/actions.js';
+import TestInputItem from '../elements/TestInputItem';
+import * as Actions from '../../actions/actions';
 import {
   updateContractToWatch,
   cancelContractToWatch,
@@ -37,7 +37,8 @@ const listInputs = [
     editor: 'textarea',
     type: 'text',
     name: 'jsonInterface',
-    placeholder: `[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{"name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]`,
+    placeholder:
+      '[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{"name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]',
     className: 'jsonInterface',
     cols: '30',
     rows: '10',
@@ -74,25 +75,25 @@ class WatchItem extends Component {
 
   submitFunction(e) {
     let web3;
-    let contract = this.props.reducers.ContractToWatch;
+    const contract = this.props.reducers.ContractToWatch;
     console.log(contract);
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
-      let con = {};
+      const con = {};
       try {
         web3.eth.getBalance(contract.address, (err, res) => {
           if (err) console.warn(err);
           console.log('res received', res);
           contract.balance = res;
-          contract['logs'] = [];
-          contract['contractAddress'] = contract.address;
-          con[contract['address']] = contract;
+          contract.logs = [];
+          contract.contractAddress = contract.address;
+          con[contract.address] = contract;
 
-          let {
+          const {
             ContractsPendingConfirmations,
             WalletContracts,
           } = this.props.reducers;
-          let deployedWalletContracts = Object.assign(
+          const deployedWalletContracts = Object.assign(
             {},
             ContractsPendingConfirmations,
             WalletContracts
@@ -100,7 +101,7 @@ class WatchItem extends Component {
 
           console.log('here in watch COntracts', deployedWalletContracts);
 
-          contract['deployedWalletContract'] = Object.keys(
+          contract.deployedWalletContract = Object.keys(
             deployedWalletContracts
           ).includes(contract.address);
 

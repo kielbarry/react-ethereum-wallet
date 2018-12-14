@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Inputs from '../elements/inputs/Inputs.js';
-import * as Helpers from '../../utils/helperFunctions.js';
-import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
-
 import { Identicon } from 'ethereum-react-components';
+import Inputs from './inputs/Inputs.js';
+import * as Helpers from '../../utils/helperFunctions';
+import * as Actions from '../../actions/actions';
 
 export class ExecuteConstants extends Component {
   constructor(props) {
@@ -17,35 +16,35 @@ export class ExecuteConstants extends Component {
   }
 
   executeInput(e, input, func) {
-    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     if (!web3) {
       return;
     }
 
-    let index = e.target.getAttribute('index');
-    let value = e.target.value;
+    const index = e.target.getAttribute('index');
+    const value = e.target.value;
 
     const BN = web3.utils.BN;
-    let contractInfo = this.state.reducers.selectedContract.contract;
+    const contractInfo = this.state.reducers.selectedContract.contract;
 
-    let jsonInterface = contractInfo.jsonInterface;
-    let funcName = func.name;
+    const jsonInterface = contractInfo.jsonInterface;
+    const funcName = func.name;
 
     func.inputs[index].value = value;
     console.log(...func.inputs);
 
-    let inputs = func.inputs.map(inp => {
+    const inputs = func.inputs.map(inp => {
       return inp.type.includes('int')
         ? new BN(web3.utils.toWei(inp.value.replace(',', '.')))
         : inp.value;
     });
 
-    let contract = new web3.eth.Contract(
+    const contract = new web3.eth.Contract(
       JSON.parse(jsonInterface),
       contractInfo.contractAddress
     );
 
-    contract.options['address'] = contractInfo.contractAddress;
+    contract.options.address = contractInfo.contractAddress;
 
     try {
       contract.methods[funcName](...inputs)
@@ -91,7 +90,7 @@ export class ExecuteConstants extends Component {
     );
   }
 
-  //snapshotted
+  // snapshotted
   renderOutputType(output) {
     return (
       <dd className="output">
@@ -111,7 +110,7 @@ export class ExecuteConstants extends Component {
 
   // snapshotted
   renderAddress(output) {
-    let address = output.value !== '' ? output.value : '0x';
+    const address = output.value !== '' ? output.value : '0x';
     return (
       <span className="address dapp-shorten-text not-ens-name">
         <Identicon
@@ -121,7 +120,7 @@ export class ExecuteConstants extends Component {
           address={address}
         />
         <Link
-          to={{ pathname: '/send-from/' + address }}
+          to={{ pathname: `/send-from/${address}` }}
           title={address}
           onClick={e => this.updateToTransaction(e)}
         >
@@ -133,14 +132,14 @@ export class ExecuteConstants extends Component {
 
   // snapshotted
   renderBool(output) {
-    let bool = output.value === true;
-    let text = bool ? 'YES ' : 'NO ';
-    let icon = bool ? 'icon-check' : 'icon-ban';
+    const bool = output.value === true;
+    const text = bool ? 'YES ' : 'NO ';
+    const icon = bool ? 'icon-check' : 'icon-ban';
     return (
       <React.Fragment>
         {text}
         <em>
-          <span className={'icon ' + icon} />
+          <span className={`icon ${icon}`} />
         </em>
       </React.Fragment>
     );
@@ -151,7 +150,7 @@ export class ExecuteConstants extends Component {
     return (
       <tr key={shortid.generate()}>
         <td>
-          <dl className={'constant-' + func.name + ' dapp-zebra'}>
+          <dl className={`constant-${func.name} dapp-zebra`}>
             {func.outputs.map((output, index) => (
               <React.Fragment>
                 {output.name !== '' ? (
@@ -169,8 +168,8 @@ export class ExecuteConstants extends Component {
 
   // TODO: snapshot
   render() {
-    let contract = this.state.reducers.selectedContract.contract;
-    let constants = this.state.reducers.ObservedContracts[contract.address]
+    const contract = this.state.reducers.selectedContract.contract;
+    const constants = this.state.reducers.ObservedContracts[contract.address]
       .contractConstants;
     return (
       <div className="col col-8 mobile-full contract-info">

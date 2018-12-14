@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../../actions/actions.js';
+import * as Actions from '../../actions/actions';
 
 class JSONInterface extends Component {
   shouldComponentUpdate(prevProps, prevState) {
@@ -19,6 +19,7 @@ class JSONInterface extends Component {
       this.props.closeModal('displayJSONInterface');
     }
   }
+
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
@@ -32,7 +33,7 @@ class JSONInterface extends Component {
         <section className="dapp-modal-container">
           <h1>Contract JSON Interface</h1>
           <textarea
-            readOnly={true}
+            readOnly
             name="jsonInterface"
             cols="40"
             rows="10"

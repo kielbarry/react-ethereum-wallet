@@ -139,7 +139,7 @@ export const reducers = (state = initialState, action) => {
           [action.payload.account]: {
             ...state.WalletContracts[action.payload.account],
             tokens: {
-              ...state.WalletContracts[action.payload.account]['tokens'],
+              ...state.WalletContracts[action.payload.account].tokens,
               [action.payload.tokenAddress]: action.payload.value,
             },
           },
@@ -153,7 +153,7 @@ export const reducers = (state = initialState, action) => {
           [action.payload.account]: {
             ...state.Wallets[action.payload.account],
             tokens: {
-              ...state.Wallets[action.payload.account]['tokens'],
+              ...state.Wallets[action.payload.account].tokens,
               [action.payload.tokenAddress]: action.payload.value,
             },
           },
@@ -361,7 +361,7 @@ export const reducers = (state = initialState, action) => {
           [action.payload.address]: {
             ...state.ObservedContracts[action.payload.address],
             logs: [
-              ...state.ObservedContracts[action.payload.address]['logs'],
+              ...state.ObservedContracts[action.payload.address].logs,
               action.payload,
             ],
           },

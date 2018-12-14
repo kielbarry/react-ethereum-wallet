@@ -1,8 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import * as Constants from './LandingPageTestConstants.js';
-
 import Slide from '@material-ui/core/Slide';
+import * as Constants from './LandingPageTestConstants';
 
 describe('landing page links', () => {
   Object.keys(Constants.providerConstants).map(prov => {

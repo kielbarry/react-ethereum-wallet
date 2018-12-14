@@ -14,12 +14,11 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import WalletDropdown from '../components/elements/WalletDropdown.js';
 import shortid from 'shortid';
-import * as Actions from '../actions/actions.js';
-import { makeID } from '../utils/helperFunctions.js';
-
 import { Identicon } from 'ethereum-react-components';
+import WalletDropdown from '../components/elements/WalletDropdown';
+import * as Actions from '../actions/actions';
+import { makeID } from '../utils/helperFunctions';
 
 import {
   WalletInterfaceItems,
@@ -81,7 +80,7 @@ const SelectOwner = () => {
   );
 };
 
-let dcfRadio = ['simpleChecked', 'multisigChecked', 'importWalletChecked'];
+const dcfRadio = ['simpleChecked', 'multisigChecked', 'importWalletChecked'];
 
 class NewWalletContract extends Component {
   constructor(props) {
@@ -92,18 +91,18 @@ class NewWalletContract extends Component {
     this.checkIfImportableWallet = this.checkIfImportableWallet.bind(this);
     this.handleChange = this.handleChange.bind(this);
     let defaultWallet;
-    let wallets = this.props.reducers.Wallets;
-    for (var prop in wallets) {
+    const wallets = this.props.reducers.Wallets;
+    for (const prop in wallets) {
       defaultWallet = prop;
       break;
     }
-    this.state.reducers.DeployContractForm['MainOwnerAddress'] = defaultWallet;
+    this.state.reducers.DeployContractForm.MainOwnerAddress = defaultWallet;
     this.state.reducers.DeployContractForm.multiSigContract.owners[0] = defaultWallet;
   }
 
   selectWallet(e) {
     // TODO:validate inputs here
-    let obj = { ...this.props.reducers.DeployContractForm };
+    const obj = { ...this.props.reducers.DeployContractForm };
     obj.MainOwnerAddress = e.target.value;
     this.props.updateMainContractAddress({
       name: 'MainOwnerAddress',
@@ -112,8 +111,8 @@ class NewWalletContract extends Component {
   }
 
   shouldComponentUpdate(prevProps, prevState) {
-    let dcf = this.props.reducers.DeployContractForm;
-    let prevDcf = prevProps.reducers.DeployContractForm;
+    const dcf = this.props.reducers.DeployContractForm;
+    const prevDcf = prevProps.reducers.DeployContractForm;
     if (
       dcf !== prevDcf ||
       dcf.multiSigContract !== prevDcf.multiSigContract ||
@@ -125,8 +124,8 @@ class NewWalletContract extends Component {
   }
 
   checkIfImportableWallet(e) {
-    let dcf = this.props.reducers.DeployContractForm;
-    let address = dcf.importWalletAddress;
+    const dcf = this.props.reducers.DeployContractForm;
+    const address = dcf.importWalletAddress;
     let web3;
     if (this.props.web3 && this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
@@ -145,9 +144,9 @@ class NewWalletContract extends Component {
       return false;
     }
 
-    let pendingConf = this.props.reducers.ContractsPendingConfirmations;
-    let wc = this.props.reducers.WalletContracts;
-    let walletContracts = Object.assign({}, pendingConf, wc);
+    const pendingConf = this.props.reducers.ContractsPendingConfirmations;
+    const wc = this.props.reducers.WalletContracts;
+    const walletContracts = Object.assign({}, pendingConf, wc);
     if (Object.keys(walletContracts).includes(address)) {
       this.props.displayGlobalNotification({
         display: true,
@@ -159,7 +158,7 @@ class NewWalletContract extends Component {
       return false;
     }
 
-    let originalABI = WalletInterfaceItems.walletStubABI;
+    const originalABI = WalletInterfaceItems.walletStubABI;
     return web3.eth.getCode(address).then((err, res) => {
       if (err) {
         this.props.displayGlobalNotification({
@@ -188,8 +187,8 @@ class NewWalletContract extends Component {
   }
 
   handleChange(e) {
-    let buttonValue = e.target.value;
-    let name = e.target.name;
+    const buttonValue = e.target.value;
+    const name = e.target.name;
     let obj = {};
     switch (name) {
       case 'ContractToDeployRadio':
@@ -239,14 +238,14 @@ class NewWalletContract extends Component {
   }
 
   renderMultiSigOwners() {
-    let dcf = this.props.reducers.DeployContractForm;
-    let { ownerCount, owners } = dcf.multiSigContract;
+    const dcf = this.props.reducers.DeployContractForm;
+    const { ownerCount, owners } = dcf.multiSigContract;
     return (
       <React.Fragment>
         {[...Array(ownerCount).keys()].map((num, index) => (
           <TextField
             key={shortid.generate()}
-            id={index + '-multiSigAddress'}
+            id={`${index}-multiSigAddress`}
             onChange={e => this.handleChange(e)}
             data-name="multisigSigneesAddresses"
             name="multisigSigneesAddresses"
@@ -255,7 +254,7 @@ class NewWalletContract extends Component {
             value={
               index === 0
                 ? dcf.MainOwnerAddress
-                : typeof owners[index] == 'undefined'
+                : typeof owners[index] === 'undefined'
                 ? ''
                 : owners[index]
             }
@@ -270,7 +269,7 @@ class NewWalletContract extends Component {
                     address={
                       index === 0
                         ? dcf.MainOwnerAddress
-                        : typeof owners[index] == 'undefined'
+                        : typeof owners[index] === 'undefined'
                         ? makeID()
                         : owners[index]
                     }
@@ -286,7 +285,7 @@ class NewWalletContract extends Component {
 
   validateMultipleAddress(web3, addresses) {
     const ownerSet = new Set(addresses);
-    let arr = [...ownerSet].map(address => web3.utils.isAddress(address));
+    const arr = [...ownerSet].map(address => web3.utils.isAddress(address));
     if (arr.includes(false)) {
       console.warn('invalid address');
       this.props.displayGlobalNotification({
@@ -313,7 +312,7 @@ class NewWalletContract extends Component {
     // this.checkIfImportableWallet(e)
 
     console.log('e in createContract', e);
-    let dcf = this.props.reducers.DeployContractForm;
+    const dcf = this.props.reducers.DeployContractForm;
     console.log(dcf);
 
     // TODO: finish up import wallet
@@ -325,20 +324,20 @@ class NewWalletContract extends Component {
     // }
     // return;
 
-    let msContract = dcf.multiSigContract;
-    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+    const msContract = dcf.multiSigContract;
+    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     // hardcoded bytecode
     // same for imported wallet - there is a web3 check to make the
     // code at the given address is identical to the walletStubABI
-    let code = WalletInterfaceItems.walletStubABI;
+    const code = WalletInterfaceItems.walletStubABI;
     // hardcoded JSON interface
-    let jsonInterface = WalletInterfaceItems.walletInterface;
-    let contract = new web3.eth.Contract(jsonInterface);
+    const jsonInterface = WalletInterfaceItems.walletInterface;
+    const contract = new web3.eth.Contract(jsonInterface);
     if (!web3) {
       return;
     }
 
-    let options = {
+    const options = {
       data: code,
       arguments: '',
       from: dcf.MainOwnerAddress.toLowerCase(),
@@ -363,7 +362,7 @@ class NewWalletContract extends Component {
     if (!valid) {
       return;
     }
-    //TODO: more security checks from observewallets and account_create
+    // TODO: more security checks from observewallets and account_create
     this.props.history.push('/accounts');
     contract
       .deploy({
@@ -390,13 +389,13 @@ class NewWalletContract extends Component {
         console.log('reecipt', receipt);
       })
       .on('confirmation', (confirmationNumber, receipt) => {
-        receipt['confirmationNumber'] = confirmationNumber;
+        receipt.confirmationNumber = confirmationNumber;
         receipt['contract-name'] = dcf['contract-name'];
-        receipt['address'] = receipt.contractAddress;
-        receipt['logs'] = [];
-        receipt['balance'] = 0;
-        receipt['deployedWalletContract'] = true;
-        receipt['jsonInterface'] = JSON.stringify(jsonInterface);
+        receipt.address = receipt.contractAddress;
+        receipt.logs = [];
+        receipt.balance = 0;
+        receipt.deployedWalletContract = true;
+        receipt.jsonInterface = JSON.stringify(jsonInterface);
 
         console.log(receipt);
 
@@ -628,7 +627,7 @@ class NewWalletContract extends Component {
   render() {
     const { classes } = this.props;
     const { DeployContractForm } = this.props.reducers;
-    let dcf = this.props.reducers.DeployContractForm;
+    const dcf = this.props.reducers.DeployContractForm;
     return (
       <React.Fragment>
         <FormControl component="fieldset" className={classes.formControl}>
@@ -638,7 +637,7 @@ class NewWalletContract extends Component {
             name="WalletContractName"
             placeholder="Wallet contract name"
             onChange={e => this.handleChange(e)}
-            autoFocus={true}
+            autoFocus
           />
           <SelectOwner />
           <div className={classes.radioRoot}>

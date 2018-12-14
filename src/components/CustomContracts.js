@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
-import ContractItem from './elements/ContractItem.js';
-import ButtonDescription from './ButtonDescription.js';
-import { displayModal } from './../actions/actions.js';
+import ContractItem from './elements/ContractItem';
+import ButtonDescription from './ButtonDescription';
+import { displayModal } from '../actions/actions';
 
 const buttonTitle = 'Custom Contracts';
 const buttonDescription =
@@ -34,7 +34,7 @@ export class CustomContracts extends Component {
   }
 
   renderObservedContracts() {
-    let oc = this.props.ObservedContracts;
+    const oc = this.props.ObservedContracts;
     if (oc !== undefined && Object.keys(oc).length !== 0) {
       return (
         <React.Fragment>

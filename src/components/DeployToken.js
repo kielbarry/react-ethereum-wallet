@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
-import TokenBox from './elements/TokenBox.js';
-import { ContractSectionList } from './../constants/FieldConstants.js';
-import { ReplicateBinanceToken } from './../constants/DevConstants.js';
-import WalletDropdown from '../components/elements/WalletDropdown.js';
-import ButtonDescription from './ButtonDescription.js';
-import * as Actions from './../actions/actions.js';
-import * as Utils from '../utils/utils.js';
-import { combineWallets, sortByBalance } from '../utils/helperFunctions.js';
-
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import TokenBox from './elements/TokenBox';
+import { ContractSectionList } from '../constants/FieldConstants';
+import { ReplicateBinanceToken } from '../constants/DevConstants';
+import WalletDropdown from './elements/WalletDropdown';
+import ButtonDescription from './ButtonDescription';
+import * as Actions from '../actions/actions';
+import * as Utils from '../utils/utils';
+import { combineWallets, sortByBalance } from '../utils/helperFunctions';
 
 const styles = theme => ({
   fab: {
@@ -30,8 +29,8 @@ const buttonDescription = 'This feature is for testing in development';
 export class DeployToken extends Component {
   constructor(props) {
     super(props);
-    let { Wallets, WalletContracts } = this.props;
-    let combinedWallets = combineWallets(Wallets, WalletContracts);
+    const { Wallets, WalletContracts } = this.props;
+    const combinedWallets = combineWallets(Wallets, WalletContracts);
     this.state = {
       deployingAddress: combinedWallets[0].address,
       disabledWallet: '',
@@ -50,20 +49,20 @@ export class DeployToken extends Component {
 
   deployBinanceToken() {
     this.setState({ disabledWallet: true });
-    let web3 = this.props.web3 ? this.props.web3.web3Instance : null;
+    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     if (!web3) {
       return;
     }
-    let code = ReplicateBinanceToken.ABI;
-    let args = [18000000, 'Asdf', 18, 'bnb0'];
-    let options = {
+    const code = ReplicateBinanceToken.ABI;
+    const args = [18000000, 'Asdf', 18, 'bnb0'];
+    const options = {
       data: code,
       arguments: [...args],
       from: this.state.deployingAddress,
     };
 
-    let jsonInterface = ReplicateBinanceToken.jsonInterface;
-    let contract = new web3.eth.Contract(jsonInterface);
+    const jsonInterface = ReplicateBinanceToken.jsonInterface;
+    const contract = new web3.eth.Contract(jsonInterface);
 
     contract
       .deploy({
@@ -91,11 +90,12 @@ export class DeployToken extends Component {
       })
       .on('receipt', receipt => {
         contract.options.address = receipt.contractAddress;
-        contract.methods['totalSupply']()
+        contract.methods
+          .totalSupply()
           .call()
           .then(totalSupply => {
             console.log('totalSupply', totalSupply);
-            let token = {
+            const token = {
               address: receipt.contractAddress,
               name: 'Asdf',
               symbol: 'bnb0',
@@ -104,7 +104,7 @@ export class DeployToken extends Component {
             this.props.addObservedToken({
               address: token.address,
               value: Object.assign({}, token, {
-                totalSupply: totalSupply,
+                totalSupply,
               }),
             });
           });
@@ -130,7 +130,7 @@ export class DeployToken extends Component {
   }
 
   renderWallet() {
-    let dropdownConfig = {
+    const dropdownConfig = {
       component: 'deployToken',
       selectClassName: 'send-from',
       selectName: 'from',

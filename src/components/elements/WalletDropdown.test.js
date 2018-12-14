@@ -8,7 +8,7 @@ import fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { SecurityIcon } from '../elements/SecurityIcon.js';
+import { SecurityIcon } from './SecurityIcon';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -34,10 +34,7 @@ describe('renders wallet dropdown', () => {
             onChange={() => {}}
             value="0x0000000000000000000000000000000000000000"
           >
-            <option
-              key="1"
-              value={'0x0000000000000000000000000000000000000000'}
-            >
+            <option key="1" value="0x0000000000000000000000000000000000000000">
               '🔑 ' 0 &nbsp; - &nbsp; ETHER
             </option>
           </select>
@@ -64,10 +61,7 @@ describe('renders wallet dropdown', () => {
             onChange={() => {}}
             value="0x0000000000000000000000000000000000000000"
           >
-            <option
-              key="1"
-              value={'0x0000000000000000000000000000000000000000'}
-            >
+            <option key="1" value="0x0000000000000000000000000000000000000000">
               0 &nbsp; - &nbsp; ETHER
             </option>
           </select>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // import onClickOutside from "react-onclickoutside";
 import shortid from 'shortid';
 
-import { updateCurrency } from '../../actions/actions.js';
+import { updateCurrency } from '../../actions/actions';
 
 import '../../stylesheets/mergedstyles.css';
 
@@ -54,8 +54,8 @@ class SelectableUnit extends Component {
   }
 
   render() {
-    let cn = require('classnames');
-    let newClasses = cn({
+    const cn = require('classnames');
+    const newClasses = cn({
       'simple-modal': true,
       animate: this.state.displaySU,
     });

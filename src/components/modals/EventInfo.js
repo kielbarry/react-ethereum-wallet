@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../../actions/actions.js';
-import * as Utils from '../../utils/utils.js';
-
 import { Identicon } from 'ethereum-react-components';
+import * as Actions from '../../actions/actions';
+import * as Utils from '../../utils/utils';
 
 export const EventName = event => {
   return (
@@ -73,7 +72,7 @@ export class EventInfo extends Component {
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
-    let event = this.props.event;
+    const event = this.props.event;
     console.log(event);
     return (
       <div
@@ -94,7 +93,7 @@ export class EventInfo extends Component {
               <EventName event={event} />
               <Outputs event={event} />
               <Origin event={event} />
-              {/*}
+              {/* }
               <tr>
                 <td>Event name</td>
                 <td>{event.event}</td>

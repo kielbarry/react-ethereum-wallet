@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import AccountItem from './elements/AccountItem.js';
-
 import shortid from 'shortid';
+import AccountItem from './elements/AccountItem';
 
 export class Addresses extends Component {
   render() {
@@ -13,7 +12,6 @@ export class Addresses extends Component {
         <div className="wallet-box-list">
           {Object.keys(wallets).map((address, i) => (
             <AccountItem
-              // key={address}
               key={shortid.generate()}
               number={i + 1}
               icon={icon}
