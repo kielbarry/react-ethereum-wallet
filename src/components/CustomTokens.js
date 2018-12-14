@@ -2,29 +2,28 @@ import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import TokenBox from './elements/TokenBox.js';
-import { ContractSectionList } from './../constants/FieldConstants.js';
-import * as Actions from './../actions/actions.js';
+import { displayModal, fetchTokensForAutoScan } from './../actions/actions.js';
 
 // snapshotted
 const TokenDescription = () => {
-  let CT = ContractSectionList.CustomTokens;
   return (
     <React.Fragment>
-      <h2>{CT.title}</h2>
-      <p>{CT.contractDescription}</p>
+      <h2>Custom Tokens</h2>
+      <p>
+        Tokens are currencies and other fungibles built on the Ethereum
+        platform. In order for accounts to watch for tokens and send them, you
+        have to add their address to this list. You can create your own token by
+        simply modifying this example of a custom token contract or learning
+        more about Ethereum Tokens.
+      </p>
       <div className="dapp-clear-fix" />
     </React.Fragment>
   );
 };
 
-class CustomTokens extends Component {
+export class CustomTokens extends Component {
   shouldComponentUpdate(prevProps, prevState) {
-    if (
-      !isEqual(
-        prevProps.reducers.ObservedTokens,
-        this.props.reducers.ObservedTokens
-      )
-    ) {
+    if (!isEqual(prevProps.ObservedTokens, this.props.ObservedTokens)) {
       return true;
     }
     return false;
@@ -32,17 +31,13 @@ class CustomTokens extends Component {
 
   // snapshotted
   renderObservedTokens() {
-    let obj = this.props.reducers;
-    if (
-      obj.ObservedTokens !== undefined &&
-      Object.keys(obj.ObservedTokens).length !== 0
-    ) {
-      let tokens = this.props.reducers.ObservedTokens;
+    let ot = this.props.ObservedTokens;
+    if (ot !== undefined && Object.keys(ot).length !== 0) {
       return (
         <React.Fragment>
           <button className="wallet-box-list">
-            {Object.keys(tokens).map(token => (
-              <TokenBox key={tokens[token].address} token={tokens[token]} />
+            {Object.keys(ot).map(token => (
+              <TokenBox key={ot[token].address} token={ot[token]} />
             ))}
           </button>
         </React.Fragment>
@@ -52,30 +47,30 @@ class CustomTokens extends Component {
 
   // snapshotted
   renderAddTokenButton() {
-    let CT = ContractSectionList.CustomTokens;
     return (
       <React.Fragment>
         <button
-          className={CT.buttonClass}
+          className="wallet-box create add-token"
           onClick={() => this.props.displayModal('displayWatchToken')}
           style={{ float: 'left' }}
         >
           <div className="account-pattern">+</div>
-          <h3>{CT.buttonDescription}</h3>
+          <h3>WATCH CUSTOM TOKEN</h3>
         </button>
       </React.Fragment>
     );
   }
 
   autoScanTokens(e) {
-    let r = this.props.reducers;
+    let wallets = this.props.Wallets;
+    let oc = this.props.ObservedContracts;
     let addresses = [
-      ...Object.keys(r.Wallets),
-      ...Object.keys(r.ObservedContracts).map(key => {
-        return r.ObservedContracts[key].address;
+      ...Object.keys(wallets),
+      ...Object.keys(oc).map(key => {
+        return oc[key].address;
       }),
-      ...Object.keys(r.ObservedContracts).map(key => {
-        return r.ObservedContracts[key].address;
+      ...Object.keys(oc).map(key => {
+        return oc[key].address;
       }),
     ];
     this.props.fetchTokensForAutoScan(addresses);
@@ -85,11 +80,11 @@ class CustomTokens extends Component {
   renderAutoScan() {
     return (
       <React.Fragment>
-        {this.props.reducers.network === 'main' ? (
+        {this.props.network === 'main' ? (
           <button
             className="wallet-box create token-auto-scan"
             title="Automatically scan for balances of popular tokens on your accounts."
-            onClick={e => this.autoScanTokens(e)}
+            onClick={this.autoScanTokens()}
           >
             <div className="account-pattern">
               <div className="icon icon-target" />
@@ -115,11 +110,14 @@ class CustomTokens extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = state => ({
+  network: state.reducers.network,
+  ObservedTokens: state.reducers.ObservedTokens,
+  Wallets: state.reducers.Wallets,
+  ObservedContracts: state.reducers.ObservedContracts,
+});
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  { displayModal, fetchTokensForAutoScan }
 )(CustomTokens);

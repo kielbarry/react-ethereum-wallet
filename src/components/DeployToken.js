@@ -23,7 +23,6 @@ const styles = theme => ({
   },
 });
 
-// snapshotted
 const TokenDescription = () => {
   return (
     <React.Fragment>
@@ -35,23 +34,16 @@ const TokenDescription = () => {
 };
 
 export class DeployToken extends Component {
-  // snapshotted
-
   constructor(props) {
     super(props);
-    // let { Wallets, WalletContracts } = this.props.reducers;
     let { Wallets, WalletContracts } = this.props;
-    console.log(ReplicateBinanceToken);
     let combinedWallets = combineWallets(Wallets, WalletContracts);
     this.state = {
       deployingAddress: combinedWallets[0].address,
-      // disabledWallet: false,
       disabledWallet: '',
     };
     this.deployBinanceToken = this.deployBinanceToken.bind(this);
     this.returnDeployTokenAddress = this.returnDeployTokenAddress.bind(this);
-
-    console.log(this.state.deployingAddress);
   }
 
   shouldComponentUpdate() {
@@ -59,7 +51,7 @@ export class DeployToken extends Component {
   }
 
   componentDidMount() {
-    this.setState({ disabledWallet: false }, console.log);
+    this.setState({ disabledWallet: false });
   }
 
   deployBinanceToken() {
@@ -72,7 +64,6 @@ export class DeployToken extends Component {
     let args = [18000000, 'Asdf', 18, 'bnb0'];
     let options = {
       data: code,
-      // arguments: '',
       arguments: [...args],
       from: this.state.deployingAddress,
     };
@@ -130,9 +121,21 @@ export class DeployToken extends Component {
     this.setState({ deployingAddress: e.target.value });
   }
 
-  renderAddTokenButton() {
-    let CT = ContractSectionList.CustomTokens;
+  renderButton() {
     const { classes } = this.props;
+    return (
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className={classes.fab}
+        onClick={this.deployBinanceToken}
+      >
+        <AddIcon />
+      </Fab>
+    );
+  }
+
+  renderWallet() {
     let dropdownConfig = {
       component: 'deployToken',
       selectClassName: 'send-from',
@@ -140,55 +143,40 @@ export class DeployToken extends Component {
     };
     return (
       <React.Fragment>
-        <div className="container row">
-          <Fab
-            color="primary"
-            aria-label="Add"
-            className={classes.fab}
-            onClick={this.deployBinanceToken}
-          >
-            <AddIcon />
-          </Fab>
-          <h3 style={{ display: 'inline-block' }}>Deploy a ERC-20 token</h3>
-          <div
-            className="dapp-select-account send-from"
-            style={{ display: 'inline-block', marginLeft: '20px' }}
-          >
-            <WalletDropdown
-              disabled={this.state.disabledWallet}
-              dropdownConfig={dropdownConfig}
-              returnDeployTokenAddress={this.returnDeployTokenAddress}
-            />
-          </div>
-        </div>
-        {/*}
-        <button
-          className={CT.buttonClass}
-          onClick={() => this.props.displayModal('displayWatchToken')}
-          style={{ float: 'left' }}
+        <h3 style={{ display: 'inline-block' }}>Deploy a ERC-20 token</h3>
+        <div
+          className="dapp-select-account send-from"
+          style={{ display: 'inline-block', marginLeft: '20px' }}
         >
-          <div className="account-pattern">+</div>
-          <h3>Deploy a ERC-20 token</h3>
-        </button>
-      */}
+          <WalletDropdown
+            disabled={this.state.disabledWallet}
+            dropdownConfig={dropdownConfig}
+            returnDeployTokenAddress={this.returnDeployTokenAddress}
+          />
+        </div>
       </React.Fragment>
     );
   }
 
-  // not snapshotted
+  renderAddTokenRow() {
+    return (
+      <div className="container row">
+        {this.renderButton()}
+        {this.renderWallet()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="contracts-view-custom-tokens">
         <TokenDescription />
-        {this.renderAddTokenButton()}
+        {this.renderAddTokenRow()}
+        {this.renderAddTokenRow()}
       </div>
     );
   }
 }
-
-// const mapStateToProps = state => {
-//   return state;
-// };
 
 const mapStateToProps = state => ({
   Wallets: state.reducers.Wallets,
