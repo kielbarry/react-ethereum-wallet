@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { combineWallets, sortByBalance } from '../../utils/helperFunctions.js';
 
-import * as Utils from '../../utils/utils.js';
+import { displayPriceFormatter } from '../../utils/utils.js';
 import * as Actions from '../../actions/actions.js';
 import shortid from 'shortid';
 
@@ -119,15 +119,9 @@ export class WalletDropdown extends Component {
             return (
               <option key={shortid.generate()} value={w.address}>
                 {w.addressType === 'walletAddress' ? '🔑 ' : null}
-                {this.props.web3 && this.props.web3.web3Instance
-                  ? Number(
-                      Utils.displayPriceFormatter(
-                        this.props,
-                        w.balance,
-                        'ETHER'
-                      )
-                    ).toFixed(2)
-                  : Number(w.balance).toFixed(2)}
+                {Number(
+                  displayPriceFormatter(this.props, w.balance, 'ETHER')
+                ).toFixed(2)}
                 &nbsp; - &nbsp; ETHER
               </option>
             );

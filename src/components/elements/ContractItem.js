@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectedContract } from '../../actions/actions.js';
 import SecurityIcon from './SecurityIcon.js';
-import * as Utils from '../../utils/utils.js';
+import { displayPriceFormatter } from '../../utils/utils.js';
 import { makeID } from '../../utils/helperFunctions.js';
 import * as Actions from '../../actions/actions.js';
 import NumberFormat from 'react-number-format';
@@ -32,14 +32,12 @@ class ContractItem extends Component {
   }
 
   openAccountPage(e) {
-    console.log('this.props.contract in contractItem', this.props.contract);
     let obj = {
       contract: this.props.contract,
       currency: this.props.reducers.currency,
       exchangeRates: this.props.reducers.exchangeRates,
       addressType: 'contract',
     };
-    console.log('obj sent to electedContract', obj);
 
     this.props.selectedContract({
       contract: this.props.contract,
@@ -54,21 +52,12 @@ class ContractItem extends Component {
     let contract = this.props.contract;
     return (
       <React.Fragment>
-        {this.props.web3 && this.props.web3.web3Instance ? (
-          <NumberFormat
-            className="account-balance"
-            value={Utils.displayPriceFormatter(this.props, contract.balance)}
-            displayType={'text'}
-            thousandSeparator={true}
-          />
-        ) : (
-          <NumberFormat
-            className="account-balance"
-            value={contract.balance}
-            displayType={'text'}
-            thousandSeparator={true}
-          />
-        )}
+        <NumberFormat
+          className="account-balance"
+          value={displayPriceFormatter(this.props, contract.balance)}
+          displayType={'text'}
+          thousandSeparator={true}
+        />
         <span> {this.props.reducers.currency} </span>
       </React.Fragment>
     );

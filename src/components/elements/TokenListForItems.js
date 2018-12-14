@@ -25,53 +25,49 @@ export class TokenListForItems extends Component {
     // or if no tokens in walletaddress
     // then return
     if (ObservedTokens)
-      if (!this.props.web3 || !this.props.web3.web3Instance) {
-        return;
-      }
+      untrackedTokens.map(tokenAddress => {
+        let web3 = this.props.web3.web3Instance;
+        let TokenContract = new web3.eth.Contract(tokenInterface);
+        TokenContract.options.address = tokenAddress;
 
-    untrackedTokens.map(tokenAddress => {
-      let web3 = this.props.web3.web3Instance;
-      let TokenContract = new web3.eth.Contract(tokenInterface);
-      TokenContract.options.address = tokenAddress;
+        try {
+          TokenContract.methods
+            .balanceOf(walletAddress)
+            .call()
+            .then(result => {
+              if (result == 0) {
+                return;
+              }
 
-      try {
-        TokenContract.methods
-          .balanceOf(walletAddress)
-          .call()
-          .then(result => {
-            if (result == 0) {
-              return;
-            }
+              let tokenResult = ObservedTokens[tokenAddress];
+              tokenResult['balance'] = result;
 
-            let tokenResult = ObservedTokens[tokenAddress];
-            tokenResult['balance'] = result;
-
-            if (this.props.addressType === 'Wallets') {
-              this.props.updateAccountTokenBalance({
-                account: walletAddress,
-                value: tokenResult,
-                tokenAddress: tokenAddress,
-              });
-              return;
-            }
-            if (this.props.addressType === 'WalletContracts') {
-              this.props.updateContractTokenBalance({
-                account: walletAddress,
-                value: tokenResult,
-                tokenAddress: tokenAddress,
-              });
-              return;
-            }
+              if (this.props.addressType === 'Wallets') {
+                this.props.updateAccountTokenBalance({
+                  account: walletAddress,
+                  value: tokenResult,
+                  tokenAddress: tokenAddress,
+                });
+                return;
+              }
+              if (this.props.addressType === 'WalletContracts') {
+                this.props.updateContractTokenBalance({
+                  account: walletAddress,
+                  value: tokenResult,
+                  tokenAddress: tokenAddress,
+                });
+                return;
+              }
+            });
+        } catch (err) {
+          console.warn('Err :', err);
+          this.props.displayGlobalNotification({
+            display: true,
+            type: 'error',
+            msg: err.message,
           });
-      } catch (err) {
-        console.warn('Err :', err);
-        this.props.displayGlobalNotification({
-          display: true,
-          type: 'error',
-          msg: err.message,
-        });
-      }
-    });
+        }
+      });
   }
 
   render() {

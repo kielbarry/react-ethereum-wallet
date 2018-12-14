@@ -10,12 +10,36 @@ import NoMatchingTransaction from '../components/elements/NoMatchingTransaction.
 
 import LatestTransactions from '../components/elements/LatestTransactions.js';
 
-import * as Utils from '../utils/utils.js';
+import { displayPriceFormatter } from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
 import NotFound from './NotFound.js';
 
 import { Identicon } from 'ethereum-react-components';
+
+const StickyBar = props => {
+  return (
+    <div className="dapp-sticky-bar dapp-container">
+      <Identicon classes="dapp-identicon" title address={props.address} />
+    </div>
+  );
+};
+
+const StatelessSummary = props => {
+  return (
+    <React.Fragment>
+      <h1>
+        <em className="edit-name">{props.contract['contract-name']}</em>
+        <i className="edit-icon icon-pencil" />
+      </h1>
+      <h2 className="copyable-address">
+        <i className="icon-key" title="Account" />
+        <span>{props.contract.address}</span>
+      </h2>
+      <div className="clear" />
+    </React.Fragment>
+  );
+};
 
 export class SingleContractView extends Component {
   constructor(props) {
@@ -30,7 +54,6 @@ export class SingleContractView extends Component {
     this.redirectToOwnersSingleView = this.redirectToOwnersSingleView.bind(
       this
     );
-    this.updateWalletDetails = this.updateWalletDetails.bind(this);
     this.watchContractEvents = this.watchContractEvents.bind(this);
     this.toggleContractInfo = this.toggleContractInfo.bind(this);
     this.displayEventModal = this.displayEventModal.bind(this);
@@ -70,8 +93,6 @@ export class SingleContractView extends Component {
   }
 
   executeAndWatch(e, contract) {
-    console.log(e);
-    console.log(contract);
     this.executeFunctions(e, contract);
     this.watchContractEvents(e, contract);
   }
@@ -260,44 +281,6 @@ export class SingleContractView extends Component {
     this.setState({ showContractFunctions: !this.state.showContractFunctions });
   }
 
-  // TODO: unused, but is for deployed wallet contracts
-  updateWalletDetails() {
-    let web3;
-    if (this.props.web3 && this.props.web3.web3Instance) {
-      web3 = this.props.web3.web3Instance;
-    } else {
-      return;
-    }
-
-    //is contract
-    //     web3.eth.getCode("0xa5Acc472597C1e1651270da9081Cc5a0b38258E3")
-    // if no "0x"
-    // if no and ganache "0x0"
-    let contract = this.props.reducers.selectedContract.contract;
-    let contractInstance = new web3.eth.Contract(
-      JSON.parse(contract.jsonInterface),
-      contract.address
-    );
-
-    //m_dailyLimit
-    //m_numOwners
-    // _owners
-
-    contractInstance.methods['m_dailyLimit']().call((err, res) => {
-      if (err) console.log('err', err);
-      if (res) console.log('res', res);
-    });
-    contractInstance.methods['m_numOwners']().call((err, res) => {
-      if (err) console.log('err', err);
-      if (res) console.log('res', res);
-    });
-    contractInstance.methods['m_required']().call((err, res) => {
-      if (err) console.log('err', err);
-      if (res) console.log('res', res);
-    });
-    // how to get a current list of owners from the contract?
-  }
-
   redirectToOwnersSingleView(e) {
     console.log(e);
     // determine if address if for account or contract
@@ -335,9 +318,55 @@ export class SingleContractView extends Component {
     );
   }
 
-  renderAccountTransactions() {
+  renderSummary() {
     let contract = this.props.reducers.selectedContract.contract;
-    let address = contract.address;
+    return (
+      <div className="accounts-page-summary">
+        <Identicon classes="dapp-identicon" title address={contract.address} />
+        <header>
+          <StatelessSummary contract={contract} />
+          <span className="account-balance">
+            {displayPriceFormatter(this.props, contract.balance)}
+            {contract.balance}
+          </span>
+        </header>
+        <table className="token-list dapp-zebra">
+          <tbody />
+        </table>
+        {contract.deployedWalletContract ? this.renderWalletDetails() : null}
+      </div>
+    );
+  }
+
+  renderEvents() {
+    let contract = this.props.reducers.selectedContract.contract;
+    let logs = contract.logs ? contract.logs : undefined;
+    return (
+      <React.Fragment>
+        <h2>Latest events</h2>
+        <br />
+        <div>
+          <input
+            type="checkbox"
+            id="watch-events-checkbox"
+            className="toggle-watch-events"
+            onClick={e => this.executeAndWatch(e, contract)}
+          />
+          <label htmlFor="watch-events-checkbox">Watch contract events</label>
+        </div>
+        <br />
+        <input
+          type="text"
+          className="filter-transactions"
+          placeholder="Filter events"
+        />
+        {logs && logs.length ? <ContractEvents /> : null}
+      </React.Fragment>
+    );
+  }
+
+  renderAccountTransactions() {
+    let address = this.props.reducers.selectedContract.contract.address;
     let transactions = this.props.reducers.Transactions;
     let accountTxns = {};
     Object.keys(transactions).map(hash => {
@@ -363,18 +392,6 @@ export class SingleContractView extends Component {
 
   renderSingleContract() {
     let contract = this.props.reducers.selectedContract.contract;
-    console.log(this.props.reducers.selectedContract);
-    console.log(contract);
-    // contract.deployedWalletContract
-    //   ?
-    // let {
-    //   logs,
-    //   contractFunctions,
-    //   contractConstants,
-    // } = this.props.reducers.ObservedContracts[contract.address];
-
-    let walletContracts = Object.keys(this.props.reducers.WalletContracts);
-    let obseredContracts = Object.keys(this.props.reducers.WalletContracts);
 
     let logs = contract.logs ? contract.logs : undefined;
     let contractFunctions = contract.contractFunctions
@@ -384,78 +401,18 @@ export class SingleContractView extends Component {
       ? contract.contractConstants
       : undefined;
 
-    // let {
-    //   logs,
-    //   contractFunctions,
-    //   contractConstants,
-    // } = this.props.reducers.ObservedContracts[contract.address];
-
     return (
       <div className="dapp-container accounts-page">
-        <div className="dapp-sticky-bar dapp-container">
-          <Identicon
-            classes="dapp-identicon"
-            title
-            address={contract.address}
-          />
-        </div>
-        <div className="accounts-page-summary">
-          <Identicon
-            classes="dapp-identicon"
-            title
-            address={contract.address}
-          />
-          <header>
-            <h1>
-              <em className="edit-name">{contract['contract-name']}</em>
-              <i className="edit-icon icon-pencil" />
-            </h1>
-            <h2 className="copyable-address">
-              <i className="icon-key" title="Account" />
-              <span>{contract.address}</span>
-            </h2>
-            <div className="clear" />
-            {/*<span title="This is testnet ether, no real market value">ETHER*</span>*/}
-            <span className="account-balance">
-              {this.props.web3 && this.props.web3.web3Instance
-                ? Utils.displayPriceFormatter(this.props, contract.balance)
-                : contract.balance}
-              {contract.balance}
-            </span>
-          </header>
-          <table className="token-list dapp-zebra">
-            <tbody />
-          </table>
-          {contract.deployedWalletContract ? this.renderWalletDetails() : null}
-        </div>
+        <StickyBar address={contract.address} />
+        {this.renderSummary()}
         <ContractActionBar contract={contract} />
         {contractConstants &&
         contractFunctions &&
         (contractConstants.length || contractFunctions.length) ? (
           <ExecutableContract />
         ) : null}
-        {/*
-          {logs && logs.length ? <ContractEvents /> : null}
-        */}
         <div className="accounts-transactions">
-          <h2>Latest events</h2>
-          <br />
-          <div>
-            <input
-              type="checkbox"
-              id="watch-events-checkbox"
-              className="toggle-watch-events"
-              onClick={e => this.executeAndWatch(e, contract)}
-            />
-            <label htmlFor="watch-events-checkbox">Watch contract events</label>
-          </div>
-          <br />
-          <input
-            type="text"
-            className="filter-transactions"
-            placeholder="Filter events"
-          />
-          {logs && logs.length ? <ContractEvents /> : null}
+          {this.renderEvents()}
           {this.renderAccountTransactions()}
         </div>
       </div>

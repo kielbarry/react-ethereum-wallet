@@ -88,10 +88,6 @@ export class TransactionItem extends Component {
   updateToTransaction(e) {
     e.stopPropagation();
     console.warn('todo: moved from security icon and need to pudate');
-    // this.props.updateTransactionToSend({
-    //   name: 'to',
-    //   value: props.hash,
-    // });
   }
 
   renderAddressLink(address) {
@@ -133,10 +129,7 @@ export class TransactionItem extends Component {
   renderTransactionAmount(tx) {
     return (
       <td className="transaction-amount minus">
-        -
-        {this.props.web3 && this.props.web3.web3Instance
-          ? displayPriceFormatter(this.props, tx.value, 'ETHER') + ' ETHER'
-          : tx.value}
+        - {displayPriceFormatter(this.props, tx.value, 'ETHER') + ' ETHER'}
       </td>
     );
   }

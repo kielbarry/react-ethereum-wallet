@@ -14,7 +14,7 @@ import EditableName from '../components/EditableName.js';
 import NotFound from './NotFound.js';
 
 // utils and actions
-import * as Utils from '../utils/utils.js';
+import { displayPriceFormatter } from '../utils/utils.js';
 import * as Actions from '../actions/actions.js';
 
 import { Identicon } from 'ethereum-react-components';
@@ -31,16 +31,6 @@ export const AccountDetails = ({ sw }) => {
   return (
     <React.Fragment>
       <EditableName addressType="address" sw={sw} />
-      {/*
-      <h1>
-        {!sw.name ? (
-          <em className="edit-name">Account {sw.number}</em>
-        ) : (
-          <em className="edit-name">{sw.name}</em>
-        )}
-        <i className="edit-icon icon-pencil" />
-      </h1>
-    */}
       <h2 className="copyable-address">
         <i className="icon-key" title="Account" />
         <span>{sw.address}</span>
@@ -96,8 +86,7 @@ export class SingleAccountView extends Component {
   }
 
   renderAccountTransactions() {
-    let sw = this.props.reducers.selectedWallet;
-    let address = sw.address;
+    let address = this.props.reducers.selectedWallet.address;
     let transactions = this.props.reducers.Transactions;
     let accountTxns = {};
     Object.keys(transactions).map(hash => {
@@ -125,9 +114,7 @@ export class SingleAccountView extends Component {
     let sw = this.props.reducers.selectedWallet;
     return (
       <span className="account-balance">
-        {this.props.web3 && this.props.web3.web3Instance
-          ? Utils.displayPriceFormatter(this.props, sw.wallet.balance)
-          : sw.wallet.balance}
+        {displayPriceFormatter(this.props, sw.wallet.balance)}
         <span className="inline-form" name="unit">
           <button
             type="button"
@@ -148,12 +135,10 @@ export class SingleAccountView extends Component {
     return (
       <div className="dapp-container accounts-page">
         <StickyHeader sw={sw} />
-
         {/*
         <EditableName addressType="address" />
         <EditableName addressType="address" />
         */}
-
         <div className="accounts-page-summary">
           <Identicon classes="dapp-identicon" title address={sw.address} />
           <header>

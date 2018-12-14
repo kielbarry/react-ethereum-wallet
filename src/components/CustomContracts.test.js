@@ -34,22 +34,4 @@ describe('custom contracts html', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
-
-  it('renders watch contract button', () => {
-    const tree = renderer
-      .create(
-        <React.Fragment>
-          <button
-            className={CC.buttonClass}
-            onClick={{ modals: { displayWatchContract: true } }}
-          >
-            <div className="account-pattern">+</div>
-            <h3>{CC.buttonDescription}</h3>
-          </button>
-          <div className="dapp-clear-fix" />
-        </React.Fragment>
-      )
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
 });

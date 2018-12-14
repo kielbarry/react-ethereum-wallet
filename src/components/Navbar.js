@@ -11,9 +11,20 @@ import Tooltip from '@material-ui/core/Tooltip';
 import SettingsSharp from '@material-ui/icons/SettingsSharp';
 import IconButton from '@material-ui/core/IconButton';
 
-import * as Utils from '../utils/utils.js';
+import { displayPriceFormatter } from '../utils/utils.js';
 
 import NumberFormat from 'react-number-format';
+
+const HeaderField = field => {
+  return (
+    <li className={field.liClass}>
+      <Link to={field.href}>
+        <i className={field.icon} />
+        <span>{field.displayText}</span>
+      </Link>
+    </li>
+  );
+};
 
 export class NavBar extends Component {
   constructor(props) {
@@ -93,27 +104,19 @@ export class NavBar extends Component {
     this.props.history.push('/');
   }
 
-  renderBalanceHeader(field) {
+  renderBalanceHeader() {
     return (
-      <li className={field.liClass}>
-        <h3>{field.firstText}</h3>
-        <span className={field.firstClass}>
-          {this.props.web3 && this.props.web3.web3Instance ? (
-            <NumberFormat
-              value={Utils.displayPriceFormatter(
-                this.props,
-                this.props.reducers.totalBalance
-              )}
-              displayType={'text'}
-              thousandSeparator={true}
-            />
-          ) : (
-            <NumberFormat
-              value={this.props.reducers.totalBalance}
-              displayType={'text'}
-              thousandSeparator={true}
-            />
-          )}
+      <li className="balance-nav-li wallet-balance">
+        <h3>Balance</h3>
+        <span className="account-balance">
+          <NumberFormat
+            value={displayPriceFormatter(
+              this.props,
+              this.props.reducers.totalBalance
+            )}
+            displayType={'text'}
+            thousandSeparator={true}
+          />
           &nbsp;
           <span className="inline-form" name="unit">
             <button
@@ -135,7 +138,7 @@ export class NavBar extends Component {
     const inlineStyle = { marginLeft: '10px' };
     return (
       <React.Fragment>
-        <li className={field.liClass}>
+        <li className="block-info dapp-flex-item">
           <Tooltip title="Change Network">
             <IconButton
               aria-label="Delete"
@@ -144,17 +147,16 @@ export class NavBar extends Component {
               <SettingsSharp />
             </IconButton>
           </Tooltip>
-          <i className={field.firstIcon} />
-          <span style={inlineStyle} className={field.secondClass}>
+          <i className="icon-feed" />
+          <span style={inlineStyle} className="hide-on-small">
             {this.props.reducers.peerCount}
-            &nbsp;
-            {field.firstText}
+            &nbsp; peers
           </span>
           &nbsp; &nbsp;| &nbsp; &nbsp;
-          <i className={field.secondIcon} />
+          <i className="icon-layers" />
           <span>&nbsp; {this.props.reducers.blockHeader.number}</span>
-          <i className={field.thirdIcon} style={inlineStyle} />
-          <span className={field.secondClass}>&nbsp; {this.state.time}</span>
+          <i className="icon-clock" style={inlineStyle} />
+          <span className="hide-on-small">&nbsp; {this.state.time}</span>
         </li>
       </React.Fragment>
     );
@@ -174,9 +176,9 @@ export class NavBar extends Component {
           <ul>
             {this.renderHeaderField(NavFields.Wallet)}
             {this.renderHeaderField(NavFields.Send)}
-            {this.renderNetworkHeader(NavFields.PeerInfo)}
+            {this.renderNetworkHeader()}
             {this.renderHeaderField(NavFields.Contracts)}
-            {this.renderBalanceHeader(NavFields.BalanceInfo)}
+            {this.renderBalanceHeader()}
           </ul>
         </nav>
       </header>
