@@ -273,7 +273,7 @@ export class SendTransactionModal extends Component {
     let name;
     if (walletArray.includes(address)) {
       name = wallets[address].name;
-      name || `Account ${wallets[address].number}`;
+      // name || `Account ${wallets[address].number}`;
       return name;
     }
     if (walletContractArray.includes(address)) {

@@ -189,9 +189,9 @@ export class SingleContractView extends Component {
     contractConstants.map((method, index) => {
       const args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
-        input.value === undefined || input.value === null
-          ? (input.value = '')
-          : null;
+        if (input.value === undefined || input.value === null) {
+          input.value = '';
+        }
         if (input.typeShort === 'bytes' && input.value === '') {
           input.value = '0x0000000000000000000000000000000000000000';
         } else if (input.value === '' && input.typeShort !== 'address') {

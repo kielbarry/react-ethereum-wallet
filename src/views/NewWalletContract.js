@@ -344,20 +344,23 @@ class NewWalletContract extends Component {
     };
 
     let valid = false;
-    dcf.multisigChecked === false
-      ? ((options.arguments = [
-          [dcf.MainOwnerAddress.toLowerCase()], // owner
-          1, // require signature count,
+
+    if (dcf.multisigChecked === false) {
+      options.arguments = [
+        [dcf.MainOwnerAddress.toLowerCase()], // owner
+        1, // require signature count,
+        ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
+      ];
+      valid = true;
+    } else {
+      options.arguments = [
+        msContract.owners,
+        msContract.confirmationAddressesRequired || 1,
+        msContract.dailyLimitAmount ||
           ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-        ]),
-        (valid = true))
-      : ((options.arguments = [
-          msContract.owners,
-          msContract.confirmationAddressesRequired || 1,
-          msContract.dailyLimitAmount ||
-            ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-        ]),
-        (valid = this.validateMultipleAddress(web3, msContract.owners)));
+      ];
+      valid = this.validateMultipleAddress(web3, msContract.owners);
+    }
 
     if (!valid) {
       return;
