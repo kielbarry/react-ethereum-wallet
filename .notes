@@ -11,3 +11,5 @@ airbnb to ignore:
 no-param-reassign
 no-underscore-dangle
 max-len (100 chars per line)
+import/no-named-as-default
+array-callback-return
