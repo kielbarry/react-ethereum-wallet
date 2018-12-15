@@ -14,6 +14,7 @@ class ViewContainer extends Component {
     return (
       <div className="dapp-flex-content">
         <main className="dapp-content">
+          <Route exact path="/" component={AccountView} />
           <Route exact path="/accounts" component={AccountView} />
           <Route path="/account/*" component={SingleAccountView} />
           <Route exact path="/wallet/new" component={NewWalletContract} />

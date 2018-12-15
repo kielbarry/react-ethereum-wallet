@@ -1,7 +1,9 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
-
 import Web3 from 'web3';
+import ethUtils from 'ethereumjs-util';
+
+const BigNumber = ethUtils.BN;
 
 const newWeb3 = new Web3();
 
@@ -137,9 +139,11 @@ export function toNotWei(totalBalance, currency) {
 }
 
 export function displayPriceFormatter(props, balance, currencyOverride) {
-  if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
+  if (balance === undefined || isNaN(balance) || balance === null) {
+    balance = new BigNumber(0);
+  }
   const currency = currencyOverride ? 'ETHER' : props.reducers.currency;
-  const totalBalance = balance.toString();
+  const totalBalance = new BigNumber(balance);
   const exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;
   let displayPrice;
@@ -249,12 +253,12 @@ export function createNewAccount(web3, cb) {
 export function getAccounts(web3, setWallets, updateTotalBalance) {
   try {
     web3.eth.getAccounts().then(accounts => {
-      let totalBalance = 0;
-      accounts.map(acc => {
+      let totalBalance = new BigNumber(0);
+      accounts.forEach(acc => {
         const account = acc;
         web3.eth.getBalance(acc, (err, balance) => {
-          setWallets({ account, balance });
-          totalBalance += Number(balance);
+          setWallets({ account, balance: new BigNumber(balance) });
+          totalBalance = totalBalance.add(new BigNumber(balance));
           updateTotalBalance(totalBalance);
         });
       });

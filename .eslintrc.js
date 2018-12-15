@@ -23,6 +23,7 @@ module.exports = {
         devDependencies: ['.storybook/**', 'src/stories/**'],
       },
     ],
+    'import/no-named-as-default': 0,
     'no-alert': 0,
     'no-console': 0,
     'object-curly-newline': 0,
