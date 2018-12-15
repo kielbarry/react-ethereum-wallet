@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/react-ethereum-wallet/precache-manifest.bb13ad4805a62d065c5dc23b85e578dd.js"
+  "/react-ethereum-wallet/precache-manifest.d9c35e337b5c4f5918c5f038d155ea0e.js"
 );
 
 workbox.clientsClaim();
