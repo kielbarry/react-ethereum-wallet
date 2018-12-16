@@ -12,7 +12,6 @@ const persistConfig = {
   storage,
   blacklist: [
     'reducers.selectedFunction',
-    'reducers.web3',
     'reducers.TransactionToSend',
     'reducers.network',
     'reducers.provider',

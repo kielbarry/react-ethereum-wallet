@@ -1,11 +1,9 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
-import Web3 from 'web3';
 import ethUtils from 'ethereumjs-util';
+import web3 from '../web3';
 
 const BigNumber = ethUtils.BN;
-
-const newWeb3 = new Web3();
 
 export function updateTokenbalances(accounts, wallets, TokenContract) {
   const addresses = Object.assign({}, accounts, wallets);
@@ -22,27 +20,6 @@ export function updateTokenbalances(accounts, wallets, TokenContract) {
   });
 }
 
-export function displayPriceFormatter2(props, balance, currencyOverride) {
-  if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
-  const currency = currencyOverride ? 'ETHER' : props.reducers.currency;
-  const totalBalance = balance.toString();
-  const exchangeRates = props.reducers.exchangeRates;
-  if (exchangeRates === undefined || exchangeRates === null) return;
-  let displayPrice;
-  if (currency === 'FINNEY') {
-    displayPrice = newWeb3.utils.fromWei(totalBalance, 'finney');
-  } else {
-    displayPrice = newWeb3.utils.fromWei(totalBalance, 'ether');
-    if (currency !== 'ETHER') {
-      displayPrice = Number(
-        `${Math.round(
-          `${displayPrice * exchangeRates[currency.toLowerCase()]}e2`
-        )}e-2`
-      );
-    }
-  }
-  return displayPrice;
-}
 /*
 Returns the from now time, using a javascript date obejct if less than 23 hours
 
@@ -132,25 +109,16 @@ export function getFullTime(string) {
   )}, ${getYear(string)} ${h}:${getMinutes(string)} ${amORpm}`;
 }
 
-export function toNotWei(totalBalance, currency) {
-  return currency === 'FINNEY'
-    ? newWeb3.utils.fromWei(totalBalance, 'finney')
-    : newWeb3.utils.fromWei(totalBalance, 'ether');
-}
-
-export function displayPriceFormatter(props, balance, currencyOverride) {
-  if (balance === undefined || isNaN(balance) || balance === null) {
-    balance = new BigNumber(0);
-  }
+export function displayPriceFormatter(props, balance = 0, currencyOverride) {
+  balance = new BigNumber(balance);
   const currency = currencyOverride ? 'ETHER' : props.reducers.currency;
-  const totalBalance = new BigNumber(balance);
   const exchangeRates = props.reducers.exchangeRates;
   if (exchangeRates === undefined || exchangeRates === null) return;
   let displayPrice;
   if (currency === 'FINNEY') {
-    displayPrice = newWeb3.utils.fromWei(totalBalance, 'finney');
+    displayPrice = web3.utils.fromWei(balance, 'finney');
   } else {
-    displayPrice = newWeb3.utils.fromWei(totalBalance, 'ether');
+    displayPrice = web3.utils.fromWei(balance, 'ether');
     if (currency !== 'ETHER') {
       displayPrice = Number(
         `${Math.round(
@@ -193,64 +161,12 @@ export async function getCryptoComparePrices() {
     });
 }
 
-export function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-    .toString(16)
-    .substring(1);
-}
-/**
-Created random 32 byte string
-
-@method random32Bytes
-*/
-export function random32Bytes() {
-  let randomBytes;
-  for (let i = 0; i < 16; i++) randomBytes += s4();
-  return randomBytes;
-}
-
-export async function checkNetwork(web3, cb) {
-  try {
-    return web3.eth
-      .getBlock(0)
-      .then(block => {
-        switch (block.hash) {
-          case '0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3':
-            return 'main';
-          case '0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177':
-            return 'rinkeby';
-          case '0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d':
-            return 'ropsten';
-          case '0xa3c565fc15c7478862d50ccd6561e3c06b24cc509bf388941c25ea985ce32cb9':
-            return 'kovan';
-          default:
-            return 'private';
-        }
-      })
-      .then(resp => cb(resp));
-  } catch (err) {
-    console.warn('web3 provider not open');
-    return err;
-  }
-}
-
-export function nameProvider(prov) {
-  switch (prov.constructor.name) {
-    case 'MetamaskInpageProvider':
-      return 'metamask';
-    case 'WebsocketProvider':
-      return 'geth';
-    default:
-      return 'unknown';
-  }
-}
-
 export function createNewAccount(web3, cb) {
   alert('https://github.com/ethereum/web3.js/issues/494');
   alert('https://github.com/ethereum/go-ethereum/issues/2723');
 }
 
-export function getAccounts(web3, setWallets, updateTotalBalance) {
+export function getAccounts(setWallets, updateTotalBalance) {
   try {
     web3.eth.getAccounts().then(accounts => {
       let totalBalance = new BigNumber(0);
@@ -292,7 +208,6 @@ export function listenForIncomingTransactions(web3, accounts) {
 
 export function updatePendingConfirmations(
   block,
-  web3,
   transactions,
   updateTransaction
 ) {
@@ -320,7 +235,6 @@ export function updatePendingConfirmations(
 
 export function updateTransactionConfirmation(
   block,
-  web3,
   transactions,
   updateTransactionConfirmation
 ) {

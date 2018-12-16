@@ -137,28 +137,18 @@ export class NavBar extends Component {
   renderNetworkHeader(field) {
     const inlineStyle = { marginLeft: '10px' };
     return (
-      <React.Fragment>
-        <li className="block-info dapp-flex-item">
-          <Tooltip title="Change Network">
-            <IconButton
-              aria-label="Delete"
-              onClick={e => this.redirectToSettings(e)}
-            >
-              <SettingsSharp />
-            </IconButton>
-          </Tooltip>
-          <i className="icon-feed" />
-          <span style={inlineStyle} className="hide-on-small">
-            {this.props.reducers.peerCount}
-            &nbsp; peers
-          </span>
-          &nbsp; &nbsp;| &nbsp; &nbsp;
-          <i className="icon-layers" />
-          <span>&nbsp; {this.props.reducers.blockHeader.number}</span>
-          <i className="icon-clock" style={inlineStyle} />
-          <span className="hide-on-small">&nbsp; {this.state.time}</span>
-        </li>
-      </React.Fragment>
+      <li className="block-info dapp-flex-item">
+        <i className="icon-feed" />
+        <span style={inlineStyle} className="hide-on-small">
+          {this.props.reducers.peerCount}
+          &nbsp; peers
+        </span>
+        &nbsp; &nbsp;| &nbsp; &nbsp;
+        <i className="icon-layers" />
+        <span>&nbsp; {this.props.reducers.blockHeader.number}</span>
+        <i className="icon-clock" style={inlineStyle} />
+        <span className="hide-on-small">&nbsp; {this.state.time}</span>
+      </li>
     );
   }
 

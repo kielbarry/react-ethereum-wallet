@@ -4,6 +4,7 @@ import { tokenInterface } from '../../constants/TokenInterfaceConstant';
 import TokenBox from '../elements/TokenBox';
 import TestInputItem from '../elements/TestInputItem';
 import * as Actions from '../../actions/actions';
+import web3 from '../../web3';
 
 class WatchToken extends Component {
   constructor(props) {
@@ -47,7 +48,6 @@ class WatchToken extends Component {
   }
 
   getTokenContractInfo(address) {
-    const web3 = this.props.web3.web3Instance;
     const TokenContract = new web3.eth.Contract(tokenInterface);
     TokenContract.options.address = address;
     this.setState({ address });
@@ -69,7 +69,6 @@ class WatchToken extends Component {
     const name = e.target.getAttribute('name');
     const value = e.target.value;
 
-    const web3 = this.props.web3.web3Instance;
     // TODO: checks coin symbol against MEW list?
     // var l = e.currentTarget.value.length;
     // if (!tokenAddress && l > 2 && l < 6) {
@@ -108,10 +107,9 @@ class WatchToken extends Component {
   }
 
   submitFunction(e) {
-    let web3;
     const token = this.props.reducers.TokenToWatch;
     const address = token.address;
-    if (this.props.web3.web3Instance) {
+    if (web3) {
       this.props.addObservedToken({
         address: token.address,
         value: token,

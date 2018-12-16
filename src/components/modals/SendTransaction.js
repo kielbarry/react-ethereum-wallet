@@ -4,19 +4,21 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { Identicon } from 'ethereum-react-components';
-import Web3 from 'web3';
 import SecurityIcon from '../elements/SecurityIcon';
 import * as Actions from '../../actions/actions';
 
 import { combineWallets, sortByBalance } from '../../utils/helperFunctions';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant';
+import web3 from '../../web3';
+import ethUtils from 'ethereumjs-util';
 
-const newWeb3 = new Web3();
+const BigNumber = ethUtils.BN;
 
 export const Title = props => {
   let value;
-  if (props.tx.value) value = newWeb3.utils.fromWei(props.tx.value, 'ETHER');
+  if (props.tx.value)
+    value = web3.utils.fromWei(new BigNumber(props.tx.value), 'ETHER');
   return (
     <h1>
       Send
@@ -105,7 +107,6 @@ export class SendTransactionModal extends Component {
   }
 
   sendEtherTransaction(e) {
-    const web3 = this.props.web3.web3Instance;
     const tx = this.props.reducers.TransactionToSend;
 
     const date = new Date();
@@ -203,7 +204,6 @@ export class SendTransactionModal extends Component {
     const tx = this.props.reducers.TransactionToSend;
     const token = tx.tokenToSend;
 
-    const web3 = this.props.web3.web3Instance;
     const TokenContract = new web3.eth.Contract(tokenInterface, {
       from: tx.from,
     });
@@ -246,7 +246,6 @@ export class SendTransactionModal extends Component {
   sendTransaction(e) {
     // TODO: reset data values in inputs
     e.preventDefault();
-    // let web3 = this.props.web3.web3Instance;
     // let date = new Date();
     const tx = this.props.reducers.TransactionToSend;
     !tx.sendToken ? this.sendEtherTransaction(e) : this.sendTokenTransaction(e);

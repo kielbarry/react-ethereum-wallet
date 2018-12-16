@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EthAddress, Identicon } from 'ethereum-react-components';
-import Web3 from 'web3';
 import * as Utils from '../../utils/utils';
 import * as Actions from '../../actions/actions';
+import web3 from '../../web3';
+import ethUtils from 'ethereumjs-util';
 
-const web3 = new Web3();
+const BigNumber = ethUtils.BN;
 
 export const Header = props => {
   const nw = props.network;
@@ -43,7 +44,7 @@ export const DateRow = props => {
 
 export const Fee = props => {
   // TODO: from wei or from gWei
-  const fee = web3.utils.fromWei(props.gasUsed.toString(), 'ETHER');
+  const fee = web3.utils.fromWei(new BigNumber(props.gasUsed || 0), 'ETHER');
   return (
     <tr>
       <td>Fee paid</td>
@@ -56,7 +57,10 @@ export const GasStat = props => {
   // TODO: from wei or from gWei
   let displayValue;
   if (props.title === 'Fee paid') {
-    displayValue = web3.utils.fromWei(props.gasAmount.toString(), 'ETHER');
+    displayValue = web3.utils.fromWei(
+      new BigNumber(props.gasAmount || 0),
+      'ETHER'
+    );
   } else if (props.title === 'Gas used') {
     displayValue = props.gasAmount;
   } else if (props.title === 'Gas price') {
@@ -130,7 +134,7 @@ export class TransactionInfo extends Component {
 
   renderSentAmount() {
     const tx = this.props.transaction;
-    const amount = web3.utils.fromWei(tx.value.toString(), 'ETHER');
+    const amount = web3.utils.fromWei(new BigNumber(tx.value || 0), 'ETHER');
     return (
       <tr>
         <td>Amount</td>

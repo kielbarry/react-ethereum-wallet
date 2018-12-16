@@ -19,6 +19,7 @@ import { Identicon } from 'ethereum-react-components';
 import WalletDropdown from '../components/elements/WalletDropdown';
 import * as Actions from '../actions/actions';
 import { makeID } from '../utils/helperFunctions';
+import web3 from '../web3';
 
 import {
   WalletInterfaceItems,
@@ -126,12 +127,6 @@ class NewWalletContract extends Component {
   checkIfImportableWallet(e) {
     const dcf = this.props.reducers.DeployContractForm;
     const address = dcf.importWalletAddress;
-    let web3;
-    if (this.props.web3 && this.props.web3.web3Instance) {
-      web3 = this.props.web3.web3Instance;
-    } else {
-      return;
-    }
 
     if (!web3.utils.isAddress(address)) {
       console.log('inside not address');
@@ -325,7 +320,6 @@ class NewWalletContract extends Component {
     // return;
 
     const msContract = dcf.multiSigContract;
-    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     // hardcoded bytecode
     // same for imported wallet - there is a web3 check to make the
     // code at the given address is identical to the walletStubABI

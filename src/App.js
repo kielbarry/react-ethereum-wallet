@@ -8,14 +8,12 @@ import web3 from './web3';
 // actions
 import {
   fetchEthGasStationStats,
-  closeModal,
   updateConnectedNetwork,
   setWallets,
   updateTotalBalance,
   updateBlockHeader,
   updateTransactionConfirmation,
   updateTransaction,
-  createInitWalletContract,
   updateEtherPrices,
 } from './actions/actions';
 import * as Utils from './utils/utils';
@@ -35,34 +33,33 @@ import './App.css';
 export class App extends Component {
   constructor(props) {
     super(props);
+
     this.getCryptoComparePrices = this.getCryptoComparePrices.bind(this);
     this.getCryptoComparePrices();
     this.CryptoCompareInterval = setInterval(
       () => this.getCryptoComparePrices(),
       15000
     );
+
     this.props.fetchEthGasStationStats();
     this.GasInterval = setInterval(
       () => this.props.fetchEthGasStationStats(),
       15000
     );
-
-    // this.props.closeModal('displayEventInfo');
   }
 
   componentDidMount() {
     this.getEverything();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.CryptoCompareInterval);
+    clearInterval(this.GasInterval);
+  }
+
   getEverything() {
-    // do once to load on init, then repeat later to update balances
     try {
-      Utils.checkNetwork(web3, this.props.updateConnectedNetwork);
-      Utils.getAccounts(
-        web3,
-        this.props.setWallets,
-        this.props.updateTotalBalance
-      );
+      Utils.getAccounts(this.props.setWallets, this.props.updateTotalBalance);
     } catch (err) {
       console.error('error', err);
     }
@@ -79,20 +76,14 @@ export class App extends Component {
           });
           web3.eth.net.getPeerCount().then(this.props.updatePeerCount);
         }
-        Utils.getAccounts(
-          web3,
-          this.props.setWallets,
-          this.props.updateTotalBalance
-        );
+        Utils.getAccounts(this.props.setWallets, this.props.updateTotalBalance);
         Utils.updateTransactionConfirmation(
           b,
-          web3,
           this.props.Transactions,
           this.props.updateTransactionConfirmation
         );
         Utils.updatePendingConfirmations(
           b,
-          web3,
           this.props.Transactions,
           this.props.updateTransaction
         );
@@ -107,11 +98,6 @@ export class App extends Component {
     Utils.getCryptoComparePrices().then(exchangeRates => {
       this.props.updateEtherPrices(exchangeRates);
     });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.CryptoCompareInterval);
-    clearInterval(this.GasInterval);
   }
 
   render() {
@@ -131,34 +117,29 @@ App.propTypes = {
   Transactions: PropTypes.object,
   updatePeerCount: PropTypes.func,
   fetchEthGasStationStats: PropTypes.func,
-  closeModal: PropTypes.func,
   updateConnectedNetwork: PropTypes.func,
   setWallets: PropTypes.func,
   updateTotalBalance: PropTypes.func,
   updateBlockHeader: PropTypes.func,
   updateTransactionConfirmation: PropTypes.func,
   updateTransaction: PropTypes.func,
-  createInitWalletContract: PropTypes.func,
   updateEtherPrices: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
   Transactions: state.reducers.Transactions,
-  web3: state.web3,
 });
 
 export default connect(
   mapStateToProps,
   {
     fetchEthGasStationStats,
-    closeModal,
     updateConnectedNetwork,
     setWallets,
     updateTotalBalance,
     updateBlockHeader,
     updateTransactionConfirmation,
     updateTransaction,
-    createInitWalletContract,
     updateEtherPrices,
   }
 )(App);

@@ -18,7 +18,6 @@ export class Addresses extends Component {
               address={address}
               wallet={wallets[address]}
               currency={this.props.reducers.currency}
-              web3={this.props.web3}
               reducers={this.props.reducers}
               ObservedTokens={this.props.reducers.ObservedTokens}
               addressType="Wallets"
