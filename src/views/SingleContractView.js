@@ -157,16 +157,20 @@ export class SingleContractView extends Component {
       return;
     }
 
+    let json;
+    typeof contract.jsonInterface === String
+      ? (json = JSON.parse(contract.jsonInterface))
+      : (json = contract.jsonInterface);
+
     const contractInstance = new web3.eth.Contract(
-      JSON.parse(contract.jsonInterface),
+      JSON.parse(json),
       contract.address
     );
-    // should i bag this and instead of push to array, redux it and set key to function name?
-    // START
+
     const contractFunctions = [];
     const contractConstants = [];
 
-    JSON.parse(contract.jsonInterface).map(func => {
+    JSON.parse(json).forEach(func => {
       if (func.type == 'function') {
         func.constant
           ? contractConstants.push(func)
@@ -174,31 +178,12 @@ export class SingleContractView extends Component {
       }
     });
 
-    // console.log("contractFunctions", contractFunctions)
-    // console.log("contractConstants", contractConstants)
-
     this.updateContractWithMethods(
       contract,
       contractFunctions,
       contractConstants
     );
 
-    // console.log("is it a deployed wallet contract?! ", contract.deployedWalletContract)
-
-    // // TODO: conditional to update either observed contracts,
-    // // selected wallet, or deployed wallet contracts
-    // // right now is only updating observed contracts
-    // this.props.addObservedContractFunctions({
-    //   address: contract.address,
-    //   value: contractFunctions,
-    //   name: 'contractFunctions',
-    // });
-    // this.props.addObservedContractConstants({
-    //   address: contract.address,
-    //   value: contractConstants,
-    //   name: 'contractConstants',
-    // });
-    // END
     contractConstants.map((method, index) => {
       const args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
@@ -213,26 +198,55 @@ export class SingleContractView extends Component {
         return input.value;
       });
 
-      console.log('method: ', method);
-      console.log('args: ', ...args);
-      console.log('name: ', method.name);
+      //TODO: assign to the contract and not the INSTANTIATED CONTRACT
+      try {
+        // if(method.name === "m_spentToday") {
 
-      // try {
-      contractInstance.methods[method.name](...args).call(res => {
-        console.log('RES', res);
-        console.log('method.outputs', method.outputs);
-        console.log(
-          'contractInstance.methods[method.name]',
-          contractInstance.methods[method.name]
-        );
-        method.outputs.map((output, i) => (method.outputs[i].value = res[i]));
-      });
-      // } catch (err) {
-      //   console.warn('method: ', method);
-      //   console.warn('args: ', ...args);
-      //   console.warn('name: ', method.name);
-      //   console.warn(err);
-      // }
+        console.log('method: ', method);
+        console.log('args: ', ...args);
+        console.log('args: ', args.length);
+        console.log('name: ', method.name);
+
+        // contractInstance.methods[method.name](...args).call(res => {
+        //   console.log('RES', res);
+        //   console.log('method.outputs', method.outputs);
+        //   console.log(
+        //     'contractInstance.methods[method.name]',
+        //     contractInstance.methods[method.name]
+        //   );
+        //   if(res === null) {
+        //     method.outputs[0]['value'] = null
+        //   } else {
+        //     method.outputs.map((output, i) => (method.outputs[i].value = res[i]));
+        //   }
+
+        //   console.log(method)
+        // });
+        contractInstance.methods[method.name](...args)
+          .call()
+          .then(res => {
+            console.log('RES', res);
+            console.log('method.outputs', method.outputs);
+            console.log(
+              'contractInstance.methods[method.name]',
+              contractInstance.methods[method.name]
+            );
+            if (res === null) {
+              method.outputs[0]['value'] = null;
+            } else {
+              method.outputs.map(
+                (output, i) => (method.outputs[i].value = res[i])
+              );
+            }
+
+            console.log(method);
+          });
+      } catch (err) {
+        console.warn('method: ', method);
+        console.warn('args: ', ...args);
+        console.warn('name: ', method.name);
+        console.warn(err);
+      }
 
       this.updateContractWithMethodOutputs(contract, method, index);
 

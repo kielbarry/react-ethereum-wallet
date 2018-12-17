@@ -14,27 +14,25 @@ export class ValidAddressDisplay extends Component {
   }
 
   handleInputChange(e) {
-    const target = e.target.getAttribute('name');
-    let targetValue = e.target.value;
-    let isAddress = this.checkIsAddress(targetValue);
+    let inputValue = e.target.value;
+    let isAddress = this.checkIsAddress(inputValue);
     this.setState(
-      { isAddress: isAddress },
-      this.setState({ inputValue: targetValue }, this.props.onChange(e))
+      { isAddress },
+      this.setState({ inputValue }, this.props.onChange(e))
     );
   }
 
-  checkIsAddress(targetValue) {
-    let isAddress;
-    return targetValue !== '' && targetValue !== undefined
-      ? (isAddress = web3.utils.isAddress(targetValue))
-      : (isAddress = null);
+  checkIsAddress(inputValue) {
+    return inputValue !== '' && inputValue !== undefined
+      ? web3.utils.isAddress(inputValue)
+      : null;
   }
 
   renderIcon() {
     const { isAddress } = this.state;
     return (
       <React.Fragment>
-        {isAddress === true ? (
+        {isAddress ? (
           <Identicon
             classes="dapp-identicon dapp-tiny"
             title
@@ -63,11 +61,11 @@ export class ValidAddressDisplay extends Component {
           className={newClasses}
           autoFocus
           autoComplete={this.props.autoComplete}
-          onChange={e => this.handleInputChange(e)}
+          onChange={this.handleInputChange}
         />
-        {isAddress === null || isAddress === undefined
-          ? null
-          : this.renderIcon()}
+        {isAddress !== null && isAddress !== undefined
+          ? this.renderIcon()
+          : null}
       </div>
     );
   }

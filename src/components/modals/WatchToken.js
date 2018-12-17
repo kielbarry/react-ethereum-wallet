@@ -143,7 +143,7 @@ class WatchToken extends Component {
         <ValidAddressDisplay
           name="address"
           classes="dapp-address-input token-address"
-          autoComplete={'off'}
+          autoComplete="off"
           onChange={this.handleOnKeyUp}
         />
         <h3>Token name</h3>

@@ -48,14 +48,12 @@ class WatchItem extends Component {
   submitFunction(e) {
     let web3;
     const contract = this.props.ContractToWatch;
-    console.log(contract);
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
       const con = {};
       try {
         web3.eth.getBalance(contract.address, (err, res) => {
           if (err) console.warn(err);
-          console.log('res received', res);
           contract.balance = res;
           contract.logs = [];
           contract.contractAddress = contract.address;
@@ -67,9 +65,6 @@ class WatchItem extends Component {
             ContractsPendingConfirmations,
             WalletContracts
           );
-
-          console.log('here in watch COntracts', deployedWalletContracts);
-
           contract.deployedWalletContract = Object.keys(
             deployedWalletContracts
           ).includes(contract.address);
@@ -101,8 +96,7 @@ class WatchItem extends Component {
         <ValidAddressDisplay
           name="address"
           classes="dapp-address-input"
-          autoComplete={'off'}
-          // onChange={this.handleInputChange}
+          autoComplete="off"
           onChange={this.handleOnKeyUp}
         />
         <h3>Contract name</h3>
@@ -156,11 +150,6 @@ class WatchItem extends Component {
     );
   }
 }
-
-// const mapStateToProps = state => {
-//   // return {modals: state.modals}
-//   return state;
-// };
 
 const mapStateToProps = state => ({
   ContractToWatch: state.reducers.ContractToWatch,
