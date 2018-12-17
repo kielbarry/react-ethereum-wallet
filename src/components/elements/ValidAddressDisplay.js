@@ -1,24 +1,47 @@
 import React, { Component } from 'react';
+import web3 from '../../web3';
+import cn from 'classnames/bind';
+import { Identicon } from 'ethereum-react-components';
 
 export class ValidAddressDisplay extends Component {
   constructor(props) {
     super(props);
-    this.state;
+    this.state = {
+      inputValue: '',
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.checkIsAddress = this.checkIsAddress.bind(this);
+  }
+
+  handleInputChange(e) {
+    const target = e.target.getAttribute('name');
+    let targetValue = e.target.value;
+    let isAddress = this.checkIsAddress(targetValue);
+    this.setState(
+      { isAddress: isAddress },
+      this.setState({ inputValue: targetValue }, this.props.onChange(e))
+    );
+  }
+
+  checkIsAddress(targetValue) {
+    let isAddress;
+    return targetValue !== '' && targetValue !== undefined
+      ? (isAddress = web3.utils.isAddress(targetValue))
+      : (isAddress = null);
   }
 
   renderIcon() {
+    const { isAddress } = this.state;
     return (
       <React.Fragment>
-        {this.state.toIsAddress &&
-        typeof this.state.toIsAddress === typeof true ? (
+        {isAddress === true ? (
           <Identicon
             classes="dapp-identicon dapp-tiny"
             title
             size="tiny"
-            address={this.state.toAddress}
+            address={this.state.inputValue}
           />
-        ) : this.state.toIsAddress === null ||
-          this.state.toIsAddress === undefined ? null : (
+        ) : (
           <i className="icon-shield" />
         )}
       </React.Fragment>
@@ -26,26 +49,25 @@ export class ValidAddressDisplay extends Component {
   }
 
   render() {
-    const cn = require('classnames');
     const newClasses = cn({
-      to: true,
-      'dapp-error': this.state.toIsAddress === false,
+      [`${this.props.name}`]: !!this.props.name,
+      'dapp-error': this.state.isAddress === false,
     });
+    const { isAddress } = this.state;
     return (
-      <div className="dapp-address-input">
+      <div className={this.props.classes}>
         <input
           type="text"
-          name="to"
+          name={this.props.name}
           placeholder="0x000000.."
           className={newClasses}
           autoFocus
-          // value={tx.to}
-          // onChange={e => this.handleInputChange(e)}
-          // onKeyUp={e => this.handleInputChange(e)}
-          onChange={this.onChange}
-          onKeyUp={this.onKeyUp}
+          autoComplete={this.props.autoComplete}
+          onChange={e => this.handleInputChange(e)}
         />
-        {this.renderIcon()}
+        {isAddress === null || isAddress === undefined
+          ? null
+          : this.renderIcon()}
       </div>
     );
   }

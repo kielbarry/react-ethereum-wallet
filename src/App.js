@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 // actions
 import {
   fetchEthGasStationStats,
-  closeModal,
   updateConnectedNetwork,
   setWallets,
   updateTotalBalance,
@@ -47,7 +46,6 @@ export class App extends Component {
       () => this.props.fetchEthGasStationStats(),
       15000
     );
-    this.props.closeModal('displayEventInfo');
     const web3Returned = setInterval(() => {
       if (this.props.web3 != null) {
         clearInterval(web3Returned);
@@ -132,7 +130,6 @@ App.propTypes = {
   Transactions: PropTypes.object,
   updatePeerCount: PropTypes.func,
   fetchEthGasStationStats: PropTypes.func,
-  closeModal: PropTypes.func,
   updateConnectedNetwork: PropTypes.func,
   setWallets: PropTypes.func,
   updateTotalBalance: PropTypes.func,
@@ -152,7 +149,6 @@ export default connect(
   mapStateToProps,
   {
     fetchEthGasStationStats,
-    closeModal,
     updateConnectedNetwork,
     setWallets,
     updateTotalBalance,

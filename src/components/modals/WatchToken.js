@@ -3,19 +3,27 @@ import { connect } from 'react-redux';
 import { tokenInterface } from '../../constants/TokenInterfaceConstant';
 import TokenBox from '../elements/TokenBox';
 import TestInputItem from '../elements/TestInputItem';
-import * as Actions from '../../actions/actions';
+import {
+  displayGlobalNotification,
+  updateTokenToWatch,
+  cancelTokenToWatch,
+  closeModal,
+  addObservedToken,
+} from '../../actions/actions';
+
+import ValidAddressDisplay from '../elements/ValidAddressDisplay';
 
 class WatchToken extends Component {
   constructor(props) {
     super(props);
 
-    this.state = Object.assign({}, this.props, {
+    this.state = {
       address: '',
       name: '',
       symbol: '',
       decimals: '',
       balance: '',
-    });
+    };
 
     this.invokeContractMethod = this.invokeContractMethod.bind(this);
     this.getTokenContractInfo = this.getTokenContractInfo.bind(this);
@@ -109,7 +117,7 @@ class WatchToken extends Component {
 
   submitFunction(e) {
     let web3;
-    const token = this.props.reducers.TokenToWatch;
+    const token = this.props.TokenToWatch;
     const address = token.address;
     if (this.props.web3.web3Instance) {
       this.props.addObservedToken({
@@ -127,87 +135,100 @@ class WatchToken extends Component {
     this.props.closeModal('displayWatchToken');
   }
 
+  renderInputs() {
+    return (
+      <React.Fragment>
+        <h1>Add Token</h1>
+        <h3>Token Contract Address</h3>
+        <ValidAddressDisplay
+          name="address"
+          classes="dapp-address-input token-address"
+          autoComplete={'off'}
+          onChange={this.handleOnKeyUp}
+        />
+        <h3>Token name</h3>
+        <div className="dapp-token-name-input">
+          <input
+            type="string"
+            name="name"
+            placeholder="Token name"
+            className="name"
+            onChange={this.handleOnKeyUp}
+            value={this.state.name}
+          />
+        </div>
+        <h3>Token symbol</h3>
+        <div className="dapp-token-symbol-input">
+          <input
+            type="string"
+            name="symbol"
+            placeholder="Token symbol"
+            className="symbol"
+            onChange={this.handleOnKeyUp}
+            value={this.state.symbol}
+          />
+        </div>
+        <h3>Decimals places of smallest unit</h3>
+        <input
+          type="number"
+          min="0"
+          step="1"
+          name="decimals"
+          placeholder="2"
+          className="decimals"
+          onChange={this.handleOnKeyUp}
+          value={this.state.decimals}
+        />
+        <br />
+      </React.Fragment>
+    );
+  }
+
+  renderButtons() {
+    return (
+      <div className="dapp-modal-buttons">
+        <button className="cancel" onClick={this.cancelFunction}>
+          Cancel
+        </button>
+        <button
+          className="ok dapp-primary-button"
+          onClick={this.submitFunction}
+        >
+          OK
+        </button>
+      </div>
+    );
+  }
+
   render() {
     let divStyle;
     if (!this.props.display) divStyle = { display: 'none' };
-    const GeoPattern = require('geopattern');
-    const pattern = GeoPattern.generate('0x000', { color: '#CCC6C6' });
-    const iconStyle = { backgroundImage: pattern.toDataUrl() };
-    const TokenToWatch = this.props.reducers.TokenToWatch;
-
+    const { TokenToWatch } = this.props;
     return (
       <div className={this.props.display} style={divStyle}>
         <section className="dapp-modal-container modals-add-token">
-          <h1>Add Token</h1>
-          <h3>Token Contract Address</h3>
-          <div className="dapp-address-input">
-            <input
-              type="text"
-              name="address"
-              placeholder="0x000000"
-              className="token-address"
-              onChange={e => this.handleOnKeyUp(e)}
-              value={this.state.address}
-            />
-          </div>
-          <h3>Token name</h3>
-          <div className="dapp-token-name-input">
-            <input
-              type="string"
-              name="name"
-              placeholder="Token name"
-              className="name"
-              onChange={e => this.handleOnKeyUp(e)}
-              value={this.state.name}
-            />
-          </div>
-          <h3>Token symbol</h3>
-          <div className="dapp-token-symbol-input">
-            <input
-              type="string"
-              name="symbol"
-              placeholder="Token symbol"
-              className="symbol"
-              onChange={e => this.handleOnKeyUp(e)}
-              value={this.state.symbol}
-            />
-          </div>
-          <h3>Decimals places of smallest unit</h3>
-          <input
-            type="number"
-            min="0"
-            step="1"
-            name="decimals"
-            placeholder="2"
-            className="decimals"
-            onChange={e => this.handleOnKeyUp(e)}
-            value={this.state.decimals}
-          />
-          <br />
+          {this.renderInputs()}
           <h3>Preview</h3>
           <TokenBox key={TokenToWatch.address} token={TokenToWatch} />
-          <div className="dapp-modal-buttons">
-            <button className="cancel" onClick={() => this.cancelFunction()}>
-              Cancel
-            </button>
-            <button
-              className="ok dapp-primary-button"
-              onClick={() => this.submitFunction()}
-            >
-              OK
-            </button>
-          </div>
+          {this.renderButtons()}
         </section>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = state => ({
+  TokenToWatch: state.reducers.TokenToWatch,
+  web3: state.web3,
+});
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  {
+    displayGlobalNotification,
+    updateTokenToWatch,
+    cancelTokenToWatch,
+    closeModal,
+    addObservedToken,
+  }
 )(WatchToken);
