@@ -1,24 +1,45 @@
 import React, { Component } from 'react';
+import web3 from '../../web3';
+import cn from 'classnames/bind';
+import { Identicon } from 'ethereum-react-components';
 
 export class ValidAddressDisplay extends Component {
   constructor(props) {
     super(props);
-    this.state;
+    this.state = {
+      inputValue: '',
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.checkIsAddress = this.checkIsAddress.bind(this);
+  }
+
+  handleInputChange(e) {
+    let inputValue = e.target.value;
+    let isAddress = this.checkIsAddress(inputValue);
+    this.setState(
+      { isAddress },
+      this.setState({ inputValue }, this.props.onChange(e))
+    );
+  }
+
+  checkIsAddress(inputValue) {
+    return inputValue !== '' && inputValue !== undefined
+      ? web3.utils.isAddress(inputValue)
+      : null;
   }
 
   renderIcon() {
+    const { isAddress } = this.state;
     return (
       <React.Fragment>
-        {this.state.toIsAddress &&
-        typeof this.state.toIsAddress === typeof true ? (
+        {isAddress ? (
           <Identicon
             classes="dapp-identicon dapp-tiny"
             title
             size="tiny"
-            address={this.state.toAddress}
+            address={this.state.inputValue}
           />
-        ) : this.state.toIsAddress === null ||
-          this.state.toIsAddress === undefined ? null : (
+        ) : (
           <i className="icon-shield" />
         )}
       </React.Fragment>
@@ -26,26 +47,25 @@ export class ValidAddressDisplay extends Component {
   }
 
   render() {
-    const cn = require('classnames');
     const newClasses = cn({
-      to: true,
-      'dapp-error': this.state.toIsAddress === false,
+      [`${this.props.name}`]: !!this.props.name,
+      'dapp-error': this.state.isAddress === false,
     });
+    const { isAddress } = this.state;
     return (
-      <div className="dapp-address-input">
+      <div className={this.props.classes}>
         <input
           type="text"
-          name="to"
+          name={this.props.name}
           placeholder="0x000000.."
           className={newClasses}
           autoFocus
-          // value={tx.to}
-          // onChange={e => this.handleInputChange(e)}
-          // onKeyUp={e => this.handleInputChange(e)}
-          onChange={this.onChange}
-          onKeyUp={this.onKeyUp}
+          autoComplete={this.props.autoComplete}
+          onChange={this.handleInputChange}
         />
-        {this.renderIcon()}
+        {isAddress !== null && isAddress !== undefined
+          ? this.renderIcon()
+          : null}
       </div>
     );
   }

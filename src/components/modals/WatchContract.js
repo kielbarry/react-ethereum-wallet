@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 
 // import InputItem from '../elements/InputItem.jsx';
 import TestInputItem from '../elements/TestInputItem';
+
+import ValidAddressDisplay from '../elements/ValidAddressDisplay';
+
 import * as Actions from '../../actions/actions';
 import {
   updateContractToWatch,
@@ -12,38 +15,8 @@ import {
   displayGlobalNotification,
 } from '../../actions/actions.js';
 
-const listInputs = [
-  {
-    title: 'Contract Address',
-    divClass: 'dapp-address-input',
-    editor: 'input',
-    type: 'text',
-    name: 'address',
-    placeholder: '0x000000',
-    className: 'contract-address',
-  },
-  {
-    title: 'Contract name',
-    divClass: 'dapp-contract-name-input',
-    editor: 'input',
-    type: 'string',
-    name: 'contract-name',
-    placeholder: 'Name this contract',
-    className: 'name',
-  },
-  {
-    title: 'JSON Interface',
-    divClass: 'dapp-json-interface-input',
-    editor: 'textarea',
-    type: 'text',
-    name: 'jsonInterface',
-    placeholder:
-      '[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{"name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]',
-    className: 'jsonInterface',
-    cols: '30',
-    rows: '10',
-  },
-];
+const jsonPlaceholder =
+  '[{type: &quot;constructor&quot;, name: &quot;MyContract&quot;, &quot;inputs&quot;:[{"name&quot;:&quot;_param1&quot;, &quot;type&quot;:&quot;address&quot;}]}, {...}]';
 
 class WatchItem extends Component {
   constructor(props) {
@@ -61,7 +34,6 @@ class WatchItem extends Component {
   }
 
   handleOnKeyUp(e) {
-    // TODO:validate inputs here
     this.props.updateContractToWatch({
       name: e.target.getAttribute('name'),
       value: e.target.value,
@@ -69,38 +41,30 @@ class WatchItem extends Component {
   }
 
   cancelFunction(e) {
-    this.props.cancelContractToWatch(); // TODO:reset data values in inputs
+    this.props.cancelContractToWatch(); // TODO: reset data values in inputs
     this.props.closeModal('displayWatchContract');
   }
 
   submitFunction(e) {
     let web3;
-    const contract = this.props.reducers.ContractToWatch;
-    console.log(contract);
+    const contract = this.props.ContractToWatch;
     if (this.props.web3.web3Instance) {
       web3 = this.props.web3.web3Instance;
       const con = {};
       try {
         web3.eth.getBalance(contract.address, (err, res) => {
           if (err) console.warn(err);
-          console.log('res received', res);
           contract.balance = res;
           contract.logs = [];
           contract.contractAddress = contract.address;
           con[contract.address] = contract;
 
-          const {
-            ContractsPendingConfirmations,
-            WalletContracts,
-          } = this.props.reducers;
+          const { ContractsPendingConfirmations, WalletContracts } = this.props;
           const deployedWalletContracts = Object.assign(
             {},
             ContractsPendingConfirmations,
             WalletContracts
           );
-
-          console.log('here in watch COntracts', deployedWalletContracts);
-
           contract.deployedWalletContract = Object.keys(
             deployedWalletContracts
           ).includes(contract.address);
@@ -128,13 +92,31 @@ class WatchItem extends Component {
     return (
       <React.Fragment>
         <h1>Watch contract</h1>
-        {listInputs.map((field, i) => (
-          <TestInputItem
-            key={`contract-field-${i}`}
-            field={field}
-            onKeyUp={e => this.handleOnKeyUp(e)}
+        <h3>Contract Address</h3>
+        <ValidAddressDisplay
+          name="address"
+          classes="dapp-address-input"
+          autoComplete="off"
+          onChange={this.handleOnKeyUp}
+        />
+        <h3>Contract name</h3>
+        <input
+          type="string"
+          name="contract-name"
+          placeholder="Name this contract"
+          className="name"
+          onKeyUp={this.handleOnKeyUp}
+        />
+        <h3>JSON Interface</h3>
+        <div className="dapp-json-interface-input">
+          <input
+            type="text"
+            name="jsonInterface"
+            placeholder={jsonPlaceholder}
+            className="jsonInterface"
+            onKeyUp={this.handleOnKeyUp}
           />
-        ))}
+        </div>
       </React.Fragment>
     );
   }
@@ -142,12 +124,12 @@ class WatchItem extends Component {
   renderButtons() {
     return (
       <div className="dapp-modal-buttons">
-        <button className="cancel" onClick={e => this.cancelFunction(e)}>
+        <button className="cancel" onClick={this.cancelFunction}>
           Cancel
         </button>
         <button
           className="ok dapp-primary-button"
-          onClick={e => this.submitFunction(e)}
+          onClick={this.submitFunction}
         >
           OK
         </button>
@@ -168,10 +150,13 @@ class WatchItem extends Component {
     );
   }
 }
-const mapStateToProps = state => {
-  // return {modals: state.modals}
-  return state;
-};
+
+const mapStateToProps = state => ({
+  ContractToWatch: state.reducers.ContractToWatch,
+  ContractsPendingConfirmations: state.reducers.ContractsPendingConfirmations,
+  WalletContracts: state.reducers.WalletContracts,
+  web3: state.web3,
+});
 
 export default connect(
   mapStateToProps,

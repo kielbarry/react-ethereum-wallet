@@ -1,7 +1,7 @@
 import moment from 'moment';
 import isFinite from 'lodash/isFinite';
-
 import Web3 from 'web3';
+import { store } from '../store/store';
 
 const newWeb3 = new Web3();
 
@@ -21,7 +21,9 @@ export function updateTokenbalances(accounts, wallets, TokenContract) {
 }
 
 export function displayPriceFormatter2(props, balance, currencyOverride) {
-  if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
+  const state = store.getState();
+  // console.log("hereisthe store in utils", store)
+  // console.log("hereisthe state in utils", state)
   const currency = currencyOverride ? 'ETHER' : props.reducers.currency;
   const totalBalance = balance.toString();
   const exchangeRates = props.reducers.exchangeRates;
@@ -137,6 +139,7 @@ export function toNotWei(totalBalance, currency) {
 }
 
 export function displayPriceFormatter(props, balance, currencyOverride) {
+  const state1 = store.getState('reducers');
   if (balance === undefined || isNaN(balance) || balance === null) balance = 0;
   const currency = currencyOverride ? 'ETHER' : props.reducers.currency;
   const totalBalance = balance.toString();

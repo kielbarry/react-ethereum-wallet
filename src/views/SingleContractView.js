@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 import { Identicon } from 'ethereum-react-components';
-import SU from '../components/elements/SelectableUnit';
 import ContractActionBar from '../components/elements/ContractActionBar';
 import ExecutableContract from '../components/elements/ExecutableContract';
 import ContractEvents from '../components/elements/ContractEvents';
-
 import NoMatchingTransaction from '../components/elements/NoMatchingTransaction';
-
 import LatestTransactions from '../components/elements/LatestTransactions';
-
 import { displayPriceFormatter } from '../utils/utils';
-import * as Actions from '../actions/actions';
-
+// import * as Actions from '../actions/actions';
+import {
+  updateSelectedEvent,
+  displayModal,
+  addObservedContractFunctions,
+  addObservedContractConstants,
+  addDeployedContractFunctions,
+  addDeployedContractConstants,
+  updateInitialObservedContractMethodOutputs,
+  updateInitialDeployedContractMethodOutputs,
+  addPastContractLogs,
+  updateContractLog,
+} from '../actions/actions';
 import NotFound from './NotFound';
 
 const StickyBar = ({ address }) => {
@@ -22,6 +29,10 @@ const StickyBar = ({ address }) => {
       <Identicon classes="dapp-identicon" title address={address} />
     </div>
   );
+};
+
+StickyBar.propTypes = {
+  address: PropTypes.string,
 };
 
 const StatelessSummary = ({ contract }) => {
@@ -40,14 +51,18 @@ const StatelessSummary = ({ contract }) => {
   );
 };
 
+StatelessSummary.propTypes = {
+  contract: PropTypes.object,
+};
+
 export class SingleContractView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       ...this.props,
-      dailyEtherLimit: '',
-      requiredSignatures: '',
-      ownersList: '',
+      // dailyEtherLimit: '',
+      // requiredSignatures: '',
+      // ownersList: '',
       showContractFunctions: true,
     };
     this.redirectToOwnersSingleView = this.redirectToOwnersSingleView.bind(
@@ -59,9 +74,9 @@ export class SingleContractView extends Component {
     this.executeAndWatch = this.executeAndWatch.bind(this);
     this.executeFunctions = this.executeFunctions.bind(this);
     this.updateContractWithMethods = this.updateContractWithMethods.bind(this);
-    this.updateContractWithMethodOutputs = this.updateContractWithMethodOutputs.bind(
-      this
-    );
+    // this.updateContractWithMethodOutputs = this.updateContractWithMethodOutputs.bind(
+    //   this
+    // );
     // this.setState({ showContractFunctions: true });
   }
 
@@ -70,51 +85,45 @@ export class SingleContractView extends Component {
     // this.setState({ showContractFunctions: true });
   }
 
-  toggleSU() {
-    if (this.state.displaySU === undefined) this.setState({ displaySU: false });
-    else {
-      this.state.displaySU
-        ? this.setState({ displaySU: false })
-        : this.setState({ displaySU: true });
-    }
-  }
-
   displayEventModal(e, log) {
-    /* eslint no-param-reassign: ["error", { "props": false }] */
-    log.originalContractName = this.props.reducers.selectedContract.contract[
-      'contract-name'
-    ];
-    /* eslint no-param-reassign: ["error", { "props": false }] */
-    log.originalContractAddress = this.props.reducers.selectedContract.contract.address;
+    const {
+      selectedContract: { contract },
+    } = this.props;
 
-    this.props.updateSelectedEvent(log);
-    this.props.displayModal('displayEventInfo');
+    const mutableLog = log;
+    mutableLog.originalContractName = contract['contract-name'];
+    mutableLog.originalContractAddress = contract.address;
+
+    updateSelectedEvent(mutableLog);
+    displayModal('displayEventInfo');
   }
 
   executeAndWatch(e, contract) {
+    console.log('yes here inexecuteAndWatch ', contract);
     this.executeFunctions(e, contract);
     this.watchContractEvents(e, contract);
   }
 
   updateContractWithMethods(contract, contractFunctions, contractConstants) {
+    console.log('yes here in updateContractWithMethods');
     if (!contract.deployedWalletContract) {
-      this.props.addObservedContractFunctions({
+      addObservedContractFunctions({
         address: contract.address,
         value: contractFunctions,
         name: 'contractFunctions',
       });
-      this.props.addObservedContractConstants({
+      addObservedContractConstants({
         address: contract.address,
         value: contractConstants,
         name: 'contractConstants',
       });
     } else {
-      this.props.addDeployedContractFunctions({
+      addDeployedContractFunctions({
         address: contract.address,
         value: contractFunctions,
         name: 'contractFunctions',
       });
-      this.props.addDeployedContractConstants({
+      addDeployedContractConstants({
         address: contract.address,
         value: contractConstants,
         name: 'contractConstants',
@@ -124,14 +133,14 @@ export class SingleContractView extends Component {
 
   updateContractWithMethodOutputs(contract, method, index) {
     if (!contract.deployedWalletContract) {
-      this.props.updateInitialObservedContractMethodOutputs({
+      updateInitialObservedContractMethodOutputs({
         contractAddress: contract.address,
         name: method.name,
         index,
         value: method.outputs,
       });
     } else {
-      this.props.updateInitialDeployedContractMethodOutputs({
+      updateInitialDeployedContractMethodOutputs({
         contractAddress: contract.address,
         name: method.name,
         index,
@@ -148,15 +157,20 @@ export class SingleContractView extends Component {
       return;
     }
 
+    let json;
+    typeof contract.jsonInterface === String
+      ? (json = JSON.parse(contract.jsonInterface))
+      : (json = contract.jsonInterface);
+
     const contractInstance = new web3.eth.Contract(
-      JSON.parse(contract.jsonInterface),
+      JSON.parse(json),
       contract.address
     );
-    // should i bag this and instead of push to array, redux it and set key to function name?
-    // START
+
     const contractFunctions = [];
     const contractConstants = [];
-    JSON.parse(contract.jsonInterface).map(func => {
+
+    JSON.parse(json).forEach(func => {
       if (func.type == 'function') {
         func.constant
           ? contractConstants.push(func)
@@ -170,22 +184,6 @@ export class SingleContractView extends Component {
       contractConstants
     );
 
-    // console.log("is it a deployed wallet contract?! ", contract.deployedWalletContract)
-
-    // // TODO: conditional to update either observed contracts,
-    // // selected wallet, or deployed wallet contracts
-    // // right now is only updating observed contracts
-    // this.props.addObservedContractFunctions({
-    //   address: contract.address,
-    //   value: contractFunctions,
-    //   name: 'contractFunctions',
-    // });
-    // this.props.addObservedContractConstants({
-    //   address: contract.address,
-    //   value: contractConstants,
-    //   name: 'contractConstants',
-    // });
-    // END
     contractConstants.map((method, index) => {
       const args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
@@ -200,14 +198,49 @@ export class SingleContractView extends Component {
         return input.value;
       });
 
-      console.log('method: ', method);
-      console.log('args: ', ...args);
-      console.log('name: ', method.name);
-
+      //TODO: assign to the contract and not the INSTANTIATED CONTRACT
       try {
-        contractInstance.methods[method.name](...args).call(res => {
-          method.outputs.map((output, i) => (method.outputs[i].value = res[i]));
-        });
+        // if(method.name === "m_spentToday") {
+
+        console.log('method: ', method);
+        console.log('args: ', ...args);
+        console.log('args: ', args.length);
+        console.log('name: ', method.name);
+
+        // contractInstance.methods[method.name](...args).call(res => {
+        //   console.log('RES', res);
+        //   console.log('method.outputs', method.outputs);
+        //   console.log(
+        //     'contractInstance.methods[method.name]',
+        //     contractInstance.methods[method.name]
+        //   );
+        //   if(res === null) {
+        //     method.outputs[0]['value'] = null
+        //   } else {
+        //     method.outputs.map((output, i) => (method.outputs[i].value = res[i]));
+        //   }
+
+        //   console.log(method)
+        // });
+        contractInstance.methods[method.name](...args)
+          .call()
+          .then(res => {
+            console.log('RES', res);
+            console.log('method.outputs', method.outputs);
+            console.log(
+              'contractInstance.methods[method.name]',
+              contractInstance.methods[method.name]
+            );
+            if (res === null) {
+              method.outputs[0]['value'] = null;
+            } else {
+              method.outputs.map(
+                (output, i) => (method.outputs[i].value = res[i])
+              );
+            }
+
+            console.log(method);
+          });
       } catch (err) {
         console.warn('method: ', method);
         console.warn('args: ', ...args);
@@ -249,11 +282,11 @@ export class SingleContractView extends Component {
 
     contractInstance.getPastEvents('allEvents', (error, logs) => {
       if (!error && logs.length > 0) {
-        logs.map(log => {
+        logs.forEach(log => {
           web3.eth.getBlock(log.blockNumber, (err, res) => {
             // convert to milliseconds
             log.timestamp = new Date(res.timestamp * 1000);
-            this.props.addPastContractLogs(log);
+            addPastContractLogs(log);
           });
         });
       } else {
@@ -268,15 +301,15 @@ export class SingleContractView extends Component {
         if (res) {
           // convert to milliseconds
           log.timestamp = new Date(res.timestamp * 1000);
-          this.props.updateContractLog(log);
+          updateContractLog(log);
         }
       });
     });
   }
 
   toggleContractInfo(e) {
-    console.log('here intoggleContractInfo', e);
-    this.setState({ showContractFunctions: !this.state.showContractFunctions });
+    const { showContractFunctions } = this.state;
+    this.setState({ showContractFunctions: !showContractFunctions });
   }
 
   redirectToOwnersSingleView(e) {
@@ -308,8 +341,9 @@ export class SingleContractView extends Component {
         <div className="account-info">
           <h3>Note</h3>
           <p>
-            Most exchanges don't support receiving ether from a contract wallet
-            yet. Be sure to move your balance to an account address first!
+            Most exchanges don&apos;t support receiving ether from a contract
+            wallet yet. Be sure to move your balance to an account address
+            first!
           </p>
         </div>
       </React.Fragment>
@@ -317,7 +351,9 @@ export class SingleContractView extends Component {
   }
 
   renderSummary() {
-    const { contract } = this.props.reducers.selectedContract;
+    const {
+      selectedContract: { contract },
+    } = this.props;
     return (
       <div className="accounts-page-summary">
         <Identicon classes="dapp-identicon" title address={contract.address} />
@@ -337,20 +373,25 @@ export class SingleContractView extends Component {
   }
 
   renderEvents() {
-    const { contract } = this.props.reducers.selectedContract;
-    const logs = contract.logs ? contract.logs : undefined;
+    const {
+      selectedContract: { contract },
+    } = this.props;
+    const { logs } = contract;
+    // const logs = contract.logs ? contract.logs : undefined;
     return (
       <React.Fragment>
         <h2>Latest events</h2>
         <br />
         <div>
-          <input
-            type="checkbox"
-            id="watch-events-checkbox"
-            className="toggle-watch-events"
-            onClick={e => this.executeAndWatch(e, contract)}
-          />
-          <label htmlFor="watch-events-checkbox">Watch contract events</label>
+          <label htmlFor="watch-events-checkbox">
+            <input
+              type="checkbox"
+              id="watch-events-checkbox"
+              className="toggle-watch-events"
+              onClick={e => this.executeAndWatch(e, contract)}
+            />
+            Watch contract events
+          </label>
         </div>
         <br />
         <input
@@ -358,21 +399,26 @@ export class SingleContractView extends Component {
           className="filter-transactions"
           placeholder="Filter events"
         />
+        <br />
         {logs && logs.length ? <ContractEvents /> : null}
       </React.Fragment>
     );
   }
 
   renderAccountTransactions() {
-    const { address } = this.props.reducers.selectedContract.contract;
-    const transactions = this.props.reducers.Transactions;
+    const {
+      Transactions,
+      selectedContract: {
+        contract: { address },
+      },
+    } = this.props;
     const accountTxns = {};
-    Object.keys(transactions).map(hash => {
+    Object.keys(Transactions).forEach(hash => {
       if (
-        transactions[hash].from === address.toLowerCase() ||
-        transactions[hash].to === address.toLowerCase()
+        Transactions[hash].from === address.toLowerCase() ||
+        Transactions[hash].to === address.toLowerCase()
       ) {
-        accountTxns[hash] = transactions[hash];
+        accountTxns[hash] = Transactions[hash];
       }
       return null;
     });
@@ -389,9 +435,9 @@ export class SingleContractView extends Component {
   }
 
   renderSingleContract() {
-    const { contract } = this.props.reducers.selectedContract;
-
-    const logs = contract.logs ? contract.logs : undefined;
+    const {
+      selectedContract: { contract },
+    } = this.props;
     const contractFunctions = contract.contractFunctions
       ? contract.contractFunctions
       : undefined;
@@ -418,8 +464,8 @@ export class SingleContractView extends Component {
   }
 
   render() {
-    const c = this.props.reducers.selectedContract;
-    return c === undefined || c === '' ? (
+    const { selectedContract } = this.props;
+    return selectedContract === undefined || selectedContract === '' ? (
       <NotFound />
     ) : (
       this.renderSingleContract()
@@ -427,11 +473,27 @@ export class SingleContractView extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
+SingleContractView.propTypes = {
+  contract: PropTypes.object,
+  selectedContract: PropTypes.shape({
+    contract: PropTypes.object,
+    currency: PropTypes.string,
+    exchangeRates: PropTypes.object,
+    addressType: PropTypes.string,
+  }),
+  Transactions: PropTypes.object,
 };
+
+const mapStateToProps = state => ({
+  selectedContract: state.reducers.selectedContract,
+  Transactions: state.reducers.Transactions,
+  reducers: {
+    currency: state.reducers.currency,
+  },
+  web3: state.web3,
+});
 
 export default connect(
   mapStateToProps,
-  { ...Actions }
+  null
 )(SingleContractView);
