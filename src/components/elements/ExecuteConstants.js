@@ -6,6 +6,7 @@ import { Identicon } from 'ethereum-react-components';
 import Inputs from './inputs/Inputs.js';
 import * as Helpers from '../../utils/helperFunctions';
 import * as Actions from '../../actions/actions';
+import web3 from '../../web3';
 
 export class ExecuteConstants extends Component {
   constructor(props) {
@@ -16,7 +17,6 @@ export class ExecuteConstants extends Component {
   }
 
   executeInput(e, input, func) {
-    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     if (!web3) {
       return;
     }

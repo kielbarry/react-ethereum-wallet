@@ -13,6 +13,7 @@ import ButtonDescription from './ButtonDescription';
 import * as Actions from '../actions/actions';
 import * as Utils from '../utils/utils';
 import { combineWallets, sortByBalance } from '../utils/helperFunctions';
+import web3 from '../web3';
 
 const styles = theme => ({
   fab: {
@@ -49,7 +50,6 @@ export class DeployToken extends Component {
 
   deployBinanceToken() {
     this.setState({ disabledWallet: true });
-    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     if (!web3) {
       return;
     }
@@ -171,7 +171,6 @@ export class DeployToken extends Component {
 const mapStateToProps = state => ({
   Wallets: state.reducers.Wallets,
   WalletContracts: state.reducers.WalletContracts,
-  web3: state.web3,
 });
 
 export default compose(

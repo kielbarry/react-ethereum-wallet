@@ -6,6 +6,7 @@ import FromToRow from '../components/FromToRow';
 import AmountRow from '../components/AmountRow';
 import GasFeeRow from '../components/GasFeeRow';
 import TotalGas from '../components/TotalGas';
+import web3 from '../web3';
 
 import {
   updateTransactionToSend,
@@ -59,14 +60,12 @@ export class Send extends Component {
   validateSendingTokens(tx) {
     console.log('in validateSendingTokens');
     const valid = true;
-    const web3 = this.props.web3.web3Instance;
     if (valid) this.props.displayModal('displaySendTransaction');
   }
 
   validateForm(tx) {
     let msg;
     let valid = true;
-    const web3 = this.props.web3.web3Instance;
 
     if (!web3.utils.isAddress(tx.to)) {
       msg =
@@ -98,12 +97,10 @@ export class Send extends Component {
 
   handleOnKeyUp(e) {
     // TODO:validate inputs here
-    // let web3 = this.props.web3.web3Instance;
     const target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
-    if (target === 'value' && this.props.web3 && targetValue) {
-      const web3 = this.props.web3.web3Instance;
+    if (target === 'value' && web3 && targetValue) {
       targetValue = web3.utils.toWei(targetValue, 'ETHER');
     }
     this.props.updateTransactionToSend({

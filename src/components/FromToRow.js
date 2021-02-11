@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Identicon } from 'ethereum-react-components';
-import Web3 from 'web3';
 import WalletDropdown from './elements/WalletDropdown';
+import web3 from '../web3';
 import { updateTransactionToSend } from '../actions/actions';
 
 import * as Utils from '../utils/utils';
 
 import { combineWallets, sortByBalance } from '../utils/helperFunctions';
-
-const web3 = new Web3();
 
 export class Send extends Component {
   // TODO replace fromWallet with the from field from reducer TransactionToSend

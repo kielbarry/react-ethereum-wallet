@@ -13,6 +13,7 @@ import LatestTransactions from '../components/elements/LatestTransactions';
 
 import { displayPriceFormatter } from '../utils/utils';
 import * as Actions from '../actions/actions';
+import web3 from '../web3';
 
 import NotFound from './NotFound';
 
@@ -141,13 +142,6 @@ export class SingleContractView extends Component {
   }
 
   executeFunctions(e, contract) {
-    let web3;
-    if (this.props.web3 && this.props.web3.web3Instance) {
-      web3 = this.props.web3.web3Instance;
-    } else {
-      return;
-    }
-
     const contractInstance = new web3.eth.Contract(
       JSON.parse(contract.jsonInterface),
       contract.address
@@ -189,9 +183,9 @@ export class SingleContractView extends Component {
     contractConstants.map((method, index) => {
       const args = method.inputs.map(input => {
         input.typeShort = input.type.match(/[a-z]+/i)[0];
-        input.value === undefined || input.value === null
-          ? (input.value = '')
-          : null;
+        if (input.value === undefined || input.value === null) {
+          input.value = '';
+        }
         if (input.typeShort === 'bytes' && input.value === '') {
           input.value = '0x0000000000000000000000000000000000000000';
         } else if (input.value === '' && input.typeShort !== 'address') {
@@ -232,13 +226,6 @@ export class SingleContractView extends Component {
   @param {Object} contract the account object with .jsonInterface
   */
   watchContractEvents(e, contract) {
-    let web3;
-    if (this.props.web3 && this.props.web3.web3Instance) {
-      web3 = this.props.web3.web3Instance;
-    } else {
-      return;
-    }
-
     const contractInstance = new web3.eth.Contract(
       JSON.parse(contract.jsonInterface),
       contract.address

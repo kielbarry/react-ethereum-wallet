@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Web3 from 'web3';
 import RadioTokenSelect from './elements/RadioTokenSelect';
 import { updateTransactionToSend } from '../actions/actions';
 import { displayPriceFormatter } from '../utils/utils';
+import web3 from '../web3';
 
 export class AmountRow extends Component {
   constructor(props) {
@@ -17,22 +17,19 @@ export class AmountRow extends Component {
 
   handleOnKeyUp(e) {
     // TODO:validate inputs here
-    // let web3 = this.props.web3.web3Instance;
     const tx = this.props.TransactionToSend;
     let target = e.target.getAttribute('name');
     let targetValue = e.target.value;
 
     // TODO: still not to validate, but allow single decimal
     if (targetValue.includes('.')) {
-      const web3 = new Web3();
       const eth = targetValue.split('.')[0];
 
       const wei = web3.utils.toWei(eth, 'ether');
       const subEth = targetValue.split('.')[1];
     }
 
-    if (target === 'value' && this.props.web3 && targetValue && !tx.sendToken) {
-      const web3 = this.props.web3.web3Instance;
+    if (target === 'value' && web3 && targetValue && !tx.sendToken) {
       targetValue = web3.utils.toWei(targetValue, 'ETHER');
     }
 
@@ -161,7 +158,6 @@ const mapStateToProps = state => ({
   Wallets: state.reducers.Wallets,
   GasStats: state.reducers.GasStats,
   TransactionToSend: state.reducers.TransactionToSend,
-  web3: state.web3,
   reducers: {
     exchangeRates: state.reducers.exchangeRates,
     currency: state.reducers.currency,

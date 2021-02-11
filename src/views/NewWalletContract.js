@@ -19,6 +19,7 @@ import { Identicon } from 'ethereum-react-components';
 import WalletDropdown from '../components/elements/WalletDropdown';
 import * as Actions from '../actions/actions';
 import { makeID } from '../utils/helperFunctions';
+import web3 from '../web3';
 
 import {
   WalletInterfaceItems,
@@ -126,12 +127,6 @@ class NewWalletContract extends Component {
   checkIfImportableWallet(e) {
     const dcf = this.props.reducers.DeployContractForm;
     const address = dcf.importWalletAddress;
-    let web3;
-    if (this.props.web3 && this.props.web3.web3Instance) {
-      web3 = this.props.web3.web3Instance;
-    } else {
-      return;
-    }
 
     if (!web3.utils.isAddress(address)) {
       console.log('inside not address');
@@ -325,7 +320,6 @@ class NewWalletContract extends Component {
     // return;
 
     const msContract = dcf.multiSigContract;
-    const web3 = this.props.web3 ? this.props.web3.web3Instance : null;
     // hardcoded bytecode
     // same for imported wallet - there is a web3 check to make the
     // code at the given address is identical to the walletStubABI
@@ -344,20 +338,23 @@ class NewWalletContract extends Component {
     };
 
     let valid = false;
-    dcf.multisigChecked === false
-      ? ((options.arguments = [
-          [dcf.MainOwnerAddress.toLowerCase()], // owner
-          1, // require signature count,
+
+    if (dcf.multisigChecked === false) {
+      options.arguments = [
+        [dcf.MainOwnerAddress.toLowerCase()], // owner
+        1, // require signature count,
+        ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
+      ];
+      valid = true;
+    } else {
+      options.arguments = [
+        msContract.owners,
+        msContract.confirmationAddressesRequired || 1,
+        msContract.dailyLimitAmount ||
           ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-        ]),
-        (valid = true))
-      : ((options.arguments = [
-          msContract.owners,
-          msContract.confirmationAddressesRequired || 1,
-          msContract.dailyLimitAmount ||
-            ethereumConfig.dailyLimitDefault.toString(10), // ethereum configs daily limit
-        ]),
-        (valid = this.validateMultipleAddress(web3, msContract.owners)));
+      ];
+      valid = this.validateMultipleAddress(web3, msContract.owners);
+    }
 
     if (!valid) {
       return;

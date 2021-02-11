@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // import * as Actions from '../actions/actions.js';
 import { updateTransactionToSend } from '../actions/actions';
 import { floatToTime } from '../utils/utils';
+import web3 from '../web3';
 
 export class GasFeeRow extends Component {
   constructor(props) {
@@ -27,7 +28,6 @@ export class GasFeeRow extends Component {
   }
 
   estimateGas() {
-    const web3 = this.props.web3.web3Instance;
     const tx = this.props.TransactionToSend;
     web3.eth.estimateGas(
       {
@@ -101,7 +101,6 @@ export class GasFeeRow extends Component {
 const mapStateToProps = state => ({
   GasStats: state.reducers.GasStats,
   TransactionToSend: state.reducers.TransactionToSend,
-  web3: state.web3,
 });
 
 export default connect(

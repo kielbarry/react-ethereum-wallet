@@ -56,10 +56,9 @@ export const initialState = {
   qrCode: '',
   JSONInterface: '',
   SelectedFunction: {},
-  Web3Initializer: {},
 };
 
-export const reducers = (state = initialState, action) => {
+const reducers = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_OBSERVED_CONTRACT_NAME':
       return {
@@ -158,11 +157,6 @@ export const reducers = (state = initialState, action) => {
             },
           },
         },
-      };
-    case 'SET_ETHEREUM_PROVIDER_CONFIG':
-      return {
-        ...state,
-        Web3Initializer: action.payload,
       };
     case 'UPDATE_WALLET_CONTRACT':
       return {

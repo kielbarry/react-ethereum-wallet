@@ -11,6 +11,7 @@ import {
   addObservedContract,
   displayGlobalNotification,
 } from '../../actions/actions.js';
+import web3 from '../../web3';
 
 const listInputs = [
   {
@@ -74,11 +75,9 @@ class WatchItem extends Component {
   }
 
   submitFunction(e) {
-    let web3;
     const contract = this.props.reducers.ContractToWatch;
     console.log(contract);
-    if (this.props.web3.web3Instance) {
-      web3 = this.props.web3.web3Instance;
+    if (web3) {
       const con = {};
       try {
         web3.eth.getBalance(contract.address, (err, res) => {

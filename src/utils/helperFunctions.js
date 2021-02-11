@@ -73,7 +73,7 @@ export function returnAddressName(address, props) {
   let name;
   if (walletArray.includes(address)) {
     name = wallets[address].name;
-    name || `Account ${wallets[address]}`;
+    // name || `Account ${wallets[address]}`;
   } else if (walletContractArray.includes(address)) {
     name = walletContracts[address]['contract-name'];
   } else if (observedContractsArray.includes(address)) {

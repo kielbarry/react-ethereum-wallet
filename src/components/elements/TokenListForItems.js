@@ -10,6 +10,7 @@ import * as Utils from '../../utils/utils';
 import * as Actions from '../../actions/actions';
 
 import { tokenInterface } from '../../constants/TokenInterfaceConstant';
+import web3 from '../../web3';
 
 export class TokenListForItems extends Component {
   constructor(props) {
@@ -25,7 +26,6 @@ export class TokenListForItems extends Component {
     // then return
     if (ObservedTokens) {
       untrackedTokens.map(tokenAddress => {
-        const web3 = this.props.web3.web3Instance;
         const TokenContract = new web3.eth.Contract(tokenInterface);
         TokenContract.options.address = tokenAddress;
 
